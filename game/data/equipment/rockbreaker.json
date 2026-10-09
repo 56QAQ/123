@@ -1,0 +1,58 @@
+{
+ "id": "rockbreaker",
+ "cost": 4,
+ "color_id": "blue",
+ "weapon_class": "heavy",
+ "abilities": [
+  {
+   "id": "rockbreaker_crush",
+   "ability_class": "blade",
+   "effect_type": "physical_damage",
+   "value_multiplier": 1.5,
+   "fixed_value": 0.0,
+   "keywords": [
+    "multi_attack"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "extra_effects": [
+     {
+      "effect_type": "stat_status",
+      "target": "target",
+      "status_id": "armor_crack",
+      "duration": 8.0,
+      "max_stacks": 3,
+      "flags": [
+       "debuff",
+       "dispellable"
+      ],
+      "stats": {
+       "defense": {
+        "flat": -20
+       },
+       "magic_resistance": {
+        "flat": -20
+       }
+      }
+     }
+    ]
+   },
+   "cooldown": 4.0,
+   "priority": 100,
+   "keyword_values": {
+    "multi_attack": 4
+   }
+  }
+ ],
+ "flat_stat_modifiers": {
+  "attack_power": 30,
+  "ability_power": 30,
+  "defense": 15
+ },
+ "percent_stat_modifiers": {},
+ "model": "rockbreaker",
+ "reworked": true
+}

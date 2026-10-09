@@ -1,0 +1,436 @@
+{
+ "id": "node_noble",
+ "cost": 4,
+ "role": "tank",
+ "template": "tank",
+ "base_weapon_class": "sword",
+ "weapon_classes": [
+  "sword",
+  "focus",
+  "polearm"
+ ],
+ "offhand": "lily",
+ "faction_id": "yellow",
+ "profession_id": "maintenance",
+ "model": "noble",
+ "reworked": true,
+ "target_priority": "nearest",
+ "radius": 0.46,
+ "base_stats": {
+  "attack_power": 70,
+  "ability_power": 0.0,
+  "defense": 80,
+  "magic_resistance": 60,
+  "max_health": 2000,
+  "health_regen_per_second": 0.0,
+  "physical_lifesteal": 0.0,
+  "spell_lifesteal": 0.0,
+  "omnivamp": 0.0,
+  "crit_chance": 0.05,
+  "crit_damage": 1.5,
+  "physical_flat_penetration": 0.0,
+  "physical_percent_penetration": 0.0,
+  "magic_flat_penetration": 0.0,
+  "magic_percent_penetration": 0.0,
+  "move_speed": 1.9,
+  "attack_speed_multiplier": 0.7,
+  "damage_dealt_pct": 0.0,
+  "damage_dealt_flat": 0.0,
+  "damage_taken_pct": 0.0,
+  "damage_taken_flat": 0.0,
+  "healing_done_pct": 0.0,
+  "healing_received_pct": 0.0
+ },
+ "anim_overrides": {
+  "sword": {
+   "attack_cone": "attack_cone_noble_sword"
+  },
+  "polearm": {
+   "attack_cone": "attack_cone_noble_polearm"
+  },
+  "focus": {
+   "attack_cone": "attack_cone_noble_focus"
+  }
+ },
+ "chant_fx": {
+  "node_noble_rebloom": {
+   "anim": "chant_noble",
+   "min_star": 1,
+   "no_ring": true,
+   "petals": true
+  }
+ },
+ "phantom_fx": {
+  "trigger": "node_noble_knight",
+  "color": "#ffd76a",
+  "min_interval": 0.75,
+  "back": 0.95,
+  "lift": 0.3,
+  "scale": 1.3
+ },
+ "triggers": [
+  {
+   "id": "node_noble_lily_time",
+   "timing": "OnBattleFrame",
+   "event_count_threshold": 12,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 1.0,
+   "target_rule": "self",
+   "team_filter": "ally",
+   "tags": [
+    "battle_frame",
+    "passive_lily"
+   ],
+   "runtime_conditions": [
+    {
+     "type": "battle_running"
+    }
+   ]
+  },
+  {
+   "id": "node_noble_lily_attack",
+   "timing": "OnNormalAttackPerform",
+   "event_count_threshold": 3,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 1.0,
+   "target_rule": "self",
+   "team_filter": "ally",
+   "tags": [
+    "normal_attack",
+    "passive_lily"
+   ]
+  },
+  {
+   "id": "node_noble_lily_kill",
+   "timing": "OnAllyUnitKilled",
+   "event_count_threshold": 1,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 1.0,
+   "target_rule": "self",
+   "team_filter": "ally",
+   "tags": [
+    "ally_unit_killed",
+    "passive_lily"
+   ],
+   "runtime_conditions": [
+    {
+     "type": "event_target_enemy"
+    }
+   ]
+  },
+  {
+   "id": "node_noble_lily_fallen",
+   "timing": "OnAllyUnitDied",
+   "event_count_threshold": 1,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 3.0,
+   "target_rule": "self",
+   "team_filter": "ally",
+   "tags": [
+    "ally_unit_died",
+    "passive_lily"
+   ],
+   "runtime_conditions": [
+    {
+     "type": "event_dead_not_summon"
+    }
+   ]
+  },
+  {
+   "id": "node_noble_lily_heal",
+   "timing": "OnHealApplied",
+   "event_count_threshold": 1,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 2.0,
+   "target_rule": "self",
+   "team_filter": "ally",
+   "tags": [
+    "heal",
+    "passive_lily"
+   ],
+   "cooldown_seconds": 0.2,
+   "runtime_conditions": [
+    {
+     "type": "event_target_not_source"
+    },
+    {
+     "type": "event_value_at_least",
+     "value": 1.0
+    }
+   ]
+  },
+  {
+   "id": "node_noble_rebloom_tick",
+   "timing": "OnBattleFrame",
+   "event_count_threshold": 1,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "self",
+   "team_filter": "ally",
+   "tags": [
+    "battle_frame",
+    "passive_rebloom_tick"
+   ],
+   "runtime_conditions": [
+    {
+     "type": "source_chanting_ability",
+     "ability_id": "node_noble_rebloom"
+    }
+   ]
+  },
+  {
+   "id": "node_noble_rebloom",
+   "timing": "OnBattleFrame",
+   "event_count_threshold": 1,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "self",
+   "team_filter": "ally",
+   "tags": [
+    "battle_frame",
+    "passive_rebloom"
+   ],
+   "runtime_conditions": [
+    {
+     "type": "battle_running"
+    },
+    {
+     "type": "source_status_capped",
+     "status_id": "lily_petal"
+    },
+    {
+     "type": "source_not_chanting"
+    },
+    {
+     "type": "source_can_act"
+    }
+   ]
+  },
+  {
+   "id": "node_noble_stamen",
+   "timing": "OnNormalAttackHit",
+   "event_count_threshold": 1,
+   "base_value_mode": "event_value",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "self",
+   "team_filter": "ally",
+   "tags": [
+    "normal_attack",
+    "passive_stamen"
+   ],
+   "runtime_conditions": [
+    {
+     "type": "event_metadata_equals",
+     "key": "attack_variant",
+     "value": "cone"
+    }
+   ]
+  },
+  {
+   "id": "node_noble_knight",
+   "timing": "OnEnemyNear",
+   "event_count_threshold": 1,
+   "base_value_mode": "attack_times_healing_bonus",
+   "base_value_ratio": 3.5,
+   "base_value_flat": 0.0,
+   "target_rule": "event_target",
+   "team_filter": "enemy",
+   "tags": [
+    "enemy_near",
+    "equipment_payload"
+   ],
+   "base_value_ratio_by_star": {
+    "1": 3.5,
+    "2": 4.0,
+    "3": 5.0
+   },
+   "target_radius": 3.0,
+   "extra": {
+    "linger": 2.0
+   },
+   "fit_tags": {
+    "side": "enemy",
+    "count": "single",
+    "freq": "high"
+   }
+  }
+ ],
+ "passive_abilities": [
+  {
+   "id": "node_noble_lily",
+   "ability_class": "blade",
+   "effect_type": "stat_status",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "stacking"
+   ],
+   "accepted_timings": [
+    "OnBattleFrame",
+    "OnNormalAttackPerform",
+    "OnAllyUnitKilled",
+    "OnAllyUnitDied",
+    "OnHealApplied"
+   ],
+   "required_trigger_tags": [
+    "passive_lily"
+   ],
+   "effect_config": {
+    "status_id": "lily_petal",
+    "duration": 0.0,
+    "flags": [
+     "buff",
+     "no_dispel"
+    ],
+    "add_stacks_from_value": true,
+    "off_with": "lily_bloom",
+    "stats_by_star": {
+     "healing_done_pct": {
+      "flat": {
+       "1": 0.03,
+       "2": 0.04,
+       "3": 0.05
+      }
+     }
+    },
+    "stats_at_by_star": {
+     "4": {
+      "max_health": {
+       "flat": {
+        "1": 300.0,
+        "2": 450.0,
+        "3": 700.0
+       }
+      }
+     },
+     "8": {
+      "defense": {
+       "flat": {
+        "1": 20.0,
+        "2": 30.0,
+        "3": 45.0
+       }
+      },
+      "magic_resistance": {
+       "flat": {
+        "1": 20.0,
+        "2": 30.0,
+        "3": 45.0
+       }
+      }
+     }
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100,
+   "keyword_values": {
+    "stacking": 12
+   }
+  },
+  {
+   "id": "node_noble_rebloom",
+   "ability_class": "blade",
+   "effect_type": "lily_rebloom",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "multi_attack",
+    "chant",
+    "stacking"
+   ],
+   "accepted_timings": [
+    "OnBattleFrame"
+   ],
+   "required_trigger_tags": [
+    "passive_rebloom"
+   ],
+   "effect_config": {
+    "petal_status": "lily_petal",
+    "petal_passive": "node_noble_lily",
+    "per_tick": 4,
+    "bloom_after": 12,
+    "bloom_status": "lily_bloom",
+    "stamen": {
+     "status_id": "lily_stamen",
+     "duration": 0.0,
+     "flags": [
+      "buff",
+      "no_dispel",
+      "na_heal_final"
+     ],
+     "meta": {
+      "cone": {
+       "angle": 120.0,
+       "length": 4.5,
+       "passive": "node_noble_rebloom"
+      }
+     },
+     "meta_by_star": {
+      "cone_scale": {
+       "1": 2.5,
+       "2": 3.0,
+       "3": 4.0
+      }
+     }
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100,
+   "keyword_values": {
+    "multi_attack": 9,
+    "chant": 3,
+    "stacking": 3
+   }
+  },
+  {
+   "id": "node_noble_rebloom_tick",
+   "ability_class": "blade",
+   "effect_type": "lily_tick",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [
+    "OnBattleFrame"
+   ],
+   "required_trigger_tags": [
+    "passive_rebloom_tick"
+   ],
+   "effect_config": {
+    "rebloom": "node_noble_rebloom"
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  },
+  {
+   "id": "node_noble_stamen",
+   "ability_class": "blade",
+   "effect_type": "lily_cone_heal",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [
+    "OnNormalAttackHit"
+   ],
+   "required_trigger_tags": [
+    "passive_stamen"
+   ],
+   "effect_config": {
+    "status_id": "lily_stamen"
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  }
+ ]
+}

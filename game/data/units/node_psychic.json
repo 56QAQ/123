@@ -1,0 +1,188 @@
+{
+ "id": "node_psychic",
+ "cost": 3,
+ "role": "caster",
+ "template": "caster",
+ "base_weapon_class": "focus",
+ "weapon_classes": [
+  "focus",
+  "rifle",
+  "crossbow",
+  "pistols"
+ ],
+ "faction_id": "yellow",
+ "profession_id": "research",
+ "model": "psychic",
+ "reworked": true,
+ "target_priority": "nearest",
+ "radius": 0.42,
+ "base_stats": {
+  "attack_power": 70,
+  "ability_power": 0,
+  "defense": 0.0,
+  "magic_resistance": 35,
+  "max_health": 950,
+  "health_regen_per_second": 0.0,
+  "physical_lifesteal": 0.0,
+  "spell_lifesteal": 0.0,
+  "omnivamp": 0.0,
+  "crit_chance": 0.05,
+  "crit_damage": 1.5,
+  "physical_flat_penetration": 0.0,
+  "physical_percent_penetration": 0.0,
+  "magic_flat_penetration": 0.0,
+  "magic_percent_penetration": 0.0,
+  "move_speed": 1.3,
+  "attack_speed_multiplier": 1.0,
+  "damage_dealt_pct": 0.0,
+  "damage_dealt_flat": 0.0,
+  "damage_taken_pct": 0.0,
+  "damage_taken_flat": 0.0,
+  "healing_done_pct": 0.0,
+  "healing_received_pct": 0.0
+ },
+ "wclass_overrides": {
+  "focus": {
+   "draw_anim": "chant_psychic_focus",
+   "draw_hold_anim": "chant_psychic_focus_hold"
+  },
+  "rifle": {
+   "draw_anim": "chant_psychic_rifle",
+   "draw_hold_anim": "chant_psychic_rifle_hold"
+  },
+  "crossbow": {
+   "draw_anim": "chant_psychic_crossbow",
+   "draw_hold_anim": "chant_psychic_crossbow_hold"
+  },
+  "pistols": {
+   "draw_anim": "chant_psychic_pistols",
+   "draw_hold_anim": "chant_psychic_pistols_hold"
+  }
+ },
+ "triggers": [
+  {
+   "id": "node_psychic_call",
+   "timing": "OnBattleStart",
+   "event_count_threshold": 1,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "self",
+   "team_filter": "ally",
+   "tags": [
+    "battle_start",
+    "passive_call"
+   ]
+  },
+  {
+   "id": "node_psychic_weather",
+   "timing": "OnBattleStart",
+   "event_count_threshold": 1,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "self",
+   "team_filter": "ally",
+   "tags": [
+    "battle_start",
+    "passive_weather"
+   ],
+   "unlock_star": 2
+  },
+  {
+   "id": "node_psychic_flash",
+   "timing": "OnChainEnd",
+   "event_count_threshold": 1,
+   "base_value_mode": "attack_ratio",
+   "base_value_ratio": 1.2,
+   "base_value_flat": 0.0,
+   "target_rule": "event_meta_targets",
+   "team_filter": "enemy",
+   "tags": [
+    "chain_end",
+    "equipment_payload"
+   ],
+   "base_value_ratio_by_star": {
+    "1": 1.2,
+    "2": 1.4,
+    "3": 1.7
+   },
+   "fit_tags": {
+    "side": "enemy",
+    "count": "multi",
+    "freq": "low"
+   }
+  }
+ ],
+ "passive_abilities": [
+  {
+   "id": "node_psychic_call",
+   "ability_class": "blade",
+   "effect_type": "flag_status",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [
+    "OnBattleStart"
+   ],
+   "required_trigger_tags": [
+    "passive_call"
+   ],
+   "effect_config": {
+    "status_id": "lightning_call",
+    "duration": 0.0,
+    "flags": [
+     "buff",
+     "no_dispel",
+     "hidden"
+    ],
+    "meta": {
+     "na_chant": 3,
+     "na_chain": {
+      "bounces_by_star": {
+       "1": 4,
+       "2": 4,
+       "3": 5
+      },
+      "radius": 5.0
+     }
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  },
+  {
+   "id": "node_psychic_weather",
+   "ability_class": "blade",
+   "effect_type": "weather_change",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [
+    "OnBattleStart"
+   ],
+   "required_trigger_tags": [
+    "passive_weather"
+   ],
+   "effect_config": {
+    "by_chapter": {
+     "red": "rain",
+     "purple": "sunny",
+     "blue": "fog"
+    },
+    "params": {
+     "fog": {
+      "dodge": 0.25
+     }
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100,
+   "unlock_star": 2
+  }
+ ]
+}

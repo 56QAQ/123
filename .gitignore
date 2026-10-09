@@ -1,0 +1,16 @@
+# Godot 缓存 / 导入结果(打开项目时自动重建)
+.godot/
+# 输出：导出的 exe、截图、测强度明细、临时脚本、改名的 Godot
+build/
+out/
+# 生成物：模型 / 动画 / 场景资源都由 tools/ 下的脚本生成(./run_anims.sh → ./run_build.sh → ./run_kits.sh，./run_world.sh)
+assets/**/*.res
+assets/**/*.res.*
+# 工具运行时临时放的(tools/quiet_window.sh)、原子写入的临时文件、锁
+override.cfg
+*.tmp[0-9]*
+# 本机杂物
+.claude/
+~$*
+/*.gif
+*.log

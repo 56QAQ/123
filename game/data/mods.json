@@ -1,0 +1,284 @@
+{
+ "rarity_weights": {
+  "1": 7,
+  "2": 3,
+  "3": 1
+ },
+ "offer": 3,
+ "mods": [
+  {
+   "id": "truck_zone",
+   "color": "white",
+   "rarity": 1,
+   "t_min": 0,
+   "t_max": 0,
+   "who": "all",
+   "layout": "truck_zone"
+  },
+  {
+   "id": "truck_free",
+   "color": "white",
+   "rarity": 1,
+   "t_min": 0,
+   "t_max": 0,
+   "who": "all",
+   "layout": "truck_free"
+  },
+  {
+   "id": "truck_wide",
+   "color": "white",
+   "rarity": 1,
+   "t_min": 0,
+   "t_max": 0,
+   "who": "all",
+   "layout": "truck_wide"
+  },
+  {
+   "id": "powder_boost",
+   "color": "red",
+   "rarity": 1,
+   "t_min": 1,
+   "t_max": 4,
+   "who": "ranged",
+   "stats": {
+    "flat": {
+     "na_damage_pct": 0.25
+    }
+   }
+  },
+  {
+   "id": "weapon_calibration",
+   "color": "red",
+   "rarity": 1,
+   "t_min": 1,
+   "t_max": 4,
+   "who": "ranged",
+   "stats": {
+    "flat": {
+     "crit_chance": 0.25,
+     "crit_damage": 0.25
+    }
+   }
+  },
+  {
+   "id": "light_armor",
+   "color": "green",
+   "rarity": 1,
+   "t_min": 1,
+   "t_max": 4,
+   "who": "melee",
+   "stats": {
+    "pct": {
+     "attack_speed_multiplier": 0.3
+    }
+   }
+  },
+  {
+   "id": "hardened_alloy",
+   "color": "green",
+   "rarity": 1,
+   "t_min": 1,
+   "t_max": 4,
+   "who": "melee",
+   "stats": {
+    "flat": {
+     "final_dmg_reduction": 0.15
+    }
+   }
+  },
+  {
+   "id": "arcane_basics",
+   "color": "blue",
+   "rarity": 1,
+   "t_min": 1,
+   "t_max": 4,
+   "who": "all",
+   "stats": {
+    "flat": {
+     "ability_power": 35
+    }
+   }
+  },
+  {
+   "id": "anti_resist",
+   "color": "blue",
+   "rarity": 1,
+   "t_min": 1,
+   "t_max": 4,
+   "who": "enemy",
+   "stats": {
+    "flat": {
+     "magic_resistance": -30
+    }
+   }
+  },
+  {
+   "id": "sharp_arms",
+   "color": "red",
+   "rarity": 2,
+   "t_min": 1,
+   "t_max": 4,
+   "who": "all",
+   "stats": {
+    "flat": {
+     "na_mult_pct": 0.3333333333333333
+    }
+   }
+  },
+  {
+   "id": "arcane_growth",
+   "color": "blue",
+   "rarity": 2,
+   "t_min": 1,
+   "t_max": 4,
+   "who": "all",
+   "rule": "arcane_growth",
+   "params": {
+    "per_learning": 0.1
+   }
+  },
+  {
+   "id": "time_management",
+   "color": "green",
+   "rarity": 2,
+   "t_min": 1,
+   "t_max": 4,
+   "who": "all",
+   "rule": "time_management",
+   "params": {
+    "pct": 0.25
+   }
+  },
+  {
+   "id": "pearl_field",
+   "color": "purple",
+   "rarity": 2,
+   "t_min": 1,
+   "t_max": 4,
+   "who": "all",
+   "rule": "pearl_field",
+   "params": {}
+  },
+  {
+   "id": "potent_dose",
+   "color": "cyan",
+   "rarity": 2,
+   "t_min": 1,
+   "t_max": 4,
+   "who": "all",
+   "pairs": [
+    {
+     "trigger": {
+      "id": "mod_potent_dose_start",
+      "timing": "OnBattleStart",
+      "event_count_threshold": 1,
+      "base_value_mode": "fixed",
+      "base_value_ratio": 1.0,
+      "base_value_flat": 0.0,
+      "target_rule": "self",
+      "team_filter": "ally",
+      "tags": [
+       "mod_payload",
+       "mod_potent_dose_start"
+      ]
+     },
+     "ability": {
+      "id": "mod_potent_dose_start",
+      "ability_class": "blade",
+      "effect_type": "stat_status",
+      "value_multiplier": 1.0,
+      "fixed_value": 0.0,
+      "keywords": [
+       "basic"
+      ],
+      "accepted_timings": [
+       "OnBattleStart"
+      ],
+      "required_trigger_tags": [
+       "mod_payload",
+       "mod_potent_dose_start"
+      ],
+      "effect_config": {
+       "status_id": "potent_dose",
+       "duration": 0.0,
+       "max_stacks": 1,
+       "flags": [
+        "buff",
+        "hidden",
+        "no_dispel"
+       ]
+      },
+      "cooldown": 0.0,
+      "priority": 100
+     }
+    },
+    {
+     "trigger": {
+      "id": "mod_potent_dose_tick",
+      "timing": "OnBattleFrame",
+      "event_count_threshold": 12,
+      "base_value_mode": "fixed",
+      "base_value_ratio": 1.0,
+      "base_value_flat": 0.0,
+      "target_rule": "self",
+      "team_filter": "ally",
+      "tags": [
+       "mod_payload",
+       "mod_potent_dose_tick"
+      ],
+      "runtime_conditions": [
+       {
+        "type": "battle_running"
+       }
+      ]
+     },
+     "ability": {
+      "id": "mod_potent_dose_tick",
+      "ability_class": "blade",
+      "effect_type": "stat_status",
+      "value_multiplier": 1.0,
+      "fixed_value": 0.0,
+      "keywords": [
+       "basic"
+      ],
+      "accepted_timings": [
+       "OnBattleFrame"
+      ],
+      "required_trigger_tags": [
+       "mod_payload",
+       "mod_potent_dose_tick"
+      ],
+      "effect_config": {
+       "status_id": "potent_dose",
+       "duration": 0.0,
+       "max_stacks": 1,
+       "flags": [
+        "buff",
+        "hidden",
+        "no_dispel"
+       ]
+      },
+      "cooldown": 0.0,
+      "priority": 100
+     }
+    }
+   ],
+   "rule": "potent_dose",
+   "params": {
+    "frames": 12
+   }
+  },
+  {
+   "id": "cast_guard",
+   "color": "yellow",
+   "rarity": 2,
+   "t_min": 1,
+   "t_max": 4,
+   "who": "all",
+   "rule": "cast_guard",
+   "params": {
+    "share": 0.5
+   }
+  }
+ ]
+}

@@ -1,0 +1,164 @@
+{
+ "id": "node_bird",
+ "cost": 1,
+ "role": "assassin",
+ "template": "assassin",
+ "base_weapon_class": "dual",
+ "weapon_classes": [
+  "dual"
+ ],
+ "faction_id": "black",
+ "profession_id": "information",
+ "model": "bird",
+ "reworked": true,
+ "target_priority": "nearest",
+ "radius": 0.36,
+ "available_in_shop": false,
+ "summon_only": true,
+ "hide_weapon": true,
+ "base_stats": {
+  "attack_power": 30,
+  "ability_power": 0.0,
+  "defense": 10,
+  "magic_resistance": 10,
+  "max_health": 160,
+  "health_regen_per_second": 0.0,
+  "physical_lifesteal": 0.0,
+  "spell_lifesteal": 0.0,
+  "omnivamp": 0.0,
+  "crit_chance": 0.05,
+  "crit_damage": 1.5,
+  "physical_flat_penetration": 0.0,
+  "physical_percent_penetration": 0.0,
+  "magic_flat_penetration": 0.0,
+  "magic_percent_penetration": 0.0,
+  "move_speed": 3.6,
+  "attack_speed_multiplier": 0.6,
+  "damage_dealt_pct": 0.0,
+  "damage_dealt_flat": 0.0,
+  "damage_taken_pct": 0.0,
+  "damage_taken_flat": 0.0,
+  "healing_done_pct": 0.0,
+  "healing_received_pct": 0.0
+ },
+ "anim_overrides": {
+  "dual": {
+   "idle": "idle_bird",
+   "run": "run_bird",
+   "attack": "attack_bird"
+  }
+ },
+ "ai": {
+  "run_ref_speed": 3.0
+ },
+ "triggers": [
+  {
+   "id": "node_bird_bond",
+   "timing": "OnSummoned",
+   "event_count_threshold": 1,
+   "base_value_mode": "summoner_ability_power_ratio",
+   "base_value_ratio": 0.1,
+   "base_value_flat": 0.0,
+   "target_rule": "self",
+   "team_filter": "ally",
+   "tags": [
+    "summoned",
+    "passive_bond"
+   ]
+  },
+  {
+   "id": "node_bird_eye",
+   "timing": "OnBattleFrame",
+   "event_count_threshold": 1,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "all_allies",
+   "team_filter": "ally",
+   "tags": [
+    "battle_frame",
+    "passive_sky"
+   ]
+  }
+ ],
+ "passive_abilities": [
+  {
+   "id": "node_bird_bond",
+   "ability_class": "blade",
+   "effect_type": "stat_status",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [
+    "OnSummoned"
+   ],
+   "required_trigger_tags": [
+    "passive_bond"
+   ],
+   "effect_config": {
+    "status_id": "familiar_bond",
+    "stat_id": "attack_power",
+    "flags": [
+     "hidden"
+    ],
+    "pre_effects": [
+     {
+      "effect_type": "flag_status",
+      "status_id": "bird_flight",
+      "duration": 0.0,
+      "flags": [
+       "hidden",
+       "no_dispel",
+       "phasing",
+       "flying"
+      ]
+     }
+    ]
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  },
+  {
+   "id": "node_bird_eye",
+   "ability_class": "blade",
+   "effect_type": "stat_status",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic",
+    "stacking"
+   ],
+   "accepted_timings": [
+    "OnBattleFrame"
+   ],
+   "required_trigger_tags": [
+    "passive_sky"
+   ],
+   "effect_config": {
+    "status_id": "sky_vision",
+    "per_source": true,
+    "all_targets": true,
+    "duration": 0.6,
+    "flags": [
+     "buff"
+    ],
+    "stats_by_star": {
+     "na_skill_flat_damage": {
+      "flat": {
+       "1": 4,
+       "2": 6,
+       "3": 9
+      }
+     }
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100,
+   "keyword_values": {
+    "stacking": 3
+   }
+  }
+ ]
+}

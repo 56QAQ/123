@@ -1,0 +1,45 @@
+{
+ "id": "resonance_bells",
+ "cost": 3,
+ "color_id": "black",
+ "weapon_class": "pistols",
+ "abilities": [
+  {
+   "id": "bell_toll",
+   "ability_class": "amulet",
+   "effect_type": "shield",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "multi_attack"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "ally_effect": {
+     "effect_type": "shield",
+     "value_multiplier": 1.5
+    },
+    "enemy_effect": {
+     "effect_type": "magic_damage",
+     "value_multiplier": 1.5
+    }
+   },
+   "cooldown": 2.0,
+   "priority": 100,
+   "keyword_values": {
+    "multi_attack": 3
+   }
+  }
+ ],
+ "flat_stat_modifiers": {
+  "defense": 20,
+  "magic_resistance": 20
+ },
+ "percent_stat_modifiers": {},
+ "model": "bells",
+ "reworked": true,
+ "projectile": "sound_ring"
+}

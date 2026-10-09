@@ -1,0 +1,31 @@
+{
+ "id": "sample_splash_potion",
+ "cost": 1,
+ "color_id": "black",
+ "weapon_class": "focus",
+ "abilities": [
+  {
+   "id": "sample_splash_potion_heal",
+   "ability_class": "potion",
+   "effect_type": "heal",
+   "value_multiplier": 0.5,
+   "fixed_value": 0.0,
+   "keywords": [
+    "splash"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {},
+   "cooldown": 0.0,
+   "priority": 100,
+   "keyword_values": {
+    "splash": 2
+   }
+  }
+ ],
+ "flat_stat_modifiers": {},
+ "percent_stat_modifiers": {},
+ "no_drop": true
+}

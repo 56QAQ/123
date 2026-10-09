@@ -1,0 +1,70 @@
+{
+ "id": "g5_gale_crossbow",
+ "cost": 2,
+ "color_id": "cyan",
+ "weapon_class": "crossbow",
+ "abilities": [
+  {
+   "id": "g5_gale_gust",
+   "ability_class": "bullet",
+   "effect_type": "none",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "extra_effects": [
+     {
+      "effect_type": "stat_status",
+      "target": "self",
+      "status_id": "g5_gale",
+      "duration": 0.0,
+      "max_stacks": 6,
+      "flags": [
+       "buff",
+       "dispellable"
+      ],
+      "stats": {
+       "attack_speed_multiplier": {
+        "flat": 0.04
+       },
+       "haste": {
+        "flat": 0.04
+       },
+       "reload_time_pct": {
+        "flat": -0.04
+       }
+      }
+     },
+     {
+      "effect_type": "shield",
+      "target": "self",
+      "fixed_value": 45
+     }
+    ]
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  }
+ ],
+ "flat_stat_modifiers": {
+  "crit_chance": 0.08
+ },
+ "percent_stat_modifiers": {},
+ "model": "g5gale",
+ "reworked": true,
+ "fit_tags": {
+  "side": "dual",
+  "multi": false,
+  "basic": true,
+  "any_target": true
+ },
+ "fit_remove": [
+  "node_taoist"
+ ]
+}

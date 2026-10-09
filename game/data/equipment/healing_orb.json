@@ -1,0 +1,37 @@
+{
+ "id": "healing_orb",
+ "cost": 2,
+ "color_id": "cyan",
+ "weapon_class": "focus",
+ "abilities": [
+  {
+   "id": "healing_orb_heal",
+   "ability_class": "potion",
+   "effect_type": "heal",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "variance": {
+     "success": 0.05,
+     "fail": 0.05,
+     "success_mult": 2.0,
+     "fail_mult": 0.0
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  }
+ ],
+ "flat_stat_modifiers": {
+  "health_regen_per_second": 4
+ },
+ "percent_stat_modifiers": {
+  "healing_done_pct": 0.2
+ },
+ "no_drop": true
+}

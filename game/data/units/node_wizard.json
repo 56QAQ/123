@@ -1,0 +1,256 @@
+{
+ "id": "node_wizard",
+ "cost": 4,
+ "role": "caster",
+ "template": "caster",
+ "base_weapon_class": "focus",
+ "weapon_classes": [
+  "focus",
+  "polearm"
+ ],
+ "faction_id": "blue",
+ "profession_id": "research",
+ "model": "wizard",
+ "reworked": true,
+ "target_priority": "nearest",
+ "radius": 0.42,
+ "base_stats": {
+  "attack_power": 80,
+  "ability_power": 80,
+  "defense": 10,
+  "magic_resistance": 40,
+  "max_health": 1150,
+  "health_regen_per_second": 0.0,
+  "physical_lifesteal": 0.0,
+  "spell_lifesteal": 0.0,
+  "omnivamp": 0.0,
+  "crit_chance": 0.05,
+  "crit_damage": 1.5,
+  "physical_flat_penetration": 0.0,
+  "physical_percent_penetration": 0.0,
+  "magic_flat_penetration": 0.0,
+  "magic_percent_penetration": 0.0,
+  "move_speed": 1.3,
+  "attack_speed_multiplier": 1.0,
+  "damage_dealt_pct": 0.0,
+  "damage_dealt_flat": 0.0,
+  "damage_taken_pct": 0.0,
+  "damage_taken_flat": 0.0,
+  "healing_done_pct": 0.0,
+  "healing_received_pct": 0.0
+ },
+ "chant_fx": {
+  "node_wizard_missiles": {
+   "anim": "chant_wizard",
+   "cast_anim": "cast_wizard",
+   "circle": "#7fb4ff",
+   "min_star": 1
+  }
+ },
+ "triggers": [
+  {
+   "id": "node_wizard_missiles",
+   "timing": "OnBattleStart",
+   "event_count_threshold": 1,
+   "base_value_mode": "ability_power_ratio",
+   "base_value_ratio": 0.45,
+   "base_value_flat": 0.0,
+   "target_rule": "self",
+   "team_filter": "ally",
+   "tags": [
+    "battle_start",
+    "passive_missiles"
+   ],
+   "base_value_ratio_by_star": {
+    "1": 0.45,
+    "2": 1.1,
+    "3": 1.9
+   }
+  },
+  {
+   "id": "node_wizard_missiles_again",
+   "timing": "OnChantComplete",
+   "event_count_threshold": 1,
+   "base_value_mode": "ability_power_ratio",
+   "base_value_ratio": 0.45,
+   "base_value_flat": 0.0,
+   "target_rule": "self",
+   "team_filter": "ally",
+   "tags": [
+    "chant_complete",
+    "passive_missiles"
+   ],
+   "base_value_ratio_by_star": {
+    "1": 0.45,
+    "2": 1.1,
+    "3": 1.9
+   },
+   "runtime_conditions": [
+    {
+     "type": "event_metadata_equals",
+     "key": "ability_id",
+     "value": "node_wizard_missiles"
+    }
+   ]
+  },
+  {
+   "id": "node_wizard_missiles_retry",
+   "timing": "OnBattleFrame",
+   "event_count_threshold": 4,
+   "base_value_mode": "ability_power_ratio",
+   "base_value_ratio": 0.45,
+   "base_value_flat": 0.0,
+   "target_rule": "self",
+   "team_filter": "ally",
+   "tags": [
+    "battle_frame",
+    "passive_missiles"
+   ],
+   "base_value_ratio_by_star": {
+    "1": 0.45,
+    "2": 1.1,
+    "3": 1.9
+   },
+   "runtime_conditions": [
+    {
+     "type": "battle_running"
+    },
+    {
+     "type": "source_not_chanting"
+    }
+   ]
+  },
+  {
+   "id": "node_wizard_familiar",
+   "timing": "OnDamageDealt",
+   "event_count_threshold": 1,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "self",
+   "team_filter": "ally",
+   "tags": [
+    "damage_dealt",
+    "passive_familiar"
+   ]
+  },
+  {
+   "id": "node_wizard_familiar_heal",
+   "timing": "OnHealApplied",
+   "event_count_threshold": 1,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "self",
+   "team_filter": "ally",
+   "tags": [
+    "heal",
+    "passive_familiar"
+   ]
+  },
+  {
+   "id": "node_wizard_beak",
+   "timing": "OnSummonNormalAttackHit",
+   "event_count_threshold": 1,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 10,
+   "target_rule": "event_target",
+   "team_filter": "enemy",
+   "tags": [
+    "summon_hit",
+    "equipment_payload"
+   ],
+   "fit_tags": {
+    "side": "enemy",
+    "count": "single",
+    "freq": "high"
+   }
+  }
+ ],
+ "passive_abilities": [
+  {
+   "id": "node_wizard_missiles",
+   "ability_class": "blade",
+   "effect_type": "rainbow_missiles",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic",
+    "chant",
+    "amplify"
+   ],
+   "accepted_timings": [
+    "OnBattleStart",
+    "OnChantComplete",
+    "OnBattleFrame"
+   ],
+   "required_trigger_tags": [
+    "passive_missiles"
+   ],
+   "effect_config": {
+    "release_on_interrupt": true,
+    "blue_mult": 1.2,
+    "launch_gap": 0.06,
+    "flight_min": 0.85,
+    "flight_max": 1.3,
+    "burn": {
+     "status_id": "burning",
+     "duration": 8.0,
+     "max_stacks": 1,
+     "independent": true,
+     "flags": [
+      "debuff",
+      "burning",
+      "dispellable"
+     ],
+     "dot": {
+      "kind": "magic",
+      "amount": 25.0,
+      "interval": 1.0
+     }
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100,
+   "keyword_values": {
+    "chant": 5,
+    "amplify": 2
+   },
+   "keyword_values_by_star": {
+    "amplify": {
+     "1": 2,
+     "2": 2,
+     "3": 3
+    }
+   }
+  },
+  {
+   "id": "node_wizard_familiar",
+   "ability_class": "blade",
+   "effect_type": "familiar_marks",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "summon"
+   ],
+   "accepted_timings": [
+    "OnDamageDealt",
+    "OnHealApplied"
+   ],
+   "required_trigger_tags": [
+    "passive_familiar"
+   ],
+   "effect_config": {
+    "need": 6,
+    "max_birds": 5,
+    "unit_id": "node_bird",
+    "count": 1,
+    "placement": "near",
+    "inherit_star": true
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  }
+ ]
+}

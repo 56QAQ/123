@@ -1,0 +1,61 @@
+{
+ "id": "ribbon_daggers",
+ "cost": 2,
+ "color_id": "yellow",
+ "weapon_class": "dual",
+ "abilities": [
+  {
+   "id": "ribbon_daggers_twirl",
+   "ability_class": "amulet",
+   "effect_type": "stat_status",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic",
+    "multi_attack"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "ally_effect": {
+     "effect_type": "stat_status",
+     "cfg": {
+      "status_id": "ribbon_cheer",
+      "duration": 5.0,
+      "max_stacks": 5,
+      "flags": [
+       "buff",
+       "dispellable"
+      ],
+      "stats": {
+       "attack_power": {
+        "pct": 0.03
+       },
+       "physical_lifesteal": {
+        "flat": 0.02
+       }
+      }
+     }
+    },
+    "enemy_effect": {
+     "effect_type": "physical_damage",
+     "value_multiplier": 0.5
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100,
+   "keyword_values": {
+    "multi_attack": 4
+   }
+  }
+ ],
+ "flat_stat_modifiers": {
+  "attack_power": 15,
+  "physical_lifesteal": 0.08
+ },
+ "percent_stat_modifiers": {},
+ "model": "g7_ribbon",
+ "reworked": true
+}

@@ -1,0 +1,242 @@
+{
+ "id": "node_runner",
+ "cost": 4,
+ "role": "assassin",
+ "template": "assassin",
+ "base_weapon_class": "dual",
+ "weapon_classes": [
+  "dual",
+  "sword"
+ ],
+ "faction_id": "purple",
+ "profession_id": "information",
+ "special_trait_ids": [
+  "clan"
+ ],
+ "model": "runner",
+ "reworked": true,
+ "target_priority": "farthest",
+ "radius": 0.42,
+ "base_stats": {
+  "attack_power": 220,
+  "ability_power": 0.0,
+  "defense": 35,
+  "magic_resistance": 35,
+  "max_health": 1600,
+  "health_regen_per_second": 0.0,
+  "physical_lifesteal": 0.0,
+  "spell_lifesteal": 0.0,
+  "omnivamp": 0.0,
+  "crit_chance": 0.05,
+  "crit_damage": 1.5,
+  "physical_flat_penetration": 0.0,
+  "physical_percent_penetration": 0.0,
+  "magic_flat_penetration": 0.0,
+  "magic_percent_penetration": 0.0,
+  "move_speed": 3.2,
+  "attack_speed_multiplier": 1.0,
+  "damage_dealt_pct": 0.0,
+  "damage_dealt_flat": 0.0,
+  "damage_taken_pct": 0.0,
+  "damage_taken_flat": 0.0,
+  "healing_done_pct": 0.0,
+  "healing_received_pct": 0.0
+ },
+ "ai": {
+  "run_ref_speed": 4.2
+ },
+ "wclass_overrides": {
+  "dual": {
+   "na_mult": 1.0
+  },
+  "sword": {
+   "na_mult": 1.0
+  }
+ },
+ "normal_attack_ability": {
+  "id": "node_runner_kick",
+  "ability_class": "blade",
+  "effect_type": "physical_damage",
+  "value_multiplier": 1.0,
+  "fixed_value": 0.0,
+  "keywords": [
+   "basic",
+   "crit",
+   "normal_attack"
+  ],
+  "accepted_timings": [
+   "OnNormalAttackPerform"
+  ],
+  "required_trigger_tags": [
+   "normal_attack_perform"
+  ],
+  "effect_config": {},
+  "cooldown": 0.0,
+  "priority": 100
+ },
+ "anim_overrides": {
+  "dual": {
+   "run": "run_runner",
+   "attack": "kick_runner"
+  },
+  "sword": {
+   "run": "run_runner",
+   "attack": "kick_runner"
+  }
+ },
+ "triggers": [
+  {
+   "id": "node_runner_lightning",
+   "timing": "OnBattleStart",
+   "event_count_threshold": 1,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "self",
+   "team_filter": "ally",
+   "tags": [
+    "battle_start",
+    "passive_lightning"
+   ]
+  },
+  {
+   "id": "node_runner_speed",
+   "timing": "OnBattleFrame",
+   "event_count_threshold": 4,
+   "base_value_mode": "attack_ratio",
+   "base_value_ratio": 0.0003,
+   "base_value_flat": 0.0,
+   "target_rule": "self",
+   "team_filter": "ally",
+   "tags": [
+    "battle_frame",
+    "passive_lightning_speed"
+   ],
+   "base_value_ratio_by_star": {
+    "1": 0.0003,
+    "2": 0.0005,
+    "3": 0.0007000000000000001
+   }
+  },
+  {
+   "id": "node_runner_kick",
+   "timing": "OnBattleStart",
+   "event_count_threshold": 1,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "self",
+   "team_filter": "ally",
+   "tags": [
+    "battle_start",
+    "passive_kick"
+   ]
+  },
+  {
+   "id": "node_runner_shoe",
+   "timing": "OnNormalAttackHit",
+   "event_count_threshold": 1,
+   "base_value_mode": "kick_mult",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "event_target",
+   "team_filter": "enemy",
+   "tags": [
+    "normal_attack",
+    "equipment_payload"
+   ],
+   "fit_tags": {
+    "side": "enemy",
+    "count": "single",
+    "freq": "low"
+   }
+  }
+ ],
+ "passive_abilities": [
+  {
+   "id": "node_runner_lightning",
+   "ability_class": "blade",
+   "effect_type": "stat_status",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [
+    "OnBattleStart"
+   ],
+   "required_trigger_tags": [
+    "passive_lightning"
+   ],
+   "effect_config": {
+    "status_id": "lightning_phase",
+    "flags": [
+     "hidden",
+     "phasing"
+    ]
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  },
+  {
+   "id": "node_runner_speed",
+   "ability_class": "blade",
+   "effect_type": "stat_status",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [
+    "OnBattleFrame"
+   ],
+   "required_trigger_tags": [
+    "passive_lightning_speed"
+   ],
+   "effect_config": {
+    "status_id": "lightning_runner",
+    "flags": [
+     "buff"
+    ],
+    "max_stacks": 1,
+    "accumulate": true,
+    "amount_pct_stats": [
+     "move_speed"
+    ]
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  },
+  {
+   "id": "node_runner_kick",
+   "ability_class": "blade",
+   "effect_type": "stat_status",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic",
+    "crit"
+   ],
+   "accepted_timings": [
+    "OnBattleStart"
+   ],
+   "required_trigger_tags": [
+    "passive_kick"
+   ],
+   "effect_config": {
+    "status_id": "flying_kick",
+    "flags": [
+     "hidden",
+     "runner"
+    ],
+    "meta": {
+     "kick_d0": 4.0,
+     "kick_pow": 1.6,
+     "min_run": 6.0
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  }
+ ]
+}

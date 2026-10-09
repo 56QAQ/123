@@ -1,0 +1,56 @@
+{
+ "id": "black_mission",
+ "cost": 2,
+ "color_id": "black",
+ "weapon_class": "crossbow",
+ "abilities": [
+  {
+   "id": "black_mission_burst",
+   "ability_class": "blade",
+   "effect_type": "instant_attack",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "charged"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "na_scale": 1.0,
+    "extra_effects": [
+     {
+      "target": "self",
+      "effect_type": "stat_status",
+      "value_multiplier": 1.0,
+      "status_id": "battle_sense",
+      "duration": 3.0,
+      "max_stacks": 1,
+      "flags": [
+       "buff",
+       "dispellable"
+      ],
+      "amount_flat_stats": {
+       "na_dodge": 0.001
+      }
+     }
+    ]
+   },
+   "cooldown": 2.0,
+   "priority": 100,
+   "keyword_values": {
+    "charged": 3
+   }
+  }
+ ],
+ "flat_stat_modifiers": {
+  "magic_resistance": 15,
+  "defense": 15
+ },
+ "percent_stat_modifiers": {},
+ "model": "blackmission",
+ "reworked": true,
+ "owner": "node_commando",
+ "projectile": "bullet"
+}

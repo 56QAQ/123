@@ -1,0 +1,28 @@
+{
+ "id": "colorless_bow",
+ "cost": 1,
+ "color_id": "black",
+ "weapon_class": "bow",
+ "abilities": [
+  {
+   "id": "colorless_bow_true",
+   "ability_class": "bullet",
+   "effect_type": "true_damage",
+   "value_multiplier": 1.0,
+   "fixed_value": 30.0,
+   "keywords": [],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {},
+   "cooldown": 0.0,
+   "priority": 100
+  }
+ ],
+ "flat_stat_modifiers": {
+  "attack_power": 8
+ },
+ "percent_stat_modifiers": {},
+ "no_drop": true
+}

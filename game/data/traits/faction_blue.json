@@ -1,0 +1,39 @@
+{
+ "id": "faction_blue",
+ "trait_category": "faction",
+ "member_trait_filter": "blue",
+ "thresholds": [
+  2,
+  4,
+  6
+ ],
+ "tiers": {
+  "2": {
+   "stats": {
+    "flat": {
+     "ability_power": 8,
+     "haste": 0.05
+    }
+   },
+   "pairs": []
+  },
+  "4": {
+   "stats": {
+    "flat": {
+     "ability_power": 20,
+     "haste": 0.1
+    }
+   },
+   "pairs": []
+  },
+  "6": {
+   "stats": {
+    "flat": {
+     "ability_power": 35,
+     "haste": 0.16
+    }
+   },
+   "pairs": []
+  }
+ }
+}

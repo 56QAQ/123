@@ -1,0 +1,88 @@
+{
+ "id": "talisman_edict",
+ "cost": 1,
+ "color_id": "green",
+ "weapon_class": "focus",
+ "abilities": [
+  {
+   "id": "talisman_edict_seal",
+   "ability_class": "bullet",
+   "effect_type": "edict",
+   "value_multiplier": 1.0,
+   "fixed_value": 10.0,
+   "keywords": [
+    "basic",
+    "stacking"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "rules": [
+     {
+      "team": "ally",
+      "roles": [
+       "tank"
+      ],
+      "stat": "max_health",
+      "sign": 1,
+      "status_id": "edict_hp_up"
+     },
+     {
+      "team": "ally",
+      "ap_user": true,
+      "stat": "ability_power",
+      "sign": 1,
+      "status_id": "edict_ap_up"
+     },
+     {
+      "team": "ally",
+      "stat": "attack_power",
+      "sign": 1,
+      "status_id": "edict_atk_up"
+     },
+     {
+      "team": "enemy",
+      "roles": [
+       "tank"
+      ],
+      "stat": "max_health",
+      "sign": -1,
+      "status_id": "edict_hp_down"
+     },
+     {
+      "team": "enemy",
+      "ap_user": true,
+      "stat": "ability_power",
+      "sign": -1,
+      "status_id": "edict_ap_down"
+     },
+     {
+      "team": "enemy",
+      "stat": "attack_power",
+      "sign": -1,
+      "status_id": "edict_atk_down"
+     }
+    ],
+    "duration": 7.0,
+    "extra_rules": [
+     "amulet"
+    ]
+   },
+   "cooldown": 0.0,
+   "priority": 100,
+   "keyword_values": {
+    "stacking": 3
+   }
+  }
+ ],
+ "flat_stat_modifiers": {
+  "healing_done_pct": 0.2,
+  "damage_dealt_pct": 0.1
+ },
+ "percent_stat_modifiers": {},
+ "model": "talisman",
+ "reworked": true,
+ "owner": "node_taoist"
+}

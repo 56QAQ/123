@@ -1,0 +1,32 @@
+{
+ "id": "crimson_fang",
+ "cost": 3,
+ "color_id": "purple",
+ "weapon_class": "dual",
+ "abilities": [
+  {
+   "id": "crimson_fang_rend",
+   "ability_class": "blade",
+   "effect_type": "physical_damage",
+   "value_multiplier": 0.7,
+   "fixed_value": 0.0,
+   "keywords": [
+    "crit"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {},
+   "cooldown": 1.5,
+   "priority": 100
+  }
+ ],
+ "flat_stat_modifiers": {
+  "crit_chance": 0.15,
+  "crit_damage": 0.3
+ },
+ "percent_stat_modifiers": {},
+ "model": "fang",
+ "reworked": true
+}

@@ -1,0 +1,45 @@
+{
+ "id": "faction_red",
+ "trait_category": "faction",
+ "member_trait_filter": "red",
+ "thresholds": [
+  2,
+  4,
+  6
+ ],
+ "tiers": {
+  "2": {
+   "stats": {
+    "flat": {
+     "na_damage_pct": 0.1
+    },
+    "pct": {
+     "attack_power": 0.08
+    }
+   },
+   "pairs": []
+  },
+  "4": {
+   "stats": {
+    "flat": {
+     "na_damage_pct": 0.2
+    },
+    "pct": {
+     "attack_power": 0.16
+    }
+   },
+   "pairs": []
+  },
+  "6": {
+   "stats": {
+    "flat": {
+     "na_damage_pct": 0.35
+    },
+    "pct": {
+     "attack_power": 0.28
+    }
+   },
+   "pairs": []
+  }
+ }
+}

@@ -1,0 +1,21 @@
+{
+  "completed_at": "2026-10-01T09:43:08.0807299+08:00",
+  "method": "built-in image_gen",
+  "source_count": 12,
+  "card_count": 12,
+  "prompt_count": 13,
+  "all_sources_covered": true,
+  "battle_assets_excluded": true,
+  "original_source_hashes_unchanged": true,
+  "all_pngs_decoded": true,
+  "distinct_card_hashes": 12,
+  "visually_reviewed": 12,
+  "dimensions": [
+    {
+      "width": 1122,
+      "height": 1402,
+      "count": 12
+    }
+  ],
+  "review_scope": "Source identity, voxel style, complete main/parts/front/back/side/detail panels. Concept references, not measured engineering projections."
+}

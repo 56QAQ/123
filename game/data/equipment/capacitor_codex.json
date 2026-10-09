@@ -1,0 +1,35 @@
+{
+ "id": "capacitor_codex",
+ "cost": 4,
+ "color_id": "purple",
+ "weapon_class": "focus",
+ "abilities": [
+  {
+   "id": "capacitor_codex_burst",
+   "ability_class": "blade",
+   "effect_type": "charge_scaled_damage",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "base": 0.2,
+    "per": 0.03,
+    "ally_base": 1.4,
+    "ally_per": 0.1
+   },
+   "cooldown": 3.0,
+   "priority": 100
+  }
+ ],
+ "flat_stat_modifiers": {
+  "passive_charges_bonus": 1,
+  "ability_power": 15
+ },
+ "percent_stat_modifiers": {},
+ "model": "capacitor",
+ "reworked": true
+}

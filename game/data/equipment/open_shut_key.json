@@ -1,0 +1,40 @@
+{
+ "id": "open_shut_key",
+ "cost": 3,
+ "color_id": "green",
+ "weapon_class": "polearm",
+ "abilities": [
+  {
+   "id": "open_shut_key_pull",
+   "ability_class": "blade",
+   "effect_type": "gather_stun",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "multi_attack"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "n": 200.0,
+    "gap": 0.55
+   },
+   "cooldown": 6.0,
+   "priority": 100,
+   "keyword_values": {
+    "multi_attack": 5
+   }
+  }
+ ],
+ "flat_stat_modifiers": {
+  "max_health": 350.0
+ },
+ "percent_stat_modifiers": {
+  "attack_speed_multiplier": 0.15
+ },
+ "model": "key",
+ "reworked": true,
+ "owner": "node_cultist"
+}

@@ -1,0 +1,39 @@
+{
+ "id": "light_heart",
+ "cost": 3,
+ "color_id": "yellow",
+ "weapon_class": "focus",
+ "abilities": [
+  {
+   "id": "light_heart_absolve",
+   "ability_class": "blade",
+   "effect_type": "absolve",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic",
+    "multi_attack"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "n": 12.0
+   },
+   "cooldown": 0.0,
+   "priority": 100,
+   "keyword_values": {
+    "multi_attack": 6
+   }
+  }
+ ],
+ "flat_stat_modifiers": {
+  "attack_power": 15,
+  "ability_power": 40
+ },
+ "percent_stat_modifiers": {},
+ "model": "lightheart",
+ "reworked": true,
+ "owner": "node_absolver"
+}

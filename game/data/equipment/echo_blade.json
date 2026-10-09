@@ -1,0 +1,47 @@
+{
+ "id": "echo_blade",
+ "cost": 3,
+ "color_id": "black",
+ "weapon_class": "sword",
+ "abilities": [
+  {
+   "id": "echo_blade_pulse",
+   "ability_class": "amulet",
+   "effect_type": "charge_refill",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "ally_effect": {
+     "effect_type": "heal",
+     "value_multiplier": 0.5
+    },
+    "enemy_effect": {
+     "effect_type": "physical_damage",
+     "value_multiplier": 0.8
+    },
+    "extra_effects": [
+     {
+      "effect_type": "charge_refill",
+      "target": "self",
+      "count": 1
+     }
+    ]
+   },
+   "cooldown": 4.0,
+   "priority": 100
+  }
+ ],
+ "flat_stat_modifiers": {
+  "attack_power": 15,
+  "passive_charges_bonus": 1,
+  "haste": 0.15
+ },
+ "percent_stat_modifiers": {},
+ "model": "echo",
+ "reworked": true
+}

@@ -1,0 +1,97 @@
+{
+ "id": "cyan_shadow",
+ "cost": 3,
+ "color_id": "cyan",
+ "weapon_class": "sword",
+ "abilities": [
+  {
+   "id": "cyan_shadow_slay",
+   "ability_class": "blade",
+   "effect_type": "shadow_slay",
+   "value_multiplier": 0.25,
+   "fixed_value": 0.0,
+   "keywords": [
+    "charged",
+    "stacking"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "status": {
+     "status_id": "shadow_slay",
+     "duration": 0.0,
+     "flags": [
+      "buff",
+      "dispellable"
+     ],
+     "pairs": [
+      {
+       "trigger": {
+        "id": "shadow_slay_rot",
+        "timing": "OnDamageDealt",
+        "event_count_threshold": 1,
+        "base_value_mode": "fixed",
+        "base_value_ratio": 1.0,
+        "base_value_flat": 0.0,
+        "target_rule": "event_target",
+        "team_filter": "enemy",
+        "tags": [
+         "damage_dealt",
+         "status_shadow_slay"
+        ],
+        "runtime_conditions": [
+         {
+          "type": "event_missing_tag",
+          "tag": "dot_damage"
+         },
+         {
+          "type": "source_has_status",
+          "status_id": "shadow_slay"
+         }
+        ]
+       },
+       "ability": {
+        "id": "shadow_slay_rot",
+        "ability_class": "blade",
+        "effect_type": "shadow_rot",
+        "value_multiplier": 1.0,
+        "fixed_value": 0.0,
+        "keywords": [
+         "basic"
+        ],
+        "accepted_timings": [
+         "OnDamageDealt"
+        ],
+        "required_trigger_tags": [
+         "status_shadow_slay"
+        ],
+        "effect_config": {
+         "duration": 2.0,
+         "interval": 0.5
+        },
+        "cooldown": 0.0,
+        "priority": 100
+       }
+      }
+     ]
+    }
+   },
+   "cooldown": 8.0,
+   "priority": 100,
+   "keyword_values": {
+    "charged": 1,
+    "stacking": 3
+   }
+  }
+ ],
+ "flat_stat_modifiers": {
+  "attack_power": 20,
+  "ability_power": 30
+ },
+ "percent_stat_modifiers": {},
+ "model": "cyanshadow",
+ "reworked": true,
+ "owner": "node_knight_errant"
+}

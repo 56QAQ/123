@@ -1,0 +1,80 @@
+{
+ "id": "g10_vine_sword",
+ "cost": 3,
+ "color_id": "green",
+ "weapon_class": "sword",
+ "abilities": [
+  {
+   "id": "g10_vine_sprout",
+   "ability_class": "bullet",
+   "effect_type": "physical_damage",
+   "value_multiplier": 1.0,
+   "fixed_value": 20,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "ally_effect": {
+     "effect_type": "none"
+    },
+    "extra_effects": [
+     {
+      "effect_type": "stat_status",
+      "target": "self",
+      "status_id": "g10_sprout",
+      "duration": 0.0,
+      "max_stacks": 10,
+      "flags": [
+       "buff",
+       "dispellable"
+      ],
+      "stats": {
+       "attack_power": {
+        "pct": 0.02
+       },
+       "max_health": {
+        "flat": 15
+       }
+      }
+     }
+    ]
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  },
+  {
+   "id": "g10_vine_mend",
+   "ability_class": "blade",
+   "effect_type": "heal",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "ally_effect": {
+     "effect_type": "heal",
+     "value_multiplier": 1.0
+    },
+    "enemy_effect": {
+     "effect_type": "none"
+    }
+   },
+   "cooldown": 3.0,
+   "priority": 100
+  }
+ ],
+ "flat_stat_modifiers": {
+  "attack_power": 15,
+  "max_health": 150
+ },
+ "percent_stat_modifiers": {},
+ "model": "g10_vine",
+ "reworked": true
+}

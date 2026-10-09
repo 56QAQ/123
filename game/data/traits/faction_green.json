@@ -1,0 +1,42 @@
+{
+ "id": "faction_green",
+ "trait_category": "faction",
+ "member_trait_filter": "green",
+ "thresholds": [
+  2,
+  4,
+  6
+ ],
+ "tiers": {
+  "2": {
+   "stats": {
+    "pct": {
+     "attack_speed_multiplier": 0.1
+    }
+   },
+   "pairs": []
+  },
+  "4": {
+   "stats": {
+    "flat": {
+     "extra_stacks": 1
+    },
+    "pct": {
+     "attack_speed_multiplier": 0.2
+    }
+   },
+   "pairs": []
+  },
+  "6": {
+   "stats": {
+    "flat": {
+     "extra_stacks": 1
+    },
+    "pct": {
+     "attack_speed_multiplier": 0.4
+    }
+   },
+   "pairs": []
+  }
+ }
+}

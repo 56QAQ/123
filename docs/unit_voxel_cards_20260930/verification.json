@@ -1,0 +1,21 @@
+{
+  "completed_at": "2026-09-30T02:26:48.5891242+08:00",
+  "method": "built-in image_gen",
+  "source_count": 46,
+  "card_count": 46,
+  "prompt_count": 46,
+  "all_sources_covered": true,
+  "battle_assets_excluded": true,
+  "original_source_hashes_unchanged": true,
+  "all_pngs_decoded": true,
+  "distinct_card_hashes": 46,
+  "visually_reviewed": 46,
+  "dimensions": [
+    {
+      "width": 1122,
+      "height": 1402,
+      "count": 46
+    }
+  ],
+  "review_scope": "Source identity, completeness of main / component / front / back / side / detail panels, and visible voxel rendering. Concept references, not measured engineering projections."
+}

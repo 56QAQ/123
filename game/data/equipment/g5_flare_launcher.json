@@ -1,0 +1,111 @@
+{
+ "id": "g5_flare_launcher",
+ "cost": 3,
+ "color_id": "red",
+ "weapon_class": "crossbow",
+ "abilities": [
+  {
+   "id": "g5_flare_signal",
+   "ability_class": "bullet",
+   "effect_type": "stat_status",
+   "value_multiplier": 1.0,
+   "fixed_value": 50,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "status_id": "burning",
+    "duration": 4.0,
+    "max_stacks": 1,
+    "independent": true,
+    "flags": [
+     "debuff",
+     "burning",
+     "dispellable"
+    ],
+    "dot": {
+     "kind": "magic",
+     "amount": 25.0,
+     "interval": 1.0
+    },
+    "ally_effect": {
+     "effect_type": "heal"
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  },
+  {
+   "id": "g5_flare_light",
+   "ability_class": "bullet",
+   "effect_type": "stat_status",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "status_id": "g5_flare_mark",
+    "duration": 5.0,
+    "max_stacks": 1,
+    "flags": [
+     "debuff",
+     "dispellable"
+    ],
+    "stats": {
+     "damage_taken_amp": {
+      "flat": 0.15
+     }
+    },
+    "ally_effect": {
+     "effect_type": "none"
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  },
+  {
+   "id": "g5_flare_rescue",
+   "ability_class": "blade",
+   "effect_type": "heal",
+   "value_multiplier": 0.8,
+   "fixed_value": 0.0,
+   "keywords": [],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "ally_effect": {
+     "effect_type": "heal",
+     "value_multiplier": 0.8
+    },
+    "enemy_effect": {
+     "effect_type": "magic_damage",
+     "value_multiplier": 0.8
+    }
+   },
+   "cooldown": 3.0,
+   "priority": 100
+  }
+ ],
+ "flat_stat_modifiers": {
+  "attack_power": 20,
+  "max_health": 150
+ },
+ "percent_stat_modifiers": {},
+ "model": "g5flare",
+ "reworked": true,
+ "projectile": "g5_flare",
+ "wclass_override": {
+  "proj_speed": 15.0
+ }
+}

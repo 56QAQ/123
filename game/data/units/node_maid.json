@@ -1,0 +1,185 @@
+{
+ "id": "node_maid",
+ "cost": 4,
+ "role": "archer",
+ "template": "archer",
+ "base_weapon_class": "dual",
+ "weapon_classes": [
+  "dual",
+  "pistols"
+ ],
+ "faction_id": "red",
+ "profession_id": "engineering",
+ "model": "maid",
+ "reworked": true,
+ "target_priority": "nearest",
+ "radius": 0.42,
+ "base_stats": {
+  "attack_power": 180,
+  "ability_power": 0.0,
+  "defense": 15,
+  "magic_resistance": 30,
+  "max_health": 1000,
+  "health_regen_per_second": 0.0,
+  "physical_lifesteal": 0.0,
+  "spell_lifesteal": 0.0,
+  "omnivamp": 0.0,
+  "crit_chance": 1.0,
+  "crit_damage": 1.5,
+  "physical_flat_penetration": 0.0,
+  "physical_percent_penetration": 0.0,
+  "magic_flat_penetration": 0.0,
+  "magic_percent_penetration": 0.0,
+  "move_speed": 1.6,
+  "attack_speed_multiplier": 1.0,
+  "damage_dealt_pct": 0.0,
+  "damage_dealt_flat": 0.0,
+  "damage_taken_pct": 0.0,
+  "damage_taken_flat": 0.0,
+  "healing_done_pct": 0.0,
+  "healing_received_pct": 0.0
+ },
+ "wclass_overrides": {
+  "dual": {
+   "ranged": true,
+   "range": 2.8,
+   "projectile": "knife",
+   "proj_speed": 15.0
+  }
+ },
+ "anim_overrides": {
+  "dual": {
+   "attack": "attack_maid",
+   "storm": "storm_maid"
+  },
+  "pistols": {
+   "storm": "storm_maid"
+  }
+ },
+ "triggers": [
+  {
+   "id": "node_maid_clock",
+   "timing": "OnBattleStart",
+   "event_count_threshold": 1,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "self",
+   "team_filter": "ally",
+   "tags": [
+    "battle_start",
+    "passive_clock"
+   ]
+  },
+  {
+   "id": "node_maid_storm",
+   "timing": "OnBattleFrame",
+   "event_count_threshold": 1,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "enemies_in_sight",
+   "team_filter": "enemy",
+   "tags": [
+    "battle_frame",
+    "passive_storm"
+   ],
+   "runtime_conditions": [
+    {
+     "type": "battle_running"
+    },
+    {
+     "type": "source_can_act"
+    },
+    {
+     "type": "enemies_in_reach_gathered",
+     "passive": "node_maid_storm",
+     "patience": 1.0,
+     "global": true
+    }
+   ]
+  },
+  {
+   "id": "node_maid_guard",
+   "timing": "OnMeleeApproach",
+   "event_count_threshold": 1,
+   "base_value_mode": "attack_times_crit_damage",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "event_target",
+   "team_filter": "enemy",
+   "tags": [
+    "melee_approach",
+    "equipment_payload"
+   ],
+   "fit_tags": {
+    "side": "enemy",
+    "count": "single",
+    "freq": "low"
+   }
+  }
+ ],
+ "passive_abilities": [
+  {
+   "id": "node_maid_clock",
+   "ability_class": "blade",
+   "effect_type": "stat_status",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [
+    "OnBattleStart"
+   ],
+   "required_trigger_tags": [
+    "passive_clock"
+   ],
+   "effect_config": {
+    "status_id": "perfect_clock",
+    "flags": [
+     "hidden"
+    ],
+    "stats": {},
+    "meta_by_star": {
+     "time_stop_pct": {
+      "1": 0.2,
+      "2": 0.45,
+      "3": 0.9
+     }
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  },
+  {
+   "id": "node_maid_storm",
+   "ability_class": "blade",
+   "effect_type": "blade_storm",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "multi_attack"
+   ],
+   "accepted_timings": [
+    "OnBattleFrame"
+   ],
+   "required_trigger_tags": [
+    "passive_storm"
+   ],
+   "effect_config": {
+    "duration": 1.2,
+    "times": [
+     0.36,
+     0.76
+    ],
+    "ultimate": true
+   },
+   "cooldown": 10.0,
+   "priority": 100,
+   "keyword_values": {
+    "multi_attack": 3
+   }
+  }
+ ]
+}

@@ -1,0 +1,249 @@
+{
+ "id": "elite_ember_vanity",
+ "cost": 3,
+ "role": "warrior",
+ "base_weapon_class": "sword",
+ "weapon_classes": [
+  "sword"
+ ],
+ "faction_id": "white",
+ "profession_id": "",
+ "available_in_shop": false,
+ "hide_weapon": true,
+ "model": "ember_vanity",
+ "target_priority": "nearest",
+ "radius": 0.5,
+ "scale": 2.0,
+ "anim_overrides": {
+  "sword": {
+   "idle": "idle_vanity",
+   "run": "run_vanity",
+   "attack": "attack_vanity",
+   "attack_breath": "breath_vanity"
+  }
+ },
+ "base_stats": {
+  "attack_power": 18,
+  "ability_power": 0.0,
+  "defense": 25,
+  "magic_resistance": 25,
+  "max_health": 1300,
+  "health_regen_per_second": 0.0,
+  "physical_lifesteal": 0.0,
+  "spell_lifesteal": 0.0,
+  "omnivamp": 0.0,
+  "crit_chance": 0.05,
+  "crit_damage": 1.5,
+  "physical_flat_penetration": 0.0,
+  "physical_percent_penetration": 0.0,
+  "magic_flat_penetration": 0.0,
+  "magic_percent_penetration": 0.0,
+  "move_speed": 1.5,
+  "attack_speed_multiplier": 0.25,
+  "damage_dealt_pct": 0.0,
+  "damage_dealt_flat": 0.0,
+  "damage_taken_pct": 0.0,
+  "damage_taken_flat": 0.0,
+  "healing_done_pct": 0.0,
+  "healing_received_pct": 0.0
+ },
+ "triggers": [
+  {
+   "id": "elite_vanity_corona",
+   "timing": "OnBattleStart",
+   "event_count_threshold": 1,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "self",
+   "team_filter": "any",
+   "tags": [
+    "battle_start",
+    "passive_vanity_corona"
+   ]
+  },
+  {
+   "id": "elite_vanity_blaze",
+   "timing": "OnNormalAttackPerform",
+   "event_count_threshold": 1,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "weapon_attack",
+   "team_filter": "enemy",
+   "tags": [
+    "normal_attack_perform",
+    "passive_vanity_blaze"
+   ],
+   "runtime_conditions": [
+    {
+     "type": "source_missing_status",
+     "status_id": "elite_vanity"
+    }
+   ]
+  },
+  {
+   "id": "elite_vanity_blaze3",
+   "timing": "OnNormalAttackPerform",
+   "event_count_threshold": 1,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "weapon_attack",
+   "team_filter": "enemy",
+   "tags": [
+    "normal_attack_perform",
+    "passive_vanity_blaze3"
+   ],
+   "runtime_conditions": [
+    {
+     "type": "source_has_status",
+     "status_id": "elite_vanity"
+    }
+   ]
+  }
+ ],
+ "passive_abilities": [
+  {
+   "id": "elite_vanity_corona",
+   "ability_class": "blade",
+   "effect_type": "stat_status",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic",
+    "stacking"
+   ],
+   "accepted_timings": [
+    "OnBattleStart"
+   ],
+   "required_trigger_tags": [
+    "passive_vanity_corona"
+   ],
+   "effect_config": {
+    "status_id": "elite_vanity",
+    "duration": 20.0,
+    "add_stacks": 3,
+    "stack_effect": false,
+    "flags": [
+     "buff",
+     "dispellable",
+     "dispel_one",
+     "na_breath"
+    ],
+    "size": 1.4142,
+    "breath": {
+     "width": 2.0,
+     "length": 5.0
+    },
+    "stats": {
+     "max_health": {
+      "pct": 1.0
+     },
+     "attack_power": {
+      "pct": 1.0
+     },
+     "defense": {
+      "pct": 1.0
+     },
+     "magic_resistance": {
+      "pct": 1.0
+     },
+     "damage_taken_pct": {
+      "flat": 0.5
+     },
+     "damage_dealt_pct": {
+      "flat": 1.0
+     },
+     "attack_range": {
+      "flat": 2.0
+     }
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100,
+   "keyword_values": {
+    "stacking": 3
+   }
+  },
+  {
+   "id": "elite_vanity_blaze",
+   "ability_class": "blade",
+   "effect_type": "stat_status",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [
+    "OnNormalAttackPerform"
+   ],
+   "required_trigger_tags": [
+    "passive_vanity_blaze"
+   ],
+   "effect_config": {
+    "status_id": "burning",
+    "duration": 3.0,
+    "max_stacks": 1,
+    "independent": true,
+    "flags": [
+     "debuff",
+     "burning",
+     "dispellable"
+    ],
+    "dot": {
+     "kind": "magic",
+     "amount": 25.0,
+     "interval": 1.0
+    },
+    "duration_by_star": {
+     "1": 1.0,
+     "2": 1.5,
+     "3": 2.0
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  },
+  {
+   "id": "elite_vanity_blaze3",
+   "ability_class": "blade",
+   "effect_type": "stat_status",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [
+    "OnNormalAttackPerform"
+   ],
+   "required_trigger_tags": [
+    "passive_vanity_blaze3"
+   ],
+   "effect_config": {
+    "status_id": "burning",
+    "duration": 3.0,
+    "max_stacks": 1,
+    "independent": true,
+    "flags": [
+     "debuff",
+     "burning",
+     "dispellable"
+    ],
+    "dot": {
+     "kind": "magic",
+     "amount": 25.0,
+     "interval": 1.0
+    },
+    "duration_by_star": {
+     "1": 1.0,
+     "2": 1.5,
+     "3": 2.0
+    },
+    "repeat": 3
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  }
+ ]
+}

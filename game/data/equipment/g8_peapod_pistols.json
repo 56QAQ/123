@@ -1,0 +1,83 @@
+{
+ "id": "g8_peapod_pistols",
+ "cost": 2,
+ "color_id": "green",
+ "weapon_class": "pistols",
+ "abilities": [
+  {
+   "id": "g8_peapod_shot",
+   "ability_class": "bullet",
+   "effect_type": "physical_damage",
+   "value_multiplier": 1.0,
+   "fixed_value": 45,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "ally_effect": {
+     "effect_type": "shield"
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  },
+  {
+   "id": "g8_peapod_shell",
+   "ability_class": "bullet",
+   "effect_type": "stat_status",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "status_id": "stun",
+    "duration": 1.0,
+    "max_stacks": 1,
+    "flags": [
+     "debuff",
+     "dispellable",
+     "stun"
+    ],
+    "ally_effect": {
+     "effect_type": "stat_status",
+     "cfg": {
+      "status_id": "g8_podshell",
+      "duration": 6.0,
+      "max_stacks": 1,
+      "flags": [
+       "buff",
+       "dispellable"
+      ],
+      "stats": {
+       "damage_taken_pct": {
+        "flat": 0.2
+       }
+      }
+     }
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  }
+ ],
+ "flat_stat_modifiers": {
+  "max_health": 150,
+  "reload_time_pct": -0.15
+ },
+ "percent_stat_modifiers": {},
+ "model": "g8_peapod",
+ "reworked": true,
+ "projectile": "g8_pea",
+ "wclass_override": {
+  "proj_speed": 20.0
+ }
+}

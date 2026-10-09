@@ -1,0 +1,53 @@
+{
+ "id": "black_keys",
+ "cost": 4,
+ "color_id": "cyan",
+ "weapon_class": "focus",
+ "abilities": [
+  {
+   "id": "black_keys_finale",
+   "ability_class": "blade",
+   "effect_type": "black_keys",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "eternal",
+    "stacking"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "n": 150.0,
+    "status": {
+     "status_id": "crescendo",
+     "duration": 0.0,
+     "flags": [
+      "buff",
+      "no_dispel",
+      "crescendo"
+     ],
+     "stats": {
+      "haste": {
+       "flat": 0.03
+      }
+     }
+    }
+   },
+   "cooldown": 5.0,
+   "priority": 100,
+   "keyword_values": {
+    "stacking": 20
+   }
+  }
+ ],
+ "flat_stat_modifiers": {
+  "ability_power": 40,
+  "attack_range": 1.0
+ },
+ "percent_stat_modifiers": {},
+ "model": "piano",
+ "reworked": true,
+ "owner": "node_pianist"
+}

@@ -1,0 +1,52 @@
+{
+ "id": "g9_dawnlight_spear",
+ "cost": 3,
+ "color_id": "yellow",
+ "weapon_class": "polearm",
+ "abilities": [
+  {
+   "id": "g9_dawnlight_rise",
+   "ability_class": "blade",
+   "effect_type": "shield",
+   "value_multiplier": 1.5,
+   "fixed_value": 0.0,
+   "keywords": [],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "extra_effects": [
+     {
+      "effect_type": "stat_status",
+      "target": "target",
+      "status_id": "g9_dawnlight",
+      "duration": 12.0,
+      "max_stacks": 1,
+      "flags": [
+       "buff",
+       "dispellable"
+      ],
+      "stats": {
+       "damage_taken_pct": {
+        "flat": 0.15
+       },
+       "attack_power": {
+        "pct": 0.2
+       }
+      }
+     }
+    ]
+   },
+   "cooldown": 2.0,
+   "priority": 100
+  }
+ ],
+ "flat_stat_modifiers": {
+  "max_health": 200,
+  "defense": 15
+ },
+ "percent_stat_modifiers": {},
+ "model": "g9_dawnlight",
+ "reworked": true
+}

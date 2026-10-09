@@ -1,0 +1,166 @@
+{
+ "id": "node_cowboy",
+ "cost": 2,
+ "role": "assassin",
+ "template": "assassin",
+ "base_weapon_class": "crossbow",
+ "weapon_classes": [
+  "crossbow",
+  "pistols"
+ ],
+ "faction_id": "green",
+ "profession_id": "information",
+ "special_trait_ids": [
+  "clan"
+ ],
+ "model": "cowboy",
+ "reworked": true,
+ "target_priority": "nearest_locked",
+ "radius": 0.42,
+ "deploy_anywhere_star": 2,
+ "base_stats": {
+  "attack_power": 110,
+  "ability_power": 0.0,
+  "defense": 25,
+  "magic_resistance": 25,
+  "max_health": 950,
+  "health_regen_per_second": 0.0,
+  "physical_lifesteal": 0.0,
+  "spell_lifesteal": 0.0,
+  "omnivamp": 0.0,
+  "crit_chance": 0.05,
+  "crit_damage": 1.5,
+  "physical_flat_penetration": 0.0,
+  "physical_percent_penetration": 0.0,
+  "magic_flat_penetration": 0.0,
+  "magic_percent_penetration": 0.0,
+  "move_speed": 2.8,
+  "attack_speed_multiplier": 1.0,
+  "damage_dealt_pct": 0.0,
+  "damage_dealt_flat": 0.0,
+  "damage_taken_pct": 0.0,
+  "damage_taken_flat": 0.0,
+  "healing_done_pct": 0.0,
+  "healing_received_pct": 0.0
+ },
+ "triggers": [
+  {
+   "id": "node_cowboy_fastest",
+   "timing": "OnBattleStart",
+   "event_count_threshold": 1,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "self",
+   "team_filter": "ally",
+   "tags": [
+    "battle_start",
+    "passive_fastest"
+   ]
+  },
+  {
+   "id": "node_cowboy_roam",
+   "timing": "OnBattleStart",
+   "event_count_threshold": 1,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "self",
+   "team_filter": "ally",
+   "tags": [
+    "battle_start",
+    "passive_roam"
+   ],
+   "unlock_star": 2
+  },
+  {
+   "id": "node_cowboy_loader",
+   "timing": "OnReloadComplete",
+   "event_count_threshold": 1,
+   "base_value_mode": "attack_ratio",
+   "base_value_ratio": 0.15,
+   "base_value_flat": 0.0,
+   "target_rule": "self",
+   "team_filter": "ally",
+   "tags": [
+    "reload",
+    "equipment_payload"
+   ],
+   "base_value_ratio_by_star": {
+    "1": 0.15,
+    "2": 0.25,
+    "3": 0.3
+   },
+   "fit_tags": {
+    "side": "ally",
+    "count": "single",
+    "freq": "low"
+   }
+  }
+ ],
+ "passive_abilities": [
+  {
+   "id": "node_cowboy_fastest",
+   "ability_class": "blade",
+   "effect_type": "stat_status",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic",
+    "stacking"
+   ],
+   "accepted_timings": [
+    "OnBattleStart"
+   ],
+   "required_trigger_tags": [
+    "passive_fastest"
+   ],
+   "effect_config": {
+    "status_id": "fastest_gun",
+    "flags": [
+     "hidden"
+    ],
+    "ammo_from_stacking": true,
+    "meta": {
+     "ammo_reload": 1.5,
+     "miss_far": {
+      "pct": 0.25,
+      "dist": 1.0
+     }
+    },
+    "meta_by_star": {
+     "fixed_interval": {
+      "1": 0.166,
+      "2": 0.133,
+      "3": 0.1
+     }
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100,
+   "keyword_values": {
+    "stacking": 6
+   }
+  },
+  {
+   "id": "node_cowboy_roam",
+   "ability_class": "blade",
+   "effect_type": "none",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [
+    "OnBattleStart"
+   ],
+   "required_trigger_tags": [
+    "passive_roam"
+   ],
+   "effect_config": {},
+   "cooldown": 0.0,
+   "priority": 100,
+   "unlock_star": 2
+  }
+ ]
+}

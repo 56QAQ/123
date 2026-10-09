@@ -1,0 +1,55 @@
+{
+ "id": "twin_chakram",
+ "cost": 3,
+ "color_id": "black",
+ "weapon_class": "pistols",
+ "abilities": [
+  {
+   "id": "chakram_cut",
+   "ability_class": "bullet",
+   "effect_type": "physical_damage",
+   "value_multiplier": 1.0,
+   "fixed_value": 25,
+   "keywords": [
+    "basic",
+    "multi_attack"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "extra_effects": [
+     {
+      "effect_type": "stat_status",
+      "target": "target",
+      "status_id": "chakram_slow",
+      "duration": 3.0,
+      "max_stacks": 1,
+      "flags": [
+       "debuff",
+       "dispellable"
+      ],
+      "stats": {
+       "move_speed": {
+        "pct": -0.2
+       }
+      }
+     }
+    ]
+   },
+   "cooldown": 0.0,
+   "priority": 100,
+   "keyword_values": {
+    "multi_attack": 3
+   }
+  }
+ ],
+ "flat_stat_modifiers": {
+  "attack_power": 20
+ },
+ "percent_stat_modifiers": {},
+ "model": "chakram",
+ "reworked": true,
+ "projectile": "chakram"
+}

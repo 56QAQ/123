@@ -1,0 +1,295 @@
+{
+ "id": "node_medium",
+ "cost": 4,
+ "role": "caster",
+ "template": "caster",
+ "base_weapon_class": "focus",
+ "weapon_classes": [
+  "focus"
+ ],
+ "faction_id": "purple",
+ "profession_id": "research",
+ "model": "medium",
+ "reworked": true,
+ "target_priority": "nearest",
+ "radius": 0.42,
+ "base_stats": {
+  "attack_power": 80,
+  "ability_power": 80,
+  "defense": 10,
+  "magic_resistance": 40,
+  "max_health": 1150,
+  "health_regen_per_second": 0.0,
+  "physical_lifesteal": 0.0,
+  "spell_lifesteal": 0.0,
+  "omnivamp": 0.0,
+  "crit_chance": 0.05,
+  "crit_damage": 1.5,
+  "physical_flat_penetration": 0.0,
+  "physical_percent_penetration": 0.0,
+  "magic_flat_penetration": 0.0,
+  "magic_percent_penetration": 0.0,
+  "move_speed": 1.3,
+  "attack_speed_multiplier": 1.0,
+  "damage_dealt_pct": 0.0,
+  "damage_dealt_flat": 0.0,
+  "damage_taken_pct": 0.0,
+  "damage_taken_flat": 0.0,
+  "healing_done_pct": 0.0,
+  "healing_received_pct": 0.0
+ },
+ "normal_attack_ability": {
+  "id": "node_medium_partner",
+  "ability_class": "blade",
+  "effect_type": "medium_summon",
+  "value_multiplier": 1.0,
+  "fixed_value": 0.0,
+  "keywords": [
+   "charged",
+   "summon"
+  ],
+  "accepted_timings": [
+   "OnNormalAttackPerform"
+  ],
+  "required_trigger_tags": [
+   "normal_attack_perform"
+  ],
+  "effect_config": {
+   "dog": "node_dog",
+   "ghost": "node_ghost"
+  },
+  "cooldown": 99.0,
+  "priority": 100,
+  "keyword_values": {
+   "charged": 9
+  }
+ },
+ "chant_fx": {
+  "node_medium_funeral": {
+   "anim": "chant_medium",
+   "min_star": 1,
+   "soul_domain": true,
+   "float": 1.0,
+   "ultimate": true,
+   "ult_color": "#a98cff",
+   "no_ring": true
+  }
+ },
+ "wclass_overrides": {
+  "focus": {
+   "interval": 3.5
+  }
+ },
+ "triggers": [
+  {
+   "id": "node_medium_partner_start",
+   "timing": "OnBattleStart",
+   "event_count_threshold": 1,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "self",
+   "team_filter": "ally",
+   "tags": [
+    "battle_start",
+    "passive_partner"
+   ]
+  },
+  {
+   "id": "node_medium_partner_tick",
+   "timing": "OnBattleFrame",
+   "event_count_threshold": 16,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "self",
+   "team_filter": "ally",
+   "tags": [
+    "battle_frame",
+    "passive_partner"
+   ]
+  },
+  {
+   "id": "node_medium_funeral",
+   "timing": "OnChargesEmpty",
+   "event_count_threshold": 1,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "self",
+   "team_filter": "ally",
+   "tags": [
+    "charges_empty",
+    "passive_funeral"
+   ],
+   "runtime_conditions": [
+    {
+     "type": "event_metadata_equals",
+     "key": "ability_id",
+     "value": "node_medium_partner"
+    }
+   ]
+  },
+  {
+   "id": "node_medium_funeral_tick",
+   "timing": "OnBattleFrame",
+   "event_count_threshold": 4,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "self",
+   "team_filter": "ally",
+   "tags": [
+    "battle_frame",
+    "passive_funeral_tick"
+   ],
+   "runtime_conditions": [
+    {
+     "type": "source_has_status",
+     "status_id": "medium_domain"
+    }
+   ]
+  },
+  {
+   "id": "node_medium_last_wish",
+   "timing": "OnAllyUnitDied",
+   "event_count_threshold": 1,
+   "base_value_mode": "dead_max_health",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "nearest_enemy_to_dead",
+   "team_filter": "enemy",
+   "tags": [
+    "ally_unit_died",
+    "equipment_payload"
+   ],
+   "runtime_conditions": [
+    {
+     "type": "event_dead_is_summon"
+    }
+   ],
+   "fit_tags": {
+    "side": "enemy",
+    "count": "single",
+    "freq": "low"
+   }
+  }
+ ],
+ "passive_abilities": [
+  {
+   "id": "node_medium_partner",
+   "ability_class": "blade",
+   "effect_type": "medium_summon",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "charged",
+    "summon"
+   ],
+   "accepted_timings": [
+    "OnBattleStart",
+    "OnBattleFrame"
+   ],
+   "required_trigger_tags": [
+    "passive_partner"
+   ],
+   "effect_config": {
+    "dog": "node_dog",
+    "ghost": "node_ghost"
+   },
+   "cooldown": 99.0,
+   "priority": 100,
+   "keyword_values": {
+    "charged": 9
+   }
+  },
+  {
+   "id": "node_medium_funeral",
+   "ability_class": "blade",
+   "effect_type": "medium_funeral",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic",
+    "chant",
+    "splash",
+    "summon"
+   ],
+   "accepted_timings": [
+    "OnChargesEmpty"
+   ],
+   "required_trigger_tags": [
+    "passive_funeral"
+   ],
+   "effect_config": {
+    "release_on_interrupt": true,
+    "splash_is_range": true,
+    "chant_pct_per_second": 0.0,
+    "end_statuses": [
+     "medium_domain"
+    ],
+    "per_seconds": 3.0,
+    "unit_id": "node_ghost",
+    "max_ghosts": 30
+   },
+   "cooldown": 0.0,
+   "priority": 100,
+   "keyword_values": {
+    "chant": 9,
+    "splash": 5
+   }
+  },
+  {
+   "id": "node_medium_domain",
+   "ability_class": "blade",
+   "effect_type": "stat_status",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [
+    "OnChargesEmpty"
+   ],
+   "required_trigger_tags": [
+    "passive_funeral"
+   ],
+   "effect_config": {
+    "status_id": "medium_domain",
+    "duration": 9.5,
+    "max_stacks": 1,
+    "flags": [
+     "buff",
+     "no_dispel"
+    ],
+    "meta": {
+     "ally_danger": true
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 50
+  },
+  {
+   "id": "node_medium_funeral_tick",
+   "ability_class": "blade",
+   "effect_type": "medium_wisp",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic",
+    "summon"
+   ],
+   "accepted_timings": [
+    "OnBattleFrame"
+   ],
+   "required_trigger_tags": [
+    "passive_funeral_tick"
+   ],
+   "effect_config": {
+    "unit_id": "node_ghost"
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  }
+ ]
+}

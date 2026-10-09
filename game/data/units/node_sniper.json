@@ -1,0 +1,222 @@
+{
+ "id": "node_sniper",
+ "cost": 4,
+ "role": "archer",
+ "template": "archer",
+ "base_weapon_class": "rifle",
+ "weapon_classes": [
+  "rifle",
+  "crossbow",
+  "bow"
+ ],
+ "faction_id": "yellow",
+ "profession_id": "engineering",
+ "model": "sniper",
+ "skin": "umber",
+ "reworked": true,
+ "target_priority": "range_lowest_health",
+ "radius": 0.42,
+ "base_stats": {
+  "attack_power": 220,
+  "ability_power": 0.0,
+  "defense": 15,
+  "magic_resistance": 30,
+  "max_health": 1000,
+  "health_regen_per_second": 0.0,
+  "physical_lifesteal": 0.0,
+  "spell_lifesteal": 0.0,
+  "omnivamp": 0.0,
+  "crit_chance": 0.05,
+  "crit_damage": 1.5,
+  "physical_flat_penetration": 0.0,
+  "physical_percent_penetration": 0.0,
+  "magic_flat_penetration": 0.0,
+  "magic_percent_penetration": 0.0,
+  "move_speed": 1.6,
+  "attack_speed_multiplier": 1.0,
+  "damage_dealt_pct": 0.0,
+  "damage_dealt_flat": 0.0,
+  "damage_taken_pct": 0.0,
+  "damage_taken_flat": 0.0,
+  "healing_done_pct": 0.0,
+  "healing_received_pct": 0.0,
+  "crit_overflow_cd": 2.0
+ },
+ "na_aim": "node_sniper_aim",
+ "wclass_overrides": {
+  "rifle": {
+   "draw_anim": "aim_sniper",
+   "draw_hold_anim": "aim_sniper",
+   "nest": {
+    "aim": "nest_aim_sniper",
+    "fire": "nest_fire_sniper",
+    "reload": "nest_reload_sniper",
+    "in": "nest_in_sniper",
+    "shift": "nest_shift_sniper",
+    "turn": 45.0,
+    "crate": [
+     -10.0,
+     31.0,
+     33.8
+    ]
+   }
+  }
+ },
+ "triggers": [
+  {
+   "id": "node_sniper_breath",
+   "timing": "OnBattleFrame",
+   "event_count_threshold": 4,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "self",
+   "team_filter": "ally",
+   "tags": [
+    "battle_frame",
+    "passive_breath"
+   ],
+   "runtime_conditions": [
+    {
+     "type": "battle_running"
+    },
+    {
+     "type": "no_enemy_near",
+     "radius": 2.5
+    }
+   ]
+  },
+  {
+   "id": "node_sniper_breath_reset",
+   "timing": "OnBattleFrame",
+   "event_count_threshold": 1,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "self",
+   "team_filter": "ally",
+   "tags": [
+    "battle_frame",
+    "passive_breath_reset"
+   ],
+   "runtime_conditions": [
+    {
+     "type": "source_has_status",
+     "status_id": "focus_breath"
+    },
+    {
+     "type": "in_melee_enemy_reach"
+    }
+   ]
+  },
+  {
+   "id": "node_sniper_double",
+   "timing": "OnUnitKilled",
+   "event_count_threshold": 1,
+   "base_value_mode": "event_value",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "nearest_enemy_to_dead",
+   "team_filter": "enemy",
+   "tags": [
+    "unit_killed",
+    "equipment_payload"
+   ],
+   "runtime_conditions": [
+    {
+     "type": "event_target_enemy"
+    }
+   ],
+   "fit_tags": {
+    "side": "enemy",
+    "count": "single",
+    "freq": "low"
+   }
+  }
+ ],
+ "passive_abilities": [
+  {
+   "id": "node_sniper_aim",
+   "ability_class": "blade",
+   "effect_type": "none",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "chant"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "passive_aim"
+   ],
+   "effect_config": {
+    "aim_pct_by_star": {
+     "1": 0.4,
+     "2": 0.6,
+     "3": 1.0
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100,
+   "keyword_values": {
+    "chant": 10
+   }
+  },
+  {
+   "id": "node_sniper_breath",
+   "ability_class": "blade",
+   "effect_type": "stat_status",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [
+    "OnBattleFrame"
+   ],
+   "required_trigger_tags": [
+    "passive_breath"
+   ],
+   "effect_config": {
+    "status_id": "focus_breath",
+    "duration": 0.0,
+    "max_stacks": 999,
+    "flags": [
+     "buff",
+     "no_dispel"
+    ],
+    "stats_by_star": {
+     "crit_chance": {
+      "flat": {
+       "1": 0.05,
+       "2": 0.08,
+       "3": 0.12
+      }
+     }
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  },
+  {
+   "id": "node_sniper_breath_reset",
+   "ability_class": "blade",
+   "effect_type": "clear_own_status",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [
+    "OnBattleFrame"
+   ],
+   "required_trigger_tags": [
+    "passive_breath_reset"
+   ],
+   "effect_config": {
+    "status_id": "focus_breath"
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  }
+ ]
+}

@@ -1,0 +1,76 @@
+{
+ "id": "kaleidoscope",
+ "cost": 3,
+ "color_id": "cyan",
+ "weapon_class": "focus",
+ "abilities": [
+  {
+   "id": "kaleido_shard",
+   "ability_class": "bullet",
+   "effect_type": "magic_damage",
+   "value_multiplier": 1.0,
+   "fixed_value": 60,
+   "keywords": [
+    "multi_attack"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "extra_effects": [
+     {
+      "effect_type": "stat_status",
+      "target": "target",
+      "status_id": "prism_shatter",
+      "duration": 6.0,
+      "max_stacks": 2,
+      "flags": [
+       "debuff",
+       "dispellable"
+      ],
+      "stats": {
+       "magic_resistance": {
+        "flat": -15
+       }
+      }
+     }
+    ]
+   },
+   "cooldown": 3.0,
+   "priority": 100,
+   "keyword_values": {
+    "multi_attack": 3
+   }
+  },
+  {
+   "id": "kaleido_glare",
+   "ability_class": "blade",
+   "effect_type": "magic_damage",
+   "value_multiplier": 0.1,
+   "fixed_value": 0.0,
+   "keywords": [
+    "multi_attack"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {},
+   "cooldown": 3.0,
+   "priority": 100,
+   "keyword_values": {
+    "multi_attack": 3
+   }
+  }
+ ],
+ "flat_stat_modifiers": {
+  "ability_power": 20
+ },
+ "percent_stat_modifiers": {},
+ "model": "kaleido",
+ "reworked": true,
+ "fit_add": [
+  "node_wizard"
+ ]
+}

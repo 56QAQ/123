@@ -1,0 +1,174 @@
+{
+ "id": "node_hunter",
+ "cost": 2,
+ "role": "archer",
+ "template": "archer",
+ "base_weapon_class": "bow",
+ "weapon_classes": [
+  "bow",
+  "dual"
+ ],
+ "faction_id": "green",
+ "profession_id": "engineering",
+ "model": "hunter",
+ "reworked": true,
+ "target_priority": "marked_first",
+ "radius": 0.42,
+ "base_stats": {
+  "attack_power": 135,
+  "ability_power": 0.0,
+  "defense": 10,
+  "magic_resistance": 22,
+  "max_health": 560,
+  "health_regen_per_second": 0.0,
+  "physical_lifesteal": 0.0,
+  "spell_lifesteal": 0.0,
+  "omnivamp": 0.0,
+  "crit_chance": 0.05,
+  "crit_damage": 1.5,
+  "physical_flat_penetration": 0.0,
+  "physical_percent_penetration": 0.0,
+  "magic_flat_penetration": 0.0,
+  "magic_percent_penetration": 0.0,
+  "move_speed": 1.5,
+  "attack_speed_multiplier": 1.0,
+  "damage_dealt_pct": 0.0,
+  "damage_dealt_flat": 0.0,
+  "damage_taken_pct": 0.0,
+  "damage_taken_flat": 0.0,
+  "healing_done_pct": 0.0,
+  "healing_received_pct": 0.0
+ },
+ "chant_fx": {
+  "node_hunter_notes": {
+   "anim": "fish_hunter",
+   "pull_anim": "fish_pull_hunter",
+   "prop": "P_hunter_rod",
+   "min_star": 2
+  }
+ },
+ "triggers": [
+  {
+   "id": "node_hunter_notes",
+   "timing": "OnBattleStart",
+   "event_count_threshold": 1,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "highest_threat",
+   "team_filter": "enemy",
+   "tags": [
+    "battle_start",
+    "passive_notes"
+   ],
+   "runtime_conditions": [
+    {
+     "type": "has_enemies"
+    }
+   ]
+  },
+  {
+   "id": "node_hunter_catch",
+   "timing": "OnChantComplete",
+   "event_count_threshold": 1,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "event_target",
+   "team_filter": "enemy",
+   "tags": [
+    "chant_complete",
+    "passive_catch"
+   ],
+   "runtime_conditions": [
+    {
+     "type": "event_metadata_equals",
+     "key": "ability_id",
+     "value": "node_hunter_notes"
+    }
+   ],
+   "unlock_star": 2
+  },
+  {
+   "id": "node_hunter_agile",
+   "timing": "OnDodge",
+   "event_count_threshold": 1,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 100,
+   "target_rule": "event_target",
+   "team_filter": "enemy",
+   "tags": [
+    "dodge",
+    "equipment_payload"
+   ],
+   "base_value_flat_by_star": {
+    "1": 100,
+    "2": 150,
+    "3": 200
+   },
+   "fit_tags": {
+    "side": "enemy",
+    "count": "single",
+    "freq": "low"
+   }
+  }
+ ],
+ "passive_abilities": [
+  {
+   "id": "node_hunter_notes",
+   "ability_class": "blade",
+   "effect_type": "hunter_notes",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic",
+    "chant"
+   ],
+   "accepted_timings": [
+    "OnBattleStart"
+   ],
+   "required_trigger_tags": [
+    "passive_notes"
+   ],
+   "effect_config": {
+    "status_id": "hunter_notes",
+    "per_sec_by_star": {
+     "1": 0.1,
+     "2": 0.11,
+     "3": 0.11
+    },
+    "release_on_interrupt": true,
+    "dodge_cap": 0.95
+   },
+   "cooldown": 0.0,
+   "priority": 100,
+   "keyword_values": {
+    "chant": 6
+   }
+  },
+  {
+   "id": "node_hunter_catch",
+   "ability_class": "blade",
+   "effect_type": "fish_pull",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [
+    "OnChantComplete"
+   ],
+   "required_trigger_tags": [
+    "passive_catch"
+   ],
+   "effect_config": {
+    "taunt": 3.0,
+    "speed": 14.0
+   },
+   "cooldown": 0.0,
+   "priority": 100,
+   "unlock_star": 2
+  }
+ ]
+}

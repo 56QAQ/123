@@ -1,0 +1,295 @@
+{
+ "id": "node_samurai",
+ "cost": 3,
+ "role": "warrior",
+ "template": "warrior",
+ "base_weapon_class": "sword",
+ "weapon_classes": [
+  "sword",
+  "heavy"
+ ],
+ "faction_id": "green",
+ "profession_id": "security",
+ "special_trait_ids": [
+  "blaze"
+ ],
+ "model": "samurai",
+ "reworked": true,
+ "target_priority": "nearest",
+ "radius": 0.44,
+ "base_stats": {
+  "attack_power": 170,
+  "ability_power": 0.0,
+  "defense": 55,
+  "magic_resistance": 35,
+  "max_health": 2000,
+  "health_regen_per_second": 0.0,
+  "physical_lifesteal": 0.0,
+  "spell_lifesteal": 0.0,
+  "omnivamp": 0.0,
+  "crit_chance": 0.05,
+  "crit_damage": 1.5,
+  "physical_flat_penetration": 0.0,
+  "physical_percent_penetration": 0.0,
+  "magic_flat_penetration": 0.0,
+  "magic_percent_penetration": 0.0,
+  "move_speed": 2.4,
+  "attack_speed_multiplier": 0.9,
+  "damage_dealt_pct": 0.0,
+  "damage_dealt_flat": 0.0,
+  "damage_taken_pct": 0.0,
+  "damage_taken_flat": 0.0,
+  "healing_done_pct": 0.0,
+  "healing_received_pct": 0.0
+ },
+ "anim_overrides": {
+  "sword": {
+   "idle": "idle_iaido",
+   "run": "run_iaido",
+   "attack": "attack_iaido"
+  }
+ },
+ "hit_fx": "iaido",
+ "wclass_overrides": {
+  "sword": {
+   "interval": 1.0,
+   "windup": 0.3,
+   "recover": 0.22,
+   "copy_delay": 0.08,
+   "copy_delay_scales": true,
+   "na_mult": 0.8
+  },
+  "heavy": {
+   "copy_delay": 0.12,
+   "copy_delay_scales": true
+  }
+ },
+ "triggers": [
+  {
+   "id": "node_samurai_zhan",
+   "timing": "OnNormalAttackHit",
+   "event_count_threshold": 1,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "current_attack_target",
+   "team_filter": "enemy",
+   "tags": [
+    "normal_attack",
+    "passive_zhan"
+   ]
+  },
+  {
+   "id": "node_samurai_scar",
+   "timing": "OnNormalAttackHit",
+   "event_count_threshold": 1,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "current_attack_target",
+   "team_filter": "enemy",
+   "tags": [
+    "normal_attack",
+    "passive_scar"
+   ]
+  },
+  {
+   "id": "node_samurai_undying",
+   "timing": "OnDamageDealt",
+   "event_count_threshold": 1,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "self",
+   "team_filter": "ally",
+   "tags": [
+    "normal_attack",
+    "passive_undying"
+   ],
+   "runtime_conditions": [
+    {
+     "type": "event_has_tag",
+     "tag": "normal_attack"
+    }
+   ],
+   "unlock_star": 2
+  },
+  {
+   "id": "node_samurai_rekindle",
+   "timing": "OnDamageTaken",
+   "event_count_threshold": 1,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "self",
+   "team_filter": "ally",
+   "tags": [
+    "passive_rekindle"
+   ],
+   "runtime_conditions": [
+    {
+     "type": "event_has_any_tag",
+     "tags": [
+      "normal_attack",
+      "skill_damage"
+     ]
+    },
+    {
+     "type": "source_has_status",
+     "status_id": "rekindle"
+    }
+   ],
+   "unlock_star": 2
+  },
+  {
+   "id": "node_samurai_canguang",
+   "timing": "OnStatusBurst",
+   "event_count_threshold": 1,
+   "base_value_mode": "attack_ratio_event_stacks",
+   "base_value_ratio": 0.15,
+   "base_value_flat": 0.05,
+   "target_rule": "event_target",
+   "team_filter": "enemy",
+   "tags": [
+    "status_burst",
+    "equipment_payload"
+   ],
+   "base_value_ratio_by_star": {
+    "1": 0.15,
+    "2": 0.2,
+    "3": 0.25
+   },
+   "runtime_conditions": [
+    {
+     "type": "event_metadata_equals",
+     "key": "status_id",
+     "value": "sword_scar"
+    }
+   ],
+   "fit_tags": {
+    "side": "enemy",
+    "count": "single",
+    "freq": "high"
+   }
+  }
+ ],
+ "passive_abilities": [
+  {
+   "id": "node_samurai_zhan",
+   "ability_class": "blade",
+   "effect_type": "none",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic",
+    "pursuit"
+   ],
+   "accepted_timings": [
+    "OnNormalAttackHit"
+   ],
+   "required_trigger_tags": [
+    "passive_zhan"
+   ],
+   "effect_config": {},
+   "cooldown": 0.0,
+   "priority": 100,
+   "keyword_values": {
+    "pursuit": 2
+   },
+   "keyword_values_by_star": {
+    "pursuit": {
+     "1": 2,
+     "2": 3,
+     "3": 4
+    }
+   }
+  },
+  {
+   "id": "node_samurai_scar",
+   "ability_class": "blade",
+   "effect_type": "stat_status",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [
+    "OnNormalAttackHit"
+   ],
+   "required_trigger_tags": [
+    "passive_scar"
+   ],
+   "effect_config": {
+    "status_id": "sword_scar",
+    "duration": 0.75,
+    "max_stacks": 10,
+    "max_stacks_from_passive": "node_samurai_undying",
+    "flags": [
+     "debuff",
+     "dispellable"
+    ],
+    "burst": true,
+    "stats": {}
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  },
+  {
+   "id": "node_samurai_undying",
+   "ability_class": "blade",
+   "effect_type": "stat_status",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic",
+    "stacking"
+   ],
+   "accepted_timings": [
+    "OnDamageDealt"
+   ],
+   "required_trigger_tags": [
+    "passive_undying"
+   ],
+   "effect_config": {
+    "status_id": "rekindle",
+    "flags": [
+     "buff",
+     "dispellable"
+    ],
+    "stats": {}
+   },
+   "cooldown": 0.0,
+   "priority": 100,
+   "keyword_values": {
+    "stacking": 10
+   },
+   "unlock_star": 2
+  },
+  {
+   "id": "node_samurai_rekindle",
+   "ability_class": "blade",
+   "effect_type": "status_stack_heal",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [
+    "OnDamageTaken"
+   ],
+   "required_trigger_tags": [
+    "passive_rekindle"
+   ],
+   "effect_config": {
+    "status_id": "rekindle",
+    "per_stack_by_star": {
+     "2": 15,
+     "3": 25
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100,
+   "unlock_star": 2
+  }
+ ]
+}

@@ -1,0 +1,66 @@
+{
+ "id": "g8_rivet_guns",
+ "cost": 2,
+ "color_id": "blue",
+ "weapon_class": "pistols",
+ "abilities": [
+  {
+   "id": "g8_rivet_patch",
+   "ability_class": "bullet",
+   "effect_type": "shield",
+   "value_multiplier": 1.0,
+   "fixed_value": 35,
+   "keywords": [
+    "basic",
+    "splash"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "splash_filter": "target_allies",
+    "splash_ratio": 1.0,
+    "extra_effects": [
+     {
+      "effect_type": "stat_status",
+      "target": "self",
+      "status_id": "g8_riveted",
+      "duration": 0.0,
+      "max_stacks": 5,
+      "flags": [
+       "buff",
+       "dispellable"
+      ],
+      "stats": {
+       "defense": {
+        "flat": 5
+       },
+       "magic_resistance": {
+        "flat": 5
+       }
+      }
+     }
+    ]
+   },
+   "cooldown": 0.0,
+   "priority": 100,
+   "keyword_values": {
+    "splash": 2.0
+   }
+  }
+ ],
+ "flat_stat_modifiers": {
+  "defense": 15,
+  "max_health": 120
+ },
+ "percent_stat_modifiers": {
+  "attack_speed_multiplier": 0.1
+ },
+ "model": "g8_rivet",
+ "reworked": true,
+ "projectile": "g8_rivet",
+ "fit_add": [
+  "node_shielder"
+ ]
+}

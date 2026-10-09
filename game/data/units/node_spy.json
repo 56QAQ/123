@@ -1,0 +1,259 @@
+{
+ "id": "node_spy",
+ "cost": 3,
+ "role": "assassin",
+ "template": "assassin",
+ "base_weapon_class": "dual",
+ "weapon_classes": [
+  "dual",
+  "pistols",
+  "crossbow",
+  "sword"
+ ],
+ "faction_id": "white",
+ "profession_id": "information",
+ "model": "spy",
+ "reworked": true,
+ "target_priority": "nearest",
+ "radius": 0.42,
+ "deploy_near_enemies": true,
+ "base_stats": {
+  "attack_power": 160,
+  "ability_power": 0.0,
+  "defense": 30,
+  "magic_resistance": 30,
+  "max_health": 1250,
+  "health_regen_per_second": 0.0,
+  "physical_lifesteal": 0.0,
+  "spell_lifesteal": 0.0,
+  "omnivamp": 0.0,
+  "crit_chance": 0.05,
+  "crit_damage": 1.5,
+  "physical_flat_penetration": 0.0,
+  "physical_percent_penetration": 0.0,
+  "magic_flat_penetration": 0.0,
+  "magic_percent_penetration": 0.0,
+  "move_speed": 3.0,
+  "attack_speed_multiplier": 1.0,
+  "damage_dealt_pct": 0.0,
+  "damage_dealt_flat": 0.0,
+  "damage_taken_pct": 0.0,
+  "damage_taken_flat": 0.0,
+  "healing_done_pct": 0.0,
+  "healing_received_pct": 0.0
+ },
+ "chant_fx": {
+  "node_spy_hush": {
+   "anim": "chant_spy",
+   "min_star": 1,
+   "glyph_domain": true,
+   "float": 1.0,
+   "ultimate": true,
+   "ult_color": "#c8b8ff",
+   "no_ring": true
+  }
+ },
+ "triggers": [
+  {
+   "id": "node_spy_shift",
+   "timing": "OnTargeted",
+   "event_count_threshold": 1,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "event_target",
+   "team_filter": "enemy",
+   "tags": [
+    "targeted",
+    "passive_shift"
+   ]
+  },
+  {
+   "id": "node_spy_hush",
+   "timing": "OnChargesEmpty",
+   "event_count_threshold": 1,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "self",
+   "team_filter": "ally",
+   "tags": [
+    "charges_empty",
+    "passive_hush"
+   ],
+   "runtime_conditions": [
+    {
+     "type": "event_metadata_equals",
+     "key": "ability_id",
+     "value": "node_spy_shift"
+    }
+   ]
+  },
+  {
+   "id": "node_spy_hush_mislead",
+   "timing": "OnBattleFrame",
+   "event_count_threshold": 1,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "others_in_splash",
+   "team_filter": "any",
+   "tags": [
+    "battle_frame",
+    "passive_hush_mislead"
+   ],
+   "runtime_conditions": [
+    {
+     "type": "source_has_status",
+     "status_id": "spy_domain"
+    }
+   ]
+  },
+  {
+   "id": "node_spy_harvest",
+   "timing": "OnBattleEnd",
+   "event_count_threshold": 1,
+   "base_value_mode": "charges_spent",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "self",
+   "team_filter": "ally",
+   "tags": [
+    "battle_end",
+    "equipment_payload"
+   ],
+   "base_value_ratio_by_star": {
+    "1": 1.0,
+    "2": 1.0,
+    "3": 2.0
+   },
+   "runtime_conditions": [
+    {
+     "type": "source_alive"
+    }
+   ],
+   "fit_tags": {
+    "side": "ally",
+    "count": "single",
+    "freq": "never"
+   }
+  }
+ ],
+ "passive_abilities": [
+  {
+   "id": "node_spy_shift",
+   "ability_class": "blade",
+   "effect_type": "mislead",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "charged"
+   ],
+   "accepted_timings": [
+    "OnTargeted"
+   ],
+   "required_trigger_tags": [
+    "passive_shift"
+   ],
+   "effect_config": {
+    "status_id": "misled",
+    "duration": 4.0
+   },
+   "cooldown": 99.0,
+   "priority": 100,
+   "keyword_values": {
+    "charged": 9
+   }
+  },
+  {
+   "id": "node_spy_hush",
+   "ability_class": "blade",
+   "effect_type": "spy_hush",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic",
+    "chant",
+    "splash"
+   ],
+   "accepted_timings": [
+    "OnChargesEmpty"
+   ],
+   "required_trigger_tags": [
+    "passive_hush"
+   ],
+   "effect_config": {
+    "release_on_interrupt": true,
+    "splash_is_range": true,
+    "chant_pct_per_second": 0.0,
+    "end_statuses": [
+     "spy_domain"
+    ],
+    "x_by_star": {
+     "1": 30,
+     "2": 30,
+     "3": 50
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100,
+   "keyword_values": {
+    "chant": 9,
+    "splash": 5
+   }
+  },
+  {
+   "id": "node_spy_domain",
+   "ability_class": "blade",
+   "effect_type": "stat_status",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [
+    "OnChargesEmpty"
+   ],
+   "required_trigger_tags": [
+    "passive_hush"
+   ],
+   "effect_config": {
+    "status_id": "spy_domain",
+    "duration": 9.5,
+    "max_stacks": 1,
+    "flags": [
+     "buff",
+     "no_dispel"
+    ],
+    "meta": {
+     "ally_danger": true
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 50
+  },
+  {
+   "id": "node_spy_hush_mislead",
+   "ability_class": "blade",
+   "effect_type": "mislead",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [
+    "OnBattleFrame"
+   ],
+   "required_trigger_tags": [
+    "passive_hush_mislead"
+   ],
+   "effect_config": {
+    "status_id": "misled",
+    "duration": 0.6,
+    "all_targets": true
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  }
+ ]
+}

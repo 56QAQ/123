@@ -1,0 +1,22 @@
+{
+  "date": "2026-10-06",
+  "method": "built-in image_gen",
+  "uploaded_reference_count": 7,
+  "source_copy_count": 7,
+  "card_count": 7,
+  "prompt_count": 7,
+  "all_uploads_covered": true,
+  "source_copy_hashes_match": true,
+  "original_source_hashes_unchanged": true,
+  "all_pngs_decoded": true,
+  "distinct_card_hashes": 7,
+  "visually_reviewed": 7,
+  "dimensions": [
+    {
+      "width": 1122,
+      "height": 1402,
+      "count": 7
+    }
+  ],
+  "review_scope": "Source identity, voxel style, complete main/parts/front/back/side/detail panels. Concept references, not measured engineering projections."
+}

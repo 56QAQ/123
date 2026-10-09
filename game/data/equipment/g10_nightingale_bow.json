@@ -1,0 +1,106 @@
+{
+ "id": "g10_nightingale_bow",
+ "cost": 3,
+ "color_id": "purple",
+ "weapon_class": "bow",
+ "abilities": [
+  {
+   "id": "g10_nightingale_song",
+   "ability_class": "amulet",
+   "effect_type": "heal",
+   "value_multiplier": 0.6,
+   "fixed_value": 0.0,
+   "keywords": [
+    "multi_attack"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "ally_effect": {
+     "effect_type": "heal",
+     "value_multiplier": 0.6
+    },
+    "enemy_effect": {
+     "effect_type": "magic_damage",
+     "value_multiplier": 0.6
+    }
+   },
+   "cooldown": 2.0,
+   "priority": 100,
+   "keyword_values": {
+    "multi_attack": 2
+   }
+  },
+  {
+   "id": "g10_nightingale_verse",
+   "ability_class": "amulet",
+   "effect_type": "stat_status",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "multi_attack"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "ally_effect": {
+     "effect_type": "stat_status",
+     "cfg": {
+      "status_id": "g10_nocturne",
+      "duration": 6.0,
+      "max_stacks": 1,
+      "flags": [
+       "buff",
+       "dispellable"
+      ],
+      "stats": {
+       "attack_speed_multiplier": {
+        "flat": 0.15
+       },
+       "healing_received_pct": {
+        "flat": 0.15
+       }
+      }
+     }
+    },
+    "enemy_effect": {
+     "effect_type": "stat_status",
+     "cfg": {
+      "status_id": "g10_lament",
+      "duration": 6.0,
+      "max_stacks": 1,
+      "flags": [
+       "debuff",
+       "dispellable"
+      ],
+      "stats": {
+       "attack_speed_multiplier": {
+        "flat": -0.15
+       }
+      }
+     }
+    }
+   },
+   "cooldown": 2.0,
+   "priority": 100,
+   "keyword_values": {
+    "multi_attack": 2
+   }
+  }
+ ],
+ "flat_stat_modifiers": {
+  "attack_power": 15,
+  "ability_power": 15,
+  "max_health": 120
+ },
+ "percent_stat_modifiers": {},
+ "model": "g10_nightingale",
+ "reworked": true,
+ "fit_add": [
+  "node_nurse"
+ ]
+}

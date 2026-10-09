@@ -1,0 +1,38 @@
+{
+ "id": "rapidfire_arbalest",
+ "cost": 1,
+ "color_id": "black",
+ "weapon_class": "rifle",
+ "abilities": [
+  {
+   "id": "rapidfire_arbalest_bolt",
+   "ability_class": "bullet",
+   "effect_type": "physical_damage",
+   "value_multiplier": 1.0,
+   "fixed_value": 25.0,
+   "keywords": [
+    "basic",
+    "pursuit"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {},
+   "cooldown": 0.0,
+   "priority": 100,
+   "keyword_values": {
+    "pursuit": 1
+   }
+  }
+ ],
+ "flat_stat_modifiers": {
+  "crit_chance": 0.05
+ },
+ "percent_stat_modifiers": {
+  "attack_speed_multiplier": 0.1
+ },
+ "model": "arbalest",
+ "reworked": true,
+ "owner": "node_archer"
+}

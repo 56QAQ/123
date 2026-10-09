@@ -1,0 +1,9 @@
+{
+ "id": "basic_pistols",
+ "cost": 0,
+ "color_id": "black",
+ "weapon_class": "pistols",
+ "basic": true,
+ "model": "plain",
+ "abilities": []
+}

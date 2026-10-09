@@ -1,0 +1,211 @@
+{
+ "id": "node_knight_errant",
+ "cost": 3,
+ "role": "assassin",
+ "template": "assassin",
+ "base_weapon_class": "sword",
+ "weapon_classes": [
+  "sword",
+  "dual"
+ ],
+ "faction_id": "cyan",
+ "profession_id": "information",
+ "model": "knight_errant",
+ "reworked": true,
+ "target_priority": "nearest_melee_first",
+ "radius": 0.42,
+ "base_stats": {
+  "attack_power": 180,
+  "ability_power": 0.0,
+  "defense": 30,
+  "magic_resistance": 30,
+  "max_health": 1250,
+  "health_regen_per_second": 0.0,
+  "physical_lifesteal": 0.0,
+  "spell_lifesteal": 0.0,
+  "omnivamp": 0.0,
+  "crit_chance": 0.05,
+  "crit_damage": 1.5,
+  "physical_flat_penetration": 0.0,
+  "physical_percent_penetration": 0.0,
+  "magic_flat_penetration": 0.0,
+  "magic_percent_penetration": 0.0,
+  "move_speed": 3.0,
+  "attack_speed_multiplier": 1.0,
+  "damage_dealt_pct": 0.0,
+  "damage_dealt_flat": 0.0,
+  "damage_taken_pct": 0.0,
+  "damage_taken_flat": 0.0,
+  "healing_done_pct": 0.0,
+  "healing_received_pct": 0.0
+ },
+ "triggers": [
+  {
+   "id": "node_ke_backlight",
+   "timing": "OnBattleFrame",
+   "event_count_threshold": 1,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "ranged_threat",
+   "team_filter": "enemy",
+   "tags": [
+    "battle_frame",
+    "passive_backlight"
+   ],
+   "runtime_conditions": [
+    {
+     "type": "battle_running"
+    },
+    {
+     "type": "source_can_act"
+    },
+    {
+     "type": "source_target_not_ranged"
+    }
+   ]
+  },
+  {
+   "id": "node_ke_ink",
+   "timing": "OnBattleFrame",
+   "event_count_threshold": 20,
+   "base_value_mode": "attack_times_ability_power_pct",
+   "base_value_ratio": 2.0,
+   "base_value_flat": 0.0,
+   "target_rule": "current_attack_target",
+   "team_filter": "enemy",
+   "tags": [
+    "battle_frame",
+    "passive_ink"
+   ],
+   "base_value_ratio_by_star": {
+    "1": 2.0,
+    "2": 2.0,
+    "3": 3.0
+   },
+   "runtime_conditions": [
+    {
+     "type": "battle_running"
+    }
+   ],
+   "unlock_star": 2
+  },
+  {
+   "id": "node_ke_temper",
+   "timing": "OnBlink",
+   "event_count_threshold": 1,
+   "base_value_mode": "self_cost_lost",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "self",
+   "team_filter": "ally",
+   "tags": [
+    "blink",
+    "equipment_payload",
+    "passive_temper"
+   ],
+   "runtime_conditions": [
+    {
+     "type": "payload_ready"
+    }
+   ],
+   "fit_tags": {
+    "side": "ally",
+    "count": "single",
+    "freq": "low"
+   }
+  }
+ ],
+ "passive_abilities": [
+  {
+   "id": "node_ke_backlight",
+   "ability_class": "blade",
+   "effect_type": "shadow_step",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "charged",
+    "stacking"
+   ],
+   "accepted_timings": [
+    "OnBattleFrame"
+   ],
+   "required_trigger_tags": [
+    "passive_backlight"
+   ],
+   "effect_config": {
+    "veil": {
+     "status_id": "shadow_veil",
+     "duration": 0.0,
+     "flags": [
+      "buff",
+      "dispellable",
+      "shadowed"
+     ],
+     "stats_by_star": {
+      "backstab_amp": {
+       "flat": {
+        "1": 0.25,
+        "2": 0.45,
+        "3": 0.65
+       }
+      }
+     }
+    }
+   },
+   "cooldown": 8.0,
+   "priority": 100,
+   "keyword_values": {
+    "charged": 1,
+    "stacking": 3
+   }
+  },
+  {
+   "id": "node_ke_ink",
+   "ability_class": "blade",
+   "effect_type": "magic_damage",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [
+    "OnBattleFrame"
+   ],
+   "required_trigger_tags": [
+    "passive_ink"
+   ],
+   "effect_config": {
+    "cast_fx": "ink_blade"
+   },
+   "cooldown": 0.0,
+   "priority": 100,
+   "unlock_star": 2
+  },
+  {
+   "id": "node_ke_temper",
+   "ability_class": "blade",
+   "effect_type": "self_cost",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [
+    "OnBlink"
+   ],
+   "required_trigger_tags": [
+    "passive_temper"
+   ],
+   "effect_config": {
+    "ratio_by_star": {
+     "1": 0.5,
+     "2": 0.6,
+     "3": 0.8
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 10
+  }
+ ]
+}

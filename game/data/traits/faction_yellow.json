@@ -1,0 +1,143 @@
+{
+ "id": "faction_yellow",
+ "trait_category": "faction",
+ "member_trait_filter": "yellow",
+ "thresholds": [
+  2,
+  4
+ ],
+ "tiers": {
+  "2": {
+   "stats": {},
+   "pairs": [
+    {
+     "trigger": {
+      "id": "yellow_faction_edge",
+      "timing": "OnDamageDealt",
+      "event_count_threshold": 1,
+      "base_value_mode": "fixed",
+      "base_value_ratio": 1.0,
+      "base_value_flat": 0.0,
+      "target_rule": "self",
+      "team_filter": "ally",
+      "tags": [
+       "trait_payload",
+       "trait_yellow_edge"
+      ],
+      "runtime_conditions": [
+       {
+        "type": "event_missing_tag",
+        "tag": "dot_damage"
+       },
+       {
+        "type": "event_target_enemy"
+       }
+      ]
+     },
+     "ability": {
+      "id": "yellow_faction_edge",
+      "ability_class": "blade",
+      "effect_type": "stat_status",
+      "value_multiplier": 1.0,
+      "fixed_value": 0.0,
+      "keywords": [
+       "basic",
+       "stacking"
+      ],
+      "accepted_timings": [
+       "OnDamageDealt"
+      ],
+      "required_trigger_tags": [
+       "trait_payload",
+       "trait_yellow_edge"
+      ],
+      "effect_config": {
+       "status_id": "yellow_edge",
+       "duration": 0.0,
+       "max_stacks": 8,
+       "flags": [
+        "buff"
+       ],
+       "stats": {
+        "attack_power": {
+         "pct": 0.015
+        }
+       }
+      },
+      "cooldown": 0.0,
+      "priority": 100,
+      "keyword_values": {
+       "stacking": 8
+      }
+     }
+    }
+   ]
+  },
+  "4": {
+   "stats": {},
+   "pairs": [
+    {
+     "trigger": {
+      "id": "yellow_faction_edge",
+      "timing": "OnDamageDealt",
+      "event_count_threshold": 1,
+      "base_value_mode": "fixed",
+      "base_value_ratio": 1.0,
+      "base_value_flat": 0.0,
+      "target_rule": "self",
+      "team_filter": "ally",
+      "tags": [
+       "trait_payload",
+       "trait_yellow_edge"
+      ],
+      "runtime_conditions": [
+       {
+        "type": "event_missing_tag",
+        "tag": "dot_damage"
+       },
+       {
+        "type": "event_target_enemy"
+       }
+      ]
+     },
+     "ability": {
+      "id": "yellow_faction_edge",
+      "ability_class": "blade",
+      "effect_type": "stat_status",
+      "value_multiplier": 1.0,
+      "fixed_value": 0.0,
+      "keywords": [
+       "basic",
+       "stacking"
+      ],
+      "accepted_timings": [
+       "OnDamageDealt"
+      ],
+      "required_trigger_tags": [
+       "trait_payload",
+       "trait_yellow_edge"
+      ],
+      "effect_config": {
+       "status_id": "yellow_edge",
+       "duration": 0.0,
+       "max_stacks": 12,
+       "flags": [
+        "buff"
+       ],
+       "stats": {
+        "attack_power": {
+         "pct": 0.02
+        }
+       }
+      },
+      "cooldown": 0.0,
+      "priority": 100,
+      "keyword_values": {
+       "stacking": 12
+      }
+     }
+    }
+   ]
+  }
+ }
+}

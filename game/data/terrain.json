@@ -1,0 +1,324 @@
+{
+ "pairs": [
+  {
+   "trigger": {
+    "id": "terrain_burning_ruin",
+    "timing": "OnTerrainTick",
+    "event_count_threshold": 4,
+    "base_value_mode": "fixed",
+    "base_value_flat": 0.0,
+    "target_rule": "self",
+    "team_filter": "any",
+    "tags": [
+     "terrain_payload",
+     "terrain_burning_ruin"
+    ],
+    "runtime_conditions": [
+     {
+      "type": "event_has_tag",
+      "tag": "burning_ruin"
+     }
+    ]
+   },
+   "ability": {
+    "id": "terrain_burning_ruin_burn",
+    "ability_class": "blade",
+    "effect_type": "stat_status",
+    "value_multiplier": 1.0,
+    "fixed_value": 0.0,
+    "keywords": [
+     "basic"
+    ],
+    "accepted_timings": [
+     "OnTerrainTick"
+    ],
+    "required_trigger_tags": [
+     "terrain_payload",
+     "terrain_burning_ruin"
+    ],
+    "effect_config": {
+     "status_id": "burning",
+     "duration": 2.0,
+     "max_stacks": 1,
+     "independent": true,
+     "flags": [
+      "debuff",
+      "burning",
+      "dispellable"
+     ],
+     "sourceless": true,
+     "dot": {
+      "kind": "magic",
+      "amount": 25.0,
+      "interval": 1.0
+     }
+    },
+    "cooldown": 0.0,
+    "priority": 100
+   }
+  },
+  {
+   "trigger": {
+    "id": "terrain_ember",
+    "timing": "OnTerrainEnter",
+    "event_count_threshold": 1,
+    "base_value_mode": "fixed",
+    "base_value_flat": 0.0,
+    "target_rule": "self",
+    "team_filter": "any",
+    "tags": [
+     "terrain_payload",
+     "terrain_ember"
+    ],
+    "runtime_conditions": [
+     {
+      "type": "event_has_tag",
+      "tag": "ember"
+     }
+    ]
+   },
+   "ability": {
+    "id": "terrain_ember_burn",
+    "ability_class": "blade",
+    "effect_type": "stat_status",
+    "value_multiplier": 1.0,
+    "fixed_value": 0.0,
+    "keywords": [
+     "basic"
+    ],
+    "accepted_timings": [
+     "OnTerrainEnter"
+    ],
+    "required_trigger_tags": [
+     "terrain_payload",
+     "terrain_ember"
+    ],
+    "effect_config": {
+     "status_id": "burning",
+     "duration": 5.0,
+     "max_stacks": 1,
+     "independent": true,
+     "flags": [
+      "debuff",
+      "burning",
+      "dispellable"
+     ],
+     "sourceless": true,
+     "dot": {
+      "kind": "magic",
+      "amount": 25.0,
+      "interval": 1.0
+     }
+    },
+    "cooldown": 0.0,
+    "priority": 100
+   }
+  },
+  {
+   "trigger": {
+    "id": "terrain_tram_hit",
+    "timing": "OnTerrainHit",
+    "event_count_threshold": 1,
+    "base_value_mode": "max_health_ratio",
+    "base_value_ratio": 0.2,
+    "base_value_flat": 120.0,
+    "target_rule": "self",
+    "team_filter": "any",
+    "tags": [
+     "terrain_payload",
+     "terrain_tram_hit"
+    ],
+    "runtime_conditions": [
+     {
+      "type": "event_has_tag",
+      "tag": "tram"
+     }
+    ]
+   },
+   "ability": {
+    "id": "terrain_tram_hit_dmg",
+    "ability_class": "blade",
+    "effect_type": "physical_damage",
+    "value_multiplier": 1.0,
+    "fixed_value": 0.0,
+    "keywords": [
+     "basic"
+    ],
+    "accepted_timings": [
+     "OnTerrainHit"
+    ],
+    "required_trigger_tags": [
+     "terrain_payload",
+     "terrain_tram_hit"
+    ],
+    "effect_config": {
+     "sourceless": true
+    },
+    "cooldown": 0.0,
+    "priority": 110
+   }
+  },
+  {
+   "trigger": {
+    "id": "terrain_tram",
+    "timing": "OnTerrainHit",
+    "event_count_threshold": 1,
+    "base_value_mode": "fixed",
+    "base_value_flat": 0.0,
+    "target_rule": "self",
+    "team_filter": "any",
+    "tags": [
+     "terrain_payload",
+     "terrain_tram"
+    ],
+    "runtime_conditions": [
+     {
+      "type": "event_has_tag",
+      "tag": "tram"
+     }
+    ]
+   },
+   "ability": {
+    "id": "terrain_tram_burn",
+    "ability_class": "blade",
+    "effect_type": "stat_status",
+    "value_multiplier": 1.0,
+    "fixed_value": 0.0,
+    "keywords": [
+     "basic"
+    ],
+    "accepted_timings": [
+     "OnTerrainHit"
+    ],
+    "required_trigger_tags": [
+     "terrain_payload",
+     "terrain_tram"
+    ],
+    "effect_config": {
+     "status_id": "burning",
+     "duration": 4.0,
+     "max_stacks": 1,
+     "independent": true,
+     "flags": [
+      "debuff",
+      "burning",
+      "dispellable"
+     ],
+     "sourceless": true,
+     "dot": {
+      "kind": "magic",
+      "amount": 25.0,
+      "interval": 1.0
+     }
+    },
+    "cooldown": 0.0,
+    "priority": 100
+   }
+  },
+  {
+   "trigger": {
+    "id": "terrain_fire_arc_hit",
+    "timing": "OnTerrainHit",
+    "event_count_threshold": 1,
+    "base_value_mode": "max_health_ratio",
+    "base_value_ratio": 0.0,
+    "base_value_flat": 80.0,
+    "target_rule": "self",
+    "team_filter": "any",
+    "tags": [
+     "terrain_payload",
+     "terrain_fire_arc_hit"
+    ],
+    "runtime_conditions": [
+     {
+      "type": "event_has_tag",
+      "tag": "fire_arc"
+     }
+    ]
+   },
+   "ability": {
+    "id": "terrain_fire_arc_hit_dmg",
+    "ability_class": "blade",
+    "effect_type": "magic_damage",
+    "value_multiplier": 1.0,
+    "fixed_value": 0.0,
+    "keywords": [
+     "basic"
+    ],
+    "accepted_timings": [
+     "OnTerrainHit"
+    ],
+    "required_trigger_tags": [
+     "terrain_payload",
+     "terrain_fire_arc_hit"
+    ],
+    "effect_config": {
+     "sourceless": true
+    },
+    "cooldown": 0.0,
+    "priority": 110
+   }
+  },
+  {
+   "trigger": {
+    "id": "terrain_frost",
+    "timing": "OnTerrainTick",
+    "event_count_threshold": 4,
+    "base_value_mode": "fixed",
+    "base_value_flat": 0.0,
+    "target_rule": "self",
+    "team_filter": "any",
+    "tags": [
+     "terrain_payload",
+     "terrain_frost"
+    ],
+    "runtime_conditions": [
+     {
+      "type": "event_has_tag",
+      "tag": "frost"
+     }
+    ]
+   },
+   "ability": {
+    "id": "terrain_frost_chill",
+    "ability_class": "blade",
+    "effect_type": "stat_status",
+    "value_multiplier": 1.0,
+    "fixed_value": 0.0,
+    "keywords": [
+     "basic"
+    ],
+    "accepted_timings": [
+     "OnTerrainTick"
+    ],
+    "required_trigger_tags": [
+     "terrain_payload",
+     "terrain_frost"
+    ],
+    "effect_config": {
+     "status_id": "chill",
+     "duration": 4.5,
+     "max_stacks": 1,
+     "independent": true,
+     "flags": [
+      "debuff",
+      "dispellable",
+      "chill"
+     ],
+     "sourceless": true,
+     "stats": {
+      "attack_speed_multiplier": {
+       "flat": -0.1
+      }
+     },
+     "meta": {
+      "freeze_over": 0.4,
+      "freeze_dur": 5.0
+     }
+    },
+    "cooldown": 0.0,
+    "priority": 100
+   }
+  }
+ ]
+}

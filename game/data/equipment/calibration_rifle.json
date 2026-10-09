@@ -1,0 +1,46 @@
+{
+ "id": "calibration_rifle",
+ "cost": 3,
+ "color_id": "purple",
+ "weapon_class": "rifle",
+ "abilities": [
+  {
+   "id": "calibration_rifle_rewrite",
+   "ability_class": "chip",
+   "effect_type": "none",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "value_from_target_max_health_pct": 0.035
+   },
+   "cooldown": 0.0,
+   "priority": 10
+  },
+  {
+   "id": "calibration_rifle_shot",
+   "ability_class": "blade",
+   "effect_type": "magic_damage",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {},
+   "cooldown": 0.0,
+   "priority": 100
+  }
+ ],
+ "flat_stat_modifiers": {
+  "magic_percent_penetration": 0.1,
+  "attack_power": 12
+ },
+ "percent_stat_modifiers": {},
+ "no_drop": true
+}

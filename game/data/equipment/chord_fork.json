@@ -1,0 +1,86 @@
+{
+ "id": "chord_fork",
+ "cost": 3,
+ "color_id": "purple",
+ "weapon_class": "focus",
+ "abilities": [
+  {
+   "id": "chord_resonance",
+   "ability_class": "amulet",
+   "effect_type": "stat_status",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic",
+    "multi_attack"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "ally_effect": {
+     "effect_type": "stat_status",
+     "cfg": {
+      "status_id": "chord_resonance",
+      "duration": 5.0,
+      "max_stacks": 4,
+      "flags": [
+       "buff",
+       "dispellable"
+      ],
+      "stats": {
+       "attack_speed_multiplier": {
+        "flat": 0.03
+       }
+      }
+     }
+    },
+    "enemy_effect": {
+     "effect_type": "magic_damage",
+     "value_multiplier": 0.3
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100,
+   "keyword_values": {
+    "multi_attack": 4
+   }
+  },
+  {
+   "id": "chord_overtone",
+   "ability_class": "amulet",
+   "effect_type": "shield",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "multi_attack"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "ally_effect": {
+     "effect_type": "shield",
+     "value_multiplier": 0.35
+    },
+    "enemy_effect": {
+     "effect_type": "magic_damage",
+     "value_multiplier": 0.35
+    }
+   },
+   "cooldown": 3.0,
+   "priority": 100,
+   "keyword_values": {
+    "multi_attack": 4
+   }
+  }
+ ],
+ "flat_stat_modifiers": {
+  "max_health": 100
+ },
+ "percent_stat_modifiers": {},
+ "model": "chord",
+ "reworked": true
+}

@@ -1,0 +1,132 @@
+{
+ "id": "coin_dagger",
+ "cost": 2,
+ "color_id": "white",
+ "weapon_class": "dual",
+ "abilities": [
+  {
+   "id": "coin_purse",
+   "ability_class": "blade",
+   "effect_type": "money_bag",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic",
+    "learning",
+    "eternal"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "learning": {
+     "bonus_per_learning": 0.0
+    },
+    "bag": {
+     "duration": 0.0,
+     "max_stacks": 1,
+     "flags": [
+      "buff",
+      "no_dispel"
+     ],
+     "pulse_interval": 2.0,
+     "pairs": [
+      {
+       "trigger": {
+        "id": "money_bag_tick",
+        "timing": "OnStatusPulse",
+        "event_count_threshold": 1,
+        "base_value_mode": "fixed",
+        "base_value_ratio": 1.0,
+        "base_value_flat": 0.0,
+        "target_rule": "self",
+        "team_filter": "ally",
+        "tags": [
+         "status_pulse",
+         "bag_tick"
+        ],
+        "runtime_conditions": [
+         {
+          "type": "event_metadata_equals",
+          "key": "status_id",
+          "value": "money_bag"
+         }
+        ]
+       },
+       "ability": {
+        "id": "money_bag_tick",
+        "ability_class": "blade",
+        "effect_type": "money_bag_tick",
+        "value_multiplier": 1.0,
+        "fixed_value": 0.0,
+        "keywords": [
+         "basic"
+        ],
+        "accepted_timings": [
+         "OnStatusPulse"
+        ],
+        "required_trigger_tags": [
+         "bag_tick"
+        ],
+        "effect_config": {
+         "double_base": 5.0,
+         "double_max": 25.0,
+         "clear_base": 25.0,
+         "clear_min": 5.0,
+         "learn_half": 10.0
+        },
+        "cooldown": 0.0,
+        "priority": 100
+       }
+      },
+      {
+       "trigger": {
+        "id": "money_bag_cashout",
+        "timing": "OnBattleEnd",
+        "event_count_threshold": 1,
+        "base_value_mode": "fixed",
+        "base_value_ratio": 1.0,
+        "base_value_flat": 0.0,
+        "target_rule": "self",
+        "team_filter": "ally",
+        "tags": [
+         "battle_end",
+         "bag_cash"
+        ]
+       },
+       "ability": {
+        "id": "money_bag_cashout",
+        "ability_class": "blade",
+        "effect_type": "money_bag_cashout",
+        "value_multiplier": 1.0,
+        "fixed_value": 0.0,
+        "keywords": [
+         "basic"
+        ],
+        "accepted_timings": [
+         "OnBattleEnd"
+        ],
+        "required_trigger_tags": [
+         "bag_cash"
+        ],
+        "effect_config": {},
+        "cooldown": 0.0,
+        "priority": 100
+       }
+      }
+     ]
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  }
+ ],
+ "flat_stat_modifiers": {},
+ "percent_stat_modifiers": {
+  "attack_speed_multiplier": 0.15
+ },
+ "model": "coin",
+ "reworked": true,
+ "owner": "node_rogue"
+}

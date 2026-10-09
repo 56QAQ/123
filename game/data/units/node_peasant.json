@@ -1,0 +1,159 @@
+{
+ "id": "node_peasant",
+ "cost": 1,
+ "role": "tank",
+ "template": "tank",
+ "base_weapon_class": "polearm",
+ "weapon_classes": [
+  "polearm",
+  "heavy",
+  "sword"
+ ],
+ "faction_id": "green",
+ "profession_id": "maintenance",
+ "model": "peasant",
+ "reworked": true,
+ "target_priority": "nearest",
+ "radius": 0.46,
+ "base_stats": {
+  "attack_power": 52,
+  "ability_power": 0.0,
+  "defense": 50,
+  "magic_resistance": 34,
+  "max_health": 1300,
+  "health_regen_per_second": 0.0,
+  "physical_lifesteal": 0.0,
+  "spell_lifesteal": 0.0,
+  "omnivamp": 0.0,
+  "crit_chance": 0.05,
+  "crit_damage": 1.5,
+  "physical_flat_penetration": 0.0,
+  "physical_percent_penetration": 0.0,
+  "magic_flat_penetration": 0.0,
+  "magic_percent_penetration": 0.0,
+  "move_speed": 1.9,
+  "attack_speed_multiplier": 0.75,
+  "damage_dealt_pct": 0.0,
+  "damage_dealt_flat": 0.0,
+  "damage_taken_pct": 0.0,
+  "damage_taken_flat": 0.0,
+  "healing_done_pct": 0.0,
+  "healing_received_pct": 0.0
+ },
+ "triggers": [
+  {
+   "id": "node_peasant_hardwork",
+   "timing": "OnHitByNormalAttack",
+   "event_count_threshold": 1,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "self",
+   "team_filter": "any",
+   "tags": [
+    "normal_attack",
+    "passive_hardwork"
+   ]
+  },
+  {
+   "id": "node_peasant_harvest",
+   "timing": "OnDamageTaken",
+   "event_count_threshold": 1,
+   "base_value_mode": "max_health_ratio",
+   "base_value_ratio": 0.2,
+   "base_value_flat": 0.0,
+   "target_rule": "self",
+   "team_filter": "any",
+   "tags": [
+    "damage_taken",
+    "equipment_payload"
+   ],
+   "max_activations_per_battle": 1,
+   "runtime_conditions": [
+    {
+     "type": "source_health_below_or_equal_ratio",
+     "ratio": 0.5
+    }
+   ],
+   "fit_tags": {
+    "side": "ally",
+    "count": "single",
+    "freq": "low"
+   }
+  }
+ ],
+ "passive_abilities": [
+  {
+   "id": "node_peasant_hardwork",
+   "ability_class": "blade",
+   "effect_type": "stat_status",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic",
+    "stacking"
+   ],
+   "accepted_timings": [
+    "OnHitByNormalAttack"
+   ],
+   "required_trigger_tags": [
+    "passive_hardwork"
+   ],
+   "effect_config": {
+    "status_id": "hardwork",
+    "duration": 2.0,
+    "flags": [
+     "buff",
+     "dispellable"
+    ],
+    "stats_by_star": {
+     "na_damage_taken_flat": {
+      "flat": {
+       "1": 15,
+       "2": 16,
+       "3": 18
+      }
+     }
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100,
+   "keyword_values": {
+    "stacking": 5
+   }
+  },
+  {
+   "id": "node_peasant_toughness",
+   "ability_class": "blade",
+   "effect_type": "stat_status",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [
+    "OnHitByNormalAttack"
+   ],
+   "required_trigger_tags": [
+    "passive_hardwork"
+   ],
+   "effect_config": {
+    "status_id": "hardwork",
+    "modify_only": true,
+    "hot": {
+     "pct_by_star": {
+      "1": 0.001,
+      "2": 0.001,
+      "3": 0.0015
+     },
+     "interval": 0.75
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 110,
+   "unlock_star": 2
+  }
+ ],
+ "hair": "#58a83c",
+ "skin": "peach"
+}

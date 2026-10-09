@@ -1,0 +1,118 @@
+{
+ "id": "mob_hv_carrier",
+ "cost": 1,
+ "role": "tank",
+ "base_weapon_class": "crossbow",
+ "weapon_classes": [
+  "crossbow"
+ ],
+ "faction_id": "white",
+ "profession_id": "",
+ "available_in_shop": false,
+ "hide_weapon": true,
+ "model": "vehicle_field",
+ "target_priority": "nearest",
+ "radius": 0.62,
+ "scale": 1.6,
+ "anim_overrides": {
+  "crossbow": {
+   "idle": "idle_hover",
+   "run": "run_hover",
+   "attack": "attack_hover"
+  }
+ },
+ "base_stats": {
+  "attack_power": 50,
+  "ability_power": 0.0,
+  "defense": 44,
+  "magic_resistance": 36,
+  "max_health": 1850,
+  "health_regen_per_second": 0.0,
+  "physical_lifesteal": 0.0,
+  "spell_lifesteal": 0.0,
+  "omnivamp": 0.0,
+  "crit_chance": 0.05,
+  "crit_damage": 1.5,
+  "physical_flat_penetration": 0.0,
+  "physical_percent_penetration": 0.0,
+  "magic_flat_penetration": 0.0,
+  "magic_percent_penetration": 0.0,
+  "move_speed": 1.1,
+  "attack_speed_multiplier": 0.8,
+  "damage_dealt_pct": 0.0,
+  "damage_dealt_flat": 0.0,
+  "damage_taken_pct": 0.0,
+  "damage_taken_flat": 0.0,
+  "healing_done_pct": 0.0,
+  "healing_received_pct": 0.0
+ },
+ "triggers": [
+  {
+   "id": "mob_hv_field_start",
+   "timing": "OnBattleStart",
+   "event_count_threshold": 1,
+   "base_value_mode": "ability_keyword_base",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "self",
+   "team_filter": "any",
+   "tags": [
+    "battle_start",
+    "passive_hv_field"
+   ],
+   "base_value_keyword": "amplify"
+  },
+  {
+   "id": "mob_hv_project",
+   "timing": "OnNormalAttackHit",
+   "event_count_threshold": 4,
+   "base_value_mode": "ability_keyword_base",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "event_target",
+   "team_filter": "enemy",
+   "tags": [
+    "normal_attack",
+    "passive_hv_field"
+   ],
+   "base_value_keyword": "amplify"
+  }
+ ],
+ "passive_abilities": [
+  {
+   "id": "mob_hv_field",
+   "ability_class": "blade",
+   "effect_type": "create_field",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic",
+    "amplify"
+   ],
+   "accepted_timings": [
+    "OnBattleStart",
+    "OnNormalAttackHit"
+   ],
+   "required_trigger_tags": [
+    "passive_hv_field"
+   ],
+   "effect_config": {
+    "kind": "amp",
+    "radius": 2.5,
+    "duration": 6.0
+   },
+   "cooldown": 0.0,
+   "priority": 100,
+   "keyword_values": {
+    "amplify": 2
+   },
+   "keyword_values_by_star": {
+    "amplify": {
+     "1": 2,
+     "2": 2,
+     "3": 3
+    }
+   }
+  }
+ ]
+}

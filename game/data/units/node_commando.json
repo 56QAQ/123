@@ -1,0 +1,227 @@
+{
+ "id": "node_commando",
+ "cost": 2,
+ "role": "warrior",
+ "template": "warrior",
+ "base_weapon_class": "dual",
+ "weapon_classes": [
+  "dual",
+  "crossbow",
+  "rifle",
+  "pistols",
+  "sword"
+ ],
+ "faction_id": "yellow",
+ "profession_id": "security",
+ "model": "captain",
+ "reworked": true,
+ "target_priority": "nearest_locked",
+ "radius": 0.42,
+ "base_stats": {
+  "attack_power": 115,
+  "ability_power": 0.0,
+  "defense": 40,
+  "magic_resistance": 25,
+  "max_health": 1400,
+  "health_regen_per_second": 0.0,
+  "physical_lifesteal": 0.0,
+  "spell_lifesteal": 0.0,
+  "omnivamp": 0.0,
+  "crit_chance": 0.05,
+  "crit_damage": 1.5,
+  "physical_flat_penetration": 0.0,
+  "physical_percent_penetration": 0.0,
+  "magic_flat_penetration": 0.0,
+  "magic_percent_penetration": 0.0,
+  "move_speed": 2.4,
+  "attack_speed_multiplier": 0.9,
+  "damage_dealt_pct": 0.0,
+  "damage_dealt_flat": 0.0,
+  "damage_taken_pct": 0.0,
+  "damage_taken_flat": 0.0,
+  "healing_done_pct": 0.0,
+  "healing_received_pct": 0.0
+ },
+ "triggers": [
+  {
+   "id": "node_commando_period",
+   "timing": "OnBattleFrame",
+   "event_count_threshold": 1,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "self",
+   "team_filter": "ally",
+   "tags": [
+    "battle_frame",
+    "passive_period"
+   ],
+   "runtime_conditions": [
+    {
+     "type": "battle_running"
+    },
+    {
+     "type": "source_can_act"
+    },
+    {
+     "type": "source_target_missing_status",
+     "status_id": "commando_mark"
+    }
+   ]
+  },
+  {
+   "id": "node_commando_volley",
+   "timing": "OnBattleFrame",
+   "event_count_threshold": 1,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "self",
+   "team_filter": "ally",
+   "tags": [
+    "battle_frame",
+    "passive_volley"
+   ],
+   "runtime_conditions": [
+    {
+     "type": "battle_running"
+    }
+   ]
+  },
+  {
+   "id": "node_commando_cover",
+   "timing": "OnBattleFrame",
+   "event_count_threshold": 1,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "melee_near_support",
+   "team_filter": "enemy",
+   "tags": [
+    "battle_frame",
+    "passive_cover"
+   ],
+   "target_radius": 2.8,
+   "runtime_conditions": [
+    {
+     "type": "battle_running"
+    },
+    {
+     "type": "source_can_act"
+    }
+   ],
+   "unlock_star": 2
+  },
+  {
+   "id": "node_commando_assault",
+   "timing": "OnLunge",
+   "event_count_threshold": 1,
+   "base_value_mode": "attack_ratio",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "event_target",
+   "team_filter": "enemy",
+   "tags": [
+    "lunge",
+    "equipment_payload"
+   ],
+   "base_value_ratio_by_star": {
+    "1": 1.0,
+    "2": 1.5,
+    "3": 2.2
+   },
+   "fit_tags": {
+    "side": "enemy",
+    "count": "single",
+    "freq": "low"
+   }
+  }
+ ],
+ "passive_abilities": [
+  {
+   "id": "node_commando_period",
+   "ability_class": "blade",
+   "effect_type": "commando_lunge",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [
+    "OnBattleFrame"
+   ],
+   "required_trigger_tags": [
+    "passive_period"
+   ],
+   "effect_config": {
+    "knock": 2.0,
+    "speed": 9.0,
+    "mark": {
+     "status_id": "commando_mark",
+     "duration": 0.0,
+     "max_stacks": 1,
+     "flags": [
+      "debuff",
+      "no_dispel"
+     ],
+     "stats_by_star": {
+      "damage_taken_amp": {
+       "flat": {
+        "1": 0.15,
+        "2": 0.2,
+        "3": 0.3
+       }
+      }
+     }
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  },
+  {
+   "id": "node_commando_volley",
+   "ability_class": "blade",
+   "effect_type": "mark_volley",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [
+    "OnBattleFrame"
+   ],
+   "required_trigger_tags": [
+    "passive_volley"
+   ],
+   "effect_config": {
+    "status_id": "commando_mark",
+    "delay": 3.0
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  },
+  {
+   "id": "node_commando_cover",
+   "ability_class": "blade",
+   "effect_type": "cover_retarget",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "charged"
+   ],
+   "accepted_timings": [
+    "OnBattleFrame"
+   ],
+   "required_trigger_tags": [
+    "passive_cover"
+   ],
+   "effect_config": {},
+   "cooldown": 5.0,
+   "priority": 100,
+   "keyword_values": {
+    "charged": 2
+   },
+   "unlock_star": 2
+  }
+ ]
+}

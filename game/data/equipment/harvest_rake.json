@@ -1,0 +1,35 @@
+{
+ "id": "harvest_rake",
+ "cost": 2,
+ "color_id": "green",
+ "weapon_class": "polearm",
+ "abilities": [
+  {
+   "id": "harvest_rake_paddy",
+   "ability_class": "blade",
+   "effect_type": "create_field",
+   "value_multiplier": 0.1,
+   "fixed_value": 0.0,
+   "keywords": [],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "kind": "paddy",
+    "radius": 1.2,
+    "duration": 8.0
+   },
+   "cooldown": 20.0,
+   "priority": 100
+  }
+ ],
+ "flat_stat_modifiers": {
+  "max_health": 100,
+  "defense": 20
+ },
+ "percent_stat_modifiers": {},
+ "model": "rake",
+ "reworked": true,
+ "owner": "node_peasant"
+}

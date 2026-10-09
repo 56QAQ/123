@@ -1,0 +1,51 @@
+{
+ "id": "rally_blade",
+ "cost": 2,
+ "color_id": "cyan",
+ "weapon_class": "sword",
+ "abilities": [
+  {
+   "id": "rally_blade_order",
+   "ability_class": "bullet",
+   "effect_type": "stat_status",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "multi_attack"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "status_id": "edge_rally",
+    "duration": 8.0,
+    "max_stacks": 4,
+    "flags": [
+     "buff",
+     "dispellable"
+    ],
+    "stats": {
+     "attack_power": {
+      "pct": 0.06
+     },
+     "attack_speed_multiplier": {
+      "flat": 0.06
+     }
+    }
+   },
+   "cooldown": 2.0,
+   "priority": 100,
+   "keyword_values": {
+    "multi_attack": 3
+   }
+  }
+ ],
+ "flat_stat_modifiers": {
+  "attack_power": 15,
+  "max_health": 120
+ },
+ "percent_stat_modifiers": {},
+ "model": "rally",
+ "reworked": true
+}

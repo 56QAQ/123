@@ -1,0 +1,217 @@
+{
+ "id": "node_killer",
+ "cost": 4,
+ "role": "warrior",
+ "template": "warrior",
+ "base_weapon_class": "heavy",
+ "weapon_classes": [
+  "heavy",
+  "sword"
+ ],
+ "faction_id": "green",
+ "profession_id": "security",
+ "model": "killer",
+ "reworked": true,
+ "target_priority": "nearest",
+ "radius": 0.44,
+ "base_stats": {
+  "attack_power": 200,
+  "ability_power": 0.0,
+  "defense": 70,
+  "magic_resistance": 45,
+  "max_health": 2600,
+  "health_regen_per_second": 0.0,
+  "physical_lifesteal": 0.0,
+  "spell_lifesteal": 0.0,
+  "omnivamp": 0.0,
+  "crit_chance": 0.05,
+  "crit_damage": 1.5,
+  "physical_flat_penetration": 0.0,
+  "physical_percent_penetration": 0.0,
+  "magic_flat_penetration": 0.0,
+  "magic_percent_penetration": 0.0,
+  "move_speed": 2.6,
+  "attack_speed_multiplier": 0.9,
+  "damage_dealt_pct": 0.0,
+  "damage_dealt_flat": 0.0,
+  "damage_taken_pct": 0.0,
+  "damage_taken_flat": 0.0,
+  "healing_done_pct": 0.0,
+  "healing_received_pct": 0.0
+ },
+ "anim_overrides": {
+  "heavy@odachi": {
+   "attack": "attack_killer_sheathed",
+   "attack_heavy_whirl": "whirl_killer_sheathed"
+  },
+  "heavy@odachi_drawn": {
+   "attack": "attack_killer_drawn",
+   "attack_heavy_whirl": "whirl_killer_drawn"
+  }
+ },
+ "triggers": [
+  {
+   "id": "node_killer_rule",
+   "timing": "OnBattleStart",
+   "event_count_threshold": 1,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "self",
+   "team_filter": "ally",
+   "tags": [
+    "battle_start",
+    "passive_rule"
+   ]
+  },
+  {
+   "id": "node_killer_phantom",
+   "timing": "OnNormalAttackPerform",
+   "event_count_threshold": 1,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "self",
+   "team_filter": "ally",
+   "tags": [
+    "normal_attack",
+    "passive_phantom"
+   ],
+   "runtime_conditions": [
+    {
+     "type": "event_metadata_equals",
+     "key": "is_copy",
+     "value": "false"
+    }
+   ]
+  },
+  {
+   "id": "node_killer_selfless",
+   "timing": "OnBattleStart",
+   "event_count_threshold": 1,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "self",
+   "team_filter": "ally",
+   "tags": [
+    "battle_start",
+    "passive_selfless"
+   ],
+   "runtime_conditions": [
+    {
+     "type": "source_meta_has",
+     "key": "selfless"
+    }
+   ]
+  },
+  {
+   "id": "node_killer_strike",
+   "timing": "OnNormalAttackHit",
+   "event_count_threshold": 1,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 60.0,
+   "target_rule": "event_target",
+   "team_filter": "enemy",
+   "tags": [
+    "normal_attack",
+    "equipment_payload"
+   ],
+   "base_value_flat_by_star": {
+    "1": 60.0,
+    "2": 90.0,
+    "3": 140.0
+   },
+   "fit_tags": {
+    "side": "enemy",
+    "count": "single",
+    "freq": "high"
+   }
+  }
+ ],
+ "passive_abilities": [
+  {
+   "id": "node_killer_rule",
+   "ability_class": "blade",
+   "effect_type": "flag_status",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [
+    "OnBattleStart"
+   ],
+   "required_trigger_tags": [
+    "passive_rule"
+   ],
+   "effect_config": {
+    "status_id": "phantom_rule",
+    "duration": 0.0,
+    "flags": [
+     "buff",
+     "no_dispel",
+     "hidden"
+    ],
+    "meta_by_star": {
+     "na_pursuit": {
+      "1": 1,
+      "2": 1,
+      "3": 2
+     }
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  },
+  {
+   "id": "node_killer_phantom",
+   "ability_class": "blade",
+   "effect_type": "phantom_strike",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "summon"
+   ],
+   "accepted_timings": [
+    "OnNormalAttackPerform"
+   ],
+   "required_trigger_tags": [
+    "passive_phantom"
+   ],
+   "effect_config": {
+    "unit_id": "killer_phantom",
+    "delay": 0.08,
+    "reach": 1.6
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  },
+  {
+   "id": "node_killer_selfless",
+   "ability_class": "blade",
+   "effect_type": "selfless_purge",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [
+    "OnBattleStart"
+   ],
+   "required_trigger_tags": [
+    "passive_selfless"
+   ],
+   "effect_config": {
+    "cut_by_star": {
+     "1": 0.2,
+     "2": 0.35,
+     "3": 0.5
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  }
+ ]
+}

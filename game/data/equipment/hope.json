@@ -1,0 +1,38 @@
+{
+ "id": "hope",
+ "cost": 4,
+ "color_id": "blue",
+ "weapon_class": "sword",
+ "abilities": [
+  {
+   "id": "hope_rekindle",
+   "ability_class": "blade",
+   "effect_type": "heal",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "multi_attack"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "revive_dead": true
+   },
+   "cooldown": 9.0,
+   "priority": 100,
+   "keyword_values": {
+    "multi_attack": 2
+   }
+  }
+ ],
+ "flat_stat_modifiers": {
+  "ability_power": 30,
+  "max_health": 300
+ },
+ "percent_stat_modifiers": {},
+ "model": "hope",
+ "reworked": true,
+ "owner": "node_brave"
+}

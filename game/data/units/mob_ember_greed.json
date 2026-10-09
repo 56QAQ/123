@@ -1,0 +1,261 @@
+{
+ "id": "mob_ember_greed",
+ "cost": 1,
+ "role": "caster",
+ "base_weapon_class": "focus",
+ "weapon_classes": [
+  "focus"
+ ],
+ "faction_id": "white",
+ "profession_id": "",
+ "available_in_shop": false,
+ "hide_weapon": true,
+ "model": "ember_greed",
+ "target_priority": "nearest",
+ "radius": 0.44,
+ "scale": 1.05,
+ "projectile": "ember_violet",
+ "anim_overrides": {
+  "focus": {
+   "idle": "idle_greed",
+   "run": "run_greed",
+   "attack": "attack_greed"
+  }
+ },
+ "base_stats": {
+  "attack_power": 46,
+  "ability_power": 0.0,
+  "defense": 15,
+  "magic_resistance": 35,
+  "max_health": 800,
+  "health_regen_per_second": 0.0,
+  "physical_lifesteal": 0.0,
+  "spell_lifesteal": 0.0,
+  "omnivamp": 0.0,
+  "crit_chance": 0.05,
+  "crit_damage": 1.5,
+  "physical_flat_penetration": 0.0,
+  "physical_percent_penetration": 0.0,
+  "magic_flat_penetration": 0.0,
+  "magic_percent_penetration": 0.0,
+  "move_speed": 1.3,
+  "attack_speed_multiplier": 1.0,
+  "damage_dealt_pct": 0.0,
+  "damage_dealt_flat": 0.0,
+  "damage_taken_pct": 0.0,
+  "damage_taken_flat": 0.0,
+  "healing_done_pct": 0.0,
+  "healing_received_pct": 0.0
+ },
+ "triggers": [
+  {
+   "id": "mob_ember_greed_devour",
+   "timing": "OnBattleFrame",
+   "event_count_threshold": 8,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "nearby_units",
+   "team_filter": "any",
+   "tags": [
+    "battle_frame",
+    "passive_greed_devour"
+   ],
+   "target_radius": 4.5,
+   "target_filter": {
+    "has_status": "burning"
+   }
+  },
+  {
+   "id": "mob_ember_greed_squander",
+   "timing": "OnNormalAttackHit",
+   "event_count_threshold": 1,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "event_target",
+   "team_filter": "enemy",
+   "tags": [
+    "normal_attack",
+    "passive_greed_squander"
+   ],
+   "runtime_conditions": [
+    {
+     "type": "source_has_status",
+     "status_id": "greed_hoard"
+    }
+   ],
+   "unlock_star": 2
+  },
+  {
+   "id": "mob_ember_greed_burst",
+   "timing": "OnNormalAttackHit",
+   "event_count_threshold": 1,
+   "base_value_mode": "source_status_stacks_times_stat",
+   "base_value_ratio": 0.45,
+   "base_value_flat": 0.0,
+   "target_rule": "event_target",
+   "team_filter": "enemy",
+   "tags": [
+    "normal_attack",
+    "passive_greed_burst"
+   ],
+   "runtime_conditions": [
+    {
+     "type": "source_has_status",
+     "status_id": "greed_hoard"
+    }
+   ],
+   "base_value_stat_id": "attack_power",
+   "base_value_status_id": "greed_hoard"
+  },
+  {
+   "id": "mob_ember_greed_spend",
+   "timing": "OnNormalAttackHit",
+   "event_count_threshold": 1,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "self",
+   "team_filter": "any",
+   "tags": [
+    "normal_attack",
+    "passive_greed_spend"
+   ],
+   "runtime_conditions": [
+    {
+     "type": "source_has_status",
+     "status_id": "greed_hoard"
+    }
+   ]
+  }
+ ],
+ "passive_abilities": [
+  {
+   "id": "mob_ember_greed_devour",
+   "ability_class": "blade",
+   "effect_type": "consume_status",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic",
+    "stacking"
+   ],
+   "accepted_timings": [
+    "OnBattleFrame"
+   ],
+   "required_trigger_tags": [
+    "passive_greed_devour"
+   ],
+   "effect_config": {
+    "status_id": "burning",
+    "all_targets": true,
+    "gain": {
+     "status_id": "greed_hoard",
+     "duration": 0.0,
+     "flags": [
+      "buff",
+      "dispellable"
+     ]
+    },
+    "consume_fx": "greed"
+   },
+   "cooldown": 0.0,
+   "priority": 100,
+   "keyword_values": {
+    "stacking": 10
+   }
+  },
+  {
+   "id": "mob_ember_greed_burst",
+   "ability_class": "blade",
+   "effect_type": "magic_damage",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic",
+    "splash"
+   ],
+   "accepted_timings": [
+    "OnNormalAttackHit"
+   ],
+   "required_trigger_tags": [
+    "passive_greed_burst"
+   ],
+   "effect_config": {
+    "splash_ratio": 1.0,
+    "splash_filter": "target_allies",
+    "splash_fx": "greed"
+   },
+   "cooldown": 0.0,
+   "priority": 100,
+   "keyword_values": {
+    "splash": 2
+   }
+  },
+  {
+   "id": "mob_ember_greed_spend",
+   "ability_class": "blade",
+   "effect_type": "lose_stack",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [
+    "OnNormalAttackHit"
+   ],
+   "required_trigger_tags": [
+    "passive_greed_spend"
+   ],
+   "effect_config": {
+    "status_id": "greed_hoard",
+    "all": true
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  },
+  {
+   "id": "mob_ember_greed_squander",
+   "ability_class": "blade",
+   "effect_type": "stat_status",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic",
+    "splash"
+   ],
+   "accepted_timings": [
+    "OnNormalAttackHit"
+   ],
+   "required_trigger_tags": [
+    "passive_greed_squander"
+   ],
+   "effect_config": {
+    "status_id": "burning",
+    "duration": 3.0,
+    "max_stacks": 1,
+    "independent": true,
+    "flags": [
+     "debuff",
+     "burning",
+     "dispellable"
+    ],
+    "dot": {
+     "kind": "magic",
+     "amount": 25.0,
+     "interval": 1.0
+    },
+    "splash_ratio": 1.0,
+    "splash_filter": "target_allies",
+    "splash_fx": "greed"
+   },
+   "cooldown": 0.0,
+   "priority": 100,
+   "keyword_values": {
+    "splash": 2
+   },
+   "unlock_star": 2
+  }
+ ]
+}

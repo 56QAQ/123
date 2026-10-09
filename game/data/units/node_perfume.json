@@ -1,0 +1,175 @@
+{
+ "id": "node_perfume",
+ "cost": 2,
+ "role": "caster",
+ "template": "caster",
+ "base_weapon_class": "focus",
+ "weapon_classes": [
+  "focus",
+  "sword"
+ ],
+ "faction_id": "cyan",
+ "profession_id": "welfare",
+ "model": "perfumer",
+ "reworked": true,
+ "target_priority": "nearest",
+ "radius": 0.42,
+ "base_stats": {
+  "attack_power": 55,
+  "ability_power": 0,
+  "defense": 8,
+  "magic_resistance": 30,
+  "max_health": 700,
+  "health_regen_per_second": 0.0,
+  "physical_lifesteal": 0.0,
+  "spell_lifesteal": 0.0,
+  "omnivamp": 0.0,
+  "crit_chance": 0.05,
+  "crit_damage": 1.5,
+  "physical_flat_penetration": 0.0,
+  "physical_percent_penetration": 0.0,
+  "magic_flat_penetration": 0.0,
+  "magic_percent_penetration": 0.0,
+  "move_speed": 1.3,
+  "attack_speed_multiplier": 1.0,
+  "damage_dealt_pct": 0.0,
+  "damage_dealt_flat": 0.0,
+  "damage_taken_pct": 0.0,
+  "damage_taken_flat": 0.0,
+  "healing_done_pct": 0.0,
+  "healing_received_pct": 0.0
+ },
+ "triggers": [
+  {
+   "id": "node_perfume_scent_start",
+   "timing": "OnBattleStart",
+   "event_count_threshold": 1,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "all_allies",
+   "team_filter": "ally",
+   "tags": [
+    "battle_start",
+    "passive_scent"
+   ]
+  },
+  {
+   "id": "node_perfume_scent",
+   "timing": "OnBattleFrame",
+   "event_count_threshold": 24,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "all_allies",
+   "team_filter": "ally",
+   "tags": [
+    "battle_frame",
+    "passive_scent"
+   ],
+   "event_count_threshold_by_star": {
+    "1": 24,
+    "2": 16,
+    "3": 12
+   },
+   "runtime_conditions": [
+    {
+     "type": "battle_running"
+    }
+   ]
+  },
+  {
+   "id": "node_perfume_eternal",
+   "timing": "OnBattleFrame",
+   "event_count_threshold": 2,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "all_allies",
+   "team_filter": "ally",
+   "tags": [
+    "battle_frame",
+    "passive_eternal"
+   ],
+   "unlock_star": 2
+  },
+  {
+   "id": "node_perfume_burn",
+   "timing": "OnBattleFrame",
+   "event_count_threshold": 32,
+   "base_value_mode": "source_heal_done",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "all_enemies",
+   "team_filter": "enemy",
+   "tags": [
+    "battle_frame",
+    "equipment_payload"
+   ],
+   "runtime_conditions": [
+    {
+     "type": "has_enemies"
+    }
+   ],
+   "fit_tags": {
+    "side": "enemy",
+    "count": "multi",
+    "freq": "low"
+   }
+  }
+ ],
+ "passive_abilities": [
+  {
+   "id": "node_perfume_scent",
+   "ability_class": "blade",
+   "effect_type": "regen",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic",
+    "stacking"
+   ],
+   "accepted_timings": [
+    "OnBattleStart",
+    "OnBattleFrame"
+   ],
+   "required_trigger_tags": [
+    "passive_scent"
+   ],
+   "effect_config": {
+    "duration": 10.0,
+    "regen_amp": true,
+    "all_targets": true
+   },
+   "cooldown": 0.0,
+   "priority": 100,
+   "keyword_values": {
+    "stacking": 3
+   }
+  },
+  {
+   "id": "node_perfume_eternal",
+   "ability_class": "blade",
+   "effect_type": "regen",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [
+    "OnBattleFrame"
+   ],
+   "required_trigger_tags": [
+    "passive_eternal"
+   ],
+   "effect_config": {
+    "duration": 0.6,
+    "regen_id": "regen_eternal",
+    "all_targets": true
+   },
+   "cooldown": 0.0,
+   "priority": 100,
+   "unlock_star": 2
+  }
+ ]
+}

@@ -1,0 +1,41 @@
+{
+ "id": "ice_lance_tome",
+ "cost": 1,
+ "color_id": "blue",
+ "weapon_class": "focus",
+ "abilities": [
+  {
+   "id": "ice_lance_tome_hit",
+   "ability_class": "tome",
+   "effect_type": "magic_damage",
+   "value_multiplier": 0.5,
+   "fixed_value": 0.0,
+   "keywords": [
+    "splash",
+    "learning"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "learning": {
+     "per_activation": 1,
+     "bonus_per_learning": 0.08,
+     "cap": 20
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100,
+   "keyword_values": {
+    "splash": 1
+   }
+  }
+ ],
+ "flat_stat_modifiers": {
+  "ability_power": 15
+ },
+ "percent_stat_modifiers": {},
+ "model": "tome",
+ "no_drop": true
+}

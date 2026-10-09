@@ -1,0 +1,38 @@
+{
+ "id": "chaos_dice",
+ "cost": 3,
+ "color_id": "purple",
+ "weapon_class": "polearm",
+ "abilities": [
+  {
+   "id": "chaos_dice_roll",
+   "ability_class": "blade",
+   "effect_type": "dice_damage",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "multi_attack"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "n": 3.0
+   },
+   "cooldown": 4.0,
+   "priority": 100,
+   "keyword_values": {
+    "multi_attack": 3
+   }
+  }
+ ],
+ "flat_stat_modifiers": {
+  "damage_dealt_pct": 0.2,
+  "attack_range": 1.0
+ },
+ "percent_stat_modifiers": {},
+ "model": "dice",
+ "reworked": true,
+ "owner": "node_arcanist"
+}

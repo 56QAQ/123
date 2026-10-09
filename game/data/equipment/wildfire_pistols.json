@@ -1,0 +1,43 @@
+{
+ "id": "wildfire_pistols",
+ "cost": 3,
+ "color_id": "yellow",
+ "weapon_class": "pistols",
+ "abilities": [
+  {
+   "id": "wildfire_pistols_burn",
+   "ability_class": "potion",
+   "effect_type": "magic_damage",
+   "value_multiplier": 1.2,
+   "fixed_value": 0.0,
+   "keywords": [
+    "splash",
+    "stacking"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "variance": {
+     "success": 0.05,
+     "fail": 0.05,
+     "success_mult": 2.0,
+     "fail_mult": 0.0
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100,
+   "keyword_values": {
+    "splash": 2,
+    "stacking": 3
+   }
+  }
+ ],
+ "flat_stat_modifiers": {},
+ "percent_stat_modifiers": {
+  "attack_power": 0.2,
+  "healing_done_pct": 0.1
+ },
+ "no_drop": true
+}

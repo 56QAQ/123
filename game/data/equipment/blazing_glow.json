@@ -1,0 +1,38 @@
+{
+ "id": "blazing_glow",
+ "cost": 3,
+ "color_id": "green",
+ "weapon_class": "sword",
+ "abilities": [
+  {
+   "id": "blazing_glow_cut",
+   "ability_class": "blade",
+   "effect_type": "physical_damage",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "as_normal_attack": true,
+    "chain": {
+     "window": 0.1,
+     "mult": 1.05
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  }
+ ],
+ "flat_stat_modifiers": {},
+ "percent_stat_modifiers": {
+  "attack_speed_multiplier": 0.5
+ },
+ "model": "katana",
+ "reworked": true,
+ "owner": "node_samurai"
+}

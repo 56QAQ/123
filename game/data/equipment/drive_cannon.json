@@ -1,0 +1,54 @@
+{
+ "id": "drive_cannon",
+ "cost": 3,
+ "color_id": "purple",
+ "weapon_class": "rifle",
+ "abilities": [
+  {
+   "id": "drive_cannon_maintenance",
+   "ability_class": "blade",
+   "effect_type": "stat_status",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "status_id": "emergency_maintenance",
+    "duration": 3.0,
+    "max_stacks": 1,
+    "flags": [
+     "buff",
+     "dispellable"
+    ],
+    "stats": {
+     "physical_lifesteal": {
+      "flat": 0.25
+     },
+     "spell_lifesteal": {
+      "flat": 0.25
+     }
+    },
+    "extra_effects": [
+     {
+      "effect_type": "heal",
+      "value_multiplier": 0.5,
+      "target": "target"
+     }
+    ]
+   },
+   "cooldown": 2.5,
+   "priority": 100
+  }
+ ],
+ "flat_stat_modifiers": {
+  "physical_damage_pct": 0.2,
+  "magic_damage_pct": 0.2
+ },
+ "percent_stat_modifiers": {},
+ "model": "drive",
+ "reworked": true,
+ "owner": "node_tinker"
+}

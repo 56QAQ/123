@@ -1,0 +1,52 @@
+{
+ "id": "puppet_lantern",
+ "cost": 3,
+ "color_id": "blue",
+ "weapon_class": "focus",
+ "abilities": [
+  {
+   "id": "puppet_lantern_strings",
+   "ability_class": "blade",
+   "effect_type": "summon_aura",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "heal_ratio": 0.3,
+    "style": "strings",
+    "status": {
+     "status_id": "puppet_strings",
+     "duration": 5.0,
+     "max_stacks": 1,
+     "flags": [
+      "buff",
+      "dispellable"
+     ],
+     "stats": {
+      "attack_power": {
+       "pct": 0.25
+      },
+      "attack_speed_multiplier": {
+       "flat": 0.25
+      }
+     }
+    }
+   },
+   "cooldown": 4.0,
+   "priority": 100
+  }
+ ],
+ "flat_stat_modifiers": {
+  "ability_power": 15
+ },
+ "percent_stat_modifiers": {},
+ "model": "lantern",
+ "reworked": true,
+ "fit_add": [
+  "node_wizard"
+ ]
+}

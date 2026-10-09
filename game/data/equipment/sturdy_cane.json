@@ -1,0 +1,39 @@
+{
+ "id": "sturdy_cane",
+ "cost": 2,
+ "color_id": "black",
+ "weapon_class": "polearm",
+ "abilities": [
+  {
+   "id": "sturdy_cane_mend",
+   "ability_class": "blade",
+   "effect_type": "heal",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic",
+    "multi_attack"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "overheal_to_shield": true,
+    "shield_cap_pct": 0.15
+   },
+   "cooldown": 0.0,
+   "priority": 100,
+   "keyword_values": {
+    "multi_attack": 4
+   }
+  }
+ ],
+ "flat_stat_modifiers": {
+  "healing_done_pct": 0.3
+ },
+ "percent_stat_modifiers": {},
+ "model": "cane",
+ "reworked": true,
+ "owner": "node_druid"
+}

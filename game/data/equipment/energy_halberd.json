@@ -1,0 +1,39 @@
+{
+ "id": "energy_halberd",
+ "cost": 3,
+ "color_id": "cyan",
+ "weapon_class": "polearm",
+ "abilities": [
+  {
+   "id": "energy_halberd_dual",
+   "ability_class": "amulet",
+   "effect_type": "shield",
+   "value_multiplier": 2.0,
+   "fixed_value": 0.0,
+   "keywords": [],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "ally_effect": {
+     "effect_type": "shield",
+     "value_multiplier": 2.0
+    },
+    "enemy_effect": {
+     "effect_type": "magic_damage",
+     "value_multiplier": 2.0
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  }
+ ],
+ "flat_stat_modifiers": {
+  "magic_resistance": 20
+ },
+ "percent_stat_modifiers": {
+  "max_health": 0.1
+ },
+ "no_drop": true
+}

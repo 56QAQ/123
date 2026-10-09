@@ -1,0 +1,47 @@
+{
+ "id": "amplifier_crossbow",
+ "cost": 2,
+ "color_id": "black",
+ "weapon_class": "crossbow",
+ "abilities": [
+  {
+   "id": "amplifier_crossbow_rewrite",
+   "ability_class": "chip",
+   "effect_type": "none",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "value_multiplier": 1.6
+   },
+   "cooldown": 0.0,
+   "priority": 10
+  },
+  {
+   "id": "amplifier_crossbow_shot",
+   "ability_class": "blade",
+   "effect_type": "physical_damage",
+   "value_multiplier": 0.6,
+   "fixed_value": 0.0,
+   "keywords": [
+    "crit"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {},
+   "cooldown": 0.0,
+   "priority": 100
+  }
+ ],
+ "flat_stat_modifiers": {
+  "ability_power": 10
+ },
+ "percent_stat_modifiers": {},
+ "no_drop": true
+}

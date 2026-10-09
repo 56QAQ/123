@@ -1,0 +1,52 @@
+{
+ "id": "dance_fans",
+ "cost": 2,
+ "color_id": "red",
+ "weapon_class": "dual",
+ "abilities": [
+  {
+   "id": "dance_fans_grace",
+   "ability_class": "amulet",
+   "effect_type": "heal",
+   "value_multiplier": 1.5,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic",
+    "multi_attack"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "ally_effect": {
+     "effect_type": "heal",
+     "value_multiplier": 1.5
+    },
+    "enemy_effect": {
+     "effect_type": "true_damage",
+     "value_multiplier": 1.5
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100,
+   "keyword_values": {
+    "multi_attack": 10
+   }
+  }
+ ],
+ "flat_stat_modifiers": {
+  "attack_range": 2.0
+ },
+ "percent_stat_modifiers": {
+  "attack_speed_multiplier": 0.1
+ },
+ "model": "fan",
+ "reworked": true,
+ "owner": "node_dancer",
+ "ranged_projectile": {
+  "kind": "fan_ring",
+  "speed": 11.0,
+  "min_dist": 1.9
+ }
+}

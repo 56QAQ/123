@@ -1,0 +1,87 @@
+{
+ "id": "g8_crane_pistols",
+ "cost": 3,
+ "color_id": "cyan",
+ "weapon_class": "pistols",
+ "abilities": [
+  {
+   "id": "g8_crane_flight",
+   "ability_class": "bullet",
+   "effect_type": "magic_damage",
+   "value_multiplier": 1.0,
+   "fixed_value": 30,
+   "keywords": [
+    "basic",
+    "multi_attack"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "pre_effects": [
+     {
+      "effect_type": "shield",
+      "fixed_value": 30
+     }
+    ],
+    "ally_effect": {
+     "effect_type": "shield"
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100,
+   "keyword_values": {
+    "multi_attack": 3
+   }
+  },
+  {
+   "id": "g8_crane_cut",
+   "ability_class": "bullet",
+   "effect_type": "stat_status",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic",
+    "multi_attack"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "status_id": "g8_papercut",
+    "duration": 5.0,
+    "max_stacks": 5,
+    "flags": [
+     "debuff",
+     "dispellable"
+    ],
+    "stats": {
+     "damage_taken_amp": {
+      "flat": 0.04
+     }
+    },
+    "ally_effect": {
+     "effect_type": "none"
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100,
+   "keyword_values": {
+    "multi_attack": 3
+   }
+  }
+ ],
+ "flat_stat_modifiers": {
+  "max_health": 150,
+  "magic_resistance": 15
+ },
+ "percent_stat_modifiers": {},
+ "model": "g8_crane",
+ "reworked": true,
+ "projectile": "g8_crane",
+ "wclass_override": {
+  "proj_speed": 14.0
+ }
+}

@@ -1,0 +1,230 @@
+{
+ "id": "boss_ember_dragon",
+ "cost": 5,
+ "role": "warrior",
+ "base_weapon_class": "polearm",
+ "weapon_classes": [
+  "polearm"
+ ],
+ "faction_id": "white",
+ "profession_id": "",
+ "available_in_shop": false,
+ "model": "ember_dragon",
+ "weapon_look": "ember_glaive",
+ "skin": "porcelain",
+ "target_priority": "nearest",
+ "radius": 0.5,
+ "scale": 1.3,
+ "anim_overrides": {
+  "polearm": {
+   "idle": "idle_dragon",
+   "run": "run_dragon",
+   "attack": "attack_dragon",
+   "attack_multi": "pierce_dragon"
+  }
+ },
+ "base_stats": {
+  "attack_power": 130,
+  "ability_power": 0.0,
+  "defense": 55,
+  "magic_resistance": 50,
+  "max_health": 8000,
+  "health_regen_per_second": 0.0,
+  "physical_lifesteal": 0.0,
+  "spell_lifesteal": 0.0,
+  "omnivamp": 0.0,
+  "crit_chance": 0.05,
+  "crit_damage": 1.5,
+  "physical_flat_penetration": 0.0,
+  "physical_percent_penetration": 0.0,
+  "magic_flat_penetration": 0.0,
+  "magic_percent_penetration": 0.0,
+  "move_speed": 2.0,
+  "attack_speed_multiplier": 1.0,
+  "damage_dealt_pct": 0.0,
+  "damage_dealt_flat": 0.0,
+  "damage_taken_pct": 0.0,
+  "damage_taken_flat": 0.0,
+  "healing_done_pct": 0.0,
+  "healing_received_pct": 0.0
+ },
+ "triggers": [
+  {
+   "id": "boss_dragon_heart",
+   "timing": "OnBattleStart",
+   "event_count_threshold": 1,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "self",
+   "team_filter": "any",
+   "tags": [
+    "battle_start",
+    "passive_dragon_heart"
+   ]
+  },
+  {
+   "id": "boss_dragon_ignite",
+   "timing": "OnBattleFrame",
+   "event_count_threshold": 20,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "all_enemies",
+   "team_filter": "enemy",
+   "tags": [
+    "battle_frame",
+    "passive_dragon_ignite"
+   ],
+   "target_sort_rule": "random",
+   "max_targets": 3,
+   "runtime_conditions": [
+    {
+     "type": "has_enemies"
+    }
+   ]
+  },
+  {
+   "id": "boss_dragon_spread",
+   "timing": "OnBattleFrame",
+   "event_count_threshold": 12,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "self",
+   "team_filter": "any",
+   "tags": [
+    "battle_frame",
+    "passive_dragon_spread"
+   ]
+  },
+  {
+   "id": "boss_dragon_glaive",
+   "timing": "OnNormalAttackPerform",
+   "event_count_threshold": 1,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "weapon_attack",
+   "team_filter": "enemy",
+   "tags": [
+    "normal_attack_perform",
+    "passive_dragon_glaive"
+   ]
+  }
+ ],
+ "passive_abilities": [
+  {
+   "id": "boss_dragon_heart",
+   "ability_class": "blade",
+   "effect_type": "stat_status",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [
+    "OnBattleStart"
+   ],
+   "required_trigger_tags": [
+    "passive_dragon_heart"
+   ],
+   "effect_config": {
+    "status_id": "dragon_ember",
+    "duration": 0.0,
+    "flags": [
+     "buff",
+     "no_dispel",
+     "ember_keeper",
+     "burn_wither",
+     "burn_immune"
+    ]
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  },
+  {
+   "id": "boss_dragon_ignite",
+   "ability_class": "blade",
+   "effect_type": "ignite_embers",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [
+    "OnBattleFrame"
+   ],
+   "required_trigger_tags": [
+    "passive_dragon_ignite"
+   ],
+   "effect_config": {
+    "all_targets": true,
+    "cap": 60
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  },
+  {
+   "id": "boss_dragon_spread",
+   "ability_class": "blade",
+   "effect_type": "spread_embers",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [
+    "OnBattleFrame"
+   ],
+   "required_trigger_tags": [
+    "passive_dragon_spread"
+   ],
+   "effect_config": {
+    "count": 2,
+    "cap": 60
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  },
+  {
+   "id": "boss_dragon_glaive",
+   "ability_class": "blade",
+   "effect_type": "stat_status",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [
+    "OnNormalAttackPerform"
+   ],
+   "required_trigger_tags": [
+    "passive_dragon_glaive"
+   ],
+   "effect_config": {
+    "status_id": "burning",
+    "duration": 3.0,
+    "max_stacks": 1,
+    "independent": true,
+    "flags": [
+     "debuff",
+     "burning",
+     "dispellable"
+    ],
+    "dot": {
+     "kind": "magic",
+     "amount": 25.0,
+     "interval": 1.0
+    },
+    "duration_by_star": {
+     "1": 3.0,
+     "2": 4.0,
+     "3": 5.0
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  }
+ ]
+}

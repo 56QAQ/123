@@ -1,0 +1,61 @@
+{
+ "id": "g10_chrono_sword",
+ "cost": 2,
+ "color_id": "blue",
+ "weapon_class": "sword",
+ "abilities": [
+  {
+   "id": "g10_chrono_tick",
+   "ability_class": "amulet",
+   "effect_type": "shield",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "multi_attack"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "pre_effects": [
+     {
+      "effect_type": "stat_status",
+      "status_id": "g10_overclock",
+      "duration": 6.0,
+      "max_stacks": 3,
+      "flags": [
+       "buff",
+       "dispellable"
+      ],
+      "stats": {
+       "haste": {
+        "flat": 0.08
+       }
+      }
+     }
+    ],
+    "ally_effect": {
+     "effect_type": "shield",
+     "value_multiplier": 0.8
+    },
+    "enemy_effect": {
+     "effect_type": "magic_damage",
+     "value_multiplier": 0.8
+    }
+   },
+   "cooldown": 3.0,
+   "priority": 100,
+   "keyword_values": {
+    "multi_attack": 3
+   }
+  }
+ ],
+ "flat_stat_modifiers": {
+  "max_health": 120,
+  "haste": 0.08
+ },
+ "percent_stat_modifiers": {},
+ "model": "g10_chrono",
+ "reworked": true
+}

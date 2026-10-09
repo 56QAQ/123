@@ -1,0 +1,55 @@
+{
+ "id": "g10_feast_sword",
+ "cost": 4,
+ "color_id": "red",
+ "weapon_class": "sword",
+ "abilities": [
+  {
+   "id": "g10_feast_toast",
+   "ability_class": "blade",
+   "effect_type": "heal",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "extra_effects": [
+     {
+      "effect_type": "stat_status",
+      "target": "target",
+      "status_id": "g10_feast",
+      "duration": 0.0,
+      "max_stacks": 5,
+      "flags": [
+       "buff",
+       "dispellable"
+      ],
+      "stats": {
+       "attack_power": {
+        "pct": 0.06
+       },
+       "physical_lifesteal": {
+        "flat": 0.04
+       }
+      }
+     }
+    ]
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  }
+ ],
+ "flat_stat_modifiers": {
+  "attack_power": 30,
+  "max_health": 150,
+  "physical_lifesteal": 0.08
+ },
+ "percent_stat_modifiers": {},
+ "model": "g10_feast",
+ "reworked": true
+}

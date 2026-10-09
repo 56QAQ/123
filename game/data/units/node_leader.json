@@ -1,0 +1,185 @@
+{
+ "id": "node_leader",
+ "cost": 2,
+ "role": "archer",
+ "template": "archer",
+ "base_weapon_class": "bow",
+ "weapon_classes": [
+  "bow",
+  "rifle",
+  "pistols",
+  "crossbow"
+ ],
+ "faction_id": "cyan",
+ "profession_id": "engineering",
+ "model": "leader",
+ "reworked": true,
+ "unique": true,
+ "target_priority": "nearest",
+ "radius": 0.42,
+ "base_stats": {
+  "attack_power": 135,
+  "ability_power": 0.0,
+  "defense": 10,
+  "magic_resistance": 22,
+  "max_health": 560,
+  "health_regen_per_second": 0.0,
+  "physical_lifesteal": 0.0,
+  "spell_lifesteal": 0.0,
+  "omnivamp": 0.0,
+  "crit_chance": 0.05,
+  "crit_damage": 1.5,
+  "physical_flat_penetration": 0.0,
+  "physical_percent_penetration": 0.0,
+  "magic_flat_penetration": 0.0,
+  "magic_percent_penetration": 0.0,
+  "move_speed": 1.5,
+  "attack_speed_multiplier": 1.0,
+  "damage_dealt_pct": 0.0,
+  "damage_dealt_flat": 0.0,
+  "damage_taken_pct": 0.0,
+  "damage_taken_flat": 0.0,
+  "healing_done_pct": 0.0,
+  "healing_received_pct": 0.0
+ },
+ "triggers": [
+  {
+   "id": "node_leader_arrows",
+   "timing": "OnBattleStart",
+   "event_count_threshold": 1,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "self",
+   "team_filter": "ally",
+   "tags": [
+    "battle_start",
+    "passive_arrows"
+   ]
+  },
+  {
+   "id": "node_leader_heart",
+   "timing": "OnTeamWiped",
+   "event_count_threshold": 1,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "self",
+   "team_filter": "ally",
+   "tags": [
+    "team_wiped",
+    "passive_heart"
+   ],
+   "unlock_star": 2
+  },
+  {
+   "id": "node_leader_courage",
+   "timing": "OnUnitDied",
+   "event_count_threshold": 1,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 100.0,
+   "target_rule": "self",
+   "team_filter": "ally",
+   "tags": [
+    "unit_died",
+    "equipment_payload"
+   ],
+   "base_value_flat_by_star": {
+    "1": 100.0,
+    "2": 150.0,
+    "3": 200.0
+   },
+   "fit_tags": {
+    "side": "ally",
+    "count": "single",
+    "freq": "low"
+   }
+  }
+ ],
+ "passive_abilities": [
+  {
+   "id": "node_leader_arrows",
+   "ability_class": "blade",
+   "effect_type": "stat_status",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic",
+    "stacking"
+   ],
+   "accepted_timings": [
+    "OnBattleStart"
+   ],
+   "required_trigger_tags": [
+    "passive_arrows"
+   ],
+   "effect_config": {
+    "status_id": "golden_arrow",
+    "flags": [
+     "buff",
+     "no_dispel"
+    ],
+    "max_stacks": 9,
+    "add_stacks": 9,
+    "stats_by_star": {
+     "damage_taken_pct": {
+      "flat": {
+       "1": 0.03,
+       "2": 0.04,
+       "3": 0.05
+      }
+     }
+    },
+    "meta": {
+     "na_ally_effect": "golden_arrow",
+     "dr_stats": {
+      "damage_taken_pct": {
+       "flat": {
+        "1": 0.03,
+        "2": 0.04,
+        "3": 0.05
+       }
+      }
+     }
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100,
+   "keyword_values": {
+    "stacking": 9
+   }
+  },
+  {
+   "id": "node_leader_heart",
+   "ability_class": "blade",
+   "effect_type": "team_revive",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic",
+    "awakening"
+   ],
+   "accepted_timings": [
+    "OnTeamWiped"
+   ],
+   "required_trigger_tags": [
+    "passive_heart"
+   ],
+   "effect_config": {
+    "once_per_battle": true,
+    "hp_per_charge": 0.1,
+    "awakening_key": "node_leader_heart",
+    "awakening_tasks": [
+     {
+      "type": "team_charges_at_least",
+      "count": 27
+     }
+    ]
+   },
+   "cooldown": 0.0,
+   "priority": 100,
+   "unlock_star": 2
+  }
+ ]
+}

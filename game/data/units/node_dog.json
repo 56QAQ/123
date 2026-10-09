@@ -1,0 +1,137 @@
+{
+ "id": "node_dog",
+ "cost": 4,
+ "role": "warrior",
+ "template": "warrior",
+ "base_weapon_class": "heavy",
+ "weapon_classes": [
+  "heavy"
+ ],
+ "faction_id": "purple",
+ "profession_id": "security",
+ "model": "dog",
+ "reworked": true,
+ "target_priority": "nearest_locked",
+ "radius": 0.45,
+ "available_in_shop": false,
+ "summon_only": true,
+ "hide_weapon": true,
+ "base_stats": {
+  "attack_power": 200,
+  "ability_power": 0.0,
+  "defense": 70,
+  "magic_resistance": 45,
+  "max_health": 2600,
+  "health_regen_per_second": 0.0,
+  "physical_lifesteal": 0.0,
+  "spell_lifesteal": 0.0,
+  "omnivamp": 0.0,
+  "crit_chance": 0.05,
+  "crit_damage": 1.5,
+  "physical_flat_penetration": 0.0,
+  "physical_percent_penetration": 0.0,
+  "magic_flat_penetration": 0.0,
+  "magic_percent_penetration": 0.0,
+  "move_speed": 2.6,
+  "attack_speed_multiplier": 0.9,
+  "damage_dealt_pct": 0.0,
+  "damage_dealt_flat": 0.0,
+  "damage_taken_pct": 0.0,
+  "damage_taken_flat": 0.0,
+  "healing_done_pct": 0.0,
+  "healing_received_pct": 0.0
+ },
+ "anim_overrides": {
+  "heavy": {
+   "idle": "idle_dog",
+   "run": "run_dog",
+   "attack": "attack_dog"
+  }
+ },
+ "triggers": [
+  {
+   "id": "node_dog_spectral",
+   "timing": "OnSummoned",
+   "event_count_threshold": 1,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "self",
+   "team_filter": "ally",
+   "tags": [
+    "summoned",
+    "passive_spectral"
+   ],
+   "runtime_conditions": [
+    {
+     "type": "source_meta_missing",
+     "key": "no_spectral"
+    }
+   ]
+  },
+  {
+   "id": "node_dog_partner",
+   "timing": "OnNormalAttackHit",
+   "event_count_threshold": 1,
+   "base_value_mode": "summoner_na_value",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "event_target",
+   "team_filter": "enemy",
+   "tags": [
+    "normal_attack",
+    "passive_partner_bite"
+   ]
+  }
+ ],
+ "passive_abilities": [
+  {
+   "id": "node_dog_spectral",
+   "ability_class": "blade",
+   "effect_type": "stat_status",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [
+    "OnSummoned"
+   ],
+   "required_trigger_tags": [
+    "passive_spectral"
+   ],
+   "effect_config": {
+    "status_id": "spectral",
+    "flags": [
+     "hidden",
+     "no_dispel",
+     "phasing",
+     "untargetable",
+     "invulnerable",
+     "spectral"
+    ]
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  },
+  {
+   "id": "node_dog_partner",
+   "ability_class": "blade",
+   "effect_type": "magic_damage",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [
+    "OnNormalAttackHit"
+   ],
+   "required_trigger_tags": [
+    "passive_partner_bite"
+   ],
+   "effect_config": {},
+   "cooldown": 0.0,
+   "priority": 100
+  }
+ ]
+}

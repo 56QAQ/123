@@ -1,0 +1,50 @@
+{
+ "id": "flame_banner",
+ "cost": 3,
+ "color_id": "red",
+ "weapon_class": "polearm",
+ "abilities": [
+  {
+   "id": "flame_banner_rally",
+   "ability_class": "blade",
+   "effect_type": "stat_status",
+   "value_multiplier": 0.01,
+   "fixed_value": 0.0,
+   "keywords": [
+    "crit",
+    "splash"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "status_id": "flame_banner",
+    "amount_pct_stats": [
+     "attack_power",
+     "attack_speed_multiplier"
+    ],
+    "accumulate": true,
+    "flags": [
+     "buff"
+    ],
+    "splash_ratio": 0.25,
+    "splash_filter": "target_allies",
+    "splash_fx": "banner"
+   },
+   "cooldown": 5.0,
+   "priority": 100,
+   "keyword_values": {
+    "splash": 6
+   }
+  }
+ ],
+ "flat_stat_modifiers": {
+  "crit_chance": 0.2,
+  "crit_damage": 0.4
+ },
+ "percent_stat_modifiers": {},
+ "model": "banner",
+ "reworked": true,
+ "owner": "node_gladiator"
+}

@@ -1,0 +1,492 @@
+{
+ "id": "ch2_purple",
+ "chapter_no": 2,
+ "color": "purple",
+ "theme": "purple",
+ "ui_theme": "frost",
+ "map_kind": "grid",
+ "branch": "purple",
+ "truck_damage_base": 4,
+ "loot_guarantee": {},
+ "material_weights": {
+  "red": 2,
+  "green": 1,
+  "blue": 2
+ },
+ "grid": {
+  "w": 9,
+  "h": 9,
+  "mask": "island",
+  "scar": {
+   "bridges": 2
+  },
+  "mountain": {
+   "ring": 4
+  },
+  "nodes": 30,
+  "loops": 5,
+  "min_path": 10,
+  "max_path": 15,
+  "ap_spare": 4,
+  "weights": {
+   "fight": 46,
+   "event": 16,
+   "elite": 14,
+   "rest": 8,
+   "shop_black": 8,
+   "shop_parts": 8
+  },
+  "min_depth": {
+   "elite": 3,
+   "rest": 4,
+   "shop_black": 2,
+   "shop_parts": 2,
+   "event": 2
+  },
+  "min_count": {
+   "elite": 3,
+   "shop_black": 1,
+   "shop_parts": 1,
+   "event": 2
+  },
+  "max_count": {
+   "elite": 5,
+   "rest": 3,
+   "shop_black": 2,
+   "shop_parts": 2,
+   "event": 5
+  }
+ },
+ "intensity": {
+  "base": 30,
+  "per_depth": 3.0,
+  "max": 62,
+  "jitter": 0.1,
+  "elite_bonus": 14,
+  "boss": 72,
+  "hunt": 88,
+  "strong": {
+   "chance": 0.35,
+   "from": 0.5,
+   "bump": [
+    4,
+    7
+   ]
+  }
+ },
+ "monsters": {
+  "mob_ember_wrath": {
+   "power": 3.6
+  },
+  "mob_ember_sloth": {
+   "power": 3.26
+  },
+  "mob_ember_lust": {
+   "power": 3.45
+  },
+  "mob_ember_glut": {
+   "power": 8.85
+  },
+  "mob_ember_envy": {
+   "power": 3.29
+  },
+  "mob_ember_greed": {
+   "power": 1.0
+  },
+  "elite_ember_vanity": {
+   "power": 29.5,
+   "head": true
+  },
+  "elite_ember_melancholy": {
+   "power": 12.4,
+   "head": true
+  },
+  "elite_ember_pride": {
+   "power": 12.4,
+   "head": true
+  },
+  "boss_ember_dragon": {
+   "power": 35.6,
+   "head": true
+  }
+ },
+ "star_power": {
+  "1": 1.0,
+  "2": 1.61,
+  "3": 2.12
+ },
+ "head_star_power": {
+  "1": 1.0,
+  "2": 1.53
+ },
+ "scale_exp": 1.08,
+ "max_star": [
+  [
+   0,
+   1
+  ],
+  [
+   30,
+   2
+  ],
+  [
+   50,
+   3
+  ]
+ ],
+ "formations": [
+  {
+   "w": 1,
+   "req": [
+    "mob_ember_lust",
+    "mob_ember_wrath"
+   ],
+   "extra": [
+    "mob_ember_glut",
+    "mob_ember_sloth"
+   ]
+  },
+  {
+   "w": 1,
+   "req": [
+    "mob_ember_glut",
+    "mob_ember_sloth"
+   ],
+   "extra": [
+    "mob_ember_lust",
+    "mob_ember_wrath"
+   ]
+  },
+  {
+   "w": 1,
+   "req": [
+    "mob_ember_lust",
+    "mob_ember_lust"
+   ],
+   "extra": [
+    "mob_ember_wrath",
+    "mob_ember_glut"
+   ]
+  },
+  {
+   "w": 1,
+   "req": [
+    "mob_ember_glut",
+    "mob_ember_wrath"
+   ],
+   "extra": [
+    "mob_ember_sloth",
+    "mob_ember_lust"
+   ]
+  },
+  {
+   "w": 1,
+   "req": [
+    "mob_ember_lust",
+    "mob_ember_envy"
+   ],
+   "extra": [
+    "mob_ember_glut",
+    "mob_ember_greed"
+   ]
+  },
+  {
+   "w": 1,
+   "req": [
+    "mob_ember_glut",
+    "mob_ember_greed"
+   ],
+   "extra": [
+    "mob_ember_wrath",
+    "mob_ember_envy"
+   ]
+  },
+  {
+   "w": 1,
+   "req": [
+    "mob_ember_wrath",
+    "mob_ember_wrath",
+    "mob_ember_sloth"
+   ],
+   "extra": [
+    "mob_ember_glut",
+    "mob_ember_lust"
+   ]
+  },
+  {
+   "w": 1,
+   "req": [
+    "mob_ember_lust",
+    "mob_ember_lust",
+    "mob_ember_wrath"
+   ],
+   "extra": [
+    "mob_ember_glut",
+    "mob_ember_sloth"
+   ]
+  },
+  {
+   "w": 1,
+   "req": [
+    "mob_ember_glut",
+    "mob_ember_glut",
+    "mob_ember_sloth"
+   ],
+   "extra": [
+    "mob_ember_wrath",
+    "mob_ember_lust"
+   ]
+  },
+  {
+   "w": 1,
+   "req": [
+    "mob_ember_wrath",
+    "mob_ember_sloth",
+    "mob_ember_lust",
+    "mob_ember_glut"
+   ],
+   "extra": [
+    "mob_ember_lust",
+    "mob_ember_wrath"
+   ]
+  },
+  {
+   "w": 1,
+   "req": [
+    "mob_ember_wrath",
+    "mob_ember_greed",
+    "mob_ember_glut"
+   ],
+   "extra": [
+    "mob_ember_lust",
+    "mob_ember_envy"
+   ]
+  },
+  {
+   "w": 1,
+   "req": [
+    "mob_ember_glut",
+    "mob_ember_envy",
+    "mob_ember_envy"
+   ],
+   "extra": [
+    "mob_ember_lust",
+    "mob_ember_greed"
+   ]
+  }
+ ],
+ "regions": [
+  [
+   "n",
+   "nw",
+   "ne",
+   "n",
+   "nw",
+   "ne"
+  ],
+  [
+   "nw",
+   "ne",
+   "n",
+   "nw",
+   "ne",
+   "n"
+  ],
+  [
+   "w",
+   "e",
+   "nw",
+   "ne",
+   "w",
+   "e"
+  ],
+  [
+   "n",
+   "ne",
+   "e",
+   "n",
+   "ne",
+   "e"
+  ],
+  [
+   "n",
+   "nw",
+   "w",
+   "n",
+   "nw",
+   "w"
+  ]
+ ],
+ "elites": [
+  {
+   "unit": "elite_ember_vanity"
+  },
+  {
+   "unit": "elite_ember_melancholy",
+   "forms": [
+    {
+     "w": 1,
+     "req": [
+      "mob_ember_envy",
+      "mob_ember_greed"
+     ],
+     "extra": [
+      "mob_ember_wrath",
+      "mob_ember_sloth",
+      "mob_ember_envy"
+     ]
+    },
+    {
+     "w": 1,
+     "req": [
+      "mob_ember_sloth",
+      "mob_ember_wrath"
+     ],
+     "extra": [
+      "mob_ember_envy",
+      "mob_ember_greed",
+      "mob_ember_wrath"
+     ]
+    },
+    {
+     "w": 1,
+     "req": [
+      "mob_ember_envy",
+      "mob_ember_wrath"
+     ],
+     "extra": [
+      "mob_ember_greed",
+      "mob_ember_sloth",
+      "mob_ember_envy"
+     ]
+    }
+   ]
+  },
+  {
+   "unit": "elite_ember_pride",
+   "forms": [
+    {
+     "w": 1,
+     "req": [
+      "mob_ember_lust",
+      "mob_ember_glut"
+     ],
+     "extra": [
+      "mob_ember_envy",
+      "mob_ember_wrath"
+     ]
+    },
+    {
+     "w": 1,
+     "req": [
+      "mob_ember_glut",
+      "mob_ember_envy"
+     ],
+     "extra": [
+      "mob_ember_lust",
+      "mob_ember_greed"
+     ]
+    },
+    {
+     "w": 1,
+     "req": [
+      "mob_ember_lust",
+      "mob_ember_wrath"
+     ],
+     "extra": [
+      "mob_ember_glut",
+      "mob_ember_sloth"
+     ]
+    }
+   ]
+  }
+ ],
+ "elite_star2_share": 0.8,
+ "boss": {
+  "unit": "boss_ember_dragon",
+  "star": 1,
+  "solo": true
+ },
+ "hunt": {
+  "unit": "boss_ember_dragon",
+  "star": 2,
+  "region": "s",
+  "solo": true
+ },
+ "income": {
+  "fight": 3,
+  "elite": 4,
+  "boss": 0,
+  "hunt": 0
+ },
+ "orb_drops": {
+  "weak": [
+   "white"
+  ],
+  "strong": [
+   "blue"
+  ],
+  "minions": [
+   "blue"
+  ]
+ },
+ "rest": {
+  "repair_pct": 0.3,
+  "upgrade_max_cost": 3
+ },
+ "battle_map": {
+  "fight": {
+   "low": 3,
+   "high": 2,
+   "frost": 3
+  },
+  "elite": {
+   "low": 2,
+   "high": 3,
+   "frost": 4
+  },
+  "boss": {
+   "low": 2,
+   "high": 2,
+   "frost": 6
+  },
+  "hunt": {
+   "low": 2,
+   "high": 2,
+   "frost": 8
+  }
+ },
+ "shops": {
+  "shop_black": {
+   "weapons": 3,
+   "weapon_max_cost": 4,
+   "parts": 1,
+   "repair": {
+    "amount": 15,
+    "price": 4
+   },
+   "weapon_price": {
+    "1": 3,
+    "2": 5,
+    "3": 7,
+    "4": 9
+   },
+   "refresh": [
+    2,
+    2,
+    3
+   ]
+  },
+  "shop_parts": {
+   "parts": 4,
+   "sell_ratio": 0.5,
+   "refresh": [
+    2,
+    2,
+    3
+   ]
+  }
+ },
+ "next": "",
+ "overworld": "island"
+}

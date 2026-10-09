@@ -1,0 +1,353 @@
+{
+ "id": "node_magi",
+ "cost": 3,
+ "role": "warrior",
+ "template": "warrior",
+ "base_weapon_class": "heavy",
+ "weapon_classes": [
+  "heavy",
+  "polearm"
+ ],
+ "faction_id": "purple",
+ "profession_id": "security",
+ "model": "magi",
+ "reworked": true,
+ "target_priority": "nearest",
+ "radius": 0.44,
+ "base_stats": {
+  "attack_power": 170,
+  "ability_power": 0.0,
+  "defense": 55,
+  "magic_resistance": 35,
+  "max_health": 2000,
+  "health_regen_per_second": 0.0,
+  "physical_lifesteal": 0.0,
+  "spell_lifesteal": 0.0,
+  "omnivamp": 0.0,
+  "crit_chance": 0.05,
+  "crit_damage": 1.5,
+  "physical_flat_penetration": 0.0,
+  "physical_percent_penetration": 0.0,
+  "magic_flat_penetration": 0.0,
+  "magic_percent_penetration": 0.0,
+  "move_speed": 2.4,
+  "attack_speed_multiplier": 0.9,
+  "damage_dealt_pct": 0.0,
+  "damage_dealt_flat": 0.0,
+  "damage_taken_pct": 0.0,
+  "damage_taken_flat": 0.0,
+  "healing_done_pct": 0.0,
+  "healing_received_pct": 0.0
+ },
+ "wclass_overrides": {
+  "heavy": {
+   "interval": 2.4,
+   "windup": 0.75,
+   "recover": 0.55,
+   "multi": {
+    "shape": "area",
+    "min_targets": 2,
+    "anim": "attack_magi",
+    "interval": 2.4,
+    "windup": 0.75,
+    "recover": 0.55
+   }
+  },
+  "polearm": {
+   "interval": 2.4,
+   "windup": 0.75,
+   "recover": 0.55,
+   "multi": {
+    "shape": "line",
+    "min_targets": 2,
+    "anim": "attack_magi",
+    "interval": 2.4,
+    "windup": 0.75,
+    "recover": 0.55
+   }
+  }
+ },
+ "anim_overrides": {
+  "heavy": {
+   "attack": "attack_magi"
+  },
+  "polearm": {
+   "attack": "attack_magi"
+  }
+ },
+ "chant_fx": {
+  "node_magi_finale": {
+   "anim": "chant_magi",
+   "min_star": 1,
+   "domain": true,
+   "float": 1.0,
+   "ultimate": true,
+   "ult_color": "#e6d2ff",
+   "no_ring": true
+  }
+ },
+ "triggers": [
+  {
+   "id": "node_magi_colors",
+   "timing": "OnDamageDealt",
+   "event_count_threshold": 1,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "self",
+   "team_filter": "ally",
+   "tags": [
+    "damage_dealt",
+    "passive_colors"
+   ],
+   "runtime_conditions": [
+    {
+     "type": "event_has_any_tag",
+     "tags": [
+      "physical_damage",
+      "magic_damage"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "node_magi_finale",
+   "timing": "OnChargesEmpty",
+   "event_count_threshold": 1,
+   "base_value_mode": "attack_times_ability_power_pct",
+   "base_value_ratio": 1.5,
+   "base_value_flat": 0.0,
+   "target_rule": "self",
+   "team_filter": "ally",
+   "tags": [
+    "charges_empty",
+    "passive_finale"
+   ],
+   "base_value_ratio_by_star": {
+    "1": 1.5,
+    "2": 1.5,
+    "3": 2.25
+   },
+   "runtime_conditions": [
+    {
+     "type": "event_metadata_equals",
+     "key": "ability_id",
+     "value": "node_magi_colors"
+    }
+   ]
+  },
+  {
+   "id": "node_magi_finale_taunt",
+   "timing": "OnBattleFrame",
+   "event_count_threshold": 1,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "self",
+   "team_filter": "ally",
+   "tags": [
+    "battle_frame",
+    "passive_finale_taunt"
+   ],
+   "runtime_conditions": [
+    {
+     "type": "source_has_status",
+     "status_id": "girl_finale"
+    }
+   ]
+  },
+  {
+   "id": "node_magi_finale_tick",
+   "timing": "OnBattleFrame",
+   "event_count_threshold": 1,
+   "base_value_mode": "attack_times_ability_power_pct",
+   "base_value_ratio": 0.03,
+   "base_value_flat": 0.0,
+   "target_rule": "others_in_splash",
+   "team_filter": "any",
+   "tags": [
+    "battle_frame",
+    "passive_finale_tick"
+   ],
+   "base_value_ratio_by_star": {
+    "1": 0.03,
+    "2": 0.03,
+    "3": 0.045000000000000005
+   },
+   "runtime_conditions": [
+    {
+     "type": "source_has_status",
+     "status_id": "girl_finale"
+    }
+   ]
+  },
+  {
+   "id": "node_magi_paint",
+   "timing": "OnNormalAttackHit",
+   "event_count_threshold": 1,
+   "base_value_mode": "attack_times_ability_power_pct",
+   "base_value_ratio": 0.8,
+   "base_value_flat": 0.0,
+   "target_rule": "nearby_units",
+   "team_filter": "enemy",
+   "tags": [
+    "normal_attack",
+    "equipment_payload"
+   ],
+   "base_value_ratio_by_star": {
+    "1": 0.8,
+    "2": 1.0,
+    "3": 1.2
+   },
+   "target_radius": 2.4,
+   "target_sort_rule": "nearest",
+   "fit_tags": {
+    "side": "enemy",
+    "count": "multi",
+    "freq": "low"
+   }
+  }
+ ],
+ "passive_abilities": [
+  {
+   "id": "node_magi_colors",
+   "ability_class": "blade",
+   "effect_type": "paint",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "charged"
+   ],
+   "accepted_timings": [
+    "OnDamageDealt"
+   ],
+   "required_trigger_tags": [
+    "passive_colors"
+   ],
+   "effect_config": {
+    "status_id": "paint",
+    "x_by_star": {
+     "1": 0,
+     "2": 50,
+     "3": 100
+    }
+   },
+   "cooldown": 99.0,
+   "priority": 100,
+   "keyword_values": {
+    "charged": 9
+   }
+  },
+  {
+   "id": "node_magi_finale",
+   "ability_class": "blade",
+   "effect_type": "magi_finale",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic",
+    "chant",
+    "splash"
+   ],
+   "accepted_timings": [
+    "OnChargesEmpty"
+   ],
+   "required_trigger_tags": [
+    "passive_finale"
+   ],
+   "effect_config": {
+    "release_on_interrupt": true,
+    "splash_is_range": true,
+    "chant_pct_per_second": 0.0,
+    "end_statuses": [
+     "girl_finale"
+    ]
+   },
+   "cooldown": 0.0,
+   "priority": 100,
+   "keyword_values": {
+    "chant": 9,
+    "splash": 5
+   }
+  },
+  {
+   "id": "node_magi_domain",
+   "ability_class": "blade",
+   "effect_type": "stat_status",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [
+    "OnChargesEmpty"
+   ],
+   "required_trigger_tags": [
+    "passive_finale"
+   ],
+   "effect_config": {
+    "status_id": "girl_finale",
+    "duration": 9.5,
+    "max_stacks": 1,
+    "flags": [
+     "buff",
+     "no_dispel"
+    ],
+    "stats": {
+     "damage_taken_pct": {
+      "flat": 0.8
+     }
+    },
+    "meta": {
+     "ally_danger": true
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 50
+  },
+  {
+   "id": "node_magi_finale_taunt",
+   "ability_class": "blade",
+   "effect_type": "aura_taunt",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [
+    "OnBattleFrame"
+   ],
+   "required_trigger_tags": [
+    "passive_finale_taunt"
+   ],
+   "effect_config": {
+    "duration": 0.4
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  },
+  {
+   "id": "node_magi_finale_tick",
+   "ability_class": "blade",
+   "effect_type": "true_damage",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [
+    "OnBattleFrame"
+   ],
+   "required_trigger_tags": [
+    "passive_finale_tick"
+   ],
+   "effect_config": {
+    "all_targets": true
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  }
+ ],
+ "hair": "#c2a3f5",
+ "skin": "porcelain"
+}

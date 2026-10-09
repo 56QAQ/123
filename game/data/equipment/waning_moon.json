@@ -1,0 +1,54 @@
+{
+ "id": "waning_moon",
+ "cost": 3,
+ "color_id": "black",
+ "weapon_class": "sword",
+ "abilities": [
+  {
+   "id": "waning_moon_cut",
+   "ability_class": "bullet",
+   "effect_type": "magic_damage",
+   "value_multiplier": 1.0,
+   "fixed_value": 50.0,
+   "keywords": [
+    "learning"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "learning": {
+     "per_activation": 1,
+     "bonus_per_learning": 0.08,
+     "cap": 15
+    }
+   },
+   "cooldown": 1.0,
+   "priority": 100
+  },
+  {
+   "id": "waning_moon_glow",
+   "ability_class": "blade",
+   "effect_type": "magic_damage",
+   "value_multiplier": 0.2,
+   "fixed_value": 0.0,
+   "keywords": [],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {},
+   "cooldown": 1.0,
+   "priority": 100
+  }
+ ],
+ "flat_stat_modifiers": {
+  "crit_chance": 0.05
+ },
+ "percent_stat_modifiers": {
+  "attack_speed_multiplier": 0.15
+ },
+ "model": "moon",
+ "reworked": true
+}

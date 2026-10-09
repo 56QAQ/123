@@ -1,0 +1,164 @@
+{
+ "id": "blackblade",
+ "cost": 2,
+ "color_id": "red",
+ "weapon_class": "heavy",
+ "abilities": [
+  {
+   "id": "blackblade_oath",
+   "ability_class": "blade",
+   "effect_type": "oath_bestow",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "dark": {
+     "status_id": "dark_oath",
+     "duration": 0.0,
+     "max_stacks": 1,
+     "flags": [
+      "buff",
+      "no_dispel"
+     ],
+     "awaken": {
+      "key": "dark_oath",
+      "tasks": [
+       {
+        "type": "kill_ally_killer"
+       }
+      ],
+      "stats": {
+       "attack_speed_multiplier": {
+        "pct": 1.0
+       },
+       "damage_dealt_pct": {
+        "flat": 1.0
+       }
+      }
+     }
+    },
+    "light": {
+     "status_id": "light_oath",
+     "duration": 0.0,
+     "max_stacks": 1,
+     "flags": [
+      "buff",
+      "no_dispel"
+     ],
+     "awaken": {
+      "key": "light_oath",
+      "tasks": [
+       {
+        "type": "na_taken_at_least",
+        "count": 20
+       }
+      ]
+     },
+     "pairs": [
+      {
+       "trigger": {
+        "id": "light_oath_save_self",
+        "timing": "OnBeforeDeath",
+        "event_count_threshold": 1,
+        "base_value_mode": "fixed",
+        "base_value_ratio": 1.0,
+        "base_value_flat": 0.0,
+        "target_rule": "self",
+        "team_filter": "any",
+        "tags": [
+         "before_death",
+         "status_light_oath_self"
+        ],
+        "max_activations_per_battle": 1,
+        "runtime_conditions": [
+         {
+          "type": "source_status_awakened",
+          "status_id": "light_oath"
+         }
+        ]
+       },
+       "ability": {
+        "id": "light_oath_save_self",
+        "ability_class": "blade",
+        "effect_type": "heal_to_full",
+        "value_multiplier": 1.0,
+        "fixed_value": 0.0,
+        "keywords": [
+         "basic"
+        ],
+        "accepted_timings": [
+         "OnBeforeDeath"
+        ],
+        "required_trigger_tags": [
+         "status_light_oath_self"
+        ],
+        "effect_config": {},
+        "cooldown": 0.0,
+        "priority": 100
+       }
+      },
+      {
+       "trigger": {
+        "id": "light_oath_save_summoner",
+        "timing": "OnSummonerBeforeDeath",
+        "event_count_threshold": 1,
+        "base_value_mode": "fixed",
+        "base_value_ratio": 1.0,
+        "base_value_flat": 0.0,
+        "target_rule": "event_target",
+        "team_filter": "ally",
+        "tags": [
+         "summoner_before_death",
+         "status_light_oath_summoner"
+        ],
+        "max_activations_per_battle": 1,
+        "runtime_conditions": [
+         {
+          "type": "source_status_awakened",
+          "status_id": "light_oath"
+         }
+        ]
+       },
+       "ability": {
+        "id": "light_oath_save_summoner",
+        "ability_class": "blade",
+        "effect_type": "heal_to_full",
+        "value_multiplier": 1.0,
+        "fixed_value": 0.0,
+        "keywords": [
+         "basic"
+        ],
+        "accepted_timings": [
+         "OnSummonerBeforeDeath"
+        ],
+        "required_trigger_tags": [
+         "status_light_oath_summoner"
+        ],
+        "effect_config": {},
+        "cooldown": 0.0,
+        "priority": 100
+       }
+      }
+     ]
+    },
+    "hp_pct": 0.5
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  }
+ ],
+ "flat_stat_modifiers": {
+  "max_health": 60,
+  "defense": 8
+ },
+ "percent_stat_modifiers": {},
+ "model": "blood",
+ "reworked": true,
+ "owner": "node_darkknight"
+}

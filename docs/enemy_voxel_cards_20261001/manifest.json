@@ -1,0 +1,257 @@
+{
+  "project": "D:\\voxel",
+  "source_directory": "G:\\auto_battler\\auto_battler\\rebuild_auto_battler\\assets\\enemies",
+  "method": "built-in image_gen",
+  "task": "Voxel enemy multi-view breakdown modeling reference cards",
+  "total": 12,
+  "units": [
+    {
+      "id": "dummy",
+      "source": "G:\\auto_battler\\auto_battler\\rebuild_auto_battler\\assets\\enemies\\dummy.png",
+      "source_sha256": "38FF475A7716360C85171C062048C01FDBC4B94ED042779A4EF16A8FAE4E716E",
+      "status": "reviewed",
+      "output": "cards/dummy_voxel_card.png",
+      "prompt": "prompts/dummy.txt",
+      "image_references": [
+        "G:\\auto_battler\\auto_battler\\rebuild_auto_battler\\assets\\enemies\\dummy.png",
+        "C:\\Users\\li125\\Documents\\Codex\\2026-09-30\\new-chat\\outputs\\voxel_character_cards\\cards\\archer_voxel_card.png",
+        "D:\\voxel\\docs\\character_sheet.png"
+      ],
+      "width": 1122,
+      "height": 1402,
+      "bytes": 1803967,
+      "output_sha256": "E8DB3DD5EABC9D3274F71F479D5C0C86C7FA012073193F27E66E3677E1A37DD6",
+      "visual_review": "Reviewed for source identity, voxel rendering, main/component/turnaround/detail panel completeness.",
+      "generated_original": "C:\\Users\\li125\\.codex\\generated_images\\01a0ee44-5b4b-7da0-a4d8-6419d466f525\\exec-a8e9e5c5-4966-4057-842e-7594ec2ced26.png",
+      "prompt_sha256": "FB9C94E84E311269BF483E45DABB2D1FC648793529F84AA8E7BA68C8DEFC506E"
+    },
+    {
+      "id": "ember_dragon",
+      "source": "G:\\auto_battler\\auto_battler\\rebuild_auto_battler\\assets\\enemies\\ember_dragon.png",
+      "source_sha256": "2AE6F1F92D8276C122719759863073D6F08105A441818F9CBAE723A7BBAC32BE",
+      "status": "reviewed",
+      "output": "cards/ember_dragon_voxel_card.png",
+      "prompt": "prompts/ember_dragon.txt",
+      "image_references": [
+        "G:\\auto_battler\\auto_battler\\rebuild_auto_battler\\assets\\enemies\\ember_dragon.png",
+        "C:\\Users\\li125\\Documents\\Codex\\2026-09-30\\new-chat\\outputs\\voxel_character_cards\\cards\\archer_voxel_card.png",
+        "D:\\voxel\\docs\\character_sheet.png"
+      ],
+      "width": 1122,
+      "height": 1402,
+      "bytes": 2234657,
+      "output_sha256": "2FF964A628EC9D36DC9C00572FCFE8B79AF7E4FBF7B83FC6AD04961D86263B41",
+      "visual_review": "Reviewed for source identity, voxel rendering, main/component/turnaround/detail panel completeness.",
+      "generated_original": "C:\\Users\\li125\\.codex\\generated_images\\01a0ee44-5b4b-7da0-a4d8-6419d466f525\\exec-d75f66d2-f1da-4514-8215-cde17eab8c48.png",
+      "prompt_sha256": "5A5974CB0A8BB94C4F38E4CDE2CF25B211F59471428E1EBA723A0E514CD03A0E"
+    },
+    {
+      "id": "ember_envy",
+      "source": "G:\\auto_battler\\auto_battler\\rebuild_auto_battler\\assets\\enemies\\ember_envy.png",
+      "source_sha256": "04605ECAAAE36A027C8F9E6FC2E226886FA9D98AC32B0BA968937147B9CC37D0",
+      "status": "reviewed",
+      "output": "cards/ember_envy_voxel_card.png",
+      "prompt": "prompts/ember_envy.txt",
+      "image_references": [
+        "G:\\auto_battler\\auto_battler\\rebuild_auto_battler\\assets\\enemies\\ember_envy.png",
+        "C:\\Users\\li125\\Documents\\Codex\\2026-09-30\\new-chat\\outputs\\voxel_character_cards\\cards\\archer_voxel_card.png",
+        "D:\\voxel\\docs\\character_sheet.png"
+      ],
+      "width": 1122,
+      "height": 1402,
+      "bytes": 2060847,
+      "output_sha256": "2B4CBD2515D518B54A3A54BBC13C35D516C67BD7732F492B9883FFA22D14FEFF",
+      "visual_review": "Reviewed for source identity, voxel rendering, main/component/turnaround/detail panel completeness.",
+      "generated_original": "C:\\Users\\li125\\.codex\\generated_images\\01a0ee44-5b4b-7da0-a4d8-6419d466f525\\exec-7b851c82-251a-460f-82b0-92e3d8b74c16.png",
+      "prompt_sha256": "0D5A4FE2D511DD7D626607CC87F34AA24DC8F33F9B70B6B4E8DABEB0F44ED773"
+    },
+    {
+      "id": "ember_gluttony",
+      "source": "G:\\auto_battler\\auto_battler\\rebuild_auto_battler\\assets\\enemies\\ember_gluttony.png",
+      "source_sha256": "F2CAF135EDF8EC4843BB484FC55A961EFE7B385D6C9ABD88369C11183386FB77",
+      "status": "reviewed",
+      "output": "cards/ember_gluttony_voxel_card.png",
+      "prompt": "prompts/ember_gluttony.txt",
+      "image_references": [
+        "G:\\auto_battler\\auto_battler\\rebuild_auto_battler\\assets\\enemies\\ember_gluttony.png",
+        "C:\\Users\\li125\\Documents\\Codex\\2026-09-30\\new-chat\\outputs\\voxel_character_cards\\cards\\archer_voxel_card.png",
+        "D:\\voxel\\docs\\character_sheet.png"
+      ],
+      "width": 1122,
+      "height": 1402,
+      "bytes": 2105064,
+      "output_sha256": "7D2622CAC9C9627C583661AA3F449A0FD481084C9CF53417F8DB7FB404D7873B",
+      "visual_review": "Reviewed for source identity, voxel rendering, main/component/turnaround/detail panel completeness.",
+      "generated_original": "C:\\Users\\li125\\.codex\\generated_images\\01a0ee44-5b4b-7da0-a4d8-6419d466f525\\exec-1f45ac28-6a61-4db1-8cb8-e7f299f07626.png",
+      "prompt_sha256": "F6D4F61149C5EAE2347EF9C0163604D736B01957CFE5D372A9771DFA6E7B163A"
+    },
+    {
+      "id": "ember_greed",
+      "source": "G:\\auto_battler\\auto_battler\\rebuild_auto_battler\\assets\\enemies\\ember_greed.png",
+      "source_sha256": "2D07A4F53238D7165D19442C17A4589B08921767839318290DE8651BEB8F3ECC",
+      "status": "reviewed",
+      "output": "cards/ember_greed_voxel_card.png",
+      "prompt": "prompts/ember_greed.txt",
+      "image_references": [
+        "G:\\auto_battler\\auto_battler\\rebuild_auto_battler\\assets\\enemies\\ember_greed.png",
+        "C:\\Users\\li125\\Documents\\Codex\\2026-09-30\\new-chat\\outputs\\voxel_character_cards\\cards\\archer_voxel_card.png",
+        "D:\\voxel\\docs\\character_sheet.png"
+      ],
+      "width": 1122,
+      "height": 1402,
+      "bytes": 2160265,
+      "output_sha256": "48F577DC11C199C327E58757C1ADA5CD5EF2830C1273E27613A38FC25B892AC6",
+      "visual_review": "Reviewed for source identity, voxel rendering, main/component/turnaround/detail panel completeness.",
+      "generated_original": "C:\\Users\\li125\\.codex\\generated_images\\01a0ee44-5b4b-7da0-a4d8-6419d466f525\\exec-d5afc0a7-a468-4da8-bd2b-1504b1632411.png",
+      "prompt_sha256": "DAEE1E20DC3939E6FC56A3413657982C8970C69D99148B2733A426FF15242A7A",
+      "revision_prompts": [
+        "prompts/ember_greed_revision.txt"
+      ],
+      "initial_generated_original": "C:\\Users\\li125\\.codex\\generated_images\\01a0ee44-5b4b-7da0-a4d8-6419d466f525\\exec-4c41ef2c-10b0-474b-acf3-65c665499e39.png"
+    },
+    {
+      "id": "ember_lust",
+      "source": "G:\\auto_battler\\auto_battler\\rebuild_auto_battler\\assets\\enemies\\ember_lust.png",
+      "source_sha256": "95FED777DDBEA5C6BC366F5C8C052E3C5496E8BE2B9B31CAFA58A8AA843568EE",
+      "status": "reviewed",
+      "output": "cards/ember_lust_voxel_card.png",
+      "prompt": "prompts/ember_lust.txt",
+      "image_references": [
+        "G:\\auto_battler\\auto_battler\\rebuild_auto_battler\\assets\\enemies\\ember_lust.png",
+        "C:\\Users\\li125\\Documents\\Codex\\2026-09-30\\new-chat\\outputs\\voxel_character_cards\\cards\\archer_voxel_card.png",
+        "D:\\voxel\\docs\\character_sheet.png"
+      ],
+      "width": 1122,
+      "height": 1402,
+      "bytes": 2133258,
+      "output_sha256": "9D73BC29C1190AFAADB56211D6259D3016127AB704CADB2834EC805A0E1325AF",
+      "visual_review": "Reviewed for source identity, voxel rendering, main/component/turnaround/detail panel completeness.",
+      "generated_original": "C:\\Users\\li125\\.codex\\generated_images\\01a0ee44-5b4b-7da0-a4d8-6419d466f525\\exec-f25d7639-27f6-4db7-81f8-c22fd003819a.png",
+      "prompt_sha256": "8566ED19FF7D4D96526CA9D35307EC4CB635B5150CDA7FEB8F455DBC0016550E"
+    },
+    {
+      "id": "ember_melancholy",
+      "source": "G:\\auto_battler\\auto_battler\\rebuild_auto_battler\\assets\\enemies\\ember_melancholy.png",
+      "source_sha256": "4C50A78CF6F82AE832910979C80712C4824261F6BA4910943E85F4D20054CFD5",
+      "status": "reviewed",
+      "output": "cards/ember_melancholy_voxel_card.png",
+      "prompt": "prompts/ember_melancholy.txt",
+      "image_references": [
+        "G:\\auto_battler\\auto_battler\\rebuild_auto_battler\\assets\\enemies\\ember_melancholy.png",
+        "C:\\Users\\li125\\Documents\\Codex\\2026-09-30\\new-chat\\outputs\\voxel_character_cards\\cards\\archer_voxel_card.png",
+        "D:\\voxel\\docs\\character_sheet.png"
+      ],
+      "width": 1122,
+      "height": 1402,
+      "bytes": 2031312,
+      "output_sha256": "83A1DBD6F5243C6B66B8089CD1A37F645314069EEBB07E46AC69F2C06A6583CC",
+      "visual_review": "Reviewed for source identity, voxel rendering, main/component/turnaround/detail panel completeness.",
+      "generated_original": "C:\\Users\\li125\\.codex\\generated_images\\01a0ee44-5b4b-7da0-a4d8-6419d466f525\\exec-d4fe7a51-033d-4683-9dff-da6d8f33a1ea.png",
+      "prompt_sha256": "DD243541F45454A839C18F6F49138E990086DE6E4FD73F8B86B60191FD2347F7"
+    },
+    {
+      "id": "ember_pride",
+      "source": "G:\\auto_battler\\auto_battler\\rebuild_auto_battler\\assets\\enemies\\ember_pride.png",
+      "source_sha256": "3D428069E3C992BF48F585FA75B2B4FCA3AF0263AC099DFBD5D387D6145DEE69",
+      "status": "reviewed",
+      "output": "cards/ember_pride_voxel_card.png",
+      "prompt": "prompts/ember_pride.txt",
+      "image_references": [
+        "G:\\auto_battler\\auto_battler\\rebuild_auto_battler\\assets\\enemies\\ember_pride.png",
+        "C:\\Users\\li125\\Documents\\Codex\\2026-09-30\\new-chat\\outputs\\voxel_character_cards\\cards\\archer_voxel_card.png",
+        "D:\\voxel\\docs\\character_sheet.png"
+      ],
+      "width": 1122,
+      "height": 1402,
+      "bytes": 2240685,
+      "output_sha256": "9604D5095104BFC29E2850F72DC98C5FD040E716A0452571AFD18F5A3CA86FE0",
+      "visual_review": "Reviewed for source identity, voxel rendering, main/component/turnaround/detail panel completeness.",
+      "generated_original": "C:\\Users\\li125\\.codex\\generated_images\\01a0ee44-5b4b-7da0-a4d8-6419d466f525\\exec-52a7715c-0838-42ea-a7cc-142ad3e3f666.png",
+      "prompt_sha256": "4E5651351B7E3EC8EA9830723509505BD099C88EBEC8674ACDAB13107DEE84F5"
+    },
+    {
+      "id": "ember_sloth",
+      "source": "G:\\auto_battler\\auto_battler\\rebuild_auto_battler\\assets\\enemies\\ember_sloth.png",
+      "source_sha256": "943FE2D5A643245E9CB6B7A109568836F93770619D3FBF42A8FABE09CB9E768C",
+      "status": "reviewed",
+      "output": "cards/ember_sloth_voxel_card.png",
+      "prompt": "prompts/ember_sloth.txt",
+      "image_references": [
+        "G:\\auto_battler\\auto_battler\\rebuild_auto_battler\\assets\\enemies\\ember_sloth.png",
+        "C:\\Users\\li125\\Documents\\Codex\\2026-09-30\\new-chat\\outputs\\voxel_character_cards\\cards\\archer_voxel_card.png",
+        "D:\\voxel\\docs\\character_sheet.png"
+      ],
+      "width": 1122,
+      "height": 1402,
+      "bytes": 2104152,
+      "output_sha256": "673B9A174954CA3937FC60DF1FF3BA9CBE53F11F015191E490B124DB5A84DCB0",
+      "visual_review": "Reviewed for source identity, voxel rendering, main/component/turnaround/detail panel completeness.",
+      "generated_original": "C:\\Users\\li125\\.codex\\generated_images\\01a0ee44-5b4b-7da0-a4d8-6419d466f525\\exec-274fdeb7-f204-47f3-9245-796faf941d98.png",
+      "prompt_sha256": "3130A5767D72FE973DCF3547224AD7F6911159ECED682502938D187C9CFE981A"
+    },
+    {
+      "id": "ember_vanity",
+      "source": "G:\\auto_battler\\auto_battler\\rebuild_auto_battler\\assets\\enemies\\ember_vanity.png",
+      "source_sha256": "765A1C82A813C1185D7AD525422E894CBA9638D6981981B5D799D75B8A7517DC",
+      "status": "reviewed",
+      "output": "cards/ember_vanity_voxel_card.png",
+      "prompt": "prompts/ember_vanity.txt",
+      "image_references": [
+        "G:\\auto_battler\\auto_battler\\rebuild_auto_battler\\assets\\enemies\\ember_vanity.png",
+        "C:\\Users\\li125\\Documents\\Codex\\2026-09-30\\new-chat\\outputs\\voxel_character_cards\\cards\\archer_voxel_card.png",
+        "D:\\voxel\\docs\\character_sheet.png"
+      ],
+      "width": 1122,
+      "height": 1402,
+      "bytes": 2265025,
+      "output_sha256": "93C054A977E195F113752F6CE9079BF6E071FF64D5016A2D80C932D8331B05BA",
+      "visual_review": "Reviewed for source identity, voxel rendering, main/component/turnaround/detail panel completeness.",
+      "generated_original": "C:\\Users\\li125\\.codex\\generated_images\\01a0ee44-5b4b-7da0-a4d8-6419d466f525\\exec-dc0be617-47a4-411f-815c-b9d94a519a60.png",
+      "prompt_sha256": "690A50D907B4C5845C2FF64C872636D17C17A583D5AE4809B5140218906BF912"
+    },
+    {
+      "id": "ember_wrath",
+      "source": "G:\\auto_battler\\auto_battler\\rebuild_auto_battler\\assets\\enemies\\ember_wrath.png",
+      "source_sha256": "56996005A149BC2B068F2730F0784A0083A658119F63E8E9A92427B24C382872",
+      "status": "reviewed",
+      "output": "cards/ember_wrath_voxel_card.png",
+      "prompt": "prompts/ember_wrath.txt",
+      "image_references": [
+        "G:\\auto_battler\\auto_battler\\rebuild_auto_battler\\assets\\enemies\\ember_wrath.png",
+        "C:\\Users\\li125\\Documents\\Codex\\2026-09-30\\new-chat\\outputs\\voxel_character_cards\\cards\\archer_voxel_card.png",
+        "D:\\voxel\\docs\\character_sheet.png"
+      ],
+      "width": 1122,
+      "height": 1402,
+      "bytes": 1946640,
+      "output_sha256": "7A8B586E363B016807EDBC504943C05545ABC675DA95BFC8A1D5EC7389AE685E",
+      "visual_review": "Reviewed for source identity, voxel rendering, main/component/turnaround/detail panel completeness.",
+      "generated_original": "C:\\Users\\li125\\.codex\\generated_images\\01a0ee44-5b4b-7da0-a4d8-6419d466f525\\exec-995f106e-571f-4f98-ae53-13f5ff57a459.png",
+      "prompt_sha256": "BB8942FD3D507777F32276BACC4894A4400F4FF9A42F052C2F18C0E40893A97A"
+    },
+    {
+      "id": "rangeddummy",
+      "source": "G:\\auto_battler\\auto_battler\\rebuild_auto_battler\\assets\\enemies\\rangeddummy.png",
+      "source_sha256": "FE4893C82A81BA1BFE5B2A3DF3D38926CE3157C2226397C472802612F6DEAFBF",
+      "status": "reviewed",
+      "output": "cards/rangeddummy_voxel_card.png",
+      "prompt": "prompts/rangeddummy.txt",
+      "image_references": [
+        "G:\\auto_battler\\auto_battler\\rebuild_auto_battler\\assets\\enemies\\rangeddummy.png",
+        "C:\\Users\\li125\\Documents\\Codex\\2026-09-30\\new-chat\\outputs\\voxel_character_cards\\cards\\archer_voxel_card.png",
+        "D:\\voxel\\docs\\character_sheet.png"
+      ],
+      "width": 1122,
+      "height": 1402,
+      "bytes": 1795200,
+      "output_sha256": "674241F28E8A3994659E0C4FE1DCA67C9D3DDD306ECFCC1535E39DA7563F82DD",
+      "visual_review": "Reviewed for source identity, voxel rendering, main/component/turnaround/detail panel completeness.",
+      "generated_original": "C:\\Users\\li125\\.codex\\generated_images\\01a0ee44-5b4b-7da0-a4d8-6419d466f525\\exec-86bc70b1-8bf8-4330-86d0-79d65bddbb67.png",
+      "prompt_sha256": "40173D9A6B4ACA985A5FD92D265A2D61BE10EA59420B2574D52D3F2CDBFEC12B"
+    }
+  ],
+  "generated_count": 12,
+  "completed_at": "2026-10-01T09:43:08.0807299+08:00",
+  "reviewed_count": 12,
+  "status": "complete"
+}

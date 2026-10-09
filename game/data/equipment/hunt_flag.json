@@ -1,0 +1,10 @@
+{
+ "id": "hunt_flag",
+ "cost": 1,
+ "color_id": "red",
+ "weapon_class": "polearm",
+ "slot": "token",
+ "token": "hunt_mark",
+ "abilities": [],
+ "model": "hunt_flag"
+}

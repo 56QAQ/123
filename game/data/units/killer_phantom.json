@@ -1,0 +1,36 @@
+{
+ "id": "killer_phantom",
+ "cost": 1,
+ "role": "assassin",
+ "template": "assassin",
+ "base_weapon_class": "",
+ "weapon_classes": [],
+ "faction_id": "green",
+ "profession_id": "security",
+ "model": "killer",
+ "reworked": true,
+ "target_priority": "nearest",
+ "radius": 0.4,
+ "available_in_shop": false,
+ "summon_only": true,
+ "anim_overrides": {
+  "heavy@odachi": {
+   "attack": "attack_killer_sheathed",
+   "attack_heavy_whirl": "whirl_killer_sheathed"
+  },
+  "heavy@odachi_drawn": {
+   "attack": "attack_killer_drawn",
+   "attack_heavy_whirl": "whirl_killer_drawn"
+  }
+ },
+ "base_stats": {
+  "attack_power": 0,
+  "defense": 0,
+  "magic_resistance": 0,
+  "max_health": 1,
+  "move_speed": 0.0,
+  "attack_range": 1.0
+ },
+ "triggers": [],
+ "passive_abilities": []
+}

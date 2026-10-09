@@ -1,0 +1,46 @@
+{
+ "id": "blight_greatsword",
+ "cost": 4,
+ "color_id": "green",
+ "weapon_class": "heavy",
+ "abilities": [
+  {
+   "id": "blight_greatsword_rot",
+   "ability_class": "bullet",
+   "effect_type": "stat_status",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "status_id": "blight_venom",
+    "duration": 4.0,
+    "max_stacks": 8,
+    "flags": [
+     "debuff",
+     "dispellable"
+    ],
+    "stats": {},
+    "dot": {
+     "kind": "magic",
+     "amount": 8.0,
+     "interval": 1.0
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  }
+ ],
+ "flat_stat_modifiers": {
+  "attack_power": 30,
+  "max_health": 200
+ },
+ "percent_stat_modifiers": {},
+ "model": "g7_blight",
+ "reworked": true
+}

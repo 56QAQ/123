@@ -1,0 +1,48 @@
+{
+ "id": "frenzy_daggers",
+ "cost": 1,
+ "color_id": "red",
+ "weapon_class": "dual",
+ "abilities": [
+  {
+   "id": "frenzy_daggers_hit",
+   "ability_class": "bullet",
+   "effect_type": "physical_damage",
+   "value_multiplier": 1.0,
+   "fixed_value": 25.0,
+   "keywords": [
+    "stacking",
+    "crit"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "extra_effects": [
+     {
+      "effect_type": "stat_status",
+      "target": "self",
+      "status_id": "frenzy_haste",
+      "stats": {
+       "attack_speed_multiplier": {
+        "pct": 0.06
+       }
+      },
+      "duration": 5.0
+     }
+    ]
+   },
+   "cooldown": 0.0,
+   "priority": 100,
+   "keyword_values": {
+    "stacking": 5
+   }
+  }
+ ],
+ "flat_stat_modifiers": {},
+ "percent_stat_modifiers": {
+  "attack_speed_multiplier": 0.08
+ },
+ "no_drop": true
+}

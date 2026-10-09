@@ -1,0 +1,47 @@
+{
+ "id": "annual_ring_spear",
+ "cost": 3,
+ "color_id": "green",
+ "weapon_class": "polearm",
+ "abilities": [
+  {
+   "id": "annual_ring_spear_hit",
+   "ability_class": "blade",
+   "effect_type": "physical_damage",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "crit",
+    "stacking",
+    "eternal"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "extra_effects": [
+     {
+      "effect_type": "permanent_growth",
+      "target": "self",
+      "apply_to": "self",
+      "stat_id": "defense",
+      "fixed_value": 2.0
+     }
+    ]
+   },
+   "cooldown": 0.0,
+   "priority": 100,
+   "keyword_values": {
+    "stacking": 5
+   }
+  }
+ ],
+ "flat_stat_modifiers": {
+  "defense": 8
+ },
+ "percent_stat_modifiers": {
+  "max_health": 0.2
+ },
+ "no_drop": true
+}

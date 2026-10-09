@@ -1,0 +1,2271 @@
+{
+ "rarity_weights": {
+  "1": 6,
+  "2": 3,
+  "3": 1
+ },
+ "events": [
+  {
+   "id": "quiet_street",
+   "rarity": 1,
+   "pool": {
+    "type": "fallback"
+   },
+   "scene": "quiet",
+   "options": [
+    {
+     "id": "leave",
+     "requires": [],
+     "outcomes": [
+      {
+       "w": 1,
+       "id": "leave",
+       "effects": []
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "burning_fountain",
+   "rarity": 2,
+   "pool": {
+    "type": "exclusive",
+    "chapter": "ch1_red"
+   },
+   "scene": "fountain_park",
+   "options": [
+    {
+     "id": "collect",
+     "requires": [
+      {
+       "type": "truck_hp_above",
+       "value": 6
+      }
+     ],
+     "outcomes": [
+      {
+       "w": 1,
+       "id": "collect",
+       "effects": [
+        {
+         "type": "truck_damage",
+         "amount": 6
+        },
+        {
+         "type": "materials",
+         "red": 6
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "destroy",
+     "requires": [
+      {
+       "type": "ranged_attack_at_least",
+       "value": 120
+      }
+     ],
+     "outcomes": [
+      {
+       "w": 1,
+       "id": "destroy_gold",
+       "effects": [
+        {
+         "type": "gold",
+         "amount": 10
+        }
+       ]
+      },
+      {
+       "w": 1,
+       "id": "destroy_fight",
+       "effects": [
+        {
+         "type": "battle",
+         "arena": "fountain_park",
+         "intensity_bonus": 12,
+         "min_intensity": 28,
+         "orbs": [
+          "gold",
+          "blue"
+         ]
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "study",
+     "requires": [],
+     "outcomes": [
+      {
+       "w": 1,
+       "id": "study",
+       "effects": [
+        {
+         "type": "xp",
+         "amount": 6
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "last_tram",
+   "rarity": 1,
+   "pool": {
+    "type": "exclusive",
+    "chapter": "ch1_red"
+   },
+   "scene": "tram_stop",
+   "options": [
+    {
+     "id": "follow",
+     "requires": [
+      {
+       "type": "truck_hp_above",
+       "value": 8
+      }
+     ],
+     "outcomes": [
+      {
+       "w": 1,
+       "id": "follow",
+       "effects": [
+        {
+         "type": "truck_damage",
+         "amount": 8
+        },
+        {
+         "type": "ap",
+         "amount": 2
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "board",
+     "requires": [],
+     "outcomes": [
+      {
+       "w": 1,
+       "id": "board_fight",
+       "effects": [
+        {
+         "type": "battle",
+         "arena": "tram_stop",
+         "intensity_bonus": 6,
+         "min_intensity": 20,
+         "orbs": [
+          "blue",
+          "blue"
+         ]
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "watch",
+     "requires": [],
+     "outcomes": [
+      {
+       "w": 1,
+       "id": "watch",
+       "effects": [
+        {
+         "type": "reveal",
+         "radius": 3
+        },
+        {
+         "type": "xp",
+         "amount": 3
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "gacha_machine",
+   "rarity": 2,
+   "pool": {
+    "type": "common"
+   },
+   "scene": "roadside",
+   "props": [
+    {
+     "kind": "model",
+     "model": "evt_gacha",
+     "pos": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "yaw": 12.0,
+     "scale": 1.0
+    },
+    {
+     "kind": "model",
+     "model": "bld_vending",
+     "pos": [
+      -2.1,
+      0.0,
+      -0.9
+     ],
+     "yaw": 6.0,
+     "scale": 1.0
+    },
+    {
+     "kind": "light",
+     "pos": [
+      0.0,
+      1.7,
+      0.9
+     ],
+     "color": "#ff7ad6",
+     "energy": 2.6,
+     "range": 5.0
+    },
+    {
+     "kind": "light",
+     "pos": [
+      -2.1,
+      1.4,
+      -0.3
+     ],
+     "color": "#9fd8ff",
+     "energy": 1.2,
+     "range": 4.0
+    }
+   ],
+   "options": [
+    {
+     "id": "pull",
+     "requires": [
+      {
+       "type": "gold_at_least",
+       "value": 2,
+       "per_pick": 1
+      }
+     ],
+     "by_pick": [
+      [
+       {
+        "w": 50,
+        "id": "ball_white",
+        "effects": [
+         {
+          "type": "gold",
+          "amount": -2
+         },
+         {
+          "type": "orb",
+          "tier": "white",
+          "count": 1
+         }
+        ],
+        "luck": 1
+       },
+       {
+        "w": 30,
+        "id": "ball_blue",
+        "effects": [
+         {
+          "type": "gold",
+          "amount": -2
+         },
+         {
+          "type": "orb",
+          "tier": "blue",
+          "count": 1
+         }
+        ],
+        "luck": 2
+       },
+       {
+        "w": 12,
+        "id": "eat",
+        "effects": [
+         {
+          "type": "gold",
+          "amount": -2
+         }
+        ],
+        "luck": 0
+       },
+       {
+        "w": 8,
+        "id": "ball_gold",
+        "effects": [
+         {
+          "type": "gold",
+          "amount": -2
+         },
+         {
+          "type": "orb",
+          "tier": "gold",
+          "count": 1
+         }
+        ],
+        "luck": 3
+       }
+      ],
+      [
+       {
+        "w": 50,
+        "id": "ball_white",
+        "effects": [
+         {
+          "type": "gold",
+          "amount": -3
+         },
+         {
+          "type": "orb",
+          "tier": "white",
+          "count": 1
+         }
+        ],
+        "luck": 1
+       },
+       {
+        "w": 30,
+        "id": "ball_blue",
+        "effects": [
+         {
+          "type": "gold",
+          "amount": -3
+         },
+         {
+          "type": "orb",
+          "tier": "blue",
+          "count": 1
+         }
+        ],
+        "luck": 2
+       },
+       {
+        "w": 12,
+        "id": "eat",
+        "effects": [
+         {
+          "type": "gold",
+          "amount": -3
+         }
+        ],
+        "luck": 0
+       },
+       {
+        "w": 8,
+        "id": "ball_gold",
+        "effects": [
+         {
+          "type": "gold",
+          "amount": -3
+         },
+         {
+          "type": "orb",
+          "tier": "gold",
+          "count": 1
+         }
+        ],
+        "luck": 3
+       }
+      ],
+      [
+       {
+        "w": 50,
+        "id": "ball_white",
+        "effects": [
+         {
+          "type": "gold",
+          "amount": -4
+         },
+         {
+          "type": "orb",
+          "tier": "white",
+          "count": 1
+         }
+        ],
+        "luck": 1
+       },
+       {
+        "w": 30,
+        "id": "ball_blue",
+        "effects": [
+         {
+          "type": "gold",
+          "amount": -4
+         },
+         {
+          "type": "orb",
+          "tier": "blue",
+          "count": 1
+         }
+        ],
+        "luck": 2
+       },
+       {
+        "w": 12,
+        "id": "eat",
+        "effects": [
+         {
+          "type": "gold",
+          "amount": -4
+         }
+        ],
+        "luck": 0
+       },
+       {
+        "w": 8,
+        "id": "ball_gold",
+        "effects": [
+         {
+          "type": "gold",
+          "amount": -4
+         },
+         {
+          "type": "orb",
+          "tier": "gold",
+          "count": 1
+         }
+        ],
+        "luck": 3
+       }
+      ],
+      [
+       {
+        "w": 50,
+        "id": "ball_white",
+        "effects": [
+         {
+          "type": "gold",
+          "amount": -5
+         },
+         {
+          "type": "orb",
+          "tier": "white",
+          "count": 1
+         }
+        ],
+        "luck": 1
+       },
+       {
+        "w": 30,
+        "id": "ball_blue",
+        "effects": [
+         {
+          "type": "gold",
+          "amount": -5
+         },
+         {
+          "type": "orb",
+          "tier": "blue",
+          "count": 1
+         }
+        ],
+        "luck": 2
+       },
+       {
+        "w": 12,
+        "id": "eat",
+        "effects": [
+         {
+          "type": "gold",
+          "amount": -5
+         }
+        ],
+        "luck": 0
+       },
+       {
+        "w": 8,
+        "id": "ball_gold",
+        "effects": [
+         {
+          "type": "gold",
+          "amount": -5
+         },
+         {
+          "type": "orb",
+          "tier": "gold",
+          "count": 1
+         }
+        ],
+        "luck": 3
+       }
+      ],
+      [
+       {
+        "w": 50,
+        "id": "ball_white",
+        "effects": [
+         {
+          "type": "gold",
+          "amount": -6
+         },
+         {
+          "type": "orb",
+          "tier": "white",
+          "count": 1
+         }
+        ],
+        "luck": 1
+       },
+       {
+        "w": 30,
+        "id": "ball_blue",
+        "effects": [
+         {
+          "type": "gold",
+          "amount": -6
+         },
+         {
+          "type": "orb",
+          "tier": "blue",
+          "count": 1
+         }
+        ],
+        "luck": 2
+       },
+       {
+        "w": 12,
+        "id": "eat",
+        "effects": [
+         {
+          "type": "gold",
+          "amount": -6
+         }
+        ],
+        "luck": 0
+       },
+       {
+        "w": 8,
+        "id": "ball_gold",
+        "effects": [
+         {
+          "type": "gold",
+          "amount": -6
+         },
+         {
+          "type": "orb",
+          "tier": "gold",
+          "count": 1
+         }
+        ],
+        "luck": 3
+       }
+      ]
+     ],
+     "repeat": {
+      "max": 5
+     },
+     "hidden": true
+    },
+    {
+     "id": "shake",
+     "requires": [
+      {
+       "type": "picked_at_least",
+       "option": "pull",
+       "value": 2
+      }
+     ],
+     "outcomes": [
+      {
+       "w": 40,
+       "id": "shake_ball",
+       "effects": [
+        {
+         "type": "orb",
+         "tier": "white",
+         "count": 1
+        }
+       ],
+       "luck": 1,
+       "close": [
+        "pull",
+        "shake"
+       ]
+      },
+      {
+       "w": 60,
+       "id": "shake_hit",
+       "effects": [
+        {
+         "type": "truck_damage",
+         "amount": 4
+        }
+       ],
+       "luck": 0,
+       "close": [
+        "pull",
+        "shake"
+       ]
+      }
+     ]
+    },
+    {
+     "id": "walk",
+     "requires": [],
+     "outcomes": [
+      {
+       "w": 1,
+       "id": "walk",
+       "effects": []
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "dig_site",
+   "rarity": 1,
+   "pool": {
+    "type": "common"
+   },
+   "scene": "roadside",
+   "props": [
+    {
+     "kind": "model",
+     "model": "evt_dig",
+     "pos": [
+      0.2,
+      0.0,
+      0.3
+     ],
+     "yaw": -8.0,
+     "scale": 1.0
+    },
+    {
+     "kind": "model",
+     "model": "ash_rubble_b",
+     "pos": [
+      -3.0,
+      0.0,
+      -2.2
+     ],
+     "yaw": 30.0,
+     "scale": 1.0
+    },
+    {
+     "kind": "light",
+     "pos": [
+      0.6,
+      1.3,
+      1.4
+     ],
+     "color": "#ffc27a",
+     "energy": 1.6,
+     "range": 5.0
+    }
+   ],
+   "options": [
+    {
+     "id": "dig",
+     "requires": [
+      {
+       "type": "truck_hp_above",
+       "value": 15
+      }
+     ],
+     "by_pick": [
+      [
+       {
+        "w": 1,
+        "id": "dig1",
+        "effects": [
+         {
+          "type": "truck_damage",
+          "amount": 3
+         },
+         {
+          "type": "materials",
+          "green": 3
+         }
+        ]
+       }
+      ],
+      [
+       {
+        "w": 1,
+        "id": "dig2",
+        "effects": [
+         {
+          "type": "truck_damage",
+          "amount": 3
+         },
+         {
+          "type": "materials",
+          "blue": 4
+         }
+        ]
+       }
+      ],
+      [
+       {
+        "w": 60,
+        "id": "dig3_gold",
+        "effects": [
+         {
+          "type": "truck_damage",
+          "amount": 3
+         },
+         {
+          "type": "gold",
+          "amount": 8
+         }
+        ],
+        "luck": 1
+       },
+       {
+        "w": 40,
+        "id": "dig3_empty",
+        "effects": [
+         {
+          "type": "truck_damage",
+          "amount": 3
+         }
+        ],
+        "luck": 0
+       }
+      ],
+      [
+       {
+        "w": 40,
+        "id": "dig4_orb",
+        "effects": [
+         {
+          "type": "truck_damage",
+          "amount": 3
+         },
+         {
+          "type": "orb",
+          "tier": "rainbow",
+          "count": 1
+         }
+        ],
+        "luck": 1
+       },
+       {
+        "w": 60,
+        "id": "dig4_collapse",
+        "effects": [
+         {
+          "type": "truck_damage",
+          "amount": 13
+         },
+         {
+          "type": "ap",
+          "amount": -1
+         }
+        ],
+        "luck": 0,
+        "end": true
+       }
+      ]
+     ],
+     "repeat": {
+      "max": 4
+     }
+    },
+    {
+     "id": "pack_up",
+     "requires": [],
+     "outcomes": [
+      {
+       "w": 1,
+       "id": "pack_up",
+       "effects": []
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "entropy_well",
+   "rarity": 2,
+   "pool": {
+    "type": "common"
+   },
+   "scene": "roadside",
+   "props": [
+    {
+     "kind": "model",
+     "model": "evt_well",
+     "pos": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "yaw": 20.0,
+     "scale": 1.0
+    },
+    {
+     "kind": "light",
+     "pos": [
+      0.0,
+      1.6,
+      0.0
+     ],
+     "color": "#5ad6ff",
+     "energy": 3.0,
+     "range": 6.5
+    },
+    {
+     "kind": "model",
+     "model": "ash_rubble_a",
+     "pos": [
+      2.8,
+      0.0,
+      1.2
+     ],
+     "yaw": 0.0,
+     "scale": 1.0
+    }
+   ],
+   "options": [
+    {
+     "id": "draw",
+     "requires": [],
+     "outcomes": [
+      {
+       "w": 1,
+       "id": "draw",
+       "effects": [
+        {
+         "type": "materials",
+         "blue": 4
+        },
+        {
+         "type": "truck_max",
+         "amount": -3
+        }
+       ]
+      }
+     ],
+     "repeat": {
+      "max": 3
+     }
+    },
+    {
+     "id": "drink",
+     "requires": [
+      {
+       "type": "roster_at_least",
+       "value": 1
+      }
+     ],
+     "outcomes": [
+      {
+       "w": 70,
+       "id": "drink_boon",
+       "effects": [
+        {
+         "type": "perm",
+         "who": "random",
+         "stats": {
+          "damage_dealt_pct": 0.08
+         }
+        }
+       ],
+       "luck": 1
+      },
+      {
+       "w": 30,
+       "id": "drink_lost",
+       "effects": [
+        {
+         "type": "lose_unit",
+         "who": "random",
+         "fallback": {
+          "type": "truck_damage",
+          "amount": 10
+         }
+        }
+       ],
+       "luck": 0
+      }
+     ]
+    },
+    {
+     "id": "cover",
+     "requires": [],
+     "outcomes": [
+      {
+       "w": 1,
+       "id": "cover",
+       "effects": []
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "toll_gate",
+   "rarity": 1,
+   "pool": {
+    "type": "common"
+   },
+   "negative": true,
+   "scene": "roadside",
+   "props": [
+    {
+     "kind": "model",
+     "model": "evt_barricade",
+     "pos": [
+      0.0,
+      0.0,
+      -0.6
+     ],
+     "yaw": 0.0,
+     "scale": 1.0
+    },
+    {
+     "kind": "model",
+     "model": "ash_car",
+     "pos": [
+      -3.3,
+      0.0,
+      -1.5
+     ],
+     "yaw": 18.0,
+     "scale": 1.0
+    },
+    {
+     "kind": "model",
+     "model": "ash_car",
+     "pos": [
+      3.5,
+      0.0,
+      -1.3
+     ],
+     "yaw": -22.0,
+     "scale": 1.0
+    },
+    {
+     "kind": "model",
+     "model": "evt_searchlight",
+     "pos": [
+      1.5,
+      0.0,
+      -2.3
+     ],
+     "yaw": 200.0,
+     "scale": 1.0
+    },
+    {
+     "kind": "light",
+     "pos": [
+      1.3,
+      2.1,
+      -1.6
+     ],
+     "color": "#fff1c0",
+     "energy": 3.2,
+     "range": 8.0
+    }
+   ],
+   "options": [
+    {
+     "id": "pay",
+     "requires": [
+      {
+       "type": "gold_at_least",
+       "value": 6
+      }
+     ],
+     "outcomes": [
+      {
+       "w": 1,
+       "id": "pay",
+       "effects": [
+        {
+         "type": "gold",
+         "amount": -6
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "hand_weapon",
+     "requires": [
+      {
+       "type": "has_weapon"
+      }
+     ],
+     "outcomes": [
+      {
+       "w": 1,
+       "id": "hand_weapon",
+       "effects": [
+        {
+         "type": "lose_weapon"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "force",
+     "requires": [
+      {
+       "type": "truck_hp_above",
+       "value": 20
+      }
+     ],
+     "outcomes": [
+      {
+       "w": 1,
+       "id": "force",
+       "effects": [
+        {
+         "type": "truck_damage",
+         "amount": 12
+        },
+        {
+         "type": "ap",
+         "amount": -1
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "turn",
+     "requires": [],
+     "outcomes": [
+      {
+       "w": 1,
+       "id": "turn",
+       "effects": [
+        {
+         "type": "ap",
+         "amount": -2
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "blowout",
+   "rarity": 1,
+   "pool": {
+    "type": "common"
+   },
+   "negative": true,
+   "scene": "roadside",
+   "props": [
+    {
+     "kind": "model",
+     "model": "truck",
+     "pos": [
+      0.0,
+      0.0,
+      -0.2
+     ],
+     "yaw": -24.0,
+     "scale": 1.0
+    },
+    {
+     "kind": "model",
+     "model": "evt_tire_kit",
+     "pos": [
+      2.2,
+      0.0,
+      1.3
+     ],
+     "yaw": 35.0,
+     "scale": 1.0
+    },
+    {
+     "kind": "light",
+     "pos": [
+      2.0,
+      1.2,
+      1.6
+     ],
+     "color": "#ffd9a0",
+     "energy": 1.6,
+     "range": 5.0
+    }
+   ],
+   "options": [
+    {
+     "id": "spare",
+     "requires": [],
+     "outcomes": [
+      {
+       "w": 1,
+       "id": "spare",
+       "effects": [
+        {
+         "type": "ap",
+         "amount": -2
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "rim",
+     "requires": [
+      {
+       "type": "truck_hp_above",
+       "value": 20
+      }
+     ],
+     "outcomes": [
+      {
+       "w": 1,
+       "id": "rim",
+       "effects": [
+        {
+         "type": "truck_damage",
+         "amount": 10
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "part",
+     "requires": [
+      {
+       "type": "has_part"
+      }
+     ],
+     "outcomes": [
+      {
+       "w": 1,
+       "id": "part",
+       "effects": [
+        {
+         "type": "lose_part"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "spoiled_supplies",
+   "rarity": 1,
+   "pool": {
+    "type": "common"
+   },
+   "negative": true,
+   "scene": "roadside",
+   "props": [
+    {
+     "kind": "model",
+     "model": "truck",
+     "pos": [
+      -0.6,
+      0.0,
+      -1.4
+     ],
+     "yaw": 155.0,
+     "scale": 1.0
+    },
+    {
+     "kind": "model",
+     "model": "evt_canisters",
+     "pos": [
+      0.9,
+      0.0,
+      1.1
+     ],
+     "yaw": -12.0,
+     "scale": 1.0
+    },
+    {
+     "kind": "fire",
+     "pos": [
+      1.3,
+      0.15,
+      1.5
+     ],
+     "size": 0.22,
+     "smoke": true
+    },
+    {
+     "kind": "light",
+     "pos": [
+      0.9,
+      1.2,
+      1.4
+     ],
+     "color": "#9fffb0",
+     "energy": 1.4,
+     "range": 4.0
+    }
+   ],
+   "options": [
+    {
+     "id": "dump",
+     "requires": [],
+     "outcomes": [
+      {
+       "w": 1,
+       "id": "dump",
+       "effects": [
+        {
+         "type": "materials",
+         "half": "most"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "sort",
+     "requires": [],
+     "outcomes": [
+      {
+       "w": 1,
+       "id": "sort",
+       "effects": [
+        {
+         "type": "ap",
+         "amount": -1
+        },
+        {
+         "type": "materials",
+         "red": -1,
+         "green": -1,
+         "blue": -1
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "ignore",
+     "requires": [],
+     "outcomes": [
+      {
+       "w": 1,
+       "id": "ignore",
+       "effects": [
+        {
+         "type": "truck_damage",
+         "amount": 6
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ash_storm",
+   "rarity": 2,
+   "pool": {
+    "type": "color",
+    "color": "red"
+   },
+   "negative": true,
+   "scene": "roadside",
+   "props": [
+    {
+     "kind": "model",
+     "model": "evt_sign",
+     "pos": [
+      1.4,
+      0.0,
+      -0.4
+     ],
+     "yaw": 22.0,
+     "scale": 1.0
+    },
+    {
+     "kind": "model",
+     "model": "ash_rubble_a",
+     "pos": [
+      -2.2,
+      0.0,
+      0.8
+     ],
+     "yaw": 70.0,
+     "scale": 1.0
+    },
+    {
+     "kind": "embers",
+     "size": 30,
+     "amount": 900,
+     "height": 9.0
+    },
+    {
+     "kind": "light",
+     "pos": [
+      0.0,
+      2.5,
+      0.0
+     ],
+     "color": "#ff8a4a",
+     "energy": 2.2,
+     "range": 9.0
+    }
+   ],
+   "options": [
+    {
+     "id": "drive",
+     "requires": [
+      {
+       "type": "truck_hp_above",
+       "value": 20
+      }
+     ],
+     "outcomes": [
+      {
+       "w": 1,
+       "id": "drive",
+       "effects": [
+        {
+         "type": "truck_damage",
+         "amount": 8
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "wait",
+     "requires": [],
+     "outcomes": [
+      {
+       "w": 1,
+       "id": "wait",
+       "effects": [
+        {
+         "type": "ap",
+         "amount": -2
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "dark",
+     "requires": [],
+     "outcomes": [
+      {
+       "w": 1,
+       "id": "dark",
+       "effects": [
+        {
+         "type": "flag",
+         "id": "next_battle_intensity",
+         "value": 6,
+         "until": "next_battle"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "lost_armory",
+   "rarity": 3,
+   "pool": {
+    "type": "common"
+   },
+   "scene": "roadside",
+   "props": [
+    {
+     "kind": "model",
+     "model": "evt_bunker",
+     "pos": [
+      0.0,
+      0.0,
+      -1.2
+     ],
+     "yaw": 0.0,
+     "scale": 1.0
+    },
+    {
+     "kind": "light",
+     "pos": [
+      -0.1,
+      1.0,
+      0.9
+     ],
+     "color": "#ffd080",
+     "energy": 2.0,
+     "range": 5.0
+    },
+    {
+     "kind": "light",
+     "pos": [
+      1.05,
+      1.25,
+      0.6
+     ],
+     "color": "#8dff9a",
+     "energy": 0.9,
+     "range": 2.5
+    }
+   ],
+   "options": [
+    {
+     "id": "hack",
+     "requires": [
+      {
+       "type": "level_at_least",
+       "value": 5
+      }
+     ],
+     "outcomes": [
+      {
+       "w": 1,
+       "id": "hack",
+       "effects": [
+        {
+         "type": "weapon",
+         "max_cost": 4
+        },
+        {
+         "type": "gold",
+         "amount": 8
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "blast",
+     "requires": [
+      {
+       "type": "ranged_attack_at_least",
+       "value": 150
+      }
+     ],
+     "outcomes": [
+      {
+       "w": 1,
+       "id": "blast",
+       "effects": [
+        {
+         "type": "weapon",
+         "max_cost": 3
+        },
+        {
+         "type": "truck_damage",
+         "amount": 6
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "door",
+     "requires": [],
+     "outcomes": [
+      {
+       "w": 1,
+       "id": "door",
+       "effects": [
+        {
+         "type": "gold",
+         "amount": 5
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "wandering_mechanic",
+   "rarity": 2,
+   "pool": {
+    "type": "common"
+   },
+   "scene": "roadside",
+   "props": [
+    {
+     "kind": "model",
+     "model": "evt_pickup",
+     "pos": [
+      0.5,
+      0.0,
+      -0.7
+     ],
+     "yaw": -32.0,
+     "scale": 1.0
+    },
+    {
+     "kind": "light",
+     "pos": [
+      0.3,
+      2.3,
+      -0.5
+     ],
+     "color": "#9fd0ff",
+     "energy": 3.4,
+     "range": 4.5
+    },
+    {
+     "kind": "fire",
+     "pos": [
+      2.4,
+      0.1,
+      1.9
+     ],
+     "size": 0.3,
+     "smoke": false
+    }
+   ],
+   "options": [
+    {
+     "id": "overhaul",
+     "requires": [
+      {
+       "type": "gold_at_least",
+       "value": 10
+      }
+     ],
+     "outcomes": [
+      {
+       "w": 1,
+       "id": "overhaul",
+       "effects": [
+        {
+         "type": "gold",
+         "amount": -10
+        },
+        {
+         "type": "truck_max",
+         "amount": 10
+        },
+        {
+         "type": "truck_heal",
+         "pct": 1.0
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "part",
+     "requires": [],
+     "outcomes": [
+      {
+       "w": 1,
+       "id": "part",
+       "effects": [
+        {
+         "type": "part",
+         "id": "random",
+         "fallback": {
+          "type": "gold",
+          "amount": 3
+         }
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "join",
+     "requires": [],
+     "outcomes": [
+      {
+       "w": 1,
+       "id": "join",
+       "effects": [
+        {
+         "type": "unit",
+         "cost": 3,
+         "star": 1
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "orb_rain",
+   "rarity": 3,
+   "pool": {
+    "type": "common"
+   },
+   "scene": "roadside",
+   "props": [
+    {
+     "kind": "model",
+     "model": "evt_crater",
+     "pos": [
+      0.0,
+      0.0,
+      0.2
+     ],
+     "yaw": 0.0,
+     "scale": 1.0
+    },
+    {
+     "kind": "sphere",
+     "pos": [
+      -1.6,
+      0.35,
+      1.2
+     ],
+     "color": "#6fc8ff",
+     "r": 0.3
+    },
+    {
+     "kind": "sphere",
+     "pos": [
+      1.9,
+      0.35,
+      0.6
+     ],
+     "color": "#6fc8ff",
+     "r": 0.3
+    },
+    {
+     "kind": "sphere",
+     "pos": [
+      0.4,
+      0.35,
+      2.3
+     ],
+     "color": "#6fc8ff",
+     "r": 0.3
+    },
+    {
+     "kind": "sphere",
+     "pos": [
+      -0.3,
+      0.45,
+      -0.4
+     ],
+     "color": "#ffd36b",
+     "r": 0.38
+    },
+    {
+     "kind": "sphere",
+     "pos": [
+      2.8,
+      0.3,
+      -1.6
+     ],
+     "color": "#ffffff",
+     "r": 0.26
+    },
+    {
+     "kind": "sphere",
+     "pos": [
+      -3.4,
+      0.4,
+      -0.9
+     ],
+     "color": "#c86aff",
+     "r": 0.34
+    }
+   ],
+   "cam": {
+    "focus": [
+     0.0,
+     0.8,
+     0.2
+    ],
+    "dist": 9.5,
+    "height": 4.4,
+    "yaw": 16.0
+   },
+   "options": [
+    {
+     "id": "near",
+     "requires": [],
+     "outcomes": [
+      {
+       "w": 1,
+       "id": "near",
+       "effects": [
+        {
+         "type": "orb",
+         "tier": "blue",
+         "count": 3
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "big",
+     "requires": [
+      {
+       "type": "ap_at_least",
+       "value": 2
+      }
+     ],
+     "outcomes": [
+      {
+       "w": 1,
+       "id": "big",
+       "effects": [
+        {
+         "type": "ap",
+         "amount": -2
+        },
+        {
+         "type": "orb",
+         "tier": "gold",
+         "count": 1
+        },
+        {
+         "type": "orb",
+         "tier": "white",
+         "count": 1
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "chase",
+     "requires": [],
+     "outcomes": [
+      {
+       "w": 50,
+       "id": "chase_orb",
+       "effects": [
+        {
+         "type": "orb",
+         "tier": "rainbow",
+         "count": 1
+        }
+       ],
+       "luck": 1
+      },
+      {
+       "w": 50,
+       "id": "chase_lost",
+       "effects": [],
+       "luck": 0
+      }
+     ],
+     "hidden": true
+    }
+   ]
+  },
+  {
+   "id": "old_altar",
+   "rarity": 2,
+   "pool": {
+    "type": "common"
+   },
+   "scene": "roadside",
+   "props": [
+    {
+     "kind": "model",
+     "model": "altar",
+     "pos": [
+      0.0,
+      0.0,
+      -0.5
+     ],
+     "yaw": 0.0,
+     "scale": 1.0
+    },
+    {
+     "kind": "light",
+     "pos": [
+      0.0,
+      1.7,
+      -0.3
+     ],
+     "color": "#ffd36b",
+     "energy": 2.4,
+     "range": 6.5
+    },
+    {
+     "kind": "fire",
+     "pos": [
+      -0.9,
+      0.95,
+      0.1
+     ],
+     "size": 0.16,
+     "smoke": false
+    },
+    {
+     "kind": "fire",
+     "pos": [
+      0.9,
+      0.95,
+      0.1
+     ],
+     "size": 0.16,
+     "smoke": false
+    }
+   ],
+   "cam": {
+    "focus": [
+     0.0,
+     1.3,
+     -0.3
+    ],
+    "dist": 8.5,
+    "height": 3.4,
+    "yaw": 8.0
+   },
+   "options": [
+    {
+     "id": "offer_gold",
+     "requires": [
+      {
+       "type": "gold_at_least",
+       "value": 6
+      }
+     ],
+     "outcomes": [
+      {
+       "w": 1,
+       "id": "offer_gold",
+       "effects": [
+        {
+         "type": "gold",
+         "amount": -6
+        },
+        {
+         "type": "perm",
+         "who": "strongest",
+         "stats": {
+          "damage_dealt_pct": 0.1
+         }
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "offer_hp",
+     "requires": [
+      {
+       "type": "truck_hp_above",
+       "value": 25
+      }
+     ],
+     "outcomes": [
+      {
+       "w": 1,
+       "id": "offer_hp",
+       "effects": [
+        {
+         "type": "truck_damage",
+         "amount": 12
+        },
+        {
+         "type": "star_up",
+         "max_cost": 3,
+         "fallback": {
+          "type": "xp",
+          "amount": 6
+         }
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "offer_mats",
+     "requires": [
+      {
+       "type": "materials_at_least",
+       "value": 3
+      }
+     ],
+     "outcomes": [
+      {
+       "w": 1,
+       "id": "offer_mats",
+       "effects": [
+        {
+         "type": "materials",
+         "red": -3,
+         "green": -3,
+         "blue": -3
+        },
+        {
+         "type": "flag",
+         "id": "shop_odds_shift",
+         "value": 1,
+         "until": "chapter"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "study",
+     "requires": [],
+     "outcomes": [
+      {
+       "w": 1,
+       "id": "study",
+       "effects": [
+        {
+         "type": "xp",
+         "amount": 4
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "old_friend",
+   "rarity": 2,
+   "pool": {
+    "type": "common"
+   },
+   "scene": "roadside",
+   "props": [
+    {
+     "kind": "model",
+     "model": "evt_friend",
+     "pos": [
+      0.1,
+      0.0,
+      0.1
+     ],
+     "yaw": 24.0,
+     "scale": 1.0
+    },
+    {
+     "kind": "model",
+     "model": "evt_bench",
+     "pos": [
+      2.6,
+      0.0,
+      -0.9
+     ],
+     "yaw": 95.0,
+     "scale": 1.0
+    },
+    {
+     "kind": "light",
+     "pos": [
+      0.4,
+      1.5,
+      1.0
+     ],
+     "color": "#ffd9a0",
+     "energy": 1.8,
+     "range": 5.0
+    }
+   ],
+   "cam": {
+    "focus": [
+     0.0,
+     1.0,
+     0.0
+    ],
+    "dist": 7.5,
+    "height": 3.0,
+    "yaw": 14.0
+   },
+   "options": [
+    {
+     "id": "take_weapon",
+     "requires": [],
+     "outcomes": [
+      {
+       "w": 1,
+       "id": "take_weapon",
+       "effects": [
+        {
+         "type": "weapon",
+         "max_cost": 3
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "favor",
+     "requires": [],
+     "outcomes": [
+      {
+       "w": 1,
+       "id": "favor",
+       "effects": [
+        {
+         "type": "flag",
+         "id": "income_bonus",
+         "value": 2,
+         "until": "chapter"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "join",
+     "requires": [],
+     "outcomes": [
+      {
+       "w": 60,
+       "id": "join_yes",
+       "effects": [
+        {
+         "type": "unit",
+         "cost": 2,
+         "star": 1
+        }
+       ],
+       "luck": 1
+      },
+      {
+       "w": 40,
+       "id": "join_no",
+       "effects": [
+        {
+         "type": "xp",
+         "amount": 5
+        }
+       ],
+       "luck": 0
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "arenas": {
+  "fountain_park": {
+   "theme": "red",
+   "set": "fountain_park",
+   "cam_z": -2.4,
+   "regions": [
+    "nw",
+    "ne",
+    "nw",
+    "ne",
+    "w",
+    "e"
+   ],
+   "obstacles": [
+    {
+     "x": 10,
+     "y": 3,
+     "w": 5,
+     "h": 4,
+     "kind": "low",
+     "style": "burn_fountain",
+     "terrain": "burning",
+     "oz": -0.5
+    },
+    {
+     "x": 6,
+     "y": 7,
+     "w": 1,
+     "h": 2,
+     "kind": "low",
+     "style": "evt_bench"
+    },
+    {
+     "x": 18,
+     "y": 8,
+     "w": 1,
+     "h": 2,
+     "kind": "low",
+     "style": "evt_bench"
+    },
+    {
+     "x": 5,
+     "y": 13,
+     "w": 1,
+     "h": 1,
+     "kind": "high",
+     "style": "evt_tree"
+    },
+    {
+     "x": 19,
+     "y": 13,
+     "w": 1,
+     "h": 1,
+     "kind": "high",
+     "style": "evt_tree"
+    },
+    {
+     "x": 8,
+     "y": 15,
+     "w": 1,
+     "h": 1,
+     "kind": "high",
+     "style": "evt_tree"
+    },
+    {
+     "x": 15,
+     "y": 15,
+     "w": 3,
+     "h": 1,
+     "kind": "low",
+     "style": "evt_swing"
+    }
+   ],
+   "embers": [
+    {
+     "x": 16,
+     "y": 4,
+     "w": 1,
+     "h": 1,
+     "style": "ember_jet"
+    },
+    {
+     "x": 15,
+     "y": 6,
+     "w": 1,
+     "h": 1,
+     "style": "ember_jet"
+    },
+    {
+     "x": 14,
+     "y": 7,
+     "w": 1,
+     "h": 1,
+     "style": "ember_jet"
+    },
+    {
+     "x": 12,
+     "y": 8,
+     "w": 1,
+     "h": 1,
+     "style": "ember_jet"
+    },
+    {
+     "x": 10,
+     "y": 7,
+     "w": 1,
+     "h": 1,
+     "style": "ember_jet"
+    },
+    {
+     "x": 9,
+     "y": 6,
+     "w": 1,
+     "h": 1,
+     "style": "ember_jet"
+    },
+    {
+     "x": 8,
+     "y": 4,
+     "w": 1,
+     "h": 1,
+     "style": "ember_jet"
+    }
+   ],
+   "hazards": [
+    {
+     "type": "eruption",
+     "id": "fountain",
+     "tag": "fire_arc",
+     "center": [
+      0.0,
+      -5.5
+     ],
+     "height": 3.3,
+     "first": 5.0,
+     "period": 9.0,
+     "warn": 2.0,
+     "flight": 1.2,
+     "embers": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+     ]
+    }
+   ]
+  },
+  "tram_stop": {
+   "theme": "red",
+   "set": "tram_stop",
+   "cam_z": -1.2,
+   "regions": [
+    "n"
+   ],
+   "obstacles": [
+    {
+     "x": 5,
+     "y": 9,
+     "w": 1,
+     "h": 1,
+     "kind": "high",
+     "style": "ash_pillar"
+    },
+    {
+     "x": 18,
+     "y": 10,
+     "w": 2,
+     "h": 1,
+     "kind": "low",
+     "style": "ash_car"
+    },
+    {
+     "x": 6,
+     "y": 14,
+     "w": 1,
+     "h": 1,
+     "kind": "low",
+     "style": "burn_debris",
+     "terrain": "burning"
+    },
+    {
+     "x": 14,
+     "y": 15,
+     "w": 2,
+     "h": 1,
+     "kind": "low",
+     "style": "burn_car",
+     "terrain": "burning"
+    },
+    {
+     "x": 19,
+     "y": 15,
+     "w": 1,
+     "h": 1,
+     "kind": "low",
+     "style": "ash_rubble_a"
+    }
+   ],
+   "embers": [],
+   "hazards": [
+    {
+     "type": "sweep",
+     "id": "tram",
+     "tag": "tram",
+     "z": -7.0,
+     "half_width": 1.1,
+     "length": 9.8,
+     "rest_x": -17.6,
+     "accel": 7.0,
+     "speed": 11.0,
+     "first": 6.0,
+     "period": 13.0,
+     "warn": 3.0
+    }
+   ]
+  }
+ }
+}

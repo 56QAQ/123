@@ -1,0 +1,204 @@
+{
+ "id": "node_archer",
+ "cost": 1,
+ "role": "archer",
+ "template": "archer",
+ "base_weapon_class": "rifle",
+ "weapon_classes": [
+  "rifle",
+  "crossbow",
+  "pistols"
+ ],
+ "faction_id": "red",
+ "profession_id": "engineering",
+ "model": "archer",
+ "reworked": true,
+ "radius": 0.42,
+ "base_stats": {
+  "attack_power": 104,
+  "ability_power": 0.0,
+  "defense": 0.0,
+  "magic_resistance": 20,
+  "max_health": 340,
+  "health_regen_per_second": 0.0,
+  "physical_lifesteal": 0.0,
+  "spell_lifesteal": 0.0,
+  "omnivamp": 0.0,
+  "crit_chance": 0.05,
+  "crit_damage": 1.5,
+  "physical_flat_penetration": 0.0,
+  "physical_percent_penetration": 0.0,
+  "magic_flat_penetration": 0.0,
+  "magic_percent_penetration": 0.0,
+  "move_speed": 1.4,
+  "attack_speed_multiplier": 1.0,
+  "damage_dealt_pct": 0.0,
+  "damage_dealt_flat": 0.0,
+  "damage_taken_pct": 0.0,
+  "damage_taken_flat": 0.0,
+  "healing_done_pct": 0.0,
+  "healing_received_pct": 0.0
+ },
+ "triggers": [
+  {
+   "id": "node_archer_rapid_fire",
+   "timing": "OnNormalAttackPerform",
+   "event_count_threshold": 2,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "self",
+   "team_filter": "ally",
+   "tags": [
+    "normal_attack",
+    "passive_rapid_fire"
+   ]
+  },
+  {
+   "id": "node_archer_quick_reload",
+   "timing": "OnBattleStart",
+   "event_count_threshold": 1,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "self",
+   "team_filter": "ally",
+   "tags": [
+    "battle_start",
+    "passive_quick_reload"
+   ],
+   "runtime_conditions": [
+    {
+     "type": "source_weapon_class",
+     "classes": [
+      "rifle"
+     ]
+    }
+   ],
+   "unlock_star": 2
+  },
+  {
+   "id": "node_archer_reload_rapid_fire",
+   "timing": "OnReloadComplete",
+   "event_count_threshold": 1,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "self",
+   "team_filter": "ally",
+   "tags": [
+    "reload",
+    "passive_rapid_fire"
+   ],
+   "runtime_conditions": [
+    {
+     "type": "source_weapon_class",
+     "classes": [
+      "rifle"
+     ]
+    }
+   ],
+   "unlock_star": 2
+  },
+  {
+   "id": "node_archer_mod_arrowhead",
+   "timing": "OnNormalAttackHit",
+   "event_count_threshold": 3,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 10.0,
+   "target_rule": "current_attack_target",
+   "team_filter": "enemy",
+   "tags": [
+    "normal_attack",
+    "equipment_payload"
+   ],
+   "alt_conditions": [
+    {
+     "type": "event_metadata_equals",
+     "key": "hits_since_reload",
+     "value": "1"
+    }
+   ],
+   "fit_tags": {
+    "side": "enemy",
+    "count": "single",
+    "freq": "high"
+   }
+  }
+ ],
+ "passive_abilities": [
+  {
+   "id": "node_archer_rapid_fire_buff",
+   "ability_class": "blade",
+   "effect_type": "stat_status",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic",
+    "stacking"
+   ],
+   "accepted_timings": [
+    "OnNormalAttackPerform",
+    "OnReloadComplete"
+   ],
+   "required_trigger_tags": [
+    "passive_rapid_fire"
+   ],
+   "effect_config": {
+    "status_id": "rapid_fire",
+    "duration": 3.0,
+    "flags": [
+     "buff",
+     "dispellable"
+    ],
+    "stats_by_star": {
+     "attack_speed_multiplier": {
+      "pct": {
+       "1": 0.1,
+       "2": 0.15,
+       "3": 0.2
+      }
+     }
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100,
+   "keyword_values": {
+    "stacking": 3
+   }
+  },
+  {
+   "id": "node_archer_quick_reload",
+   "ability_class": "blade",
+   "effect_type": "stat_status",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [
+    "OnBattleStart"
+   ],
+   "required_trigger_tags": [
+    "passive_quick_reload"
+   ],
+   "effect_config": {
+    "status_id": "quick_reload",
+    "stats": {
+     "reload_time_pct": {
+      "flat": -0.5
+     }
+    },
+    "flags": [
+     "hidden"
+    ]
+   },
+   "cooldown": 0.0,
+   "priority": 100,
+   "unlock_star": 2
+  }
+ ],
+ "hair": "#c43c2e",
+ "skin": "fair"
+}

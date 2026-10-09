@@ -1,0 +1,42 @@
+{
+ "id": "black_battlefield",
+ "cost": 4,
+ "color_id": "black",
+ "weapon_class": "rifle",
+ "abilities": [
+  {
+   "id": "black_battlefield_shot",
+   "ability_class": "blade",
+   "effect_type": "physical_damage",
+   "value_multiplier": 0.5,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic",
+    "crit"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "cast_fx": "ricochet"
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  }
+ ],
+ "flat_stat_modifiers": {
+  "attack_range": 99,
+  "physical_flat_penetration": 30
+ },
+ "percent_stat_modifiers": {},
+ "model": "sniper",
+ "reworked": true,
+ "owner": "node_sniper",
+ "wclass_override": {
+  "na_mult": 2.8,
+  "na_keywords": {
+   "stacking": 1
+  }
+ }
+}

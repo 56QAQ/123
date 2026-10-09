@@ -1,0 +1,26 @@
+{
+ "id": "sample_arcane_edge",
+ "cost": 1,
+ "color_id": "black",
+ "weapon_class": "sword",
+ "abilities": [
+  {
+   "id": "sample_arcane_edge_magic_damage",
+   "ability_class": "blade",
+   "effect_type": "magic_damage",
+   "value_multiplier": 4.0,
+   "fixed_value": 0.0,
+   "keywords": [],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {},
+   "cooldown": 0.0,
+   "priority": 100
+  }
+ ],
+ "flat_stat_modifiers": {},
+ "percent_stat_modifiers": {},
+ "no_drop": true
+}

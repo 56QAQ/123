@@ -1,0 +1,35 @@
+{
+ "id": "butterfly",
+ "cost": 3,
+ "color_id": "cyan",
+ "weapon_class": "pistols",
+ "abilities": [
+  {
+   "id": "butterfly_flutter",
+   "ability_class": "blade",
+   "effect_type": "instant_attack",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "na_scale": 1.0,
+    "cap_by_value": true
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  }
+ ],
+ "flat_stat_modifiers": {},
+ "percent_stat_modifiers": {
+  "attack_speed_multiplier": 0.2
+ },
+ "model": "butterfly",
+ "reworked": true,
+ "owner": "node_angel"
+}

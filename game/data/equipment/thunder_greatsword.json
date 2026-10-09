@@ -1,0 +1,52 @@
+{
+ "id": "thunder_greatsword",
+ "cost": 3,
+ "color_id": "yellow",
+ "weapon_class": "heavy",
+ "abilities": [
+  {
+   "id": "thunder_greatsword_clap",
+   "ability_class": "blade",
+   "effect_type": "physical_damage",
+   "value_multiplier": 0.6,
+   "fixed_value": 0.0,
+   "keywords": [
+    "multi_attack"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "extra_effects": [
+     {
+      "effect_type": "stat_status",
+      "target": "target",
+      "status_id": "stun",
+      "duration": 2.0,
+      "max_stacks": 1,
+      "flags": [
+       "debuff",
+       "dispellable",
+       "stun"
+      ]
+     }
+    ]
+   },
+   "cooldown": 4.0,
+   "priority": 100,
+   "keyword_values": {
+    "multi_attack": 5
+   }
+  }
+ ],
+ "flat_stat_modifiers": {
+  "attack_power": 10,
+  "max_health": 200
+ },
+ "percent_stat_modifiers": {
+  "attack_speed_multiplier": 0.15
+ },
+ "model": "g7_thunder",
+ "reworked": true
+}

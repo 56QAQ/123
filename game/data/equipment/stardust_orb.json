@@ -1,0 +1,50 @@
+{
+ "id": "stardust_orb",
+ "cost": 2,
+ "color_id": "black",
+ "weapon_class": "focus",
+ "abilities": [
+  {
+   "id": "stardust_mote",
+   "ability_class": "bullet",
+   "effect_type": "magic_damage",
+   "value_multiplier": 1.0,
+   "fixed_value": 16,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "extra_effects": [
+     {
+      "effect_type": "stat_status",
+      "target": "target",
+      "status_id": "star_mark",
+      "duration": 5.0,
+      "max_stacks": 5,
+      "flags": [
+       "debuff",
+       "dispellable"
+      ],
+      "stats": {
+       "damage_taken_amp": {
+        "flat": 0.02
+       }
+      }
+     }
+    ]
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  }
+ ],
+ "flat_stat_modifiers": {
+  "ability_power": 15
+ },
+ "percent_stat_modifiers": {},
+ "model": "stardust",
+ "reworked": true
+}

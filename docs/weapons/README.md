@@ -1,0 +1,95 @@
+# 通用武器 · 分批并行开发说明
+
+用户 2026-10-09 定的目标：**2~4 稀有度(费用) × 6 种彩色(红黄绿青蓝紫，不算黑白) × 9 个武器大类，平均每格 1 把武器(含专属武器)，一共 162 把**。
+做法：**三批一组，派给不同的子代理并行做**，每组做完由主会话规划下一组。现状统计跑 `tools/fit_report.gd`，162 格的覆盖表见主会话的统计脚本。
+
+每个子代理负责**一批**(批号 genN)，**只改自己的文件**，共享文件一律不动——几个人同时改同一个文件会互相覆盖。
+
+## 你能改的文件(把 <批> 换成你的批号，如 gen5)
+
+| 文件 | 内容 | 谁执行 / 读 |
+|---|---|---|
+| `tools/weapons/<批>_data.py` | 武器数据：`E(...)`、`A(...)`、常量(前缀 `G<批号数字>_`，比如 `G5_`，免得和别的批撞名) | `tools/author_data.py` 按文件名顺序 exec(能直接用 E / A / T / EP) |
+| `tools/weapons/<批>_loc.py` | 文本：`equip(id, 中文名, 英文名, 中文描述, 英文描述)`、`add("status.<id>", 中, 英)`、`add("status.<id>.desc", 中, 英)` | `tools/author_loc.py` exec |
+| `tools/weapons/<批>_models.gd` | 模型：`extends "res://tools/model_weapons.gd"`，画体素的函数 + `const PARTS := {部件名: [资源名, 方法名, 参数…]}` | `tools/build_kits.gd` 登记 |
+| `game/view/proj_kinds/<批>.gd` | 自己的投射物(不射这个大类的默认弹 = 弩箭 / 子弹 / 箭 时才要)；接口见 `game/view/proj_registry.gd` | `ProjRegistry` |
+| `game/tests/test_<批>.gd` | 你这批的测试(自动发现) | `tools/run_tests.gd` |
+| `docs/weapons/<批>.md` | 你这批的设计说明(主会话最后合进 GAME_DESIGN.md) | — |
+| `out/` 下自己建的子目录 | 预览、临时脚本、测强度明细 | — |
+
+**不许改的共享文件**：`game/sim/*`(含 pipeline.gd)、`game/core/*`、`game/view/fx.gd`、`game/view/battle_view.gd`、`game/ui/*`、`tools/author_*.py`、
+`tools/build_kits.gd`、`tools/model_weapons.gd`、`tools/intensity_bench.gd`、`docs/GAME_DESIGN.md`、`CLAUDE.md`、别的批的文件。
+近战武器的刀光长度写在自己的 `game/view/proj_kinds/<批>.gd` 的 `TRAILS` 里(WeaponTrail 先查 MODEL_STYLES 再查它)，**别改 weapon_trail.gd**。
+设计真的需要新的效果类型 / 引擎改动 → **别自己改，停下来在回报里说明**，由主会话处理。
+
+## 设计规则
+
+- 通用武器：`E(id, 费用, 颜色, 大类, [A(...)], flat={...}, pct={...}, model="<全局唯一的外观名>", reworked=True)`，**不写 owner**；能力 `tags=EP`。
+  费用 / 颜色 / 大类必须**正好是分给你的那一格**。id、外观名、状态 id、投射物种类名都要全局唯一(可以带批号前缀)。
+- 只用现成的效果：物理 / 魔法 / 真实伤害、heal、shield、stat_status(buff / debuff 的属性、叠层、持续)、extra_effects(附带效果，target = target / self)、
+  护符 amulet 的 ally_effect / enemy_effect 分支(双模)、learning(学习)、关键词 basic(【基本】不吃冷却)、multi_attack(【群攻 N】)、crit(【暴击】)、
+  cfg.all_targets、pre_effects(每次发动先作用于携带者自己一次)、【限制】limited_timings + once_per_battle、bullet 带敌我分支 = 固定值的双模 等。
+  抄 `tools/author_data.py` 里"通用武器 · 第一批 ~ 第四批"和 `tools/weapons/gen5~7_data.py` 的写法。结算规则：学习在用，浮动(potion)已废弃，改写(chip)不碰。
+- 每把武器**适配 ≥2 只**棋子(用户的要求；能装上但不合手是预期内)：
+  - 适配角色由内置标签算(`game/core/fit_tags.gd`，规则写在文件头)：触发器的 敌我 / 目标数 / 频率 vs 武器的 敌我 / 【群攻】 / 【基本】，再加"装得上(2 星和 3 星)"。
+  - 触发器的实测数据在 `tools/fit_tags_data.py`(rate = 每秒触发次数、tgt = 平均目标数、self / ally / enemy、val = 平均触发数值)。
+    拿你这个大类时触发器会变(手枪攻速快、带追击)：`"$GODOT" --headless --path . --script res://tools/intensity_bench.gd --quit-after 900000000 -- mode=fitprobe class=<大类> units=a,b n=6`。
+  - 看适配表：`"$GODOT" --headless --path . --script res://tools/fit_report.gd --quit-after 100`。
+  - 颜色 → 能装的阵营：`GC.EQUIP_COMPATIBLE_UNITS`(紫 = 紫红蓝白、黄 = 黄红绿白、青 = 青蓝绿白；单色只给自己和白)。
+  - 一个棋子有好几个武器触发器(舞星)时每个都会扣同一把武器：单边武器会用反，所以 FitTags 要求每个触发器的敌我都对得上。
+  - 实测战斗里不响的触发器(幻形：战斗结束时)频率标 never，什么都不适配。
+  - **测强度和标签不一致时用数据修正**：`E(..., fit_add=["node_x"])` = 测出来合手但标签没算上；`fit_remove=["node_y"]` = 标签算上了但测出来 +0 / 负的。
+    以测强度为准，回报里写明改了谁、为什么。
+  - 触发数值很小(≤ 20)的插槽配固定值 / 不吃数值的效果，很大(≥ 500)的配放大；高频(≥ 0.5 次/秒)插槽要【基本】才吃得满。
+- 平衡(用户：适当平衡)：`./run_intensity.sh`(战斗强度：阵容打随机配怪胜率 ≥ 70% 的最高强度)。口径：
+  - ★2，基础阵容 速射 / 架盾 / 耕植 + 这只棋子：`teams="node_archer,node_shielder,node_peasant,<棋子>:2:<武器>;…"`；
+  - **棋子换了大类的，基线用 `<棋子>:2:basic_<大类>`**(光换大类就可能差十几级)；不换大类的基线用 `<棋子>:2:-`；
+  - 目标：每只合手棋子 +4 ~ +10 左右；强度 40 / 50 / 80 / 88 附近有墙，卡在墙下时比**同一强度的胜率**(明细在 `$INT_OUT/*.txt`)；
+  - 环境：`export GODOT=D:/voxel/out/vxb/vxbench_console.exe`(改了名的 Godot：同一台机器上别的项目会按名字杀 Godot 进程)；
+    `INT_OUT=out/int_<批>_<轮> INT_TIMEOUT=7200 ./run_intensity.sh teams=… labels=… star=2 jobs=4`——**jobs 最多 4**(三个人共用 16 核)。
+- 模型：每把都要专属模型(用户要求)。抄 `tools/model_weapons.gd` 里同大类现有武器的握点 / 轴向 / 尺寸(例如手弩看 bolt / crossbow 那几把，
+  步枪看 spotter / keeneye，弓看 bow，近战看对应大类)；双持(双匕 / 手枪)要 W_ + L_ 两个部件。棋子约 1.3 米高，按比例做，别太大。
+  模型不随武器颜色换色(写死颜色)，但颜色要能看出是这把武器的颜色。部件名 `W_<大类>_<外观名>`(左手 `L_…`)。
+  构建：`./run_kits.sh`(会排队拿构建锁，约 3 分钟)；oob 要 0。预览脚本要读 assets / scenes 时用 `tools/with_build_lock.sh <命令…>` 包一下。
+  近战武器的刀光长度写在自己的 proj_kinds 文件的 TRAILS 里。
+- 投射物：远程武器默认射这个大类的弹(手弩 = 弩箭、步枪 = 子弹、弓 = 箭)。外观上不是在射这种弹的(比如鱼叉、光束、种子)，要做自己的投射物：
+  `game/view/proj_kinds/<批>.gd` 填 KINDS / make / fly / release / hit，数据里 `projectile="<种类名>"`；可以用 `wclass_override={"proj_speed": …}` 改弹速。
+- 文本：中英两边都要有；状态名 `add("status.<id>", …)` 和描述 `add("status.<id>.desc", …)`；武器描述里的数值要和数据一致。
+
+## 流程与验证
+
+1. 设计(先看适配数据、触发数值，写清楚每把的合手棋子和理由) → 数据 + 文本 → `python tools/author_data.py && python tools/author_loc.py`
+   (带锁、原子写入，别的子代理同时跑也不会坏；输出最后一行是总数)。
+2. 测试 `game/tests/test_<批>.gd`：每把一个效果测试(探针触发器直接扣载荷：抄 `game/tests/test_generic_weapons.gd` 的 `_setup / _pull / _pull_rule / _sum`)、
+   数据测试(没有 owner、在随机池里、费用 / 颜色 / 大类正好是分给你的、有专属外观、投射物)、适配测试(`Fixture.catalog().fit_units(id)` 至少 2 只，包含你写的合手棋子)。
+   跑：`timeout 600 "$GODOT" --headless --path . --script res://tools/run_tests.gd --quit-after 300000 -- only=test_<批>`；收尾前再跑一次全量(不带 only)。
+3. 模型 + 投射物 → `./run_kits.sh` → 预览图放 `out/wpn_<批>/`(待机 + 攻击几帧 + 特写；有自己投射物的要截飞行中 / 命中)。
+4. 测强度、调数值(一般要 2~4 轮)。
+5. `./check.sh` 要 0 错误；`Catalog.load_all().validate_all()` 要干净(数据测试里断言)。
+6. `docs/weapons/<批>.md`：表格(武器 / 大类 · 颜色 · 费 / 结算 / 属性 / 效果 / 适配角色 / ★2 增量)+ 设计理由 + 调数值的经过 + 教训。
+7. **不要跑 `./run_export.sh`、`./run_ui_test.sh`**(主会话最后统一跑)；**不要 kill 不是你启动的进程**；Godot 脚本报错后不会自己退出——命令一律带 timeout。
+   别给自己的脚本写 class_name(新 class_name 要刷新全局类缓存)。Windows：python 文本模式写文件会把 LF 变 CRLF，改 .sh 用 Edit 工具。
+
+回报：每把武器(格子、效果、合手棋子、★2 增量 / 同强度胜率)、改了哪些文件、预览路径、没解决的问题。
+
+## 第一组(gen5 ~ gen7，2026-10-09)
+
+| 批 | 大类 | 格子(颜色 · 费) |
+|---|---|---|
+| gen5 | 手弩 | 紫·2、青·2、红·3、黄·3、黄·4、绿·4 |
+| gen6 | 步枪 ×4 + 弓 ×2 | 步枪 红·3、黄·3、青·4、紫·2；弓 青·2、黄·4 |
+| gen7 | 近战 | 双匕 黄·2、双匕 青·3、单手剑 黄·4、单手剑 紫·2、双手剑 黄·3、双手剑 绿·4 |
+
+第一组做完 = 63 / 162(各批的设计在 docs/weapons/gen5~7.md；主会话按测强度补了 fit_add / fit_remove)。
+
+## 第二组(gen8 ~ gen10，2026-10-09)
+
+照顾最缺的绿 / 蓝两色、最缺的手枪，以及 2 费蓝 / 绿、3 费绿、4 费手枪这几个空档；做完 = 81 / 162。
+
+| 批 | 大类 | 格子(颜色 · 费) |
+|---|---|---|
+| gen8 | 手枪 | 绿·2、蓝·2、紫·3、青·3、红·4、黄·4 |
+| gen9 | 矛 ×3 + 双手剑 ×3 | 矛 青·2、黄·3、紫·4；双手剑 绿·2、红·3、青·4 |
+| gen10 | 单手剑 ×3 + 双匕 ×2 + 法器 ×1 + 弓 ×1 | 单手剑 绿·3、蓝·2、红·4；双匕 青·2、绿·4；法器 绿·3；弓 紫·3(后加：合手 护理 / 和星) |
+
+2026-10-09 用户改了棋子：求知可装步枪、护理 / 和星可装弓、奇兴改紫(专武跟着改紫)——步枪·蓝、弓·红 / 蓝 / 紫 有候选了。

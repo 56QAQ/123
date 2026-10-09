@@ -1,0 +1,45 @@
+{
+ "id": "work_helper",
+ "cost": 1,
+ "color_id": "white",
+ "weapon_class": "sword",
+ "abilities": [
+  {
+   "id": "work_helper_orbs",
+   "ability_class": "blade",
+   "effect_type": "create_orbs",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "tier": "white",
+    "upgrades": [
+     [
+      "rainbow",
+      0.0005
+     ],
+     [
+      "gold",
+      0.01
+     ],
+     [
+      "blue",
+      0.05
+     ]
+    ]
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  }
+ ],
+ "flat_stat_modifiers": {},
+ "percent_stat_modifiers": {},
+ "model": "wrench",
+ "reworked": true,
+ "owner": "node_basic",
+ "no_drop": true
+}

@@ -1,0 +1,65 @@
+{
+ "id": "twin_flintlock",
+ "cost": 2,
+ "color_id": "yellow",
+ "weapon_class": "pistols",
+ "abilities": [
+  {
+   "id": "flintlock_shot",
+   "ability_class": "bullet",
+   "effect_type": "physical_damage",
+   "value_multiplier": 1.0,
+   "fixed_value": 35,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {},
+   "cooldown": 0.0,
+   "priority": 100
+  },
+  {
+   "id": "flintlock_powder",
+   "ability_class": "blade",
+   "effect_type": "physical_damage",
+   "value_multiplier": 0.5,
+   "fixed_value": 0.0,
+   "keywords": [],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "extra_effects": [
+     {
+      "effect_type": "stat_status",
+      "target": "target",
+      "status_id": "gunsmoke",
+      "duration": 5.0,
+      "max_stacks": 3,
+      "flags": [
+       "debuff",
+       "dispellable"
+      ],
+      "stats": {
+       "defense": {
+        "flat": -6
+       }
+      }
+     }
+    ]
+   },
+   "cooldown": 2.0,
+   "priority": 100
+  }
+ ],
+ "flat_stat_modifiers": {},
+ "percent_stat_modifiers": {
+  "attack_speed_multiplier": 0.15
+ },
+ "model": "flintlock",
+ "reworked": true
+}

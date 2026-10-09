@@ -1,0 +1,37 @@
+{
+ "id": "rainbow_flower",
+ "cost": 4,
+ "color_id": "blue",
+ "weapon_class": "focus",
+ "abilities": [
+  {
+   "id": "rainbow_flower_spark",
+   "ability_class": "bullet",
+   "effect_type": "rainbow_spark",
+   "value_multiplier": 1.0,
+   "fixed_value": 5,
+   "keywords": [
+    "basic",
+    "pursuit"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {},
+   "cooldown": 0.0,
+   "priority": 100,
+   "keyword_values": {
+    "pursuit": 2
+   }
+  }
+ ],
+ "flat_stat_modifiers": {
+  "ability_power": 100,
+  "passive_amplify_bonus": 1
+ },
+ "percent_stat_modifiers": {},
+ "model": "rainbow",
+ "reworked": true,
+ "owner": "node_wizard"
+}

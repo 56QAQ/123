@@ -1,0 +1,308 @@
+{
+ "id": "node_vampire",
+ "cost": 4,
+ "role": "warrior",
+ "template": "warrior",
+ "base_weapon_class": "heavy",
+ "weapon_classes": [
+  "heavy",
+  "sword",
+  "polearm"
+ ],
+ "faction_id": "cyan",
+ "profession_id": "security",
+ "special_trait_ids": [
+  "clan"
+ ],
+ "model": "vampire",
+ "skin": "porcelain",
+ "reworked": true,
+ "target_priority": "nearest",
+ "radius": 0.45,
+ "base_stats": {
+  "attack_power": 150,
+  "ability_power": 0.0,
+  "defense": 70,
+  "magic_resistance": 45,
+  "max_health": 2000,
+  "health_regen_per_second": 0.0,
+  "physical_lifesteal": 0.0,
+  "spell_lifesteal": 0.0,
+  "omnivamp": 0.0,
+  "crit_chance": 0.05,
+  "crit_damage": 1.5,
+  "physical_flat_penetration": 0.0,
+  "physical_percent_penetration": 0.0,
+  "magic_flat_penetration": 0.0,
+  "magic_percent_penetration": 0.0,
+  "move_speed": 2.6,
+  "attack_speed_multiplier": 0.9,
+  "damage_dealt_pct": 0.0,
+  "damage_dealt_flat": 0.0,
+  "damage_taken_pct": 0.0,
+  "damage_taken_flat": 0.0,
+  "healing_done_pct": 0.0,
+  "healing_received_pct": 0.0
+ },
+ "chant_fx": {
+  "*": {
+   "anim": "chant_vampire",
+   "cast_anim": "throw_vampire",
+   "min_star": 1
+  }
+ },
+ "triggers": [
+  {
+   "id": "node_vampire_lust",
+   "timing": "OnBattleFrame",
+   "event_count_threshold": 4,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "self",
+   "team_filter": "any",
+   "tags": [
+    "battle_frame",
+    "passive_lust"
+   ],
+   "runtime_conditions": [
+    {
+     "type": "battle_running"
+    }
+   ]
+  },
+  {
+   "id": "node_vampire_bleed_out",
+   "timing": "OnDamageDealt",
+   "event_count_threshold": 1,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "event_target",
+   "team_filter": "enemy",
+   "tags": [
+    "damage_dealt",
+    "passive_bleed"
+   ],
+   "runtime_conditions": [
+    {
+     "type": "event_missing_tag",
+     "tag": "dot_damage"
+    },
+    {
+     "type": "source_has_status",
+     "status_id": "bloodlust"
+    }
+   ]
+  },
+  {
+   "id": "node_vampire_bleed_in",
+   "timing": "OnDamageTaken",
+   "event_count_threshold": 1,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "event_target",
+   "team_filter": "enemy",
+   "tags": [
+    "damage_taken",
+    "passive_bleed"
+   ],
+   "runtime_conditions": [
+    {
+     "type": "event_missing_tag",
+     "tag": "dot_damage"
+    },
+    {
+     "type": "source_has_status",
+     "status_id": "bloodlust"
+    }
+   ]
+  },
+  {
+   "id": "node_vampire_feast",
+   "timing": "OnBattleFrame",
+   "event_count_threshold": 1,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "self",
+   "team_filter": "any",
+   "tags": [
+    "battle_frame",
+    "passive_feast"
+   ]
+  },
+  {
+   "id": "node_vampire_kin",
+   "timing": "OnBattleFrame",
+   "event_count_threshold": 1,
+   "base_value_mode": "status_stacks_atk_ap",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "blood_circle",
+   "team_filter": "enemy",
+   "tags": [
+    "battle_frame",
+    "equipment_payload",
+    "passive_kin"
+   ],
+   "target_radius": 6.0,
+   "runtime_conditions": [
+    {
+     "type": "source_has_status",
+     "status_id": "bloodlust",
+     "min_stacks": 12
+    },
+    {
+     "type": "source_not_chanting"
+    },
+    {
+     "type": "payload_ready"
+    },
+    {
+     "type": "has_enemies"
+    }
+   ],
+   "base_value_status_id": "blood_feast",
+   "extra": {
+    "delivery": "throw",
+    "throw_time": 0.4,
+    "cast_time": 0.26
+   },
+   "fit_tags": {
+    "side": "enemy",
+    "count": "multi",
+    "freq": "low"
+   }
+  }
+ ],
+ "passive_abilities": [
+  {
+   "id": "node_vampire_lust",
+   "ability_class": "blade",
+   "effect_type": "stat_status",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic",
+    "stacking"
+   ],
+   "accepted_timings": [
+    "OnBattleFrame"
+   ],
+   "required_trigger_tags": [
+    "passive_lust"
+   ],
+   "effect_config": {
+    "status_id": "bloodlust",
+    "duration": 0.0,
+    "max_stacks": 12,
+    "flags": [
+     "buff",
+     "no_dispel"
+    ],
+    "add_stacks_by_star": {
+     "1": 2,
+     "2": 2,
+     "3": 3
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100,
+   "keyword_values": {
+    "stacking": 12
+   }
+  },
+  {
+   "id": "node_vampire_bleed",
+   "ability_class": "blade",
+   "effect_type": "bleed",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [
+    "OnDamageDealt",
+    "OnDamageTaken"
+   ],
+   "required_trigger_tags": [
+    "passive_bleed"
+   ],
+   "effect_config": {
+    "x_by_star": {
+     "1": 0.6,
+     "2": 1.0,
+     "3": 1.8
+    },
+    "duration": 10.0,
+    "stack_from": "node_vampire_lust"
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  },
+  {
+   "id": "node_vampire_feast",
+   "ability_class": "blade",
+   "effect_type": "blood_feast",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic",
+    "stacking"
+   ],
+   "accepted_timings": [
+    "OnBattleFrame"
+   ],
+   "required_trigger_tags": [
+    "passive_feast"
+   ],
+   "effect_config": {
+    "per": 150.0,
+    "status": {
+     "status_id": "blood_feast",
+     "duration": 0.0,
+     "flags": [
+      "buff",
+      "no_dispel"
+     ],
+     "stats": {
+      "dot_damage_pct": {
+       "flat": 0.04
+      },
+      "damage_taken_flat": {
+       "flat": 3.0
+      }
+     }
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100,
+   "keyword_values": {
+    "stacking": 12
+   }
+  },
+  {
+   "id": "node_vampire_kin",
+   "ability_class": "blade",
+   "effect_type": "kin_consume",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [
+    "OnBattleFrame"
+   ],
+   "required_trigger_tags": [
+    "passive_kin"
+   ],
+   "effect_config": {
+    "count": 12
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  }
+ ]
+}

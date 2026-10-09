@@ -1,0 +1,219 @@
+{
+ "id": "node_brave",
+ "cost": 4,
+ "role": "warrior",
+ "template": "warrior",
+ "base_weapon_class": "sword",
+ "weapon_classes": [
+  "sword",
+  "heavy"
+ ],
+ "faction_id": "blue",
+ "profession_id": "security",
+ "model": "brave",
+ "reworked": true,
+ "unique": true,
+ "target_priority": "nearest",
+ "radius": 0.44,
+ "base_stats": {
+  "attack_power": 150,
+  "ability_power": 0.0,
+  "defense": 70,
+  "magic_resistance": 45,
+  "max_health": 2000,
+  "health_regen_per_second": 0.0,
+  "physical_lifesteal": 0.0,
+  "spell_lifesteal": 0.0,
+  "omnivamp": 0.0,
+  "crit_chance": 0.05,
+  "crit_damage": 1.5,
+  "physical_flat_penetration": 0.0,
+  "physical_percent_penetration": 0.0,
+  "magic_flat_penetration": 0.0,
+  "magic_percent_penetration": 0.0,
+  "move_speed": 2.6,
+  "attack_speed_multiplier": 0.9,
+  "damage_dealt_pct": 0.0,
+  "damage_dealt_flat": 0.0,
+  "damage_taken_pct": 0.0,
+  "damage_taken_flat": 0.0,
+  "healing_done_pct": 0.0,
+  "healing_received_pct": 0.0
+ },
+ "triggers": [
+  {
+   "id": "node_brave_holy",
+   "timing": "OnBattleFrame",
+   "event_count_threshold": 1,
+   "base_value_mode": "flat_times_ability_power_pct",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.06,
+   "target_rule": "target_or_nearest_enemy",
+   "team_filter": "enemy",
+   "tags": [
+    "battle_frame",
+    "passive_holy"
+   ],
+   "base_value_flat_by_star": {
+    "1": 0.06,
+    "2": 0.09,
+    "3": 0.14
+   },
+   "cooldown_seconds": 5.0,
+   "runtime_conditions": [
+    {
+     "type": "battle_running"
+    },
+    {
+     "type": "has_enemies"
+    }
+   ]
+  },
+  {
+   "id": "node_brave_dream",
+   "timing": "OnBattleStart",
+   "event_count_threshold": 1,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "self",
+   "team_filter": "ally",
+   "tags": [
+    "battle_start",
+    "passive_dream"
+   ]
+  },
+  {
+   "id": "node_brave_future",
+   "timing": "OnUnitDied",
+   "event_count_threshold": 1,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "self",
+   "team_filter": "ally",
+   "tags": [
+    "unit_died",
+    "passive_future"
+   ]
+  },
+  {
+   "id": "node_brave_fly",
+   "timing": "OnBattleFrame",
+   "event_count_threshold": 40,
+   "base_value_mode": "flat_times_ability_power_pct",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 300.0,
+   "target_rule": "self_and_top_dead_ally",
+   "team_filter": "ally",
+   "tags": [
+    "battle_frame",
+    "equipment_payload"
+   ],
+   "base_value_flat_by_star": {
+    "1": 300.0,
+    "2": 450.0,
+    "3": 700.0
+   },
+   "runtime_conditions": [
+    {
+     "type": "battle_running"
+    }
+   ],
+   "target_filter": {
+    "allow_dead": true
+   },
+   "fit_tags": {
+    "side": "ally",
+    "count": "multi",
+    "freq": "low"
+   }
+  }
+ ],
+ "passive_abilities": [
+  {
+   "id": "node_brave_holy",
+   "ability_class": "blade",
+   "effect_type": "holy_sword",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [
+    "OnBattleFrame"
+   ],
+   "required_trigger_tags": [
+    "passive_holy"
+   ],
+   "effect_config": {
+    "slay_common": true
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  },
+  {
+   "id": "node_brave_dream",
+   "ability_class": "blade",
+   "effect_type": "flag_status",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [
+    "OnBattleStart"
+   ],
+   "required_trigger_tags": [
+    "passive_dream"
+   ],
+   "effect_config": {
+    "status_id": "brave_dream",
+    "duration": 0.0,
+    "flags": [
+     "buff",
+     "no_dispel",
+     "debuff_immune_all"
+    ],
+    "meta_by_star": {
+     "ally_buff_amp": {
+      "1": 1.5,
+      "2": 1.75,
+      "3": 2.0
+     }
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  },
+  {
+   "id": "node_brave_future",
+   "ability_class": "blade",
+   "effect_type": "brave_legacy",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [
+    "OnUnitDied"
+   ],
+   "required_trigger_tags": [
+    "passive_future"
+   ],
+   "effect_config": {
+    "legacy": {
+     "status_id": "brave_future",
+     "duration": 0.0,
+     "max_stacks": 1,
+     "flags": [
+      "buff",
+      "no_dispel"
+     ]
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  }
+ ]
+}

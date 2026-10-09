@@ -1,0 +1,93 @@
+{
+ "id": "sample_archer",
+ "cost": 1,
+ "role": "archer",
+ "base_weapon_class": "bow",
+ "weapon_classes": [],
+ "faction_id": "white",
+ "profession_id": "engineering",
+ "target_priority": "nearest",
+ "available_in_shop": false,
+ "base_stats": {
+  "attack_power": 100,
+  "ability_power": 0.0,
+  "defense": 10,
+  "magic_resistance": 20,
+  "max_health": 900,
+  "health_regen_per_second": 0.0,
+  "physical_lifesteal": 0.0,
+  "spell_lifesteal": 0.0,
+  "omnivamp": 0.0,
+  "crit_chance": 0.0,
+  "crit_damage": 1.5,
+  "physical_flat_penetration": 0.0,
+  "physical_percent_penetration": 0.0,
+  "magic_flat_penetration": 0.0,
+  "magic_percent_penetration": 0.0,
+  "move_speed": 1.0,
+  "attack_speed_multiplier": 1.0,
+  "damage_dealt_pct": 0.0,
+  "damage_dealt_flat": 0.0,
+  "damage_taken_pct": 0.0,
+  "damage_taken_flat": 0.0,
+  "healing_done_pct": 0.0,
+  "healing_received_pct": 0.0
+ },
+ "triggers": [
+  {
+   "id": "sample_archer_every_fourth",
+   "timing": "OnNormalAttackHit",
+   "event_count_threshold": 4,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "current_attack_target",
+   "team_filter": "enemy",
+   "tags": [
+    "normal_attack",
+    "passive_pursuit"
+   ]
+  },
+  {
+   "id": "sample_archer_every_sixth",
+   "timing": "OnNormalAttackHit",
+   "event_count_threshold": 6,
+   "base_value_mode": "attack_ratio",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "current_attack_target",
+   "team_filter": "enemy",
+   "tags": [
+    "normal_attack",
+    "equipment_payload"
+   ]
+  }
+ ],
+ "passive_abilities": [
+  {
+   "id": "sample_archer_pursuit",
+   "ability_class": "blade",
+   "effect_type": "none",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic",
+    "pursuit"
+   ],
+   "accepted_timings": [
+    "OnNormalAttackHit"
+   ],
+   "required_trigger_tags": [
+    "passive_pursuit"
+   ],
+   "effect_config": {},
+   "cooldown": 0.0,
+   "priority": 100,
+   "keyword_values": {
+    "pursuit": 1
+   }
+  }
+ ],
+ "hair": "#f4f2f0",
+ "skin": "fair"
+}

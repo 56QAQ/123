@@ -1,0 +1,46 @@
+{
+ "id": "dual_use_stunner",
+ "cost": 1,
+ "color_id": "blue",
+ "weapon_class": "pistols",
+ "abilities": [
+  {
+   "id": "dual_use_stunner_zap",
+   "ability_class": "amulet",
+   "effect_type": "shield",
+   "value_multiplier": 1.2,
+   "fixed_value": 0.0,
+   "keywords": [
+    "multi_attack"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "ally_effect": {
+     "effect_type": "shield",
+     "value_multiplier": 1.2
+    },
+    "enemy_effect": {
+     "effect_type": "magic_damage",
+     "value_multiplier": 1.5
+    }
+   },
+   "cooldown": 5.0,
+   "priority": 100,
+   "keyword_values": {
+    "multi_attack": 3
+   }
+  }
+ ],
+ "flat_stat_modifiers": {
+  "shield_received_pct": 0.2
+ },
+ "percent_stat_modifiers": {
+  "attack_range": -1.0
+ },
+ "model": "stunner",
+ "reworked": true,
+ "owner": "node_shielder"
+}

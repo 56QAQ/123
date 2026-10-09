@@ -1,0 +1,205 @@
+{
+ "id": "faction_purple",
+ "trait_category": "faction",
+ "member_trait_filter": "purple",
+ "thresholds": [
+  2,
+  4
+ ],
+ "tiers": {
+  "2": {
+   "stats": {},
+   "pairs": [
+    {
+     "trigger": {
+      "id": "purple_faction_charge",
+      "timing": "OnBattleFrame",
+      "event_count_threshold": 20,
+      "base_value_mode": "fixed",
+      "base_value_ratio": 1.0,
+      "base_value_flat": 0.0,
+      "target_rule": "self",
+      "team_filter": "ally",
+      "tags": [
+       "trait_payload",
+       "trait_purple_charge"
+      ],
+      "runtime_conditions": [
+       {
+        "type": "battle_running"
+       }
+      ]
+     },
+     "ability": {
+      "id": "purple_faction_charge",
+      "ability_class": "blade",
+      "effect_type": "stat_status",
+      "value_multiplier": 1.0,
+      "fixed_value": 0.0,
+      "keywords": [
+       "basic"
+      ],
+      "accepted_timings": [
+       "OnBattleFrame"
+      ],
+      "required_trigger_tags": [
+       "trait_payload",
+       "trait_purple_charge"
+      ],
+      "effect_config": {
+       "status_id": "purple_charge",
+       "duration": 0.0,
+       "max_stacks": 1,
+       "flags": [
+        "buff"
+       ]
+      },
+      "cooldown": 0.0,
+      "priority": 100
+     }
+    },
+    {
+     "trigger": {
+      "id": "purple_faction_strike",
+      "timing": "OnNormalAttackHit",
+      "event_count_threshold": 1,
+      "base_value_mode": "attack_plus_ap_ratio",
+      "base_value_ratio": 0.5,
+      "base_value_flat": 0.0,
+      "target_rule": "event_target",
+      "team_filter": "enemy",
+      "tags": [
+       "trait_payload",
+       "trait_purple_strike"
+      ],
+      "runtime_conditions": [
+       {
+        "type": "source_has_status",
+        "status_id": "purple_charge"
+       }
+      ]
+     },
+     "ability": {
+      "id": "purple_faction_strike",
+      "ability_class": "blade",
+      "effect_type": "charged_strike",
+      "value_multiplier": 1.0,
+      "fixed_value": 0.0,
+      "keywords": [
+       "basic"
+      ],
+      "accepted_timings": [
+       "OnNormalAttackHit"
+      ],
+      "required_trigger_tags": [
+       "trait_payload",
+       "trait_purple_strike"
+      ],
+      "effect_config": {
+       "status_id": "purple_charge"
+      },
+      "cooldown": 0.0,
+      "priority": 100
+     }
+    }
+   ]
+  },
+  "4": {
+   "stats": {},
+   "pairs": [
+    {
+     "trigger": {
+      "id": "purple_faction_charge",
+      "timing": "OnBattleFrame",
+      "event_count_threshold": 12,
+      "base_value_mode": "fixed",
+      "base_value_ratio": 1.0,
+      "base_value_flat": 0.0,
+      "target_rule": "self",
+      "team_filter": "ally",
+      "tags": [
+       "trait_payload",
+       "trait_purple_charge"
+      ],
+      "runtime_conditions": [
+       {
+        "type": "battle_running"
+       }
+      ]
+     },
+     "ability": {
+      "id": "purple_faction_charge",
+      "ability_class": "blade",
+      "effect_type": "stat_status",
+      "value_multiplier": 1.0,
+      "fixed_value": 0.0,
+      "keywords": [
+       "basic"
+      ],
+      "accepted_timings": [
+       "OnBattleFrame"
+      ],
+      "required_trigger_tags": [
+       "trait_payload",
+       "trait_purple_charge"
+      ],
+      "effect_config": {
+       "status_id": "purple_charge",
+       "duration": 0.0,
+       "max_stacks": 1,
+       "flags": [
+        "buff"
+       ]
+      },
+      "cooldown": 0.0,
+      "priority": 100
+     }
+    },
+    {
+     "trigger": {
+      "id": "purple_faction_strike",
+      "timing": "OnNormalAttackHit",
+      "event_count_threshold": 1,
+      "base_value_mode": "attack_plus_ap_ratio",
+      "base_value_ratio": 0.8,
+      "base_value_flat": 0.0,
+      "target_rule": "event_target",
+      "team_filter": "enemy",
+      "tags": [
+       "trait_payload",
+       "trait_purple_strike"
+      ],
+      "runtime_conditions": [
+       {
+        "type": "source_has_status",
+        "status_id": "purple_charge"
+       }
+      ]
+     },
+     "ability": {
+      "id": "purple_faction_strike",
+      "ability_class": "blade",
+      "effect_type": "charged_strike",
+      "value_multiplier": 1.0,
+      "fixed_value": 0.0,
+      "keywords": [
+       "basic"
+      ],
+      "accepted_timings": [
+       "OnNormalAttackHit"
+      ],
+      "required_trigger_tags": [
+       "trait_payload",
+       "trait_purple_strike"
+      ],
+      "effect_config": {
+       "status_id": "purple_charge"
+      },
+      "cooldown": 0.0,
+      "priority": 100
+     }
+    }
+   ]
+  }
+ }
+}

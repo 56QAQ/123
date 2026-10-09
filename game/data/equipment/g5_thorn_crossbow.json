@@ -1,0 +1,79 @@
+{
+ "id": "g5_thorn_crossbow",
+ "cost": 4,
+ "color_id": "green",
+ "weapon_class": "crossbow",
+ "abilities": [
+  {
+   "id": "g5_thorn_spike",
+   "ability_class": "bullet",
+   "effect_type": "physical_damage",
+   "value_multiplier": 1.0,
+   "fixed_value": 60,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "ally_effect": {
+     "effect_type": "shield"
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  },
+  {
+   "id": "g5_thorn_bloom",
+   "ability_class": "bullet",
+   "effect_type": "none",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "ally_effect": {
+     "effect_type": "regen",
+     "cfg": {
+      "duration": 6.0
+     }
+    },
+    "enemy_effect": {
+     "effect_type": "stat_status",
+     "cfg": {
+      "status_id": "g5_thorn_bind",
+      "duration": 1.5,
+      "max_stacks": 1,
+      "flags": [
+       "debuff",
+       "dispellable",
+       "rooted",
+       "disarm"
+      ]
+     }
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  }
+ ],
+ "flat_stat_modifiers": {
+  "max_health": 250,
+  "defense": 20,
+  "reload_time_pct": -0.2
+ },
+ "percent_stat_modifiers": {},
+ "model": "g5thorn",
+ "reworked": true,
+ "projectile": "g5_seed",
+ "wclass_override": {
+  "proj_speed": 16.0
+ }
+}

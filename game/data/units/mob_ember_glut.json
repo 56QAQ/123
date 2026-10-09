@@ -1,0 +1,205 @@
+{
+ "id": "mob_ember_glut",
+ "cost": 1,
+ "role": "tank",
+ "base_weapon_class": "sword",
+ "weapon_classes": [
+  "sword"
+ ],
+ "faction_id": "white",
+ "profession_id": "",
+ "available_in_shop": false,
+ "hide_weapon": true,
+ "model": "ember_glut",
+ "target_priority": "nearest",
+ "radius": 0.62,
+ "scale": 1.2,
+ "anim_overrides": {
+  "sword": {
+   "idle": "idle_glut",
+   "run": "run_glut",
+   "attack": "attack_glut"
+  }
+ },
+ "base_stats": {
+  "attack_power": 55,
+  "ability_power": 0.0,
+  "defense": 48,
+  "magic_resistance": 48,
+  "max_health": 2000,
+  "health_regen_per_second": 0.0,
+  "physical_lifesteal": 0.0,
+  "spell_lifesteal": 0.0,
+  "omnivamp": 0.0,
+  "crit_chance": 0.05,
+  "crit_damage": 1.5,
+  "physical_flat_penetration": 0.0,
+  "physical_percent_penetration": 0.0,
+  "magic_flat_penetration": 0.0,
+  "magic_percent_penetration": 0.0,
+  "move_speed": 1.5,
+  "attack_speed_multiplier": 0.75,
+  "damage_dealt_pct": 0.0,
+  "damage_dealt_flat": 0.0,
+  "damage_taken_pct": 0.0,
+  "damage_taken_flat": 0.0,
+  "healing_done_pct": 0.0,
+  "healing_received_pct": 0.0
+ },
+ "triggers": [
+  {
+   "id": "mob_ember_glut_oil",
+   "timing": "OnHitByNormalAttack",
+   "event_count_threshold": 3,
+   "base_value_mode": "max_health_ratio",
+   "base_value_ratio": 0.05,
+   "base_value_flat": 0.0,
+   "target_rule": "self",
+   "team_filter": "any",
+   "tags": [
+    "normal_attack",
+    "passive_glut_oil"
+   ]
+  },
+  {
+   "id": "mob_ember_glut_collapse",
+   "timing": "OnDamageTaken",
+   "event_count_threshold": 1,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "self",
+   "team_filter": "any",
+   "tags": [
+    "damage_taken",
+    "passive_glut_collapse"
+   ],
+   "max_activations_per_battle": 1,
+   "runtime_conditions": [
+    {
+     "type": "source_health_below_or_equal_ratio",
+     "ratio": 0.33
+    }
+   ],
+   "unlock_star": 2
+  },
+  {
+   "id": "mob_ember_glut_melt",
+   "timing": "OnBattleFrame",
+   "event_count_threshold": 4,
+   "base_value_mode": "max_health_ratio",
+   "base_value_ratio": 0.05,
+   "base_value_flat": 0.0,
+   "target_rule": "self",
+   "team_filter": "any",
+   "tags": [
+    "battle_frame",
+    "passive_glut_oil"
+   ],
+   "runtime_conditions": [
+    {
+     "type": "source_has_status",
+     "status_id": "glut_meltdown"
+    }
+   ],
+   "unlock_star": 2
+  }
+ ],
+ "passive_abilities": [
+  {
+   "id": "mob_ember_glut_oil",
+   "ability_class": "blade",
+   "effect_type": "magic_damage",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic",
+    "splash"
+   ],
+   "accepted_timings": [
+    "OnHitByNormalAttack",
+    "OnBattleFrame"
+   ],
+   "required_trigger_tags": [
+    "passive_glut_oil"
+   ],
+   "effect_config": {},
+   "cooldown": 0.0,
+   "priority": 100,
+   "keyword_values": {
+    "splash": 3
+   }
+  },
+  {
+   "id": "mob_ember_glut_oil_burn",
+   "ability_class": "blade",
+   "effect_type": "stat_status",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic",
+    "splash"
+   ],
+   "accepted_timings": [
+    "OnHitByNormalAttack",
+    "OnBattleFrame"
+   ],
+   "required_trigger_tags": [
+    "passive_glut_oil"
+   ],
+   "effect_config": {
+    "status_id": "burning",
+    "duration": 8.0,
+    "max_stacks": 1,
+    "independent": true,
+    "flags": [
+     "debuff",
+     "burning",
+     "dispellable"
+    ],
+    "dot": {
+     "kind": "magic",
+     "amount": 25.0,
+     "interval": 1.0
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100,
+   "keyword_values": {
+    "splash": 3
+   }
+  },
+  {
+   "id": "mob_ember_glut_collapse",
+   "ability_class": "blade",
+   "effect_type": "stat_status",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic",
+    "chant"
+   ],
+   "accepted_timings": [
+    "OnDamageTaken"
+   ],
+   "required_trigger_tags": [
+    "passive_glut_collapse"
+   ],
+   "effect_config": {
+    "status_id": "glut_meltdown",
+    "duration": 0.0,
+    "flags": [
+     "no_dispel"
+    ],
+    "stat_id": "move_speed",
+    "flat": 0.0
+   },
+   "cooldown": 0.0,
+   "priority": 100,
+   "keyword_values": {
+    "chant": 2
+   },
+   "unlock_star": 2
+  }
+ ]
+}

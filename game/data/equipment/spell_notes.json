@@ -1,0 +1,72 @@
+{
+ "id": "spell_notes",
+ "cost": 1,
+ "color_id": "blue",
+ "weapon_class": "focus",
+ "abilities": [
+  {
+   "id": "spell_notes_recite",
+   "ability_class": "blade",
+   "effect_type": "magic_damage",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "learning"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "learning": {
+     "per_activation": 1,
+     "bonus_per_learning": 0.0
+    },
+    "pre_effects": [
+     {
+      "effect_type": "random_status",
+      "status_id": "garbled_spell",
+      "duration": 6.0,
+      "independent": true,
+      "flags": [
+       "buff",
+       "dispellable"
+      ],
+      "options": [
+       {
+        "tag": "attack_speed",
+        "stat": "attack_speed_multiplier",
+        "mode": "pct",
+        "base": 0.0,
+        "per_learning": 0.03
+       },
+       {
+        "tag": "ability_power",
+        "stat": "ability_power",
+        "mode": "flat",
+        "base": 0.0,
+        "per_learning": 3.0
+       },
+       {
+        "tag": "damage",
+        "stat": "damage_dealt_pct",
+        "mode": "flat",
+        "base": 0.0,
+        "per_learning": 0.02
+       }
+      ]
+     }
+    ]
+   },
+   "cooldown": 3.0,
+   "priority": 100
+  }
+ ],
+ "flat_stat_modifiers": {
+  "ability_power": 20
+ },
+ "percent_stat_modifiers": {},
+ "model": "notes",
+ "reworked": true,
+ "owner": "node_student"
+}

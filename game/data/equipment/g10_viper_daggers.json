@@ -1,0 +1,68 @@
+{
+ "id": "g10_viper_daggers",
+ "cost": 4,
+ "color_id": "green",
+ "weapon_class": "dual",
+ "abilities": [
+  {
+   "id": "g10_viper_bite",
+   "ability_class": "bullet",
+   "effect_type": "stat_status",
+   "value_multiplier": 1.0,
+   "fixed_value": 200,
+   "keywords": [],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "pre_effects": [
+     {
+      "effect_type": "stat_status",
+      "status_id": "g10_viper_coil",
+      "duration": 0.0,
+      "max_stacks": 4,
+      "flags": [
+       "buff",
+       "dispellable"
+      ],
+      "stats": {
+       "attack_power": {
+        "pct": 0.08
+       },
+       "attack_speed_multiplier": {
+        "flat": 0.08
+       }
+      }
+     }
+    ],
+    "status_id": "g10_viper_venom",
+    "duration": 10.0,
+    "max_stacks": 6,
+    "add_stacks": 3,
+    "flags": [
+     "debuff",
+     "dispellable"
+    ],
+    "stats": {},
+    "dot": {
+     "kind": "magic",
+     "amount": 30.0,
+     "interval": 1.0
+    },
+    "ally_effect": {
+     "effect_type": "heal"
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  }
+ ],
+ "flat_stat_modifiers": {
+  "attack_power": 35,
+  "max_health": 250
+ },
+ "percent_stat_modifiers": {},
+ "model": "g10_viper",
+ "reworked": true
+}

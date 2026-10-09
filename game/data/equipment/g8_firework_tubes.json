@@ -1,0 +1,129 @@
+{
+ "id": "g8_firework_tubes",
+ "cost": 4,
+ "color_id": "red",
+ "weapon_class": "pistols",
+ "abilities": [
+  {
+   "id": "g8_firework_burst",
+   "ability_class": "bullet",
+   "effect_type": "magic_damage",
+   "value_multiplier": 1.0,
+   "fixed_value": 40,
+   "keywords": [
+    "basic",
+    "splash"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "splash_filter": "target_allies",
+    "splash_ratio": 0.5,
+    "ally_effect": {
+     "effect_type": "heal"
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100,
+   "keyword_values": {
+    "splash": 1.25
+   }
+  },
+  {
+   "id": "g8_firework_cheer",
+   "ability_class": "bullet",
+   "effect_type": "stat_status",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic",
+    "splash"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "status_id": "g8_tinnitus",
+    "duration": 5.0,
+    "max_stacks": 1,
+    "flags": [
+     "debuff",
+     "dispellable"
+    ],
+    "stats": {
+     "attack_speed_multiplier": {
+      "flat": -0.15
+     }
+    },
+    "splash_filter": "target_allies",
+    "splash_ratio": 1.0,
+    "ally_effect": {
+     "effect_type": "stat_status",
+     "cfg": {
+      "status_id": "g8_festival",
+      "duration": 5.0,
+      "max_stacks": 1,
+      "flags": [
+       "buff",
+       "dispellable"
+      ],
+      "stats": {
+       "attack_power": {
+        "pct": 0.12
+       },
+       "attack_speed_multiplier": {
+        "flat": 0.12
+       }
+      }
+     }
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100,
+   "keyword_values": {
+    "splash": 1.25
+   }
+  },
+  {
+   "id": "g8_firework_finale",
+   "ability_class": "blade",
+   "effect_type": "heal",
+   "value_multiplier": 0.5,
+   "fixed_value": 0.0,
+   "keywords": [],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "ally_effect": {
+     "effect_type": "heal",
+     "value_multiplier": 0.5
+    },
+    "enemy_effect": {
+     "effect_type": "magic_damage",
+     "value_multiplier": 0.5
+    }
+   },
+   "cooldown": 3.0,
+   "priority": 100
+  }
+ ],
+ "flat_stat_modifiers": {
+  "attack_power": 30,
+  "max_health": 200
+ },
+ "percent_stat_modifiers": {},
+ "model": "g8_firework",
+ "reworked": true,
+ "projectile": "g8_rocket",
+ "wclass_override": {
+  "proj_speed": 16.0
+ },
+ "fit_remove": [
+  "node_maid"
+ ]
+}

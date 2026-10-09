@@ -1,0 +1,84 @@
+{
+ "id": "g5_rime_crossbow",
+ "cost": 2,
+ "color_id": "purple",
+ "weapon_class": "crossbow",
+ "abilities": [
+  {
+   "id": "g5_rime_frost",
+   "ability_class": "bullet",
+   "effect_type": "stat_status",
+   "value_multiplier": 1.0,
+   "fixed_value": 50,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "status_id": "chill",
+    "duration": 5.0,
+    "max_stacks": 1,
+    "independent": true,
+    "flags": [
+     "debuff",
+     "dispellable",
+     "chill"
+    ],
+    "stats": {
+     "attack_speed_multiplier": {
+      "flat": -0.1
+     }
+    },
+    "meta": {
+     "freeze_over": 0.4,
+     "freeze_dur": 5.0
+    },
+    "repeat": 3,
+    "ally_effect": {
+     "effect_type": "shield"
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  },
+  {
+   "id": "g5_rime_shell",
+   "ability_class": "blade",
+   "effect_type": "shield",
+   "value_multiplier": 0.9,
+   "fixed_value": 0.0,
+   "keywords": [],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "ally_effect": {
+     "effect_type": "shield",
+     "value_multiplier": 0.9
+    },
+    "enemy_effect": {
+     "effect_type": "magic_damage",
+     "value_multiplier": 0.9
+    }
+   },
+   "cooldown": 4.0,
+   "priority": 100
+  }
+ ],
+ "flat_stat_modifiers": {
+  "max_health": 120
+ },
+ "percent_stat_modifiers": {
+  "attack_speed_multiplier": 0.15
+ },
+ "model": "g5rime",
+ "reworked": true,
+ "projectile": "g5_ice_shard",
+ "wclass_override": {
+  "proj_speed": 22.0
+ }
+}

@@ -1,0 +1,165 @@
+{
+ "id": "mob_ember_envy",
+ "cost": 1,
+ "role": "archer",
+ "base_weapon_class": "focus",
+ "weapon_classes": [
+  "focus"
+ ],
+ "faction_id": "white",
+ "profession_id": "",
+ "available_in_shop": false,
+ "hide_weapon": true,
+ "model": "ember_envy",
+ "target_priority": "top_damage",
+ "radius": 0.42,
+ "scale": 1.0,
+ "projectile": "beam",
+ "wclass_overrides": {
+  "focus": {
+   "projectile": "",
+   "interval": 0.5,
+   "windup": 0.1,
+   "recover": 0.1,
+   "range": 3.2,
+   "na_mult": 0.3,
+   "na_keywords": {}
+  }
+ },
+ "anim_overrides": {
+  "focus": {
+   "idle": "idle_envy",
+   "run": "run_envy",
+   "attack": "attack_envy"
+  }
+ },
+ "base_stats": {
+  "attack_power": 40,
+  "ability_power": 0.0,
+  "defense": 12,
+  "magic_resistance": 25,
+  "max_health": 680,
+  "health_regen_per_second": 0.0,
+  "physical_lifesteal": 0.0,
+  "spell_lifesteal": 0.0,
+  "omnivamp": 0.0,
+  "crit_chance": 0.05,
+  "crit_damage": 1.5,
+  "physical_flat_penetration": 0.0,
+  "physical_percent_penetration": 0.0,
+  "magic_flat_penetration": 0.0,
+  "magic_percent_penetration": 0.0,
+  "move_speed": 1.5,
+  "attack_speed_multiplier": 1.0,
+  "damage_dealt_pct": 0.0,
+  "damage_dealt_flat": 0.0,
+  "damage_taken_pct": 0.0,
+  "damage_taken_flat": 0.0,
+  "healing_done_pct": 0.0,
+  "healing_received_pct": 0.0
+ },
+ "triggers": [
+  {
+   "id": "mob_ember_envy_gaze",
+   "timing": "OnNormalAttackHit",
+   "event_count_threshold": 3,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "event_target",
+   "team_filter": "enemy",
+   "tags": [
+    "normal_attack",
+    "passive_envy_gaze"
+   ]
+  },
+  {
+   "id": "mob_ember_envy_spite",
+   "timing": "OnNormalAttackHit",
+   "event_count_threshold": 1,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "event_target",
+   "team_filter": "enemy",
+   "tags": [
+    "normal_attack",
+    "passive_envy_spite"
+   ],
+   "unlock_star": 2
+  }
+ ],
+ "passive_abilities": [
+  {
+   "id": "mob_ember_envy_gaze",
+   "ability_class": "blade",
+   "effect_type": "stat_status",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [
+    "OnNormalAttackHit"
+   ],
+   "required_trigger_tags": [
+    "passive_envy_gaze"
+   ],
+   "effect_config": {
+    "status_id": "burning",
+    "duration": 2.0,
+    "max_stacks": 1,
+    "independent": true,
+    "flags": [
+     "debuff",
+     "burning",
+     "dispellable"
+    ],
+    "dot": {
+     "kind": "magic",
+     "amount": 25.0,
+     "interval": 1.0
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  },
+  {
+   "id": "mob_ember_envy_spite",
+   "ability_class": "blade",
+   "effect_type": "stat_status",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic",
+    "stacking"
+   ],
+   "accepted_timings": [
+    "OnNormalAttackHit"
+   ],
+   "required_trigger_tags": [
+    "passive_envy_spite"
+   ],
+   "effect_config": {
+    "status_id": "envy_spite",
+    "duration": 3.0,
+    "max_stacks": 6,
+    "flags": [
+     "debuff",
+     "dispellable"
+    ],
+    "stats": {
+     "damage_dealt_pct": {
+      "flat": -0.03
+     }
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100,
+   "keyword_values": {
+    "stacking": 6
+   },
+   "unlock_star": 2
+  }
+ ]
+}

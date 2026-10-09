@@ -1,0 +1,46 @@
+{
+ "id": "meteor_staff",
+ "cost": 4,
+ "color_id": "red",
+ "weapon_class": "polearm",
+ "abilities": [
+  {
+   "id": "meteor_staff_fall",
+   "ability_class": "blade",
+   "effect_type": "magic_damage",
+   "value_multiplier": 1.85,
+   "fixed_value": 0.0,
+   "keywords": [
+    "charged",
+    "multi_attack",
+    "splash"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "initial_charges": 0,
+    "delivery": "meteor",
+    "fall_time": 0.7,
+    "stagger": 0.16,
+    "stagger_span": 1.1
+   },
+   "cooldown": 8.0,
+   "priority": 100,
+   "keyword_values": {
+    "charged": 2,
+    "multi_attack": 12,
+    "splash": 3
+   }
+  }
+ ],
+ "flat_stat_modifiers": {
+  "ability_power": 120,
+  "magic_flat_penetration": 40
+ },
+ "percent_stat_modifiers": {},
+ "model": "meteor",
+ "reworked": true,
+ "owner": "node_witch"
+}

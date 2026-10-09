@@ -1,0 +1,56 @@
+{
+ "id": "g9_laurel_greatsword",
+ "cost": 3,
+ "color_id": "red",
+ "weapon_class": "heavy",
+ "abilities": [
+  {
+   "id": "g9_laurel_triumph",
+   "ability_class": "blade",
+   "effect_type": "stat_status",
+   "value_multiplier": 0.05,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "status_id": "g9_laurel",
+    "duration": 0.0,
+    "max_stacks": 10,
+    "flags": [
+     "buff",
+     "no_dispel"
+    ],
+    "add_stacks_from_value": true,
+    "stats": {
+     "attack_power": {
+      "pct": 0.04
+     },
+     "physical_lifesteal": {
+      "flat": 0.02
+     }
+    },
+    "extra_effects": [
+     {
+      "effect_type": "heal",
+      "target": "target",
+      "value_multiplier": 20.0
+     }
+    ]
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  }
+ ],
+ "flat_stat_modifiers": {
+  "attack_power": 35,
+  "max_health": 200
+ },
+ "percent_stat_modifiers": {},
+ "model": "g9_laurel",
+ "reworked": true
+}

@@ -1,0 +1,38 @@
+{
+ "id": "root_greatsword",
+ "cost": 1,
+ "color_id": "green",
+ "weapon_class": "heavy",
+ "abilities": [
+  {
+   "id": "root_greatsword_hit",
+   "ability_class": "bullet",
+   "effect_type": "physical_damage",
+   "value_multiplier": 1.0,
+   "fixed_value": 50.0,
+   "keywords": [],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "extra_effects": [
+     {
+      "effect_type": "heal",
+      "target": "self",
+      "fixed_value": 30.0
+     }
+    ]
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  }
+ ],
+ "flat_stat_modifiers": {
+  "defense": 3
+ },
+ "percent_stat_modifiers": {
+  "max_health": 0.12
+ },
+ "no_drop": true
+}

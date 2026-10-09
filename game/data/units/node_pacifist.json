@@ -1,0 +1,225 @@
+{
+ "id": "node_pacifist",
+ "cost": 4,
+ "role": "tank",
+ "template": "tank",
+ "base_weapon_class": "sword",
+ "weapon_classes": [
+  "sword",
+  "heavy",
+  "polearm"
+ ],
+ "faction_id": "red",
+ "profession_id": "welfare",
+ "model": "pacifist",
+ "reworked": true,
+ "target_priority": "nearest",
+ "radius": 0.5,
+ "base_stats": {
+  "attack_power": 70,
+  "ability_power": 0.0,
+  "defense": 80,
+  "magic_resistance": 60,
+  "max_health": 2000,
+  "health_regen_per_second": 0.0,
+  "physical_lifesteal": 0.0,
+  "spell_lifesteal": 0.0,
+  "omnivamp": 0.0,
+  "crit_chance": 0.05,
+  "crit_damage": 1.5,
+  "physical_flat_penetration": 0.0,
+  "physical_percent_penetration": 0.0,
+  "magic_flat_penetration": 0.0,
+  "magic_percent_penetration": 0.0,
+  "move_speed": 1.9,
+  "attack_speed_multiplier": 0.7,
+  "damage_dealt_pct": 0.0,
+  "damage_dealt_flat": 0.0,
+  "damage_taken_pct": 0.0,
+  "damage_taken_flat": 0.0,
+  "healing_done_pct": 0.0,
+  "healing_received_pct": 0.0
+ },
+ "anim_overrides": {
+  "sword": {
+   "idle": "idle_pacifist_sword",
+   "run": "run_pacifist_sword",
+   "attack": "attack_pacifist_sword"
+  },
+  "heavy": {
+   "idle": "idle_pacifist_heavy",
+   "run": "run_pacifist_heavy",
+   "attack": "attack_pacifist_heavy"
+  },
+  "polearm": {
+   "idle": "idle_pacifist_polearm",
+   "run": "run_pacifist_polearm",
+   "attack": "attack_pacifist_polearm"
+  }
+ },
+ "trigger_fx": {
+  "node_pacifist_kind": {
+   "fx": "kind_pulse",
+   "color": "#ff4f9e"
+  }
+ },
+ "normal_attack_ability": {
+  "id": "node_pacifist_na",
+  "ability_class": "blade",
+  "effect_type": "none",
+  "value_multiplier": 1.0,
+  "fixed_value": 0.0,
+  "keywords": [
+   "basic",
+   "normal_attack"
+  ],
+  "accepted_timings": [
+   "OnNormalAttackPerform"
+  ],
+  "required_trigger_tags": [
+   "normal_attack_perform"
+  ],
+  "effect_config": {},
+  "cooldown": 0.0,
+  "priority": 100
+ },
+ "triggers": [
+  {
+   "id": "node_pacifist_gentle",
+   "timing": "OnBattleStart",
+   "event_count_threshold": 1,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "self",
+   "team_filter": "ally",
+   "tags": [
+    "battle_start",
+    "passive_gentle"
+   ]
+  },
+  {
+   "id": "node_pacifist_song",
+   "timing": "OnNormalAttackPerform",
+   "event_count_threshold": 1,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "self",
+   "team_filter": "ally",
+   "tags": [
+    "normal_attack",
+    "passive_song"
+   ]
+  },
+  {
+   "id": "node_pacifist_kind",
+   "timing": "OnBattleFrame",
+   "event_count_threshold": 20,
+   "base_value_mode": "target_status_stacks",
+   "base_value_ratio": 20.0,
+   "base_value_flat": 0.0,
+   "target_rule": "all_units",
+   "team_filter": "any",
+   "tags": [
+    "battle_frame",
+    "equipment_payload"
+   ],
+   "base_value_ratio_by_star": {
+    "1": 20.0,
+    "2": 30.0,
+    "3": 45.0
+   },
+   "target_sort_rule": "status_stacks_desc:intox",
+   "runtime_conditions": [
+    {
+     "type": "battle_running"
+    }
+   ],
+   "base_value_status_id": "intox",
+   "target_filter": {
+    "has_status": "intox"
+   },
+   "fit_tags": {
+    "side": "both",
+    "count": "multi",
+    "freq": "low"
+   }
+  }
+ ],
+ "passive_abilities": [
+  {
+   "id": "node_pacifist_gentle",
+   "ability_class": "blade",
+   "effect_type": "gentle_field",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [
+    "OnBattleStart"
+   ],
+   "required_trigger_tags": [
+    "passive_gentle"
+   ],
+   "effect_config": {
+    "duration": 10.0,
+    "reduce_by_star": {
+     "1": 0.5,
+     "2": 0.75,
+     "3": 0.875
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  },
+  {
+   "id": "node_pacifist_song",
+   "ability_class": "blade",
+   "effect_type": "intox_song",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "eternal",
+    "stacking"
+   ],
+   "accepted_timings": [
+    "OnNormalAttackPerform"
+   ],
+   "required_trigger_tags": [
+    "passive_song"
+   ],
+   "effect_config": {
+    "status": {
+     "status_id": "intox",
+     "duration": 0.0,
+     "flags": [
+      "no_dispel"
+     ],
+     "stats_by_star": {
+      "damage_taken_pct": {
+       "flat": {
+        "1": -0.02,
+        "2": -0.02,
+        "3": -0.025
+       }
+      },
+      "damage_dealt_pct": {
+       "flat": {
+        "1": 0.04,
+        "2": 0.05,
+        "3": 0.06
+       }
+      }
+     }
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100,
+   "keyword_values": {
+    "stacking": 20
+   }
+  }
+ ]
+}

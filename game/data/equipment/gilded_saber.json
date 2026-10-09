@@ -1,0 +1,51 @@
+{
+ "id": "gilded_saber",
+ "cost": 4,
+ "color_id": "yellow",
+ "weapon_class": "sword",
+ "abilities": [
+  {
+   "id": "gilded_saber_cut",
+   "ability_class": "bullet",
+   "effect_type": "physical_damage",
+   "value_multiplier": 1.0,
+   "fixed_value": 30,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "extra_effects": [
+     {
+      "effect_type": "stat_status",
+      "target": "self",
+      "status_id": "saber_momentum",
+      "duration": 4.0,
+      "max_stacks": 6,
+      "flags": [
+       "buff",
+       "dispellable"
+      ],
+      "stats": {
+       "attack_speed_multiplier": {
+        "flat": 0.03
+       }
+      }
+     }
+    ]
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  }
+ ],
+ "flat_stat_modifiers": {
+  "attack_power": 30,
+  "max_health": 150
+ },
+ "percent_stat_modifiers": {},
+ "model": "g7_gilded",
+ "reworked": true
+}

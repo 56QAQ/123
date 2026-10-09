@@ -1,0 +1,35 @@
+{
+ "id": "farthest_string",
+ "cost": 5,
+ "color_id": "cyan",
+ "weapon_class": "bow",
+ "abilities": [
+  {
+   "id": "farthest_string_renew",
+   "ability_class": "bullet",
+   "effect_type": "refresh_once",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "charged"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {},
+   "cooldown": 99.0,
+   "priority": 100,
+   "keyword_values": {
+    "charged": 9
+   }
+  }
+ ],
+ "flat_stat_modifiers": {
+  "full_draw_extra_targets": 2
+ },
+ "percent_stat_modifiers": {},
+ "model": "farthest",
+ "reworked": true,
+ "owner": "node_leader"
+}

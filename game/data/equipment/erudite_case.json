@@ -1,0 +1,37 @@
+{
+ "id": "erudite_case",
+ "cost": 3,
+ "color_id": "purple",
+ "weapon_class": "focus",
+ "abilities": [
+  {
+   "id": "erudite_lecture",
+   "ability_class": "blade",
+   "effect_type": "magic_damage",
+   "value_multiplier": 0.15,
+   "fixed_value": 0.0,
+   "keywords": [
+    "learning"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "learning": {
+     "per_activation": 1,
+     "bonus_per_learning": 0.1,
+     "cap": 15
+    }
+   },
+   "cooldown": 2.0,
+   "priority": 100
+  }
+ ],
+ "flat_stat_modifiers": {
+  "ability_power": 20
+ },
+ "percent_stat_modifiers": {},
+ "model": "erudite",
+ "reworked": true
+}

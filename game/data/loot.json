@@ -1,0 +1,72 @@
+{
+ "orbs": {
+  "white": [
+   {
+    "w": 35,
+    "gold": 2
+   },
+   {
+    "w": 20,
+    "gold": 3
+   },
+   {
+    "w": 30,
+    "unit_cost": 1
+   },
+   {
+    "w": 15,
+    "weapon_max_cost": 1
+   }
+  ],
+  "blue": [
+   {
+    "w": 25,
+    "gold": 5
+   },
+   {
+    "w": 25,
+    "unit_cost": 2
+   },
+   {
+    "w": 40,
+    "weapon_max_cost": 2
+   },
+   {
+    "w": 10,
+    "gold": 2,
+    "unit_cost": 1
+   }
+  ],
+  "gold": [
+   {
+    "w": 20,
+    "gold": 10
+   },
+   {
+    "w": 30,
+    "unit_cost": 3
+   },
+   {
+    "w": 35,
+    "weapon_max_cost": 3
+   },
+   {
+    "w": 15,
+    "gold": 3,
+    "weapon_max_cost": 2
+   }
+  ],
+  "rainbow": [
+   {
+    "w": 50,
+    "gold": 8,
+    "weapon_max_cost": 4
+   },
+   {
+    "w": 50,
+    "gold": 8,
+    "unit_cost": 3
+   }
+  ]
+ }
+}

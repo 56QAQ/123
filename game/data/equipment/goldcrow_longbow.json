@@ -1,0 +1,50 @@
+{
+ "id": "goldcrow_longbow",
+ "cost": 4,
+ "color_id": "yellow",
+ "weapon_class": "bow",
+ "abilities": [
+  {
+   "id": "goldcrow_sunrise",
+   "ability_class": "amulet",
+   "effect_type": "physical_damage",
+   "value_multiplier": 1.2,
+   "fixed_value": 0.0,
+   "keywords": [
+    "learning",
+    "crit"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "learning": {
+     "per_activation": 1,
+     "bonus_per_learning": 0.08,
+     "cap": 15
+    },
+    "ally_effect": {
+     "effect_type": "heal",
+     "value_multiplier": 1.0
+    },
+    "enemy_effect": {
+     "effect_type": "physical_damage",
+     "value_multiplier": 1.2
+    }
+   },
+   "cooldown": 2.0,
+   "priority": 100
+  }
+ ],
+ "flat_stat_modifiers": {
+  "attack_power": 30,
+  "ability_power": 20,
+  "crit_chance": 0.1,
+  "crit_damage": 0.3
+ },
+ "percent_stat_modifiers": {},
+ "model": "g6_goldcrow",
+ "reworked": true,
+ "projectile": "g6_sun_arrow"
+}

@@ -1,0 +1,32 @@
+{
+ "id": "myriad_words",
+ "cost": 3,
+ "color_id": "white",
+ "weapon_class": "dual",
+ "abilities": [
+  {
+   "id": "myriad_words_harvest",
+   "ability_class": "blade",
+   "effect_type": "grant_reward",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {},
+   "cooldown": 0.0,
+   "priority": 100
+  }
+ ],
+ "flat_stat_modifiers": {
+  "passive_charges_bonus": 2
+ },
+ "percent_stat_modifiers": {},
+ "model": "slips",
+ "reworked": true,
+ "owner": "node_spy"
+}

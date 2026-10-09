@@ -1,0 +1,79 @@
+{
+ "id": "mob_guardian",
+ "cost": 2,
+ "role": "warrior",
+ "base_weapon_class": "heavy",
+ "weapon_classes": [
+  "heavy"
+ ],
+ "faction_id": "white",
+ "profession_id": "",
+ "target_priority": "nearest",
+ "radius": 0.5,
+ "scale": 1.2,
+ "available_in_shop": false,
+ "base_stats": {
+  "attack_power": 52,
+  "ability_power": 0.0,
+  "defense": 28,
+  "magic_resistance": 25,
+  "max_health": 1250,
+  "health_regen_per_second": 0.0,
+  "physical_lifesteal": 0.0,
+  "spell_lifesteal": 0.0,
+  "omnivamp": 0.0,
+  "crit_chance": 0.05,
+  "crit_damage": 1.5,
+  "physical_flat_penetration": 0.0,
+  "physical_percent_penetration": 0.0,
+  "magic_flat_penetration": 0.0,
+  "magic_percent_penetration": 0.0,
+  "move_speed": 1.7,
+  "attack_speed_multiplier": 0.8,
+  "damage_dealt_pct": 0.0,
+  "damage_dealt_flat": 0.0,
+  "damage_taken_pct": 0.0,
+  "damage_taken_flat": 0.0,
+  "healing_done_pct": 0.0,
+  "healing_received_pct": 0.0
+ },
+ "triggers": [
+  {
+   "id": "mob_guardian_ward",
+   "timing": "OnHitByNormalAttack",
+   "event_count_threshold": 4,
+   "base_value_mode": "max_health_ratio",
+   "base_value_ratio": 0.05,
+   "base_value_flat": 0.0,
+   "target_rule": "self",
+   "team_filter": "any",
+   "tags": [
+    "normal_attack",
+    "passive_ward"
+   ]
+  }
+ ],
+ "passive_abilities": [
+  {
+   "id": "mob_guardian_ward_shield",
+   "ability_class": "blade",
+   "effect_type": "shield",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [
+    "OnHitByNormalAttack"
+   ],
+   "required_trigger_tags": [
+    "passive_ward"
+   ],
+   "effect_config": {},
+   "cooldown": 0.0,
+   "priority": 100
+  }
+ ],
+ "hair": "#b8b4b2",
+ "skin": "peach"
+}

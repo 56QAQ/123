@@ -1,0 +1,186 @@
+{
+ "id": "faction_cyan",
+ "trait_category": "faction",
+ "member_trait_filter": "cyan",
+ "thresholds": [
+  2,
+  4
+ ],
+ "tiers": {
+  "2": {
+   "stats": {},
+   "pairs": [
+    {
+     "trigger": {
+      "id": "cyan_faction_tide",
+      "timing": "OnBattleFrame",
+      "event_count_threshold": 12,
+      "base_value_mode": "fixed",
+      "base_value_ratio": 1.0,
+      "base_value_flat": 0.0,
+      "target_rule": "self",
+      "team_filter": "ally",
+      "tags": [
+       "trait_payload",
+       "trait_cyan_tide"
+      ],
+      "runtime_conditions": [
+       {
+        "type": "battle_running"
+       }
+      ]
+     },
+     "ability": {
+      "id": "cyan_faction_tide",
+      "ability_class": "blade",
+      "effect_type": "stat_status",
+      "value_multiplier": 1.0,
+      "fixed_value": 0.0,
+      "keywords": [
+       "basic",
+       "stacking"
+      ],
+      "accepted_timings": [
+       "OnBattleFrame"
+      ],
+      "required_trigger_tags": [
+       "trait_payload",
+       "trait_cyan_tide"
+      ],
+      "effect_config": {
+       "status_id": "cyan_tide",
+       "duration": 0.0,
+       "max_stacks": 6,
+       "flags": [
+        "buff"
+       ],
+       "stats": {
+        "attack_speed_multiplier": {
+         "pct": 0.03
+        },
+        "ability_power": {
+         "flat": 3
+        }
+       }
+      },
+      "cooldown": 0.0,
+      "priority": 100,
+      "keyword_values": {
+       "stacking": 6
+      }
+     }
+    }
+   ]
+  },
+  "4": {
+   "stats": {},
+   "pairs": [
+    {
+     "trigger": {
+      "id": "cyan_faction_tide",
+      "timing": "OnBattleFrame",
+      "event_count_threshold": 8,
+      "base_value_mode": "fixed",
+      "base_value_ratio": 1.0,
+      "base_value_flat": 0.0,
+      "target_rule": "self",
+      "team_filter": "ally",
+      "tags": [
+       "trait_payload",
+       "trait_cyan_tide"
+      ],
+      "runtime_conditions": [
+       {
+        "type": "battle_running"
+       }
+      ]
+     },
+     "ability": {
+      "id": "cyan_faction_tide",
+      "ability_class": "blade",
+      "effect_type": "stat_status",
+      "value_multiplier": 1.0,
+      "fixed_value": 0.0,
+      "keywords": [
+       "basic",
+       "stacking"
+      ],
+      "accepted_timings": [
+       "OnBattleFrame"
+      ],
+      "required_trigger_tags": [
+       "trait_payload",
+       "trait_cyan_tide"
+      ],
+      "effect_config": {
+       "status_id": "cyan_tide",
+       "duration": 0.0,
+       "max_stacks": 8,
+       "flags": [
+        "buff"
+       ],
+       "stats": {
+        "attack_speed_multiplier": {
+         "pct": 0.04
+        },
+        "ability_power": {
+         "flat": 4
+        }
+       }
+      },
+      "cooldown": 0.0,
+      "priority": 100,
+      "keyword_values": {
+       "stacking": 8
+      }
+     }
+    },
+    {
+     "trigger": {
+      "id": "cyan_faction_surge",
+      "timing": "OnBattleFrame",
+      "event_count_threshold": 16,
+      "base_value_mode": "fixed",
+      "base_value_ratio": 1.0,
+      "base_value_flat": 0.0,
+      "target_rule": "self",
+      "team_filter": "ally",
+      "tags": [
+       "trait_payload",
+       "trait_cyan_surge"
+      ],
+      "runtime_conditions": [
+       {
+        "type": "battle_running"
+       }
+      ]
+     },
+     "ability": {
+      "id": "cyan_faction_surge",
+      "ability_class": "blade",
+      "effect_type": "bump_buff_stacks",
+      "value_multiplier": 1.0,
+      "fixed_value": 0.0,
+      "keywords": [
+       "basic"
+      ],
+      "accepted_timings": [
+       "OnBattleFrame"
+      ],
+      "required_trigger_tags": [
+       "trait_payload",
+       "trait_cyan_surge"
+      ],
+      "effect_config": {
+       "exclude": [
+        "cyan_tide"
+       ]
+      },
+      "cooldown": 0.0,
+      "priority": 100
+     }
+    }
+   ]
+  }
+ }
+}

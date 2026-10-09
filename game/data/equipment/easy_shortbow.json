@@ -1,0 +1,36 @@
+{
+ "id": "easy_shortbow",
+ "cost": 2,
+ "color_id": "green",
+ "weapon_class": "bow",
+ "abilities": [
+  {
+   "id": "easy_shortbow_shot",
+   "ability_class": "blade",
+   "effect_type": "instant_attack",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "charged"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {},
+   "cooldown": 1.0,
+   "priority": 100,
+   "keyword_values": {
+    "charged": 3
+   }
+  }
+ ],
+ "flat_stat_modifiers": {
+  "max_health": 150,
+  "attack_power": 20
+ },
+ "percent_stat_modifiers": {},
+ "model": "short",
+ "reworked": true,
+ "owner": "node_hunter"
+}

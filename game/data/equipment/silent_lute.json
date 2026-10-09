@@ -1,0 +1,66 @@
+{
+ "id": "silent_lute",
+ "cost": 2,
+ "color_id": "yellow",
+ "weapon_class": "bow",
+ "abilities": [
+  {
+   "id": "silent_lute_score",
+   "ability_class": "amulet",
+   "effect_type": "stat_status",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "mult_if_chanting": 2.0,
+    "ally_effect": {
+     "effect_type": "stat_status",
+     "cfg": {
+      "status_id": "lute_rapture",
+      "duration": 6.0,
+      "max_stacks": 1,
+      "flags": [
+       "buff",
+       "dispellable"
+      ],
+      "stats": {
+       "damage_dealt_pct": {
+        "flat": 0.06
+       }
+      }
+     }
+    },
+    "enemy_effect": {
+     "effect_type": "stat_status",
+     "cfg": {
+      "status_id": "lute_dissonance",
+      "duration": 6.0,
+      "max_stacks": 1,
+      "flags": [
+       "debuff",
+       "dispellable"
+      ],
+      "stats": {
+       "damage_taken_pct": {
+        "flat": -0.06
+       }
+      }
+     }
+    }
+   },
+   "cooldown": 6.0,
+   "priority": 100
+  }
+ ],
+ "flat_stat_modifiers": {
+  "ability_power": 20
+ },
+ "percent_stat_modifiers": {},
+ "model": "lute",
+ "reworked": true,
+ "owner": "node_bard"
+}

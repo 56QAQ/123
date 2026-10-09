@@ -1,0 +1,203 @@
+{
+ "id": "elite_ember_pride",
+ "cost": 3,
+ "role": "caster",
+ "base_weapon_class": "focus",
+ "weapon_classes": [
+  "focus"
+ ],
+ "faction_id": "white",
+ "profession_id": "",
+ "available_in_shop": false,
+ "hide_weapon": true,
+ "model": "ember_pride",
+ "target_priority": "nearest",
+ "radius": 0.45,
+ "scale": 1.25,
+ "projectile": "ember",
+ "anim_overrides": {
+  "focus": {
+   "idle": "idle_pride",
+   "run": "run_pride",
+   "attack": "attack_pride"
+  }
+ },
+ "base_stats": {
+  "attack_power": 50,
+  "ability_power": 0.0,
+  "defense": 25,
+  "magic_resistance": 40,
+  "max_health": 2200,
+  "health_regen_per_second": 0.0,
+  "physical_lifesteal": 0.0,
+  "spell_lifesteal": 0.0,
+  "omnivamp": 0.0,
+  "crit_chance": 0.05,
+  "crit_damage": 1.5,
+  "physical_flat_penetration": 0.0,
+  "physical_percent_penetration": 0.0,
+  "magic_flat_penetration": 0.0,
+  "magic_percent_penetration": 0.0,
+  "move_speed": 1.4,
+  "attack_speed_multiplier": 1.0,
+  "damage_dealt_pct": 0.0,
+  "damage_dealt_flat": 0.0,
+  "damage_taken_pct": 0.0,
+  "damage_taken_flat": 0.0,
+  "healing_done_pct": 0.0,
+  "healing_received_pct": 0.0
+ },
+ "triggers": [
+  {
+   "id": "elite_pride_summon_start",
+   "timing": "OnBattleStart",
+   "event_count_threshold": 1,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "self",
+   "team_filter": "any",
+   "tags": [
+    "battle_start",
+    "passive_pride_summon"
+   ]
+  },
+  {
+   "id": "elite_pride_summon",
+   "timing": "OnBattleFrame",
+   "event_count_threshold": 32,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "self",
+   "team_filter": "any",
+   "tags": [
+    "battle_frame",
+    "passive_pride_summon"
+   ]
+  },
+  {
+   "id": "elite_pride_edict",
+   "timing": "OnBattleFrame",
+   "event_count_threshold": 16,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "all_allies_except_self",
+   "team_filter": "ally",
+   "tags": [
+    "battle_frame",
+    "passive_pride_edict"
+   ],
+   "runtime_conditions": [
+    {
+     "type": "has_allies"
+    }
+   ]
+  }
+ ],
+ "passive_abilities": [
+  {
+   "id": "elite_pride_summon",
+   "ability_class": "blade",
+   "effect_type": "summon",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic",
+    "summon"
+   ],
+   "accepted_timings": [
+    "OnBattleStart",
+    "OnBattleFrame"
+   ],
+   "required_trigger_tags": [
+    "passive_pride_summon"
+   ],
+   "effect_config": {
+    "unit_pool": [
+     "mob_ember_wrath",
+     "mob_ember_sloth",
+     "mob_ember_lust",
+     "mob_ember_glut",
+     "mob_ember_envy",
+     "mob_ember_greed"
+    ],
+    "max_alive": 3,
+    "placement": "front"
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  },
+  {
+   "id": "elite_pride_edict",
+   "ability_class": "blade",
+   "effect_type": "stat_status",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [
+    "OnBattleFrame"
+   ],
+   "required_trigger_tags": [
+    "passive_pride_edict"
+   ],
+   "effect_config": {
+    "status_id": "pride_favor",
+    "duration": 4.5,
+    "flags": [
+     "buff",
+     "dispellable"
+    ],
+    "all_targets": true,
+    "stats": {
+     "attack_power": {
+      "pct": 0.3
+     },
+     "attack_speed_multiplier": {
+      "flat": 0.3
+     },
+     "damage_taken_pct": {
+      "flat": 0.2
+     }
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  },
+  {
+   "id": "elite_pride_grace",
+   "ability_class": "blade",
+   "effect_type": "stat_status",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [
+    "OnBattleFrame"
+   ],
+   "required_trigger_tags": [
+    "passive_pride_edict"
+   ],
+   "effect_config": {
+    "status_id": "pride_grace",
+    "duration": 4.5,
+    "flags": [
+     "buff",
+     "dispellable"
+    ],
+    "all_targets": true,
+    "hot": {
+     "pct": 0.03,
+     "interval": 0.5
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100,
+   "unlock_star": 2
+  }
+ ]
+}

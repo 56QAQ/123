@@ -1,0 +1,91 @@
+{
+ "id": "old_censer",
+ "cost": 2,
+ "color_id": "cyan",
+ "weapon_class": "focus",
+ "abilities": [
+  {
+   "id": "old_censer_steep",
+   "ability_class": "blade",
+   "effect_type": "infuse",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "multi_attack",
+    "stacking"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "per": 150.0,
+    "pop": 40.0,
+    "status": {
+     "status_id": "infusion",
+     "duration": 8.0,
+     "flags": [
+      "debuff",
+      "dispellable"
+     ],
+     "pairs": [
+      {
+       "trigger": {
+        "id": "infusion_pop",
+        "timing": "OnHitByNormalAttack",
+        "event_count_threshold": 1,
+        "base_value_mode": "fixed",
+        "base_value_ratio": 1.0,
+        "base_value_flat": 0.0,
+        "target_rule": "event_target",
+        "team_filter": "any",
+        "tags": [
+         "normal_attack",
+         "status_infusion"
+        ],
+        "runtime_conditions": [
+         {
+          "type": "source_has_status",
+          "status_id": "infusion"
+         }
+        ]
+       },
+       "ability": {
+        "id": "infusion_pop",
+        "ability_class": "blade",
+        "effect_type": "infusion_pop",
+        "value_multiplier": 1.0,
+        "fixed_value": 0.0,
+        "keywords": [
+         "basic"
+        ],
+        "accepted_timings": [
+         "OnHitByNormalAttack"
+        ],
+        "required_trigger_tags": [
+         "status_infusion"
+        ],
+        "effect_config": {},
+        "cooldown": 0.0,
+        "priority": 100
+       }
+      }
+     ]
+    }
+   },
+   "cooldown": 8.0,
+   "priority": 100,
+   "keyword_values": {
+    "multi_attack": 6,
+    "stacking": 6
+   }
+  }
+ ],
+ "flat_stat_modifiers": {
+  "healing_done_pct": 0.15
+ },
+ "percent_stat_modifiers": {},
+ "model": "censer",
+ "reworked": true,
+ "owner": "node_perfume"
+}

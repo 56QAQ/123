@@ -1,0 +1,38 @@
+{
+ "id": "twin_candelabra",
+ "cost": 3,
+ "color_id": "black",
+ "weapon_class": "focus",
+ "abilities": [
+  {
+   "id": "twin_candelabra_flame",
+   "ability_class": "amulet",
+   "effect_type": "heal",
+   "value_multiplier": 0.4,
+   "fixed_value": 0.0,
+   "keywords": [],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "ally_effect": {
+     "effect_type": "heal",
+     "value_multiplier": 0.4
+    },
+    "enemy_effect": {
+     "effect_type": "magic_damage",
+     "value_multiplier": 0.4
+    }
+   },
+   "cooldown": 3.0,
+   "priority": 100
+  }
+ ],
+ "flat_stat_modifiers": {
+  "ability_power": 10
+ },
+ "percent_stat_modifiers": {},
+ "model": "candelabra",
+ "reworked": true
+}

@@ -1,0 +1,30 @@
+{
+  "id": "mermaid_singer",
+  "date": "2026-10-06",
+  "project": "D:\\voxel",
+  "method": "built-in image_gen",
+  "status": "reviewed",
+  "output": "mermaid_singer_voxel_card.png",
+  "source_copy": "source_mermaid.png",
+  "prompt": "prompt.txt",
+  "image_references": [
+    "C:\\Users\\li125\\AppData\\Local\\Temp\\codex-clipboard-ecba5457-b549-4eec-b45b-d1386b20c1ad.png",
+    "C:\\Users\\li125\\Documents\\Codex\\2026-09-30\\new-chat\\outputs\\voxel_character_cards\\cards\\archer_voxel_card.png",
+    "D:\\voxel\\docs\\character_sheet.png"
+  ],
+  "generated_original": "C:\\Users\\li125\\.codex\\generated_images\\01a0ee44-5b4b-7da0-a4d8-6419d466f525\\exec-5600cdb0-50e4-4eaf-b7b2-f5585ebd8c16.png",
+  "width": 1122,
+  "height": 1402,
+  "bytes": 2125050,
+  "output_sha256": "9479F1BC0BDE16C31AEDBAA8489EF2E08444644CADBDCEC2ACB4EEED77EBC589",
+  "source_sha256": "F82C2FCDB235B01F85CE3E3163DD1949A7543A2C4C4B18545290398FF54FC862",
+  "prompt_sha256": "4A5A4002C9A85BC1ECD0497DEABAEBE9F01F70F8B04FD7FFF48815A469C3BEFF",
+  "visual_review": [
+    "Source character identity and palette",
+    "Mermaid seated in wheelchair, single fish tail and split fluke",
+    "Main view and front/back/side turnarounds",
+    "Separate wheelchair, wheel/axle, casters and microphone",
+    "Three detail panels and visible voxel construction"
+  ],
+  "notes": "建模设计参考图；原画未展示的背面和连接结构按源设计补全。"
+}

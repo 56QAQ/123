@@ -1,0 +1,49 @@
+{
+ "id": "ward_mirror",
+ "cost": 2,
+ "color_id": "black",
+ "weapon_class": "focus",
+ "abilities": [
+  {
+   "id": "ward_mirror_barrier",
+   "ability_class": "blade",
+   "effect_type": "shield",
+   "value_multiplier": 0.7,
+   "fixed_value": 0.0,
+   "keywords": [],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "extra_effects": [
+     {
+      "effect_type": "stat_status",
+      "target": "target",
+      "status_id": "crystal_wall",
+      "duration": 4.0,
+      "max_stacks": 1,
+      "flags": [
+       "buff",
+       "dispellable"
+      ],
+      "stats": {
+       "damage_taken_amp": {
+        "flat": -0.12
+       }
+      }
+     }
+    ]
+   },
+   "cooldown": 4.0,
+   "priority": 100
+  }
+ ],
+ "flat_stat_modifiers": {
+  "max_health": 100,
+  "magic_resistance": 15
+ },
+ "percent_stat_modifiers": {},
+ "model": "mirror",
+ "reworked": true
+}

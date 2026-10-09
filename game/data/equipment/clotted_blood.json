@@ -1,0 +1,55 @@
+{
+ "id": "clotted_blood",
+ "cost": 4,
+ "color_id": "cyan",
+ "weapon_class": "heavy",
+ "abilities": [
+  {
+   "id": "clotted_blood_rupture",
+   "ability_class": "blade",
+   "effect_type": "blood_rupture",
+   "value_multiplier": 0.12,
+   "fixed_value": 0.0,
+   "keywords": [
+    "multi_attack",
+    "stacking",
+    "chant"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "chant_pct_per_second": 0.0,
+    "crack": {
+     "status_id": "blood_crack",
+     "duration": 10.0,
+     "flags": [
+      "debuff",
+      "dispellable"
+     ],
+     "stats": {
+      "dot_taken_flat": {
+       "flat": 2.0
+      }
+     }
+    }
+   },
+   "cooldown": 7.0,
+   "priority": 100,
+   "keyword_values": {
+    "multi_attack": 8,
+    "stacking": 6,
+    "chant": 3
+   }
+  }
+ ],
+ "flat_stat_modifiers": {
+  "dot_damage_pct": 0.25,
+  "physical_flat_penetration": 20
+ },
+ "percent_stat_modifiers": {},
+ "model": "clot",
+ "reworked": true,
+ "owner": "node_vampire"
+}

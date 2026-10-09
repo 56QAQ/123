@@ -1,0 +1,63 @@
+{
+ "id": "g9_rimetide_spear",
+ "cost": 2,
+ "color_id": "cyan",
+ "weapon_class": "polearm",
+ "abilities": [
+  {
+   "id": "g9_rimetide_surge",
+   "ability_class": "bullet",
+   "effect_type": "magic_damage",
+   "value_multiplier": 1.0,
+   "fixed_value": 50.0,
+   "keywords": [
+    "basic",
+    "multi_attack"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "extra_effects": [
+     {
+      "effect_type": "stat_status",
+      "target": "target",
+      "status_id": "chill",
+      "duration": 5.0,
+      "max_stacks": 1,
+      "independent": true,
+      "flags": [
+       "debuff",
+       "dispellable",
+       "chill"
+      ],
+      "stats": {
+       "attack_speed_multiplier": {
+        "flat": -0.1
+       }
+      },
+      "meta": {
+       "freeze_over": 0.4,
+       "freeze_dur": 5.0
+      },
+      "repeat": 3
+     }
+    ]
+   },
+   "cooldown": 0.0,
+   "priority": 100,
+   "keyword_values": {
+    "multi_attack": 4
+   }
+  }
+ ],
+ "flat_stat_modifiers": {
+  "max_health": 150
+ },
+ "percent_stat_modifiers": {
+  "attack_speed_multiplier": 0.1
+ },
+ "model": "g9_rimetide",
+ "reworked": true
+}

@@ -1,0 +1,117 @@
+{
+ "id": "boss_cinder_colossus",
+ "cost": 4,
+ "role": "tank",
+ "base_weapon_class": "heavy",
+ "weapon_classes": [
+  "heavy"
+ ],
+ "faction_id": "white",
+ "profession_id": "",
+ "target_priority": "nearest",
+ "radius": 0.6,
+ "scale": 1.45,
+ "available_in_shop": false,
+ "base_stats": {
+  "attack_power": 120,
+  "ability_power": 0.0,
+  "defense": 60,
+  "magic_resistance": 45,
+  "max_health": 5200,
+  "health_regen_per_second": 0.0,
+  "physical_lifesteal": 0.0,
+  "spell_lifesteal": 0.0,
+  "omnivamp": 0.0,
+  "crit_chance": 0.05,
+  "crit_damage": 1.5,
+  "physical_flat_penetration": 0.0,
+  "physical_percent_penetration": 0.0,
+  "magic_flat_penetration": 0.0,
+  "magic_percent_penetration": 0.0,
+  "move_speed": 1.6,
+  "attack_speed_multiplier": 0.75,
+  "damage_dealt_pct": 0.0,
+  "damage_dealt_flat": 0.0,
+  "damage_taken_pct": 0.0,
+  "damage_taken_flat": 0.0,
+  "healing_done_pct": 0.0,
+  "healing_received_pct": 0.0
+ },
+ "triggers": [
+  {
+   "id": "boss_cinder_colossus_quake",
+   "timing": "OnNormalAttackHit",
+   "event_count_threshold": 5,
+   "base_value_mode": "attack_ratio",
+   "base_value_ratio": 1.6,
+   "base_value_flat": 0.0,
+   "target_rule": "nearby_units",
+   "team_filter": "enemy",
+   "tags": [
+    "normal_attack",
+    "passive_quake"
+   ],
+   "target_radius": 3.0
+  }
+ ],
+ "passive_abilities": [
+  {
+   "id": "boss_cinder_colossus_quake_dmg",
+   "ability_class": "blade",
+   "effect_type": "magic_damage",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [
+    "OnNormalAttackHit"
+   ],
+   "required_trigger_tags": [
+    "passive_quake"
+   ],
+   "effect_config": {
+    "all_targets": true
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  },
+  {
+   "id": "boss_cinder_colossus_quake_burn",
+   "ability_class": "blade",
+   "effect_type": "stat_status",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [
+    "OnNormalAttackHit"
+   ],
+   "required_trigger_tags": [
+    "passive_quake"
+   ],
+   "effect_config": {
+    "status_id": "burning",
+    "duration": 4.0,
+    "max_stacks": 1,
+    "independent": true,
+    "flags": [
+     "debuff",
+     "burning",
+     "dispellable"
+    ],
+    "dot": {
+     "kind": "magic",
+     "amount": 25.0,
+     "interval": 1.0
+    },
+    "all_targets": true
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  }
+ ],
+ "hair": "#918a84",
+ "skin": "umber"
+}

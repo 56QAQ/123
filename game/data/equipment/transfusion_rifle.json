@@ -1,0 +1,71 @@
+{
+ "id": "transfusion_rifle",
+ "cost": 3,
+ "color_id": "red",
+ "weapon_class": "rifle",
+ "abilities": [
+  {
+   "id": "transfusion_dose",
+   "ability_class": "bullet",
+   "effect_type": "stat_status",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "ally_effect": {
+     "effect_type": "stat_status",
+     "cfg": {
+      "status_id": "g6_transfused",
+      "duration": 5.0,
+      "max_stacks": 1,
+      "flags": [
+       "buff",
+       "dispellable"
+      ],
+      "stats": {
+       "healing_received_pct": {
+        "flat": 0.4
+       },
+       "attack_power": {
+        "pct": 0.1
+       }
+      }
+     }
+    },
+    "enemy_effect": {
+     "effect_type": "stat_status",
+     "cfg": {
+      "status_id": "g6_bloodlet",
+      "duration": 5.0,
+      "max_stacks": 1,
+      "independent": true,
+      "flags": [
+       "debuff",
+       "dispellable"
+      ],
+      "dot": {
+       "kind": "physical",
+       "amount": 25.0,
+       "interval": 1.0
+      }
+     }
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  }
+ ],
+ "flat_stat_modifiers": {
+  "attack_power": 30,
+  "max_health": 150
+ },
+ "percent_stat_modifiers": {},
+ "model": "g6_transfusion",
+ "reworked": true
+}

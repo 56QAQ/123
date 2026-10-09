@@ -1,0 +1,41 @@
+{
+ "id": "lightning_gloves",
+ "cost": 4,
+ "color_id": "purple",
+ "weapon_class": "dual",
+ "abilities": [
+  {
+   "id": "lightning_gloves_jolt",
+   "ability_class": "blade",
+   "effect_type": "magic_damage",
+   "value_multiplier": 0.8,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "extra_effects": [
+     {
+      "effect_type": "knockback",
+      "value_multiplier": 0.005,
+      "target": "target",
+      "max_dist": 3.0
+     }
+    ]
+   },
+   "cooldown": 2.0,
+   "priority": 100
+  }
+ ],
+ "flat_stat_modifiers": {},
+ "percent_stat_modifiers": {
+  "move_speed": 0.2
+ },
+ "model": "volt",
+ "reworked": true,
+ "owner": "node_runner"
+}

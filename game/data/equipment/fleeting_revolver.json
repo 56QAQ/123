@@ -1,0 +1,38 @@
+{
+ "id": "fleeting_revolver",
+ "cost": 2,
+ "color_id": "black",
+ "weapon_class": "crossbow",
+ "abilities": [
+  {
+   "id": "fleeting_revolver_load",
+   "ability_class": "blade",
+   "effect_type": "empower_shots",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "status_id": "big_caliber",
+    "count": 6,
+    "after_mult": 0.7
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  }
+ ],
+ "flat_stat_modifiers": {
+  "attack_range": -2.3,
+  "crit_damage": 0.25
+ },
+ "percent_stat_modifiers": {},
+ "model": "revolver",
+ "reworked": true,
+ "owner": "node_cowboy",
+ "projectile": "bullet"
+}

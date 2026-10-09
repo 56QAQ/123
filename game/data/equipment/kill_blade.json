@@ -1,0 +1,53 @@
+{
+ "id": "kill_blade",
+ "cost": 4,
+ "color_id": "black",
+ "weapon_class": "heavy",
+ "abilities": [
+  {
+   "id": "kill_sever",
+   "ability_class": "bullet",
+   "effect_type": "sever",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic",
+    "awakening",
+    "eternal",
+    "learning",
+    "multi_attack"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "pct": 0.06,
+    "curse_at": 40,
+    "learning": {
+     "bonus_per_learning": 0.0
+    },
+    "awakening_tasks": [
+     {
+      "type": "enemies_at_most",
+      "count": 1
+     }
+    ]
+   },
+   "cooldown": 0.0,
+   "priority": 100,
+   "keyword_values": {
+    "multi_attack": 9
+   }
+  }
+ ],
+ "flat_stat_modifiers": {
+  "attack_power": 50
+ },
+ "percent_stat_modifiers": {
+  "attack_speed_multiplier": 0.15
+ },
+ "model": "odachi",
+ "reworked": true,
+ "owner": "node_killer"
+}

@@ -1,0 +1,101 @@
+{
+ "id": "g5_hive_crossbow",
+ "cost": 4,
+ "color_id": "yellow",
+ "weapon_class": "crossbow",
+ "abilities": [
+  {
+   "id": "g5_hive_swarm",
+   "ability_class": "bullet",
+   "effect_type": "stat_status",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "ally_effect": {
+     "effect_type": "stat_status",
+     "cfg": {
+      "status_id": "g5_honey",
+      "duration": 8.0,
+      "max_stacks": 3,
+      "flags": [
+       "buff",
+       "dispellable"
+      ],
+      "stats": {
+       "attack_power": {
+        "pct": 0.08
+       },
+       "attack_speed_multiplier": {
+        "flat": 0.08
+       }
+      }
+     }
+    },
+    "enemy_effect": {
+     "effect_type": "stat_status",
+     "cfg": {
+      "status_id": "g5_venom",
+      "duration": 8.0,
+      "max_stacks": 3,
+      "flags": [
+       "debuff",
+       "dispellable"
+      ],
+      "dot": {
+       "kind": "magic",
+       "amount": 20.0,
+       "interval": 1.0
+      }
+     }
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  },
+  {
+   "id": "g5_hive_nectar",
+   "ability_class": "blade",
+   "effect_type": "heal",
+   "value_multiplier": 0.8,
+   "fixed_value": 0.0,
+   "keywords": [],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "ally_effect": {
+     "effect_type": "heal",
+     "value_multiplier": 0.8
+    },
+    "enemy_effect": {
+     "effect_type": "physical_damage",
+     "value_multiplier": 0.8
+    }
+   },
+   "cooldown": 3.0,
+   "priority": 100
+  }
+ ],
+ "flat_stat_modifiers": {
+  "max_health": 200,
+  "healing_done_pct": 0.15
+ },
+ "percent_stat_modifiers": {},
+ "model": "g5hive",
+ "reworked": true,
+ "projectile": "g5_bee",
+ "wclass_override": {
+  "proj_speed": 11.0
+ },
+ "fit_remove": [
+  "node_taoist"
+ ]
+}

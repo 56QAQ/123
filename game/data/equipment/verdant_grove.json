@@ -1,0 +1,44 @@
+{
+ "id": "verdant_grove",
+ "cost": 4,
+ "color_id": "green",
+ "weapon_class": "polearm",
+ "abilities": [
+  {
+   "id": "verdant_grove_growth",
+   "ability_class": "blade",
+   "effect_type": "verdant_grove",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "charged",
+    "learning"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "n1": 40.0,
+    "n2": 30.0,
+    "as_base": 4,
+    "learning": {
+     "bonus_per_learning": 0.0
+    }
+   },
+   "cooldown": 12.0,
+   "priority": 100,
+   "keyword_values": {
+    "charged": 2
+   }
+  }
+ ],
+ "flat_stat_modifiers": {
+  "max_health": 300,
+  "ability_power": 30
+ },
+ "percent_stat_modifiers": {},
+ "model": "verdant",
+ "reworked": true,
+ "owner": "node_warden"
+}

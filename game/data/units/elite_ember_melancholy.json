@@ -1,0 +1,232 @@
+{
+ "id": "elite_ember_melancholy",
+ "cost": 3,
+ "role": "tank",
+ "base_weapon_class": "sword",
+ "weapon_classes": [
+  "sword"
+ ],
+ "faction_id": "white",
+ "profession_id": "",
+ "available_in_shop": false,
+ "hide_weapon": true,
+ "model": "ember_melancholy",
+ "target_priority": "nearest",
+ "radius": 0.55,
+ "scale": 1.45,
+ "anim_overrides": {
+  "sword": {
+   "idle": "idle_melancholy",
+   "run": "run_melancholy",
+   "attack": "idle_melancholy"
+  }
+ },
+ "base_stats": {
+  "attack_power": 10,
+  "ability_power": 0.0,
+  "defense": 40,
+  "magic_resistance": 40,
+  "max_health": 3600,
+  "health_regen_per_second": 0.0,
+  "physical_lifesteal": 0.0,
+  "spell_lifesteal": 0.0,
+  "omnivamp": 0.0,
+  "crit_chance": 0.05,
+  "crit_damage": 1.5,
+  "physical_flat_penetration": 0.0,
+  "physical_percent_penetration": 0.0,
+  "magic_flat_penetration": 0.0,
+  "magic_percent_penetration": 0.0,
+  "move_speed": 1.6,
+  "attack_speed_multiplier": 1.0,
+  "damage_dealt_pct": 0.0,
+  "damage_dealt_flat": 0.0,
+  "damage_taken_pct": 0.0,
+  "damage_taken_flat": 0.0,
+  "healing_done_pct": 0.0,
+  "healing_received_pct": 0.0
+ },
+ "triggers": [
+  {
+   "id": "elite_melancholy_listless",
+   "timing": "OnBattleStart",
+   "event_count_threshold": 1,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "self",
+   "team_filter": "any",
+   "tags": [
+    "battle_start",
+    "passive_melancholy_tide"
+   ]
+  },
+  {
+   "id": "elite_melancholy_tide",
+   "timing": "OnBattleFrame",
+   "event_count_threshold": 4,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "self",
+   "team_filter": "any",
+   "tags": [
+    "battle_frame",
+    "passive_melancholy_taunt"
+   ]
+  },
+  {
+   "id": "elite_melancholy_drown",
+   "timing": "OnBattleFrame",
+   "event_count_threshold": 2,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "self",
+   "team_filter": "any",
+   "tags": [
+    "battle_frame",
+    "passive_melancholy_drown"
+   ],
+   "runtime_conditions": [
+    {
+     "type": "has_allies"
+    }
+   ]
+  },
+  {
+   "id": "elite_melancholy_rain",
+   "timing": "OnBattleFrame",
+   "event_count_threshold": 4,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "nearby_units",
+   "team_filter": "enemy",
+   "tags": [
+    "battle_frame",
+    "passive_melancholy_rain"
+   ],
+   "target_radius": 2.4,
+   "unlock_star": 2
+  }
+ ],
+ "passive_abilities": [
+  {
+   "id": "elite_melancholy_listless",
+   "ability_class": "blade",
+   "effect_type": "stat_status",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic",
+    "splash"
+   ],
+   "accepted_timings": [
+    "OnBattleStart"
+   ],
+   "required_trigger_tags": [
+    "passive_melancholy_tide"
+   ],
+   "effect_config": {
+    "status_id": "melancholy_listless",
+    "duration": 0.0,
+    "flags": [
+     "no_dispel",
+     "disarm"
+    ],
+    "splash_is_range": true
+   },
+   "cooldown": 0.0,
+   "priority": 100,
+   "keyword_values": {
+    "splash": 2
+   }
+  },
+  {
+   "id": "elite_melancholy_taunt",
+   "ability_class": "blade",
+   "effect_type": "aura_taunt",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [
+    "OnBattleFrame"
+   ],
+   "required_trigger_tags": [
+    "passive_melancholy_taunt"
+   ],
+   "effect_config": {
+    "duration": 1.2
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  },
+  {
+   "id": "elite_melancholy_drown",
+   "ability_class": "blade",
+   "effect_type": "stat_status",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [
+    "OnBattleFrame"
+   ],
+   "required_trigger_tags": [
+    "passive_melancholy_drown"
+   ],
+   "effect_config": {
+    "status_id": "melancholy_drown",
+    "duration": 0.6,
+    "flags": [
+     "buff",
+     "no_dispel"
+    ],
+    "stats": {
+     "damage_taken_pct": {
+      "flat": 0.5
+     }
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  },
+  {
+   "id": "elite_melancholy_rain",
+   "ability_class": "blade",
+   "effect_type": "stat_status",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [
+    "OnBattleFrame"
+   ],
+   "required_trigger_tags": [
+    "passive_melancholy_rain"
+   ],
+   "effect_config": {
+    "status_id": "melancholy_gloom",
+    "duration": 1.5,
+    "flags": [
+     "debuff",
+     "dispellable"
+    ],
+    "all_targets": true,
+    "stats": {
+     "attack_speed_multiplier": {
+      "flat": -0.25
+     }
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100,
+   "unlock_star": 2
+  }
+ ]
+}

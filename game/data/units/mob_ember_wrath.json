@@ -1,0 +1,163 @@
+{
+ "id": "mob_ember_wrath",
+ "cost": 1,
+ "role": "caster",
+ "base_weapon_class": "focus",
+ "weapon_classes": [
+  "focus"
+ ],
+ "faction_id": "white",
+ "profession_id": "",
+ "available_in_shop": false,
+ "hide_weapon": true,
+ "model": "ember_wrath",
+ "target_priority": "nearest",
+ "radius": 0.46,
+ "scale": 1.12,
+ "projectile": "ember",
+ "anim_overrides": {
+  "focus": {
+   "idle": "idle_wrath",
+   "run": "run_wrath",
+   "attack": "attack_wrath"
+  }
+ },
+ "base_stats": {
+  "attack_power": 50,
+  "ability_power": 0.0,
+  "defense": 15,
+  "magic_resistance": 30,
+  "max_health": 880,
+  "health_regen_per_second": 0.0,
+  "physical_lifesteal": 0.0,
+  "spell_lifesteal": 0.0,
+  "omnivamp": 0.0,
+  "crit_chance": 0.05,
+  "crit_damage": 1.5,
+  "physical_flat_penetration": 0.0,
+  "physical_percent_penetration": 0.0,
+  "magic_flat_penetration": 0.0,
+  "magic_percent_penetration": 0.0,
+  "move_speed": 1.4,
+  "attack_speed_multiplier": 1.0,
+  "damage_dealt_pct": 0.0,
+  "damage_dealt_flat": 0.0,
+  "damage_taken_pct": 0.0,
+  "damage_taken_flat": 0.0,
+  "healing_done_pct": 0.0,
+  "healing_received_pct": 0.0
+ },
+ "triggers": [
+  {
+   "id": "mob_ember_wrath_spread",
+   "timing": "OnBattleFrame",
+   "event_count_threshold": 12,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "all_enemies",
+   "team_filter": "enemy",
+   "tags": [
+    "battle_frame",
+    "passive_wrath_spread"
+   ],
+   "target_sort_rule": "random",
+   "runtime_conditions": [
+    {
+     "type": "has_enemies"
+    }
+   ],
+   "target_filter": {
+    "missing_status": "burning"
+   }
+  },
+  {
+   "id": "mob_ember_wrath_release",
+   "timing": "OnBattleFrame",
+   "event_count_threshold": 20,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "all_enemies",
+   "team_filter": "enemy",
+   "tags": [
+    "battle_frame",
+    "passive_wrath_release"
+   ],
+   "base_value_flat_by_star": {
+    "1": 1.2,
+    "2": 1.6,
+    "3": 2.2
+   },
+   "target_sort_rule": "status_remaining_desc:burning",
+   "runtime_conditions": [
+    {
+     "type": "has_enemies"
+    }
+   ],
+   "unlock_star": 2,
+   "target_filter": {
+    "has_status": "burning"
+   }
+  }
+ ],
+ "passive_abilities": [
+  {
+   "id": "mob_ember_wrath_spread",
+   "ability_class": "blade",
+   "effect_type": "stat_status",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [
+    "OnBattleFrame"
+   ],
+   "required_trigger_tags": [
+    "passive_wrath_spread"
+   ],
+   "effect_config": {
+    "status_id": "burning",
+    "duration": 7.0,
+    "max_stacks": 1,
+    "independent": true,
+    "flags": [
+     "debuff",
+     "burning",
+     "dispellable"
+    ],
+    "dot": {
+     "kind": "magic",
+     "amount": 25.0,
+     "interval": 1.0
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  },
+  {
+   "id": "mob_ember_wrath_release",
+   "ability_class": "blade",
+   "effect_type": "status_detonate",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [
+    "OnBattleFrame"
+   ],
+   "required_trigger_tags": [
+    "passive_wrath_release"
+   ],
+   "effect_config": {
+    "status_id": "burning",
+    "damage_kind": "magic"
+   },
+   "cooldown": 0.0,
+   "priority": 100,
+   "unlock_star": 2
+  }
+ ]
+}

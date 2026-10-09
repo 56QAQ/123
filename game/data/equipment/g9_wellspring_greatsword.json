@@ -1,0 +1,37 @@
+{
+ "id": "g9_wellspring_greatsword",
+ "cost": 4,
+ "color_id": "cyan",
+ "weapon_class": "heavy",
+ "abilities": [
+  {
+   "id": "g9_wellspring_surge",
+   "ability_class": "blade",
+   "effect_type": "magic_damage",
+   "value_multiplier": 0.7,
+   "fixed_value": 0.0,
+   "keywords": [
+    "multi_attack"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "heal_lowest_ally": true
+   },
+   "cooldown": 3.0,
+   "priority": 100,
+   "keyword_values": {
+    "multi_attack": 4
+   }
+  }
+ ],
+ "flat_stat_modifiers": {
+  "ability_power": 50,
+  "max_health": 250
+ },
+ "percent_stat_modifiers": {},
+ "model": "g9_wellspring",
+ "reworked": true
+}

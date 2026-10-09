@@ -1,0 +1,38 @@
+{
+ "id": "necro_grimoire",
+ "cost": 4,
+ "color_id": "purple",
+ "weapon_class": "focus",
+ "abilities": [
+  {
+   "id": "necro_grimoire_haunt",
+   "ability_class": "blade",
+   "effect_type": "summon_ghost_behind",
+   "value_multiplier": 0.03,
+   "fixed_value": 0.0,
+   "keywords": [
+    "charged",
+    "summon"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "unit_id": "node_ghost"
+   },
+   "cooldown": 5.0,
+   "priority": 100,
+   "keyword_values": {
+    "charged": 2
+   }
+  }
+ ],
+ "flat_stat_modifiers": {
+  "summon_star_bonus": 1
+ },
+ "percent_stat_modifiers": {},
+ "model": "grimoire",
+ "reworked": true,
+ "owner": "node_medium"
+}

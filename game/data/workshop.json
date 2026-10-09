@@ -1,0 +1,102 @@
+{
+ "materials": [
+  "red",
+  "green",
+  "blue"
+ ],
+ "start": {
+  "red": 2,
+  "green": 2,
+  "blue": 2
+ },
+ "orb_materials": {
+  "white": 1,
+  "blue": 2,
+  "gold": 3,
+  "rainbow": 6
+ },
+ "kinds": [
+  {
+   "id": "weapon",
+   "categories": [
+    "sword",
+    "heavy",
+    "polearm",
+    "dual",
+    "bow",
+    "crossbow",
+    "rifle",
+    "pistols",
+    "focus"
+   ],
+   "min_categories": 3
+  },
+  {
+   "id": "gear",
+   "categories": [],
+   "min_categories": 3,
+   "locked": true
+  }
+ ],
+ "min_total": 3,
+ "max_total": 30,
+ "color_mix": {
+  "red": [
+   1,
+   0,
+   0
+  ],
+  "green": [
+   0,
+   1,
+   0
+  ],
+  "blue": [
+   0,
+   0,
+   1
+  ],
+  "yellow": [
+   0.5,
+   0.5,
+   0
+  ],
+  "purple": [
+   0.5,
+   0,
+   0.5
+  ],
+  "cyan": [
+   0,
+   0.5,
+   0.5
+  ],
+  "black": [
+   0.3333,
+   0.3333,
+   0.3333
+  ],
+  "white": [
+   0.3333,
+   0.3333,
+   0.3333
+  ]
+ },
+ "color_sigma": 0.35,
+ "color_prior": {
+  "black": 0.6,
+  "white": 0.25
+ },
+ "rarity": {
+  "base": 1.0,
+  "per_material": 0.14285714285714285,
+  "sigma": 0.55
+ },
+ "salvage": {
+  "1": 2,
+  "2": 4,
+  "3": 7,
+  "4": 10,
+  "5": 13
+ }
+}

@@ -1,0 +1,42 @@
+{
+ "id": "heart_syringe",
+ "cost": 2,
+ "color_id": "red",
+ "weapon_class": "focus",
+ "abilities": [
+  {
+   "id": "heart_syringe_dose",
+   "ability_class": "blade",
+   "effect_type": "physical_damage",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "splash",
+    "crit"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "as_normal_attack": true,
+    "splash_fx": "heart"
+   },
+   "cooldown": 1.5,
+   "priority": 100,
+   "keyword_values": {
+    "splash": 1.5
+   }
+  }
+ ],
+ "flat_stat_modifiers": {
+  "attack_power": 15
+ },
+ "percent_stat_modifiers": {
+  "attack_speed_multiplier": 0.15
+ },
+ "model": "syringe",
+ "reworked": true,
+ "owner": "node_nurse",
+ "projectile": "syringe_dart"
+}

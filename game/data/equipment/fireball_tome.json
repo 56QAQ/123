@@ -1,0 +1,44 @@
+{
+ "id": "fireball_tome",
+ "cost": 3,
+ "color_id": "red",
+ "weapon_class": "focus",
+ "abilities": [
+  {
+   "id": "fireball_tome_hit",
+   "ability_class": "tome",
+   "effect_type": "magic_damage",
+   "value_multiplier": 3.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "splash",
+    "learning",
+    "crit"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "learning": {
+     "per_activation": 1,
+     "bonus_per_learning": 0.12,
+     "cap": 10
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100,
+   "keyword_values": {
+    "splash": 1
+   }
+  }
+ ],
+ "flat_stat_modifiers": {
+  "ability_power": 30
+ },
+ "percent_stat_modifiers": {
+  "attack_power": 0.1
+ },
+ "model": "tome",
+ "no_drop": true
+}

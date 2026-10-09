@@ -1,0 +1,38 @@
+{
+ "id": "order_sword",
+ "cost": 2,
+ "color_id": "blue",
+ "weapon_class": "sword",
+ "abilities": [
+  {
+   "id": "order_sword_dual",
+   "ability_class": "amulet",
+   "effect_type": "shield",
+   "value_multiplier": 1.5,
+   "fixed_value": 0.0,
+   "keywords": [],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "ally_effect": {
+     "effect_type": "shield",
+     "value_multiplier": 1.5
+    },
+    "enemy_effect": {
+     "effect_type": "magic_damage",
+     "value_multiplier": 1.0
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  }
+ ],
+ "flat_stat_modifiers": {
+  "magic_resistance": 12,
+  "ability_power": 20
+ },
+ "percent_stat_modifiers": {},
+ "no_drop": true
+}

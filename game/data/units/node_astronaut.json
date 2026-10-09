@@ -1,0 +1,248 @@
+{
+ "id": "node_astronaut",
+ "cost": 4,
+ "role": "tank",
+ "template": "tank",
+ "base_weapon_class": "polearm",
+ "weapon_classes": [
+  "polearm",
+  "heavy"
+ ],
+ "faction_id": "blue",
+ "profession_id": "maintenance",
+ "model": "astronaut",
+ "reworked": true,
+ "target_priority": "nearest",
+ "radius": 0.46,
+ "bench_traits": true,
+ "bench_drop": true,
+ "base_stats": {
+  "attack_power": 60,
+  "ability_power": 0.0,
+  "defense": 50,
+  "magic_resistance": 40,
+  "max_health": 1200,
+  "health_regen_per_second": 0.0,
+  "physical_lifesteal": 0.0,
+  "spell_lifesteal": 0.0,
+  "omnivamp": 0.0,
+  "crit_chance": 0.05,
+  "crit_damage": 1.5,
+  "physical_flat_penetration": 0.0,
+  "physical_percent_penetration": 0.0,
+  "magic_flat_penetration": 0.0,
+  "magic_percent_penetration": 0.0,
+  "move_speed": 1.9,
+  "attack_speed_multiplier": 0.7,
+  "damage_dealt_pct": 0.0,
+  "damage_dealt_flat": 0.0,
+  "damage_taken_pct": 0.0,
+  "damage_taken_flat": 0.0,
+  "healing_done_pct": 0.0,
+  "healing_received_pct": 0.0
+ },
+ "triggers": [
+  {
+   "id": "node_astronaut_starfall",
+   "timing": "OnStarfall",
+   "event_count_threshold": 1,
+   "base_value_mode": "splash_enemy_count_ap",
+   "base_value_ratio": 100,
+   "base_value_flat": 0.0,
+   "target_rule": "self",
+   "team_filter": "ally",
+   "tags": [
+    "starfall",
+    "passive_starfall"
+   ],
+   "base_value_ratio_by_star": {
+    "1": 100,
+    "2": 150,
+    "3": 220
+   }
+  },
+  {
+   "id": "node_astronaut_aura",
+   "timing": "OnBattleFrame",
+   "event_count_threshold": 1,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "self",
+   "team_filter": "ally",
+   "tags": [
+    "battle_frame",
+    "passive_aura"
+   ],
+   "runtime_conditions": [
+    {
+     "type": "battle_running"
+    }
+   ]
+  },
+  {
+   "id": "node_astronaut_strip",
+   "timing": "OnBattleFrame",
+   "event_count_threshold": 4,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "taunted_by_self",
+   "team_filter": "enemy",
+   "tags": [
+    "battle_frame",
+    "passive_strip"
+   ],
+   "runtime_conditions": [
+    {
+     "type": "battle_running"
+    }
+   ]
+  },
+  {
+   "id": "node_astronaut_undying",
+   "timing": "OnBeforeDeath",
+   "event_count_threshold": 1,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "self",
+   "team_filter": "ally",
+   "tags": [
+    "before_death",
+    "passive_undying"
+   ],
+   "max_activations_per_battle": 1
+  },
+  {
+   "id": "node_astronaut_true_form",
+   "timing": "OnStatusPulse",
+   "event_count_threshold": 1,
+   "base_value_mode": "splash_enemy_count_ap",
+   "base_value_ratio": 50,
+   "base_value_flat": 0.0,
+   "target_rule": "enemies_in_splash",
+   "team_filter": "enemy",
+   "tags": [
+    "status_pulse",
+    "equipment_payload"
+   ],
+   "runtime_conditions": [
+    {
+     "type": "event_metadata_equals",
+     "key": "status_id",
+     "value": "outer_form"
+    }
+   ],
+   "fit_tags": {
+    "side": "enemy",
+    "count": "multi",
+    "freq": "low"
+   }
+  }
+ ],
+ "passive_abilities": [
+  {
+   "id": "node_astronaut_starfall",
+   "ability_class": "blade",
+   "effect_type": "starfall_impact",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic",
+    "splash"
+   ],
+   "accepted_timings": [
+    "OnStarfall"
+   ],
+   "required_trigger_tags": [
+    "passive_starfall"
+   ],
+   "effect_config": {
+    "splash_is_range": true,
+    "splash_ratio": 0.5,
+    "damage_kind": "magic"
+   },
+   "cooldown": 0.0,
+   "priority": 100,
+   "keyword_values": {
+    "splash": 2
+   }
+  },
+  {
+   "id": "node_astronaut_aura",
+   "ability_class": "blade",
+   "effect_type": "aura_taunt",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [
+    "OnBattleFrame"
+   ],
+   "required_trigger_tags": [
+    "passive_aura"
+   ],
+   "effect_config": {
+    "duration": 0.4
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  },
+  {
+   "id": "node_astronaut_strip",
+   "ability_class": "blade",
+   "effect_type": "dispel",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [
+    "OnBattleFrame"
+   ],
+   "required_trigger_tags": [
+    "passive_strip"
+   ],
+   "effect_config": {
+    "what": "buff",
+    "count": 1,
+    "all_targets": true
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  },
+  {
+   "id": "node_astronaut_undying",
+   "ability_class": "blade",
+   "effect_type": "death_delay",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [
+    "OnBeforeDeath"
+   ],
+   "required_trigger_tags": [
+    "passive_undying"
+   ],
+   "effect_config": {
+    "status_id": "outer_form",
+    "duration_by_star": {
+     "1": 2.5,
+     "2": 3.0,
+     "3": 4.0
+    },
+    "pulse_by_star": {
+     "1": 0.5,
+     "2": 0.4,
+     "3": 0.25
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  }
+ ]
+}

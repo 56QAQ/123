@@ -1,0 +1,37 @@
+{
+ "id": "blessing_heart",
+ "cost": 2,
+ "color_id": "blue",
+ "weapon_class": "focus",
+ "abilities": [
+  {
+   "id": "blessing_heart_grace",
+   "ability_class": "blade",
+   "effect_type": "heal",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "revive_dead": true,
+    "revive_summons": true,
+    "revive_mult": 2.0,
+    "revive_kind": "blessing"
+   },
+   "cooldown": 10.0,
+   "priority": 100
+  }
+ ],
+ "flat_stat_modifiers": {
+  "ability_power": 30
+ },
+ "percent_stat_modifiers": {},
+ "model": "rosary",
+ "reworked": true,
+ "owner": "node_sister"
+}

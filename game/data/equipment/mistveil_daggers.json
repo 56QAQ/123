@@ -1,0 +1,67 @@
+{
+ "id": "mistveil_daggers",
+ "cost": 3,
+ "color_id": "cyan",
+ "weapon_class": "dual",
+ "abilities": [
+  {
+   "id": "mistveil_daggers_veil",
+   "ability_class": "amulet",
+   "effect_type": "shield",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "pre_effects": [
+     {
+      "effect_type": "stat_status",
+      "status_id": "mistveil",
+      "duration": 12.0,
+      "max_stacks": 1,
+      "flags": [
+       "buff",
+       "dispellable"
+      ],
+      "stats": {
+       "na_dodge": {
+        "flat": 0.2
+       },
+       "attack_speed_multiplier": {
+        "flat": 0.2
+       },
+       "attack_power": {
+        "pct": 0.2
+       }
+      }
+     }
+    ],
+    "ally_effect": {
+     "effect_type": "shield",
+     "value_multiplier": 1.5
+    },
+    "enemy_effect": {
+     "effect_type": "physical_damage",
+     "value_multiplier": 1.5
+    }
+   },
+   "cooldown": 2.0,
+   "priority": 100
+  }
+ ],
+ "flat_stat_modifiers": {
+  "attack_power": 25,
+  "na_dodge": 0.15
+ },
+ "percent_stat_modifiers": {
+  "attack_speed_multiplier": 0.1
+ },
+ "model": "g7_mistveil",
+ "reworked": true,
+ "fit_remove": [
+  "node_rogue"
+ ]
+}

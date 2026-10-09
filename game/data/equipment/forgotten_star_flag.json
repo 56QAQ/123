@@ -1,0 +1,39 @@
+{
+ "id": "forgotten_star_flag",
+ "cost": 4,
+ "color_id": "blue",
+ "weapon_class": "polearm",
+ "abilities": [
+  {
+   "id": "forgotten_star_flag_fade",
+   "ability_class": "bullet",
+   "effect_type": "hp_loss_pct",
+   "value_multiplier": 1.0,
+   "fixed_value": 2.0,
+   "keywords": [
+    "basic",
+    "multi_attack",
+    "amplify"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {},
+   "cooldown": 0.0,
+   "priority": 100,
+   "keyword_values": {
+    "multi_attack": 99,
+    "amplify": 2
+   }
+  }
+ ],
+ "flat_stat_modifiers": {
+  "shield_received_pct": 0.3,
+  "ability_power": 60
+ },
+ "percent_stat_modifiers": {},
+ "model": "starflag",
+ "reworked": true,
+ "owner": "node_astronaut"
+}

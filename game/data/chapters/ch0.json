@@ -1,0 +1,153 @@
+{
+ "id": "ch0",
+ "chapter_no": 0,
+ "color": "white",
+ "theme": "white",
+ "ui_theme": "white",
+ "start_gold": 3,
+ "start_level": 3,
+ "truck_hp": 100,
+ "truck_damage_base": 2,
+ "loot_guarantee": {
+  "weapon": 2,
+  "unit": 1
+ },
+ "next": {
+  "branches": [
+   {
+    "id": "ch1_red",
+    "available": true
+   },
+   {
+    "id": "ch1_blue",
+    "available": true
+   },
+   {
+    "id": "ch1_green",
+    "available": false
+   }
+  ]
+ },
+ "nodes": [
+  {
+   "id": "ch0_n1",
+   "type": "reward",
+   "encounter": {
+    "units": [
+     [
+      "mob_sentinel",
+      1,
+      "n",
+      "",
+      {
+       "orb": "white"
+      }
+     ],
+     [
+      "mob_sentinel",
+      1,
+      "nw",
+      "",
+      {}
+     ]
+    ],
+    "map": {
+     "low": 3,
+     "high": 2,
+     "altar": false
+    }
+   },
+   "income": 0
+  },
+  {
+   "id": "ch0_n2",
+   "type": "reward",
+   "encounter": {
+    "units": [
+     [
+      "mob_sentinel",
+      1,
+      "ne",
+      "",
+      {
+       "orb": "white"
+      }
+     ],
+     [
+      "mob_archer",
+      1,
+      "n",
+      "",
+      {}
+     ],
+     [
+      "mob_sentinel",
+      1,
+      "w",
+      "",
+      {
+       "orb": "blue"
+      }
+     ]
+    ],
+    "map": {
+     "low": 4,
+     "high": 3,
+     "altar": false
+    }
+   },
+   "income": 2
+  },
+  {
+   "id": "ch0_n3",
+   "type": "reward",
+   "encounter": {
+    "units": [
+     [
+      "mob_guardian",
+      1,
+      "n",
+      "",
+      {
+       "orb": "gold",
+       "boss": true
+      }
+     ],
+     [
+      "mob_acolyte",
+      1,
+      "nw",
+      "",
+      {
+       "orb": "blue"
+      }
+     ],
+     [
+      "mob_archer",
+      1,
+      "ne",
+      "",
+      {
+       "orb": "blue"
+      }
+     ],
+     [
+      "mob_sentinel",
+      1,
+      "e",
+      "",
+      {
+       "orb": "white"
+      }
+     ]
+    ],
+    "map": {
+     "low": 4,
+     "high": 3,
+     "altar": true
+    }
+   },
+   "income": 3
+  }
+ ]
+}

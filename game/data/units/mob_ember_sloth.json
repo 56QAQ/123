@@ -1,0 +1,180 @@
+{
+ "id": "mob_ember_sloth",
+ "cost": 1,
+ "role": "archer",
+ "base_weapon_class": "crossbow",
+ "weapon_classes": [
+  "crossbow"
+ ],
+ "faction_id": "white",
+ "profession_id": "",
+ "available_in_shop": false,
+ "hide_weapon": true,
+ "model": "ember_sloth",
+ "target_priority": "nearest",
+ "radius": 0.5,
+ "scale": 1.15,
+ "projectile": "ember",
+ "anim_overrides": {
+  "crossbow": {
+   "idle": "idle_sloth",
+   "run": "run_sloth",
+   "attack": "attack_sloth"
+  }
+ },
+ "base_stats": {
+  "attack_power": 88,
+  "ability_power": 0.0,
+  "defense": 22,
+  "magic_resistance": 20,
+  "max_health": 880,
+  "health_regen_per_second": 0.0,
+  "physical_lifesteal": 0.0,
+  "spell_lifesteal": 0.0,
+  "omnivamp": 0.0,
+  "crit_chance": 0.05,
+  "crit_damage": 1.5,
+  "physical_flat_penetration": 0.0,
+  "physical_percent_penetration": 0.0,
+  "magic_flat_penetration": 0.0,
+  "magic_percent_penetration": 0.0,
+  "move_speed": 1.2,
+  "attack_speed_multiplier": 0.4,
+  "damage_dealt_pct": 0.0,
+  "damage_dealt_flat": 0.0,
+  "damage_taken_pct": 0.0,
+  "damage_taken_flat": 0.0,
+  "healing_done_pct": 0.0,
+  "healing_received_pct": 0.0
+ },
+ "triggers": [
+  {
+   "id": "mob_ember_sloth_warmup",
+   "timing": "OnNormalAttackPerform",
+   "event_count_threshold": 1,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "self",
+   "team_filter": "any",
+   "tags": [
+    "normal_attack_perform",
+    "passive_sloth_warmup"
+   ]
+  },
+  {
+   "id": "mob_ember_sloth_ignite",
+   "timing": "OnNormalAttackHit",
+   "event_count_threshold": 1,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "event_target",
+   "team_filter": "enemy",
+   "tags": [
+    "normal_attack",
+    "passive_sloth_ignite"
+   ],
+   "runtime_conditions": [
+    {
+     "type": "source_status_below_cap",
+     "status_id": "sloth_preheat"
+    },
+    {
+     "type": "event_target_has_status",
+     "status_id": "burning"
+    }
+   ],
+   "unlock_star": 2
+  }
+ ],
+ "passive_abilities": [
+  {
+   "id": "mob_ember_sloth_warmup",
+   "ability_class": "blade",
+   "effect_type": "stat_status",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic",
+    "stacking"
+   ],
+   "accepted_timings": [
+    "OnNormalAttackPerform"
+   ],
+   "required_trigger_tags": [
+    "passive_sloth_warmup"
+   ],
+   "effect_config": {
+    "status_id": "sloth_preheat",
+    "duration": 0.0,
+    "flags": [
+     "buff",
+     "dispellable"
+    ],
+    "stats_by_star": {
+     "attack_speed_multiplier": {
+      "flat": {
+       "1": 0.12,
+       "2": 0.15,
+       "3": 0.2
+      }
+     }
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100,
+   "keyword_values": {
+    "stacking": 8
+   }
+  },
+  {
+   "id": "mob_ember_sloth_ignite",
+   "ability_class": "blade",
+   "effect_type": "consume_status",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic",
+    "stacking"
+   ],
+   "accepted_timings": [
+    "OnNormalAttackHit"
+   ],
+   "required_trigger_tags": [
+    "passive_sloth_ignite"
+   ],
+   "effect_config": {
+    "status_id": "burning",
+    "gain": {
+     "status_id": "sloth_preheat",
+     "duration": 0.0,
+     "flags": [
+      "buff",
+      "dispellable"
+     ],
+     "stats_by_star": {
+      "attack_speed_multiplier": {
+       "flat": {
+        "1": 0.12,
+        "2": 0.15,
+        "3": 0.2
+       }
+      }
+     }
+    },
+    "na_target_fit": {
+     "status": "burning",
+     "gauge": "sloth_preheat",
+     "cap": 8
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100,
+   "keyword_values": {
+    "stacking": 8
+   },
+   "unlock_star": 2
+  }
+ ]
+}

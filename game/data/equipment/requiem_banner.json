@@ -1,0 +1,90 @@
+{
+ "id": "requiem_banner",
+ "cost": 3,
+ "color_id": "cyan",
+ "weapon_class": "focus",
+ "abilities": [
+  {
+   "id": "requiem_banner_toll",
+   "ability_class": "bullet",
+   "effect_type": "summon_aura",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "style": "requiem",
+    "status": {
+     "status_id": "requiem_soul",
+     "duration": 0.0,
+     "max_stacks": 1,
+     "flags": [
+      "buff",
+      "no_dispel"
+     ],
+     "stats": {
+      "max_health": {
+       "pct": 0.3
+      }
+     },
+     "pairs": [
+      {
+       "trigger": {
+        "id": "requiem_burst",
+        "timing": "OnUnitDied",
+        "event_count_threshold": 1,
+        "base_value_mode": "max_health_ratio",
+        "base_value_ratio": 0.5,
+        "base_value_flat": 0.0,
+        "target_rule": "nearby_units",
+        "team_filter": "enemy",
+        "tags": [
+         "unit_died",
+         "requiem_burst"
+        ],
+        "target_radius": 2.0
+       },
+       "ability": {
+        "id": "requiem_burst",
+        "ability_class": "blade",
+        "effect_type": "magic_damage",
+        "value_multiplier": 1.0,
+        "fixed_value": 0.0,
+        "keywords": [
+         "basic"
+        ],
+        "accepted_timings": [
+         "OnUnitDied"
+        ],
+        "required_trigger_tags": [
+         "requiem_burst"
+        ],
+        "effect_config": {
+         "all_targets": true,
+         "damage_category": "skill"
+        },
+        "cooldown": 0.0,
+        "priority": 100
+       }
+      }
+     ]
+    }
+   },
+   "cooldown": 2.0,
+   "priority": 100
+  }
+ ],
+ "flat_stat_modifiers": {
+  "max_health": 150,
+  "ability_power": 20
+ },
+ "percent_stat_modifiers": {},
+ "model": "requiem",
+ "reworked": true,
+ "fit_add": [
+  "node_wizard"
+ ]
+}

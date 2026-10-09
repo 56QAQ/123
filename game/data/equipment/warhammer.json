@@ -1,0 +1,38 @@
+{
+ "id": "warhammer",
+ "cost": 3,
+ "color_id": "blue",
+ "weapon_class": "heavy",
+ "abilities": [
+  {
+   "id": "warhammer_stun",
+   "ability_class": "blade",
+   "effect_type": "stun_from_value",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "multi_attack"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "n": 100.0
+   },
+   "cooldown": 4.0,
+   "priority": 100,
+   "keyword_values": {
+    "multi_attack": 4
+   }
+  }
+ ],
+ "flat_stat_modifiers": {
+  "ability_power": 30,
+  "damage_taken_pct": 0.1
+ },
+ "percent_stat_modifiers": {},
+ "model": "warhammer",
+ "reworked": true,
+ "owner": "node_paladin"
+}

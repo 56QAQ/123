@@ -1,0 +1,29 @@
+{
+ "parts": {
+  "jerrycan": {
+   "price": 4,
+   "kind": "ap",
+   "ap": 2
+  },
+  "offroad_tire": {
+   "price": 3,
+   "kind": "move",
+   "shape": "line",
+   "range": 2,
+   "cost": 1
+  },
+  "spring_jack": {
+   "price": 3,
+   "kind": "move",
+   "shape": "ring",
+   "range": 1,
+   "cost": 1
+  },
+  "scout_drone": {
+   "price": 2,
+   "kind": "reveal",
+   "radius": 2
+  }
+ },
+ "part_cap": 5
+}

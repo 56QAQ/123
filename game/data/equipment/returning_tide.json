@@ -1,0 +1,69 @@
+{
+ "id": "returning_tide",
+ "cost": 4,
+ "color_id": "cyan",
+ "weapon_class": "rifle",
+ "abilities": [
+  {
+   "id": "returning_tide_surge",
+   "ability_class": "bullet",
+   "effect_type": "heal",
+   "value_multiplier": 1.0,
+   "fixed_value": 180.0,
+   "keywords": [],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "ally_effect": {
+     "effect_type": "heal"
+    },
+    "enemy_effect": {
+     "effect_type": "magic_damage"
+    }
+   },
+   "cooldown": 4.0,
+   "priority": 100
+  },
+  {
+   "id": "returning_tide_rebirth",
+   "ability_class": "bullet",
+   "effect_type": "heal",
+   "value_multiplier": 1.0,
+   "fixed_value": 400.0,
+   "keywords": [
+    "limited"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "limited_timings": [
+     "OnUnitDied"
+    ],
+    "once_per_battle": true,
+    "revive_dead": true,
+    "revive_kind": "tide",
+    "ally_effect": {
+     "effect_type": "heal"
+    },
+    "enemy_effect": {
+     "effect_type": "none"
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  }
+ ],
+ "flat_stat_modifiers": {
+  "max_health": 200
+ },
+ "percent_stat_modifiers": {
+  "attack_speed_multiplier": 0.12
+ },
+ "model": "g6_tide",
+ "reworked": true,
+ "projectile": "g6_tide_drop"
+}

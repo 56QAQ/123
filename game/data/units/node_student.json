@@ -1,0 +1,171 @@
+{
+ "id": "node_student",
+ "cost": 1,
+ "role": "caster",
+ "template": "caster",
+ "base_weapon_class": "focus",
+ "weapon_classes": [
+  "focus",
+  "rifle"
+ ],
+ "faction_id": "blue",
+ "profession_id": "research",
+ "model": "student",
+ "reworked": true,
+ "target_priority": "nearest",
+ "radius": 0.4,
+ "base_stats": {
+  "attack_power": 40,
+  "ability_power": 0,
+  "defense": 0.0,
+  "magic_resistance": 25,
+  "max_health": 380,
+  "health_regen_per_second": 0.0,
+  "physical_lifesteal": 0.0,
+  "spell_lifesteal": 0.0,
+  "omnivamp": 0.0,
+  "crit_chance": 0.05,
+  "crit_damage": 1.5,
+  "physical_flat_penetration": 0.0,
+  "physical_percent_penetration": 0.0,
+  "magic_flat_penetration": 0.0,
+  "magic_percent_penetration": 0.0,
+  "move_speed": 1.3,
+  "attack_speed_multiplier": 1.0,
+  "damage_dealt_pct": 0.0,
+  "damage_dealt_flat": 0.0,
+  "damage_taken_pct": 0.0,
+  "damage_taken_flat": 0.0,
+  "healing_done_pct": 0.0,
+  "healing_received_pct": 0.0
+ },
+ "trigger_fx": {
+  "node_student_recite": {
+   "anim": "recite_student",
+   "fx": "recite",
+   "color": "#7fb4ff"
+  }
+ },
+ "triggers": [
+  {
+   "id": "node_student_study",
+   "timing": "OnBattleEnd",
+   "event_count_threshold": 1,
+   "base_value_mode": "weapon_learning_count",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 1.0,
+   "target_rule": "self",
+   "team_filter": "ally",
+   "tags": [
+    "battle_end",
+    "passive_study"
+   ],
+   "base_value_ratio_by_star": {
+    "1": 1,
+    "2": 1,
+    "3": 2
+   }
+  },
+  {
+   "id": "node_student_bombard",
+   "timing": "OnBattleStart",
+   "event_count_threshold": 1,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "self",
+   "team_filter": "ally",
+   "tags": [
+    "battle_start",
+    "passive_bombard"
+   ],
+   "unlock_star": 2
+  },
+  {
+   "id": "node_student_recite",
+   "timing": "OnBattleFrame",
+   "event_count_threshold": 12,
+   "base_value_mode": "flat_times_ability_power_pct",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 370,
+   "target_rule": "current_attack_target",
+   "team_filter": "enemy",
+   "tags": [
+    "battle_frame",
+    "equipment_payload"
+   ],
+   "base_value_flat_by_star": {
+    "1": 370,
+    "2": 560,
+    "3": 580
+   },
+   "fit_tags": {
+    "side": "enemy",
+    "count": "single",
+    "freq": "low"
+   }
+  }
+ ],
+ "passive_abilities": [
+  {
+   "id": "node_student_study",
+   "ability_class": "blade",
+   "effect_type": "permanent_growth",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic",
+    "eternal"
+   ],
+   "accepted_timings": [
+    "OnBattleEnd"
+   ],
+   "required_trigger_tags": [
+    "passive_study"
+   ],
+   "effect_config": {
+    "stat_id": "ability_power",
+    "apply_to": "self"
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  },
+  {
+   "id": "node_student_bombard",
+   "ability_class": "blade",
+   "effect_type": "stat_status",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [
+    "OnBattleStart"
+   ],
+   "required_trigger_tags": [
+    "passive_bombard"
+   ],
+   "effect_config": {
+    "status_id": "knowledge_bombard",
+    "flags": [
+     "hidden",
+     "na_magic"
+    ],
+    "stats_by_star": {
+     "na_damage_per_ap_pct": {
+      "flat": {
+       "1": 0.01,
+       "2": 0.01,
+       "3": 0.015
+      }
+     }
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100,
+   "unlock_star": 2
+  }
+ ],
+ "hair": "#3a4fbf",
+ "skin": "fair"
+}

@@ -1,0 +1,167 @@
+{
+ "id": "node_darkknight",
+ "cost": 1,
+ "role": "warrior",
+ "template": "warrior",
+ "base_weapon_class": "heavy",
+ "weapon_classes": [
+  "heavy",
+  "sword",
+  "polearm"
+ ],
+ "faction_id": "red",
+ "profession_id": "security",
+ "reworked": true,
+ "target_priority": "nearest",
+ "radius": 0.46,
+ "base_stats": {
+  "attack_power": 78,
+  "ability_power": 0.0,
+  "defense": 30,
+  "magic_resistance": 22,
+  "max_health": 1100,
+  "health_regen_per_second": 0.0,
+  "physical_lifesteal": 0.0,
+  "spell_lifesteal": 0.0,
+  "omnivamp": 0.0,
+  "crit_chance": 0.05,
+  "crit_damage": 1.5,
+  "physical_flat_penetration": 0.0,
+  "physical_percent_penetration": 0.0,
+  "magic_flat_penetration": 0.0,
+  "magic_percent_penetration": 0.0,
+  "move_speed": 2.2,
+  "attack_speed_multiplier": 0.85,
+  "damage_dealt_pct": 0.0,
+  "damage_dealt_flat": 0.0,
+  "damage_taken_pct": 0.0,
+  "damage_taken_flat": 0.0,
+  "healing_done_pct": 0.0,
+  "healing_received_pct": 0.0
+ },
+ "triggers": [
+  {
+   "id": "node_darkknight_vendetta",
+   "timing": "OnNormalAttackPerform",
+   "event_count_threshold": 1,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "current_attack_target",
+   "team_filter": "enemy",
+   "tags": [
+    "normal_attack",
+    "passive_vendetta"
+   ]
+  },
+  {
+   "id": "node_darkknight_bind",
+   "timing": "OnBattleStart",
+   "event_count_threshold": 1,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "self",
+   "team_filter": "any",
+   "tags": [
+    "battle_start",
+    "passive_bind"
+   ],
+   "unlock_star": 2
+  },
+  {
+   "id": "node_darkknight_oath_hour",
+   "timing": "OnAwakeningCompleted",
+   "event_count_threshold": 1,
+   "base_value_mode": "max_health_ratio",
+   "base_value_ratio": 0.4,
+   "base_value_flat": 0.0,
+   "target_rule": "self",
+   "team_filter": "any",
+   "tags": [
+    "awakening",
+    "equipment_payload"
+   ],
+   "base_value_ratio_by_star": {
+    "1": 0.4,
+    "2": 0.5,
+    "3": 0.6
+   },
+   "fit_tags": {
+    "side": "ally",
+    "count": "single",
+    "freq": "low"
+   }
+  }
+ ],
+ "passive_abilities": [
+  {
+   "id": "node_darkknight_vendetta",
+   "ability_class": "blade",
+   "effect_type": "health_cost_damage",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic",
+    "awakening"
+   ],
+   "accepted_timings": [
+    "OnNormalAttackPerform"
+   ],
+   "required_trigger_tags": [
+    "passive_vendetta"
+   ],
+   "effect_config": {
+    "awakening_key": "node_darkknight_vendetta",
+    "awakening_tasks": [
+     {
+      "type": "ally_death"
+     }
+    ],
+    "health_cost_max_pct": 0.1,
+    "damage_multiplier_by_star": {
+     "1": 2.5,
+     "2": 3.5,
+     "3": 5.0
+    },
+    "damage_kind": "physical",
+    "prefer_ally_killer": true
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  },
+  {
+   "id": "node_darkknight_bind",
+   "ability_class": "blade",
+   "effect_type": "oath_bind",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic",
+    "awakening",
+    "summon"
+   ],
+   "accepted_timings": [
+    "OnBattleStart"
+   ],
+   "required_trigger_tags": [
+    "passive_bind"
+   ],
+   "effect_config": {
+    "awakening_key": "node_darkknight_bind",
+    "awakening_tasks": [
+     {
+      "type": "team_has_cost",
+      "cost": 5
+     }
+    ]
+   },
+   "cooldown": 0.0,
+   "priority": 100,
+   "unlock_star": 2
+  }
+ ],
+ "hair": "#7c1c34",
+ "skin": "porcelain",
+ "model": "darkknight"
+}

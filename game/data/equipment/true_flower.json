@@ -1,0 +1,47 @@
+{
+ "id": "true_flower",
+ "cost": 4,
+ "color_id": "yellow",
+ "weapon_class": "polearm",
+ "abilities": [
+  {
+   "id": "true_flower_bloom",
+   "ability_class": "blade",
+   "effect_type": "magic_damage",
+   "value_multiplier": 1.5,
+   "fixed_value": 0.0,
+   "keywords": [
+    "charged"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "as_normal_attack": true,
+    "cast_fx": "lily_thrust",
+    "extra_effects": [
+     {
+      "target": "self",
+      "effect_type": "heal",
+      "value_multiplier": 0.39999999999999997
+     }
+    ]
+   },
+   "cooldown": 1.0,
+   "priority": 100,
+   "keyword_values": {
+    "charged": 3
+   }
+  }
+ ],
+ "flat_stat_modifiers": {
+  "damage_taken_pct": 0.1
+ },
+ "percent_stat_modifiers": {
+  "attack_speed_multiplier": 0.15
+ },
+ "model": "lily",
+ "reworked": true,
+ "owner": "node_noble"
+}

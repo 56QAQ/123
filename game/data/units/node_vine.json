@@ -1,0 +1,102 @@
+{
+ "id": "node_vine",
+ "cost": 2,
+ "role": "tank",
+ "base_weapon_class": "sword",
+ "weapon_classes": [
+  "sword",
+  "heavy",
+  "polearm"
+ ],
+ "offhand": "shield",
+ "faction_id": "green",
+ "profession_id": "maintenance",
+ "target_priority": "nearest",
+ "radius": 0.5,
+ "base_stats": {
+  "attack_power": 60,
+  "ability_power": 0.0,
+  "defense": 55,
+  "magic_resistance": 45,
+  "max_health": 1600,
+  "health_regen_per_second": 6,
+  "physical_lifesteal": 0.0,
+  "spell_lifesteal": 0.0,
+  "omnivamp": 0.0,
+  "crit_chance": 0.05,
+  "crit_damage": 1.5,
+  "physical_flat_penetration": 0.0,
+  "physical_percent_penetration": 0.0,
+  "magic_flat_penetration": 0.0,
+  "magic_percent_penetration": 0.0,
+  "move_speed": 1.9,
+  "attack_speed_multiplier": 0.7,
+  "damage_dealt_pct": 0.0,
+  "damage_dealt_flat": 0.0,
+  "damage_taken_pct": 0.0,
+  "damage_taken_flat": 0.0,
+  "healing_done_pct": 0.0,
+  "healing_received_pct": 0.0
+ },
+ "triggers": [
+  {
+   "id": "node_vine_thorns",
+   "timing": "OnHitByNormalAttack",
+   "event_count_threshold": 3,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "event_target",
+   "team_filter": "enemy",
+   "tags": [
+    "normal_attack",
+    "passive_thorns"
+   ],
+   "base_value_flat_by_star": {
+    "1": 40,
+    "2": 70,
+    "3": 110
+   }
+  },
+  {
+   "id": "node_vine_sap",
+   "timing": "OnBattleFrame",
+   "event_count_threshold": 12,
+   "base_value_mode": "max_health_ratio",
+   "base_value_ratio": 0.05,
+   "base_value_flat": 0.0,
+   "target_rule": "self",
+   "team_filter": "ally",
+   "tags": [
+    "battle_frame",
+    "equipment_payload"
+   ]
+  }
+ ],
+ "passive_abilities": [
+  {
+   "id": "node_vine_thorns_ability",
+   "ability_class": "blade",
+   "effect_type": "magic_damage",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic",
+    "crit"
+   ],
+   "accepted_timings": [
+    "OnHitByNormalAttack"
+   ],
+   "required_trigger_tags": [
+    "passive_thorns"
+   ],
+   "effect_config": {},
+   "cooldown": 0.0,
+   "priority": 100
+  }
+ ],
+ "hair": "#3aa864",
+ "skin": "umber",
+ "model": "vine",
+ "available_in_shop": false
+}

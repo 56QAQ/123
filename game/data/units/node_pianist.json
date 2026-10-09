@@ -1,0 +1,591 @@
+{
+ "id": "node_pianist",
+ "cost": 4,
+ "role": "caster",
+ "template": "caster",
+ "base_weapon_class": "focus",
+ "weapon_classes": [
+  "focus"
+ ],
+ "faction_id": "cyan",
+ "profession_id": "research",
+ "model": "pianist",
+ "reworked": true,
+ "target_priority": "nearest",
+ "radius": 0.42,
+ "base_stats": {
+  "attack_power": 80,
+  "ability_power": 80,
+  "defense": 10,
+  "magic_resistance": 40,
+  "max_health": 1150,
+  "health_regen_per_second": 0.0,
+  "physical_lifesteal": 0.0,
+  "spell_lifesteal": 0.0,
+  "omnivamp": 0.0,
+  "crit_chance": 0.05,
+  "crit_damage": 1.5,
+  "physical_flat_penetration": 0.0,
+  "physical_percent_penetration": 0.0,
+  "magic_flat_penetration": 0.0,
+  "magic_percent_penetration": 0.0,
+  "move_speed": 1.3,
+  "attack_speed_multiplier": 1.0,
+  "damage_dealt_pct": 0.0,
+  "damage_dealt_flat": 0.0,
+  "damage_taken_pct": 0.0,
+  "damage_taken_flat": 0.0,
+  "healing_done_pct": 0.0,
+  "healing_received_pct": 0.0
+ },
+ "forms": {
+  "demon": {
+   "profession_id": "research",
+   "model": "pianist",
+   "weapon_models": {
+    "black_keys": "grand"
+   }
+  },
+  "angel": {
+   "profession_id": "welfare",
+   "model": "pianist_angel",
+   "weapon_models": {
+    "black_keys": "grand_white"
+   },
+   "weapon_names": {
+    "black_keys": "white_keys"
+   }
+  }
+ },
+ "form_default": "demon",
+ "anim_overrides": {
+  "focus@grand": {
+   "idle": "idle_pianist_play",
+   "run": "run_pianist_play",
+   "attack": "attack_pianist_play"
+  },
+  "focus@grand_white": {
+   "idle": "idle_pianist_play",
+   "run": "run_pianist_play",
+   "attack": "attack_pianist_play"
+  }
+ },
+ "triggers": [
+  {
+   "id": "node_pianist_form",
+   "timing": "OnBattleStart",
+   "event_count_threshold": 1,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "self",
+   "team_filter": "ally",
+   "tags": [
+    "battle_start",
+    "passive_form"
+   ]
+  },
+  {
+   "id": "node_pianist_rebirth",
+   "timing": "OnBeforeDeath",
+   "event_count_threshold": 1,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "self",
+   "team_filter": "ally",
+   "tags": [
+    "before_death",
+    "passive_rebirth"
+   ],
+   "max_activations_per_battle": 1
+  },
+  {
+   "id": "node_pianist_grief",
+   "timing": "OnBattleStart",
+   "event_count_threshold": 1,
+   "base_value_mode": "flat_times_ability_power_pct",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 8.0,
+   "target_rule": "all_enemies",
+   "team_filter": "enemy",
+   "tags": [
+    "battle_start",
+    "passive_grief"
+   ],
+   "base_value_flat_by_star": {
+    "1": 8.0,
+    "2": 10.0,
+    "3": 16.0
+   },
+   "runtime_conditions": [
+    {
+     "type": "source_form",
+     "form": "demon"
+    }
+   ]
+  },
+  {
+   "id": "node_pianist_grief_tick",
+   "timing": "OnBattleFrame",
+   "event_count_threshold": 12,
+   "base_value_mode": "flat_times_ability_power_pct",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 8.0,
+   "target_rule": "all_enemies",
+   "team_filter": "enemy",
+   "tags": [
+    "battle_frame",
+    "passive_grief"
+   ],
+   "base_value_flat_by_star": {
+    "1": 8.0,
+    "2": 10.0,
+    "3": 16.0
+   },
+   "runtime_conditions": [
+    {
+     "type": "battle_running"
+    },
+    {
+     "type": "source_form",
+     "form": "demon"
+    }
+   ]
+  },
+  {
+   "id": "node_pianist_grief_dead",
+   "timing": "OnEnemyUnitDied",
+   "event_count_threshold": 1,
+   "base_value_mode": "flat_times_ability_power_pct",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 8.0,
+   "target_rule": "all_enemies",
+   "team_filter": "enemy",
+   "tags": [
+    "enemy_unit_died",
+    "passive_grief_dead"
+   ],
+   "base_value_flat_by_star": {
+    "1": 8.0,
+    "2": 10.0,
+    "3": 16.0
+   },
+   "runtime_conditions": [
+    {
+     "type": "source_form",
+     "form": "demon"
+    }
+   ]
+  },
+  {
+   "id": "node_pianist_passion",
+   "timing": "OnBattleStart",
+   "event_count_threshold": 1,
+   "base_value_mode": "flat_times_ability_power_pct",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 1.5,
+   "target_rule": "all_allies",
+   "team_filter": "ally",
+   "tags": [
+    "battle_start",
+    "passive_passion"
+   ],
+   "base_value_flat_by_star": {
+    "1": 1.5,
+    "2": 2.0,
+    "3": 3.5
+   },
+   "runtime_conditions": [
+    {
+     "type": "source_form",
+     "form": "angel"
+    }
+   ]
+  },
+  {
+   "id": "node_pianist_passion_tick",
+   "timing": "OnBattleFrame",
+   "event_count_threshold": 12,
+   "base_value_mode": "flat_times_ability_power_pct",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 1.5,
+   "target_rule": "all_allies",
+   "team_filter": "ally",
+   "tags": [
+    "battle_frame",
+    "passive_passion"
+   ],
+   "base_value_flat_by_star": {
+    "1": 1.5,
+    "2": 2.0,
+    "3": 3.5
+   },
+   "runtime_conditions": [
+    {
+     "type": "battle_running"
+    },
+    {
+     "type": "source_form",
+     "form": "angel"
+    }
+   ]
+  },
+  {
+   "id": "node_pianist_passion_dead",
+   "timing": "OnAllyUnitDied",
+   "event_count_threshold": 1,
+   "base_value_mode": "flat_times_ability_power_pct",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 1.5,
+   "target_rule": "all_allies",
+   "team_filter": "ally",
+   "tags": [
+    "ally_unit_died",
+    "passive_passion_dead"
+   ],
+   "base_value_flat_by_star": {
+    "1": 1.5,
+    "2": 2.0,
+    "3": 3.5
+   },
+   "runtime_conditions": [
+    {
+     "type": "source_form",
+     "form": "angel"
+    }
+   ]
+  },
+  {
+   "id": "node_pianist_next",
+   "timing": "OnStackCapped",
+   "event_count_threshold": 1,
+   "base_value_mode": "flat_times_ability_power_pct",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 300.0,
+   "target_rule": "self",
+   "team_filter": "ally",
+   "tags": [
+    "stack_capped",
+    "equipment_payload"
+   ],
+   "base_value_flat_by_star": {
+    "1": 300.0,
+    "2": 450.0,
+    "3": 700.0
+   },
+   "fit_tags": {
+    "side": "ally",
+    "count": "single",
+    "freq": "low"
+   }
+  }
+ ],
+ "passive_abilities": [
+  {
+   "id": "node_pianist_form",
+   "ability_class": "blade",
+   "effect_type": "pianist_form",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [
+    "OnBattleStart"
+   ],
+   "required_trigger_tags": [
+    "passive_form"
+   ],
+   "effect_config": {
+    "forms": {
+     "demon": {
+      "status_id": "form_demon",
+      "duration": 0.0,
+      "flags": [
+       "buff",
+       "no_dispel",
+       "form_demon"
+      ],
+      "stats_by_star": {
+       "damage_dealt_pct": {
+        "flat": {
+         "1": 0.2,
+         "2": 0.3,
+         "3": 0.45
+        }
+       }
+      }
+     },
+     "angel": {
+      "status_id": "form_angel",
+      "duration": 0.0,
+      "flags": [
+       "buff",
+       "no_dispel",
+       "form_angel"
+      ],
+      "stats_by_star": {
+       "healing_done_pct": {
+        "flat": {
+         "1": 0.2,
+         "2": 0.3,
+         "3": 0.45
+        }
+       }
+      }
+     }
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  },
+  {
+   "id": "node_pianist_rebirth",
+   "ability_class": "blade",
+   "effect_type": "pianist_flip",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [
+    "OnBeforeDeath"
+   ],
+   "required_trigger_tags": [
+    "passive_rebirth"
+   ],
+   "effect_config": {},
+   "cooldown": 0.0,
+   "priority": 100
+  },
+  {
+   "id": "node_pianist_grief",
+   "ability_class": "blade",
+   "effect_type": "mood_stack",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "stacking"
+   ],
+   "accepted_timings": [
+    "OnBattleStart",
+    "OnBattleFrame"
+   ],
+   "required_trigger_tags": [
+    "passive_grief"
+   ],
+   "effect_config": {
+    "status": {
+     "status_id": "despair",
+     "duration": 0.0,
+     "flags": [
+      "debuff",
+      "dispellable",
+      "despair"
+     ],
+     "dot": {
+      "kind": "magic",
+      "amount": 0.0,
+      "interval": 1.0
+     },
+     "stats_by_star": {
+      "attack_speed_multiplier": {
+       "flat": {
+        "1": -0.02,
+        "2": -0.025,
+        "3": -0.035
+       }
+      },
+      "haste": {
+       "flat": {
+        "1": -0.02,
+        "2": -0.025,
+        "3": -0.035
+       }
+      }
+     }
+    },
+    "value_to": "dot",
+    "add_stacks": 1,
+    "card_form": "demon",
+    "all_targets": true
+   },
+   "cooldown": 0.0,
+   "priority": 100,
+   "keyword_values": {
+    "stacking": 9
+   }
+  },
+  {
+   "id": "node_pianist_grief_dead",
+   "ability_class": "blade",
+   "effect_type": "mood_stack",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "stacking"
+   ],
+   "accepted_timings": [
+    "OnEnemyUnitDied"
+   ],
+   "required_trigger_tags": [
+    "passive_grief_dead"
+   ],
+   "effect_config": {
+    "status": {
+     "status_id": "despair",
+     "duration": 0.0,
+     "flags": [
+      "debuff",
+      "dispellable",
+      "despair"
+     ],
+     "dot": {
+      "kind": "magic",
+      "amount": 0.0,
+      "interval": 1.0
+     },
+     "stats_by_star": {
+      "attack_speed_multiplier": {
+       "flat": {
+        "1": -0.02,
+        "2": -0.025,
+        "3": -0.035
+       }
+      },
+      "haste": {
+       "flat": {
+        "1": -0.02,
+        "2": -0.025,
+        "3": -0.035
+       }
+      }
+     }
+    },
+    "value_to": "dot",
+    "add_stacks": 2,
+    "all_targets": true
+   },
+   "cooldown": 0.0,
+   "priority": 100,
+   "keyword_values": {
+    "stacking": 9
+   }
+  },
+  {
+   "id": "node_pianist_passion",
+   "ability_class": "blade",
+   "effect_type": "mood_stack",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "stacking"
+   ],
+   "accepted_timings": [
+    "OnBattleStart",
+    "OnBattleFrame"
+   ],
+   "required_trigger_tags": [
+    "passive_passion"
+   ],
+   "effect_config": {
+    "status": {
+     "status_id": "elation",
+     "duration": 0.0,
+     "flags": [
+      "buff",
+      "dispellable",
+      "elation"
+     ],
+     "hot": {
+      "flat": 0.0,
+      "interval": 1.0,
+      "src_heal": true
+     },
+     "stats_by_star": {
+      "attack_speed_multiplier": {
+       "flat": {
+        "1": 0.01,
+        "2": 0.012,
+        "3": 0.018
+       }
+      },
+      "haste": {
+       "flat": {
+        "1": 0.01,
+        "2": 0.012,
+        "3": 0.018
+       }
+      }
+     }
+    },
+    "value_to": "hot",
+    "add_stacks": 1,
+    "card_form": "angel",
+    "all_targets": true
+   },
+   "cooldown": 0.0,
+   "priority": 100,
+   "keyword_values": {
+    "stacking": 9
+   }
+  },
+  {
+   "id": "node_pianist_passion_dead",
+   "ability_class": "blade",
+   "effect_type": "mood_stack",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "stacking"
+   ],
+   "accepted_timings": [
+    "OnAllyUnitDied"
+   ],
+   "required_trigger_tags": [
+    "passive_passion_dead"
+   ],
+   "effect_config": {
+    "status": {
+     "status_id": "elation",
+     "duration": 0.0,
+     "flags": [
+      "buff",
+      "dispellable",
+      "elation"
+     ],
+     "hot": {
+      "flat": 0.0,
+      "interval": 1.0,
+      "src_heal": true
+     },
+     "stats_by_star": {
+      "attack_speed_multiplier": {
+       "flat": {
+        "1": 0.01,
+        "2": 0.012,
+        "3": 0.018
+       }
+      },
+      "haste": {
+       "flat": {
+        "1": 0.01,
+        "2": 0.012,
+        "3": 0.018
+       }
+      }
+     }
+    },
+    "value_to": "hot",
+    "add_stacks": 2,
+    "all_targets": true
+   },
+   "cooldown": 0.0,
+   "priority": 100,
+   "keyword_values": {
+    "stacking": 9
+   }
+  }
+ ]
+}
