@@ -1,0 +1,105 @@
+{
+ "id": "g11_dandelion_crossbow",
+ "cost": 2,
+ "color_id": "green",
+ "weapon_class": "crossbow",
+ "abilities": [
+  {
+   "id": "g11_dandelion_fluff",
+   "ability_class": "bullet",
+   "effect_type": "stat_status",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic",
+    "splash"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "splash_filter": "target_allies",
+    "splash_ratio": 1.0,
+    "ally_effect": {
+     "effect_type": "stat_status",
+     "cfg": {
+      "status_id": "g11_fluff_veil",
+      "duration": 10.0,
+      "max_stacks": 1,
+      "flags": [
+       "buff",
+       "dispellable"
+      ],
+      "stats": {
+       "na_dodge": {
+        "flat": 0.3
+       }
+      }
+     }
+    },
+    "enemy_effect": {
+     "effect_type": "stat_status",
+     "cfg": {
+      "status_id": "g11_fluff_haze",
+      "duration": 10.0,
+      "max_stacks": 1,
+      "flags": [
+       "debuff",
+       "dispellable"
+      ],
+      "stats": {
+       "attack_power": {
+        "pct": -0.15
+       }
+      }
+     }
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100,
+   "keyword_values": {
+    "splash": 2.5
+   }
+  },
+  {
+   "id": "g11_dandelion_seed",
+   "ability_class": "bullet",
+   "effect_type": "physical_damage",
+   "value_multiplier": 1.0,
+   "fixed_value": 70,
+   "keywords": [
+    "basic",
+    "splash"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "splash_filter": "target_allies",
+    "splash_ratio": 1.0,
+    "ally_effect": {
+     "effect_type": "heal"
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100,
+   "keyword_values": {
+    "splash": 2.5
+   }
+  }
+ ],
+ "flat_stat_modifiers": {
+  "max_health": 250,
+  "reload_time_pct": -0.25,
+  "na_dodge": 0.1
+ },
+ "percent_stat_modifiers": {},
+ "model": "g11_dandelion",
+ "reworked": true,
+ "projectile": "g11_dandelion",
+ "wclass_override": {
+  "proj_speed": 11.0
+ }
+}

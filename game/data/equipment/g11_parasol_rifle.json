@@ -1,0 +1,136 @@
+{
+ "id": "g11_parasol_rifle",
+ "cost": 2,
+ "color_id": "cyan",
+ "weapon_class": "rifle",
+ "abilities": [
+  {
+   "id": "g11_parasol_shelter",
+   "ability_class": "bullet",
+   "effect_type": "stat_status",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic",
+    "splash"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "splash_filter": "target_allies",
+    "splash_ratio": 1.0,
+    "status_id": "g11_shelter",
+    "duration": 6.0,
+    "max_stacks": 1,
+    "flags": [
+     "buff",
+     "dispellable"
+    ],
+    "stats": {
+     "damage_taken_pct": {
+      "flat": 0.2
+     }
+    },
+    "enemy_effect": {
+     "effect_type": "none"
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100,
+   "keyword_values": {
+    "splash": 2.0
+   }
+  },
+  {
+   "id": "g11_parasol_poke",
+   "ability_class": "bullet",
+   "effect_type": "knockback",
+   "value_multiplier": 1.0,
+   "fixed_value": 1.5,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "max_dist": 1.5,
+    "ally_effect": {
+     "effect_type": "none"
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  },
+  {
+   "id": "g11_parasol_soak",
+   "ability_class": "bullet",
+   "effect_type": "stat_status",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "status_id": "g11_soaked",
+    "duration": 4.0,
+    "max_stacks": 1,
+    "flags": [
+     "debuff",
+     "dispellable"
+    ],
+    "stats": {
+     "attack_speed_multiplier": {
+      "flat": -0.2
+     },
+     "move_speed": {
+      "pct": -0.2
+     }
+    },
+    "ally_effect": {
+     "effect_type": "none"
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  },
+  {
+   "id": "g11_parasol_rain",
+   "ability_class": "blade",
+   "effect_type": "magic_damage",
+   "value_multiplier": 0.5,
+   "fixed_value": 0.0,
+   "keywords": [],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "ally_effect": {
+     "effect_type": "shield",
+     "value_multiplier": 0.5
+    },
+    "enemy_effect": {
+     "effect_type": "magic_damage",
+     "value_multiplier": 0.5
+    }
+   },
+   "cooldown": 3.0,
+   "priority": 100
+  }
+ ],
+ "flat_stat_modifiers": {
+  "max_health": 150,
+  "magic_resistance": 15
+ },
+ "percent_stat_modifiers": {},
+ "model": "g11_parasol",
+ "reworked": true
+}

@@ -1,0 +1,96 @@
+{
+ "id": "g13_mantis_sickles",
+ "cost": 2,
+ "color_id": "green",
+ "weapon_class": "dual",
+ "abilities": [
+  {
+   "id": "g13_mantis_strike",
+   "ability_class": "bullet",
+   "effect_type": "physical_damage",
+   "value_multiplier": 1.0,
+   "fixed_value": 80,
+   "keywords": [
+    "splash"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "splash_filter": "target_allies",
+    "splash_ratio": 1.0,
+    "pre_effects": [
+     {
+      "effect_type": "stat_status",
+      "status_id": "g13_mimicry",
+      "duration": 0.0,
+      "max_stacks": 3,
+      "flags": [
+       "buff",
+       "dispellable"
+      ],
+      "stats": {
+       "na_dodge": {
+        "flat": 0.06
+       },
+       "attack_speed_multiplier": {
+        "flat": 0.08
+       }
+      }
+     }
+    ],
+    "ally_effect": {
+     "effect_type": "heal"
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100,
+   "keyword_values": {
+    "splash": 2.0
+   }
+  },
+  {
+   "id": "g13_mantis_pin",
+   "ability_class": "bullet",
+   "effect_type": "stat_status",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "status_id": "g13_mantis_grip",
+    "duration": 0.0,
+    "max_stacks": 4,
+    "add_stacks": 2,
+    "flags": [
+     "debuff",
+     "dispellable"
+    ],
+    "stats": {
+     "attack_power": {
+      "pct": -0.08
+     }
+    },
+    "ally_effect": {
+     "effect_type": "none"
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  }
+ ],
+ "flat_stat_modifiers": {
+  "attack_power": 15,
+  "max_health": 200,
+  "na_dodge": 0.08
+ },
+ "percent_stat_modifiers": {
+  "attack_speed_multiplier": 0.1
+ },
+ "model": "g13_mantis",
+ "reworked": true
+}

@@ -1,0 +1,60 @@
+{
+ "id": "g12_nightmare_greatsword",
+ "cost": 2,
+ "color_id": "purple",
+ "weapon_class": "heavy",
+ "abilities": [
+  {
+   "id": "g12_nightmare_dread",
+   "ability_class": "blade",
+   "effect_type": "magic_damage",
+   "value_multiplier": 0.6,
+   "fixed_value": 0.0,
+   "keywords": [
+    "multi_attack"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "extra_effects": [
+     {
+      "effect_type": "stat_status",
+      "target": "target",
+      "status_id": "g12_nightmare",
+      "duration": 3.0,
+      "max_stacks": 1,
+      "flags": [
+       "debuff",
+       "dispellable"
+      ],
+      "stats": {
+       "attack_power": {
+        "pct": -0.2
+       },
+       "attack_speed_multiplier": {
+        "flat": -0.2
+       }
+      }
+     }
+    ]
+   },
+   "cooldown": 3.0,
+   "priority": 100,
+   "keyword_values": {
+    "multi_attack": 3
+   }
+  }
+ ],
+ "flat_stat_modifiers": {
+  "attack_power": 20,
+  "max_health": 150
+ },
+ "percent_stat_modifiers": {},
+ "model": "g12_nightmare",
+ "reworked": true,
+ "fit_remove": [
+  "node_astronaut"
+ ]
+}

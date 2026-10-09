@@ -1,172 +1,193 @@
-[gd_scene load_steps=167 format=3]
+[gd_scene load_steps=188 format=3]
 
-[ext_resource type="ArrayMesh" path="res://assets/unit_body.res" id="1_retqu"]
-[ext_resource type="ArrayMesh" path="res://assets/prop_shield.res" id="2_tv0s5"]
-[ext_resource type="ArrayMesh" path="res://assets/prop_shield_tower.res" id="3_bssi1"]
-[ext_resource type="ArrayMesh" path="res://assets/prop_shield_lily.res" id="4_sgjrf"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_sword_plain.res" id="5_3xrwk"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_sword_ornate.res" id="6_mv0qy"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_polearm_plain.res" id="7_fgd76"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_polearm_ornate.res" id="8_qiglu"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_heavy_plain.res" id="9_pwyns"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_heavy_ornate.res" id="10_56omt"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_dual_plain.res" id="11_moyb6"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_dual_ornate.res" id="12_xb6pa"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_dual_plain_l.res" id="13_charu"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_dual_ornate_l.res" id="14_d5wcp"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_dual_wolf.res" id="15_7y1ch"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_dual_fan.res" id="16_wt1vo"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_polearm_meteor.res" id="17_qfgr0"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_polearm_cane.res" id="18_qobal"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_dual_fan_l.res" id="19_lx7m0"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_dual_wolf_l.res" id="20_sftir"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_dual_blink.res" id="21_4jwd7"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_dual_blink_l.res" id="22_bgn6w"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_bow_plain.res" id="23_u8vep"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_bow_ornate.res" id="24_c4dm0"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_crossbow_plain.res" id="25_ex04w"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_crossbow_ornate.res" id="26_bi3am"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_pistols_plain.res" id="27_yt02m"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_pistols_ornate.res" id="28_6fq6m"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_pistols_plain_l.res" id="29_trefa"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_pistols_ornate_l.res" id="30_xga4v"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_rifle_plain.res" id="31_ejudo"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_rifle_ornate.res" id="32_uwlc5"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_focus_plain.res" id="33_camdy"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_focus_ornate.res" id="34_e46om"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_focus_tome.res" id="35_15thf"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_focus_notes.res" id="36_d1k4g"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_focus_electro.res" id="37_tewlf"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_rifle_arbalest.res" id="38_1hnmy"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_rifle_drive.res" id="39_cecjx"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_polearm_rake.res" id="40_n7plh"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_heavy_blood.res" id="41_h54qb"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_pistols_stunner.res" id="42_rsqo1"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_pistols_stunner_l.res" id="43_vgvh1"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_pistols_butterfly.res" id="44_twgna"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_pistols_butterfly_l.res" id="45_vh3ju"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_focus_syringe.res" id="46_01b85"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_polearm_banner.res" id="47_e8d5v"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_polearm_hunt_flag.res" id="48_77ojn"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_polearm_starflag.res" id="49_a26gh"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_heavy_prism.res" id="50_ncmfa"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_dual_volt.res" id="51_ykm85"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_dual_volt_l.res" id="52_kt5yp"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_dual_slips.res" id="53_7hi11"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_focus_grimoire.res" id="54_5tecv"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_dual_slips_l.res" id="55_dlgke"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_dual_coin.res" id="56_tw32y"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_dual_coin_l.res" id="57_ljgf5"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_sword_wrench.res" id="58_kq4kw"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_focus_talisman.res" id="59_6qjq1"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_crossbow_revolver.res" id="60_5luwc"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_sword_katana.res" id="61_aef8b"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_sword_katana_saya.res" id="62_6u8gk"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_bow_short.res" id="63_vasad"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_bow_farthest.res" id="64_dnpac"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_polearm_ember_glaive.res" id="65_ck1af"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_polearm_lily.res" id="66_0qp78"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_polearm_verdant.res" id="67_ra2vu"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_polearm_dice.res" id="68_o8hyu"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_polearm_key.res" id="69_ds3qd"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_bow_lute.res" id="70_njn0m"]
-[ext_resource type="ArrayMesh" path="res://assets/prop_bard_lute.res" id="71_ua31q"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_focus_censer.res" id="72_ch8mf"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_heavy_clot.res" id="73_iea24"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_heavy_warhammer.res" id="74_ncr6f"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_heavy_odachi.res" id="75_aamgf"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_heavy_odachi_drawn.res" id="76_md80y"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_focus_lightheart.res" id="77_jrt7n"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_rifle_sniper.res" id="78_pi7l5"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_crossbow_blackmission.res" id="79_oqbru"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_sword_cyanshadow.res" id="80_orrhx"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_sword_hope.res" id="81_r60j2"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_sword_mic.res" id="82_l4707"]
-[ext_resource type="ArrayMesh" path="res://assets/prop_commando_smg.res" id="83_l0g02"]
-[ext_resource type="ArrayMesh" path="res://assets/prop_commando_knife.res" id="84_bb3x0"]
-[ext_resource type="ArrayMesh" path="res://assets/prop_hunter_rod.res" id="85_wbnuh"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_focus_rainbow.res" id="86_524m4"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_focus_rosary.res" id="87_7mqvy"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_focus_candelabra.res" id="88_gynqo"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_sword_rally.res" id="89_qmwpe"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_rifle_spotter.res" id="90_17kbx"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_heavy_rockbreaker.res" id="91_m7kft"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_sword_moon.res" id="92_jt228"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_focus_lantern.res" id="93_21yys"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_focus_requiem.res" id="94_0dowd"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_dual_fang.res" id="95_7rfd2"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_dual_fang_l.res" id="96_6d373"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_rifle_keeneye.res" id="97_357op"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_sword_echo.res" id="98_fo7ie"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_focus_capacitor.res" id="99_dbx4l"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_focus_kaleido.res" id="100_c3aa7"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_focus_stardust.res" id="101_6qien"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_focus_chord.res" id="102_6wiou"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_focus_mirror.res" id="103_osegd"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_focus_erudite.res" id="104_eonwl"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_pistols_flintlock.res" id="105_xevlm"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_pistols_flintlock_l.res" id="106_golkn"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_pistols_chakram.res" id="107_obglm"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_pistols_chakram_l.res" id="108_yw16h"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_pistols_cards.res" id="109_vglgg"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_pistols_cards_l.res" id="110_wd7cy"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_pistols_bubble.res" id="111_282pg"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_pistols_bubble_l.res" id="112_lobyn"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_pistols_bells.res" id="113_n4td4"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_pistols_bells_l.res" id="114_2s42w"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_crossbow_g5rime.res" id="115_mlopu"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_crossbow_g5gale.res" id="116_dwryv"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_crossbow_g5flare.res" id="117_03hv7"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_crossbow_g5thunder.res" id="118_e323w"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_crossbow_g5hive.res" id="119_1kxo7"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_crossbow_g5thorn.res" id="120_8nn84"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_rifle_g6_transfusion.res" id="121_g4fda"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_rifle_g6_momentum.res" id="122_760q0"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_rifle_g6_tide.res" id="123_hwpob"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_rifle_g6_hexline.res" id="124_m5k0t"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_bow_g6_windchaser.res" id="125_pvayd"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_bow_g6_goldcrow.res" id="126_tu2wm"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_dual_g7_ribbon.res" id="127_wdq48"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_dual_g7_ribbon_l.res" id="128_5udyr"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_dual_g7_mistveil.res" id="129_mbccy"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_dual_g7_mistveil_l.res" id="130_0mq15"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_sword_g7_gilded.res" id="131_6s4su"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_sword_g7_verdict.res" id="132_7er1w"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_heavy_g7_thunder.res" id="133_uac6q"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_heavy_g7_blight.res" id="134_nm066"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_pistols_g8_peapod.res" id="135_glhyf"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_pistols_g8_peapod_l.res" id="136_55ugg"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_pistols_g8_rivet.res" id="137_doboj"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_pistols_g8_rivet_l.res" id="138_mn50x"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_pistols_g8_dart.res" id="139_yibxo"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_pistols_g8_dart_l.res" id="140_nqumr"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_pistols_g8_crane.res" id="141_8v6ae"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_pistols_g8_crane_l.res" id="142_glabf"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_pistols_g8_firework.res" id="143_65w3i"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_pistols_g8_firework_l.res" id="144_osxwt"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_pistols_g8_sunray.res" id="145_btx6x"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_pistols_g8_sunray_l.res" id="146_m0urg"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_polearm_g9_rimetide.res" id="147_hk5ng"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_polearm_g9_dawnlight.res" id="148_0ah0a"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_polearm_g9_starorbit.res" id="149_psnrc"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_heavy_g9_thorn.res" id="150_81ff2"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_heavy_g9_laurel.res" id="151_j47mt"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_heavy_g9_wellspring.res" id="152_0gi05"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_sword_g10_vine.res" id="153_w1osc"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_sword_g10_chrono.res" id="154_ft62j"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_sword_g10_feast.res" id="155_0oqok"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_dual_g10_current.res" id="156_4ohcp"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_dual_g10_current_l.res" id="157_qjj6p"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_dual_g10_viper.res" id="158_exra0"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_dual_g10_viper_l.res" id="159_jkhjd"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_focus_g10_willow.res" id="160_a6lpw"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_bow_g10_nightingale.res" id="161_i4mjs"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_focus_piano.res" id="162_f1kpd"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_focus_grand.res" id="163_yh2mi"]
-[ext_resource type="ArrayMesh" path="res://assets/wpn_focus_grand_white.res" id="164_6apu3"]
-[ext_resource type="AnimationLibrary" path="res://assets/archer_anims.res" id="165_hrlvt"]
+[ext_resource type="ArrayMesh" path="res://assets/unit_body.res" id="1_bgn6w"]
+[ext_resource type="ArrayMesh" path="res://assets/prop_shield.res" id="2_u8vep"]
+[ext_resource type="ArrayMesh" path="res://assets/prop_shield_tower.res" id="3_c4dm0"]
+[ext_resource type="ArrayMesh" path="res://assets/prop_shield_lily.res" id="4_ex04w"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_sword_plain.res" id="5_bi3am"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_sword_ornate.res" id="6_yt02m"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_polearm_plain.res" id="7_6fq6m"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_polearm_ornate.res" id="8_trefa"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_heavy_plain.res" id="9_xga4v"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_heavy_ornate.res" id="10_ejudo"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_dual_plain.res" id="11_uwlc5"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_dual_ornate.res" id="12_camdy"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_dual_plain_l.res" id="13_e46om"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_dual_ornate_l.res" id="14_15thf"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_dual_wolf.res" id="15_d1k4g"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_dual_fan.res" id="16_tewlf"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_polearm_meteor.res" id="17_1hnmy"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_polearm_cane.res" id="18_cecjx"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_dual_fan_l.res" id="19_n7plh"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_dual_wolf_l.res" id="20_h54qb"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_dual_blink.res" id="21_rsqo1"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_dual_blink_l.res" id="22_vgvh1"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_bow_plain.res" id="23_twgna"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_bow_ornate.res" id="24_vh3ju"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_crossbow_plain.res" id="25_01b85"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_crossbow_ornate.res" id="26_e8d5v"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_pistols_plain.res" id="27_77ojn"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_pistols_ornate.res" id="28_a26gh"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_pistols_plain_l.res" id="29_ncmfa"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_pistols_ornate_l.res" id="30_ykm85"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_rifle_plain.res" id="31_kt5yp"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_rifle_ornate.res" id="32_7hi11"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_focus_plain.res" id="33_5tecv"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_focus_ornate.res" id="34_dlgke"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_focus_tome.res" id="35_tw32y"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_focus_notes.res" id="36_ljgf5"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_focus_electro.res" id="37_kq4kw"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_rifle_arbalest.res" id="38_6qjq1"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_rifle_drive.res" id="39_5luwc"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_polearm_rake.res" id="40_aef8b"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_heavy_blood.res" id="41_6u8gk"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_pistols_stunner.res" id="42_vasad"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_pistols_stunner_l.res" id="43_dnpac"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_pistols_butterfly.res" id="44_ck1af"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_pistols_butterfly_l.res" id="45_0qp78"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_focus_syringe.res" id="46_ra2vu"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_polearm_banner.res" id="47_o8hyu"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_polearm_hunt_flag.res" id="48_ds3qd"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_polearm_starflag.res" id="49_njn0m"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_heavy_prism.res" id="50_ua31q"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_dual_volt.res" id="51_ch8mf"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_dual_volt_l.res" id="52_iea24"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_dual_slips.res" id="53_ncr6f"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_focus_grimoire.res" id="54_aamgf"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_dual_slips_l.res" id="55_md80y"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_dual_coin.res" id="56_jrt7n"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_dual_coin_l.res" id="57_pi7l5"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_sword_wrench.res" id="58_oqbru"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_focus_talisman.res" id="59_orrhx"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_crossbow_revolver.res" id="60_r60j2"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_sword_katana.res" id="61_l4707"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_sword_katana_saya.res" id="62_l0g02"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_bow_short.res" id="63_bb3x0"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_bow_farthest.res" id="64_wbnuh"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_polearm_ember_glaive.res" id="65_524m4"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_polearm_lily.res" id="66_7mqvy"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_polearm_verdant.res" id="67_gynqo"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_polearm_dice.res" id="68_qmwpe"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_polearm_key.res" id="69_17kbx"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_bow_lute.res" id="70_m7kft"]
+[ext_resource type="ArrayMesh" path="res://assets/prop_bard_lute.res" id="71_jt228"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_focus_censer.res" id="72_21yys"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_heavy_clot.res" id="73_0dowd"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_heavy_warhammer.res" id="74_7rfd2"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_heavy_odachi.res" id="75_6d373"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_heavy_odachi_drawn.res" id="76_357op"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_focus_lightheart.res" id="77_fo7ie"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_rifle_sniper.res" id="78_dbx4l"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_crossbow_blackmission.res" id="79_c3aa7"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_sword_cyanshadow.res" id="80_6qien"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_sword_hope.res" id="81_6wiou"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_sword_mic.res" id="82_osegd"]
+[ext_resource type="ArrayMesh" path="res://assets/prop_commando_smg.res" id="83_eonwl"]
+[ext_resource type="ArrayMesh" path="res://assets/prop_commando_knife.res" id="84_xevlm"]
+[ext_resource type="ArrayMesh" path="res://assets/prop_hunter_rod.res" id="85_golkn"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_focus_rainbow.res" id="86_obglm"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_focus_rosary.res" id="87_yw16h"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_focus_candelabra.res" id="88_vglgg"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_sword_rally.res" id="89_wd7cy"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_rifle_spotter.res" id="90_282pg"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_heavy_rockbreaker.res" id="91_lobyn"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_sword_moon.res" id="92_n4td4"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_focus_lantern.res" id="93_2s42w"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_focus_requiem.res" id="94_mlopu"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_dual_fang.res" id="95_dwryv"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_dual_fang_l.res" id="96_03hv7"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_rifle_keeneye.res" id="97_e323w"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_sword_echo.res" id="98_1kxo7"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_focus_capacitor.res" id="99_8nn84"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_focus_kaleido.res" id="100_g4fda"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_focus_stardust.res" id="101_760q0"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_focus_chord.res" id="102_hwpob"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_focus_mirror.res" id="103_m5k0t"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_focus_erudite.res" id="104_pvayd"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_pistols_flintlock.res" id="105_tu2wm"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_pistols_flintlock_l.res" id="106_wdq48"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_pistols_chakram.res" id="107_5udyr"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_pistols_chakram_l.res" id="108_mbccy"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_pistols_cards.res" id="109_0mq15"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_pistols_cards_l.res" id="110_6s4su"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_pistols_bubble.res" id="111_7er1w"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_pistols_bubble_l.res" id="112_uac6q"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_pistols_bells.res" id="113_nm066"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_pistols_bells_l.res" id="114_glhyf"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_crossbow_g5rime.res" id="115_55ugg"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_crossbow_g5gale.res" id="116_doboj"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_crossbow_g5flare.res" id="117_mn50x"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_crossbow_g5thunder.res" id="118_yibxo"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_crossbow_g5hive.res" id="119_nqumr"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_crossbow_g5thorn.res" id="120_8v6ae"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_rifle_g6_transfusion.res" id="121_glabf"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_rifle_g6_momentum.res" id="122_65w3i"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_rifle_g6_tide.res" id="123_osxwt"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_rifle_g6_hexline.res" id="124_btx6x"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_bow_g6_windchaser.res" id="125_m0urg"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_bow_g6_goldcrow.res" id="126_hk5ng"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_dual_g7_ribbon.res" id="127_0ah0a"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_dual_g7_ribbon_l.res" id="128_psnrc"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_dual_g7_mistveil.res" id="129_81ff2"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_dual_g7_mistveil_l.res" id="130_j47mt"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_sword_g7_gilded.res" id="131_0gi05"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_sword_g7_verdict.res" id="132_w1osc"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_heavy_g7_thunder.res" id="133_ft62j"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_heavy_g7_blight.res" id="134_0oqok"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_pistols_g8_peapod.res" id="135_4ohcp"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_pistols_g8_peapod_l.res" id="136_qjj6p"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_pistols_g8_rivet.res" id="137_exra0"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_pistols_g8_rivet_l.res" id="138_jkhjd"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_pistols_g8_dart.res" id="139_a6lpw"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_pistols_g8_dart_l.res" id="140_i4mjs"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_pistols_g8_crane.res" id="141_f1kpd"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_pistols_g8_crane_l.res" id="142_yh2mi"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_pistols_g8_firework.res" id="143_6apu3"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_pistols_g8_firework_l.res" id="144_hrlvt"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_pistols_g8_sunray.res" id="145_avf7f"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_pistols_g8_sunray_l.res" id="146_t5u4k"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_polearm_g9_rimetide.res" id="147_ps4dd"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_polearm_g9_dawnlight.res" id="148_0dpyq"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_polearm_g9_starorbit.res" id="149_gqyyn"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_heavy_g9_thorn.res" id="150_kbbi7"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_heavy_g9_laurel.res" id="151_mdonr"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_heavy_g9_wellspring.res" id="152_58bpc"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_sword_g10_vine.res" id="153_ewwf6"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_sword_g10_chrono.res" id="154_xkcip"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_sword_g10_feast.res" id="155_1isa4"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_dual_g10_current.res" id="156_18kg8"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_dual_g10_current_l.res" id="157_w0qwi"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_dual_g10_viper.res" id="158_tebk7"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_dual_g10_viper_l.res" id="159_jefq2"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_focus_g10_willow.res" id="160_cgm31"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_bow_g10_nightingale.res" id="161_mobvg"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_rifle_g11_inkwell.res" id="162_mtbh1"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_rifle_g11_parasol.res" id="163_jiarq"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_rifle_g11_vermilion.res" id="164_hlx83"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_crossbow_g11_pearl.res" id="165_1826f"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_crossbow_g11_chili.res" id="166_nq5na"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_crossbow_g11_dandelion.res" id="167_3aig4"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_polearm_g12_whalesong.res" id="168_scwjl"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_polearm_g12_jadebamboo.res" id="169_eoqp7"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_sword_g12_goldfinch.res" id="170_4hfmq"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_sword_g12_wisteria.res" id="171_ielti"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_heavy_g12_nightmare.res" id="172_qvqri"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_heavy_g12_goldbell.res" id="173_w4cmv"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_dual_g13_amber.res" id="174_xxah7"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_dual_g13_amber_l.res" id="175_hinw2"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_dual_g13_mantis.res" id="176_b2ilj"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_dual_g13_mantis_l.res" id="177_p25hj"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_pistols_g13_hypno.res" id="178_hjdm0"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_pistols_g13_hypno_l.res" id="179_omvh3"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_bow_g13_cradle.res" id="180_27me6"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_bow_g13_azure_dragon.res" id="181_88dgb"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_focus_g13_rose.res" id="182_avgf7"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_focus_piano.res" id="183_86inr"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_focus_grand.res" id="184_oy3vj"]
+[ext_resource type="ArrayMesh" path="res://assets/wpn_focus_grand_white.res" id="185_fqgnk"]
+[ext_resource type="AnimationLibrary" path="res://assets/archer_anims.res" id="186_leu5t"]
 
-[sub_resource type="Skin" id="Skin_avf7f"]
+[sub_resource type="Skin" id="Skin_gqodr"]
 bind_count = 124
 bind/0/name = &""
 bind/0/bone = 0
@@ -1415,988 +1436,1114 @@ bones/123/scale = Vector3(1, 1, 1)
 
 [node name="Body" type="MeshInstance3D" parent="Skeleton3D"]
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("1_retqu")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("1_bgn6w")
+skin = SubResource("Skin_gqodr")
 
 [node name="Shield" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("2_tv0s5")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("2_u8vep")
+skin = SubResource("Skin_gqodr")
 
 [node name="Shield_tower" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("3_bssi1")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("3_c4dm0")
+skin = SubResource("Skin_gqodr")
 
 [node name="Shield_lily" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("4_sgjrf")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("4_ex04w")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_sword_plain" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("5_3xrwk")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("5_bi3am")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_sword_ornate" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("6_mv0qy")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("6_yt02m")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_polearm_plain" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("7_fgd76")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("7_6fq6m")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_polearm_ornate" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("8_qiglu")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("8_trefa")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_heavy_plain" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("9_pwyns")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("9_xga4v")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_heavy_ornate" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("10_56omt")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("10_ejudo")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_dual_plain" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("11_moyb6")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("11_uwlc5")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_dual_ornate" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("12_xb6pa")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("12_camdy")
+skin = SubResource("Skin_gqodr")
 
 [node name="L_dual_plain" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("13_charu")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("13_e46om")
+skin = SubResource("Skin_gqodr")
 
 [node name="L_dual_ornate" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("14_d5wcp")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("14_15thf")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_dual_wolf" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("15_7y1ch")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("15_d1k4g")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_dual_fan" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("16_wt1vo")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("16_tewlf")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_polearm_meteor" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("17_qfgr0")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("17_1hnmy")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_polearm_cane" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("18_qobal")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("18_cecjx")
+skin = SubResource("Skin_gqodr")
 
 [node name="L_dual_fan" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("19_lx7m0")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("19_n7plh")
+skin = SubResource("Skin_gqodr")
 
 [node name="L_dual_wolf" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("20_sftir")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("20_h54qb")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_dual_blink" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("21_4jwd7")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("21_rsqo1")
+skin = SubResource("Skin_gqodr")
 
 [node name="L_dual_blink" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("22_bgn6w")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("22_vgvh1")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_bow_plain" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("23_u8vep")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("23_twgna")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_bow_ornate" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("24_c4dm0")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("24_vh3ju")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_crossbow_plain" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("25_ex04w")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("25_01b85")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_crossbow_ornate" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("26_bi3am")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("26_e8d5v")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_pistols_plain" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("27_yt02m")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("27_77ojn")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_pistols_ornate" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("28_6fq6m")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("28_a26gh")
+skin = SubResource("Skin_gqodr")
 
 [node name="L_pistols_plain" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("29_trefa")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("29_ncmfa")
+skin = SubResource("Skin_gqodr")
 
 [node name="L_pistols_ornate" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("30_xga4v")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("30_ykm85")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_rifle_plain" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("31_ejudo")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("31_kt5yp")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_rifle_ornate" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("32_uwlc5")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("32_7hi11")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_focus_plain" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("33_camdy")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("33_5tecv")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_focus_ornate" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("34_e46om")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("34_dlgke")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_focus_tome" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("35_15thf")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("35_tw32y")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_focus_notes" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("36_d1k4g")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("36_ljgf5")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_focus_electro" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("37_tewlf")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("37_kq4kw")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_rifle_arbalest" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("38_1hnmy")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("38_6qjq1")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_rifle_drive" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("39_cecjx")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("39_5luwc")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_polearm_rake" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("40_n7plh")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("40_aef8b")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_heavy_blood" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("41_h54qb")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("41_6u8gk")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_pistols_stunner" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("42_rsqo1")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("42_vasad")
+skin = SubResource("Skin_gqodr")
 
 [node name="L_pistols_stunner" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("43_vgvh1")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("43_dnpac")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_pistols_butterfly" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("44_twgna")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("44_ck1af")
+skin = SubResource("Skin_gqodr")
 
 [node name="L_pistols_butterfly" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("45_vh3ju")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("45_0qp78")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_focus_syringe" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("46_01b85")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("46_ra2vu")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_polearm_banner" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("47_e8d5v")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("47_o8hyu")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_polearm_hunt_flag" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("48_77ojn")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("48_ds3qd")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_polearm_starflag" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("49_a26gh")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("49_njn0m")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_heavy_prism" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("50_ncmfa")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("50_ua31q")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_dual_volt" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("51_ykm85")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("51_ch8mf")
+skin = SubResource("Skin_gqodr")
 
 [node name="L_dual_volt" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("52_kt5yp")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("52_iea24")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_dual_slips" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("53_7hi11")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("53_ncr6f")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_focus_grimoire" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("54_5tecv")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("54_aamgf")
+skin = SubResource("Skin_gqodr")
 
 [node name="L_dual_slips" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("55_dlgke")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("55_md80y")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_dual_coin" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("56_tw32y")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("56_jrt7n")
+skin = SubResource("Skin_gqodr")
 
 [node name="L_dual_coin" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("57_ljgf5")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("57_pi7l5")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_sword_wrench" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("58_kq4kw")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("58_oqbru")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_focus_talisman" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("59_6qjq1")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("59_orrhx")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_crossbow_revolver" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("60_5luwc")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("60_r60j2")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_sword_katana" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("61_aef8b")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("61_l4707")
+skin = SubResource("Skin_gqodr")
 
 [node name="A_sword_katana" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("62_6u8gk")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("62_l0g02")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_bow_short" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("63_vasad")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("63_bb3x0")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_bow_farthest" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("64_dnpac")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("64_wbnuh")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_polearm_ember_glaive" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("65_ck1af")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("65_524m4")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_polearm_lily" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("66_0qp78")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("66_7mqvy")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_polearm_verdant" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("67_ra2vu")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("67_gynqo")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_polearm_dice" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("68_o8hyu")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("68_qmwpe")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_polearm_key" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("69_ds3qd")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("69_17kbx")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_bow_lute" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("70_njn0m")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("70_m7kft")
+skin = SubResource("Skin_gqodr")
 
 [node name="P_bard_lute" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("71_ua31q")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("71_jt228")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_focus_censer" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("72_ch8mf")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("72_21yys")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_heavy_clot" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("73_iea24")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("73_0dowd")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_heavy_warhammer" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("74_ncr6f")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("74_7rfd2")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_heavy_odachi" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("75_aamgf")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("75_6d373")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_heavy_odachi_drawn" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("76_md80y")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("76_357op")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_focus_lightheart" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("77_jrt7n")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("77_fo7ie")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_rifle_sniper" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("78_pi7l5")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("78_dbx4l")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_crossbow_blackmission" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("79_oqbru")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("79_c3aa7")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_sword_cyanshadow" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("80_orrhx")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("80_6qien")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_sword_hope" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("81_r60j2")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("81_6wiou")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_sword_mic" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("82_l4707")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("82_osegd")
+skin = SubResource("Skin_gqodr")
 
 [node name="P_commando_smg" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("83_l0g02")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("83_eonwl")
+skin = SubResource("Skin_gqodr")
 
 [node name="P_commando_knife" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("84_bb3x0")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("84_xevlm")
+skin = SubResource("Skin_gqodr")
 
 [node name="P_hunter_rod" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("85_wbnuh")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("85_golkn")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_focus_rainbow" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("86_524m4")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("86_obglm")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_focus_rosary" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("87_7mqvy")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("87_yw16h")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_focus_candelabra" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("88_gynqo")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("88_vglgg")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_sword_rally" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("89_qmwpe")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("89_wd7cy")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_rifle_spotter" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("90_17kbx")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("90_282pg")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_heavy_rockbreaker" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("91_m7kft")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("91_lobyn")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_sword_moon" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("92_jt228")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("92_n4td4")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_focus_lantern" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("93_21yys")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("93_2s42w")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_focus_requiem" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("94_0dowd")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("94_mlopu")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_dual_fang" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("95_7rfd2")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("95_dwryv")
+skin = SubResource("Skin_gqodr")
 
 [node name="L_dual_fang" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("96_6d373")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("96_03hv7")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_rifle_keeneye" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("97_357op")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("97_e323w")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_sword_echo" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("98_fo7ie")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("98_1kxo7")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_focus_capacitor" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("99_dbx4l")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("99_8nn84")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_focus_kaleido" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("100_c3aa7")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("100_g4fda")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_focus_stardust" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("101_6qien")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("101_760q0")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_focus_chord" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("102_6wiou")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("102_hwpob")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_focus_mirror" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("103_osegd")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("103_m5k0t")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_focus_erudite" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("104_eonwl")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("104_pvayd")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_pistols_flintlock" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("105_xevlm")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("105_tu2wm")
+skin = SubResource("Skin_gqodr")
 
 [node name="L_pistols_flintlock" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("106_golkn")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("106_wdq48")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_pistols_chakram" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("107_obglm")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("107_5udyr")
+skin = SubResource("Skin_gqodr")
 
 [node name="L_pistols_chakram" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("108_yw16h")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("108_mbccy")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_pistols_cards" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("109_vglgg")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("109_0mq15")
+skin = SubResource("Skin_gqodr")
 
 [node name="L_pistols_cards" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("110_wd7cy")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("110_6s4su")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_pistols_bubble" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("111_282pg")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("111_7er1w")
+skin = SubResource("Skin_gqodr")
 
 [node name="L_pistols_bubble" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("112_lobyn")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("112_uac6q")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_pistols_bells" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("113_n4td4")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("113_nm066")
+skin = SubResource("Skin_gqodr")
 
 [node name="L_pistols_bells" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("114_2s42w")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("114_glhyf")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_crossbow_g5rime" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("115_mlopu")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("115_55ugg")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_crossbow_g5gale" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("116_dwryv")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("116_doboj")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_crossbow_g5flare" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("117_03hv7")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("117_mn50x")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_crossbow_g5thunder" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("118_e323w")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("118_yibxo")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_crossbow_g5hive" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("119_1kxo7")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("119_nqumr")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_crossbow_g5thorn" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("120_8nn84")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("120_8v6ae")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_rifle_g6_transfusion" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("121_g4fda")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("121_glabf")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_rifle_g6_momentum" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("122_760q0")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("122_65w3i")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_rifle_g6_tide" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("123_hwpob")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("123_osxwt")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_rifle_g6_hexline" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("124_m5k0t")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("124_btx6x")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_bow_g6_windchaser" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("125_pvayd")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("125_m0urg")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_bow_g6_goldcrow" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("126_tu2wm")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("126_hk5ng")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_dual_g7_ribbon" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("127_wdq48")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("127_0ah0a")
+skin = SubResource("Skin_gqodr")
 
 [node name="L_dual_g7_ribbon" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("128_5udyr")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("128_psnrc")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_dual_g7_mistveil" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("129_mbccy")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("129_81ff2")
+skin = SubResource("Skin_gqodr")
 
 [node name="L_dual_g7_mistveil" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("130_0mq15")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("130_j47mt")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_sword_g7_gilded" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("131_6s4su")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("131_0gi05")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_sword_g7_verdict" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("132_7er1w")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("132_w1osc")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_heavy_g7_thunder" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("133_uac6q")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("133_ft62j")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_heavy_g7_blight" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("134_nm066")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("134_0oqok")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_pistols_g8_peapod" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("135_glhyf")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("135_4ohcp")
+skin = SubResource("Skin_gqodr")
 
 [node name="L_pistols_g8_peapod" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("136_55ugg")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("136_qjj6p")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_pistols_g8_rivet" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("137_doboj")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("137_exra0")
+skin = SubResource("Skin_gqodr")
 
 [node name="L_pistols_g8_rivet" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("138_mn50x")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("138_jkhjd")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_pistols_g8_dart" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("139_yibxo")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("139_a6lpw")
+skin = SubResource("Skin_gqodr")
 
 [node name="L_pistols_g8_dart" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("140_nqumr")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("140_i4mjs")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_pistols_g8_crane" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("141_8v6ae")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("141_f1kpd")
+skin = SubResource("Skin_gqodr")
 
 [node name="L_pistols_g8_crane" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("142_glabf")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("142_yh2mi")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_pistols_g8_firework" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("143_65w3i")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("143_6apu3")
+skin = SubResource("Skin_gqodr")
 
 [node name="L_pistols_g8_firework" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("144_osxwt")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("144_hrlvt")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_pistols_g8_sunray" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("145_btx6x")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("145_avf7f")
+skin = SubResource("Skin_gqodr")
 
 [node name="L_pistols_g8_sunray" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("146_m0urg")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("146_t5u4k")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_polearm_g9_rimetide" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("147_hk5ng")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("147_ps4dd")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_polearm_g9_dawnlight" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("148_0ah0a")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("148_0dpyq")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_polearm_g9_starorbit" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("149_psnrc")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("149_gqyyn")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_heavy_g9_thorn" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("150_81ff2")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("150_kbbi7")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_heavy_g9_laurel" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("151_j47mt")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("151_mdonr")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_heavy_g9_wellspring" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("152_0gi05")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("152_58bpc")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_sword_g10_vine" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("153_w1osc")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("153_ewwf6")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_sword_g10_chrono" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("154_ft62j")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("154_xkcip")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_sword_g10_feast" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("155_0oqok")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("155_1isa4")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_dual_g10_current" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("156_4ohcp")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("156_18kg8")
+skin = SubResource("Skin_gqodr")
 
 [node name="L_dual_g10_current" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("157_qjj6p")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("157_w0qwi")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_dual_g10_viper" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("158_exra0")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("158_tebk7")
+skin = SubResource("Skin_gqodr")
 
 [node name="L_dual_g10_viper" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("159_jkhjd")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("159_jefq2")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_focus_g10_willow" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("160_a6lpw")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("160_cgm31")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_bow_g10_nightingale" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("161_i4mjs")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("161_mobvg")
+skin = SubResource("Skin_gqodr")
+
+[node name="W_rifle_g11_inkwell" type="MeshInstance3D" parent="Skeleton3D"]
+visible = false
+custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
+mesh = ExtResource("162_mtbh1")
+skin = SubResource("Skin_gqodr")
+
+[node name="W_rifle_g11_parasol" type="MeshInstance3D" parent="Skeleton3D"]
+visible = false
+custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
+mesh = ExtResource("163_jiarq")
+skin = SubResource("Skin_gqodr")
+
+[node name="W_rifle_g11_vermilion" type="MeshInstance3D" parent="Skeleton3D"]
+visible = false
+custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
+mesh = ExtResource("164_hlx83")
+skin = SubResource("Skin_gqodr")
+
+[node name="W_crossbow_g11_pearl" type="MeshInstance3D" parent="Skeleton3D"]
+visible = false
+custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
+mesh = ExtResource("165_1826f")
+skin = SubResource("Skin_gqodr")
+
+[node name="W_crossbow_g11_chili" type="MeshInstance3D" parent="Skeleton3D"]
+visible = false
+custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
+mesh = ExtResource("166_nq5na")
+skin = SubResource("Skin_gqodr")
+
+[node name="W_crossbow_g11_dandelion" type="MeshInstance3D" parent="Skeleton3D"]
+visible = false
+custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
+mesh = ExtResource("167_3aig4")
+skin = SubResource("Skin_gqodr")
+
+[node name="W_polearm_g12_whalesong" type="MeshInstance3D" parent="Skeleton3D"]
+visible = false
+custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
+mesh = ExtResource("168_scwjl")
+skin = SubResource("Skin_gqodr")
+
+[node name="W_polearm_g12_jadebamboo" type="MeshInstance3D" parent="Skeleton3D"]
+visible = false
+custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
+mesh = ExtResource("169_eoqp7")
+skin = SubResource("Skin_gqodr")
+
+[node name="W_sword_g12_goldfinch" type="MeshInstance3D" parent="Skeleton3D"]
+visible = false
+custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
+mesh = ExtResource("170_4hfmq")
+skin = SubResource("Skin_gqodr")
+
+[node name="W_sword_g12_wisteria" type="MeshInstance3D" parent="Skeleton3D"]
+visible = false
+custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
+mesh = ExtResource("171_ielti")
+skin = SubResource("Skin_gqodr")
+
+[node name="W_heavy_g12_nightmare" type="MeshInstance3D" parent="Skeleton3D"]
+visible = false
+custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
+mesh = ExtResource("172_qvqri")
+skin = SubResource("Skin_gqodr")
+
+[node name="W_heavy_g12_goldbell" type="MeshInstance3D" parent="Skeleton3D"]
+visible = false
+custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
+mesh = ExtResource("173_w4cmv")
+skin = SubResource("Skin_gqodr")
+
+[node name="W_dual_g13_amber" type="MeshInstance3D" parent="Skeleton3D"]
+visible = false
+custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
+mesh = ExtResource("174_xxah7")
+skin = SubResource("Skin_gqodr")
+
+[node name="L_dual_g13_amber" type="MeshInstance3D" parent="Skeleton3D"]
+visible = false
+custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
+mesh = ExtResource("175_hinw2")
+skin = SubResource("Skin_gqodr")
+
+[node name="W_dual_g13_mantis" type="MeshInstance3D" parent="Skeleton3D"]
+visible = false
+custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
+mesh = ExtResource("176_b2ilj")
+skin = SubResource("Skin_gqodr")
+
+[node name="L_dual_g13_mantis" type="MeshInstance3D" parent="Skeleton3D"]
+visible = false
+custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
+mesh = ExtResource("177_p25hj")
+skin = SubResource("Skin_gqodr")
+
+[node name="W_pistols_g13_hypno" type="MeshInstance3D" parent="Skeleton3D"]
+visible = false
+custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
+mesh = ExtResource("178_hjdm0")
+skin = SubResource("Skin_gqodr")
+
+[node name="L_pistols_g13_hypno" type="MeshInstance3D" parent="Skeleton3D"]
+visible = false
+custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
+mesh = ExtResource("179_omvh3")
+skin = SubResource("Skin_gqodr")
+
+[node name="W_bow_g13_cradle" type="MeshInstance3D" parent="Skeleton3D"]
+visible = false
+custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
+mesh = ExtResource("180_27me6")
+skin = SubResource("Skin_gqodr")
+
+[node name="W_bow_g13_azure_dragon" type="MeshInstance3D" parent="Skeleton3D"]
+visible = false
+custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
+mesh = ExtResource("181_88dgb")
+skin = SubResource("Skin_gqodr")
+
+[node name="W_focus_g13_rose" type="MeshInstance3D" parent="Skeleton3D"]
+visible = false
+custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
+mesh = ExtResource("182_avgf7")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_focus_piano" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("162_f1kpd")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("183_86inr")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_focus_grand" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("163_yh2mi")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("184_oy3vj")
+skin = SubResource("Skin_gqodr")
 
 [node name="W_focus_grand_white" type="MeshInstance3D" parent="Skeleton3D"]
 visible = false
 custom_aabb = AABB(-2, -0.5, -2, 4, 4, 4)
-mesh = ExtResource("164_6apu3")
-skin = SubResource("Skin_avf7f")
+mesh = ExtResource("185_fqgnk")
+skin = SubResource("Skin_gqodr")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-&"": ExtResource("165_hrlvt")
+&"": ExtResource("186_leu5t")
 }

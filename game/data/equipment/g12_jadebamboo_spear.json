@@ -1,0 +1,60 @@
+{
+ "id": "g12_jadebamboo_spear",
+ "cost": 4,
+ "color_id": "cyan",
+ "weapon_class": "polearm",
+ "abilities": [
+  {
+   "id": "g12_jadebamboo_mend",
+   "ability_class": "blade",
+   "effect_type": "heal",
+   "value_multiplier": 1.5,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {},
+   "cooldown": 0.0,
+   "priority": 100
+  },
+  {
+   "id": "g12_jadebamboo_grit",
+   "ability_class": "blade",
+   "effect_type": "stat_status",
+   "value_multiplier": 0.06,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "status_id": "g12_bamboo_grit",
+    "duration": 0.0,
+    "max_stacks": 1,
+    "flags": [
+     "buff",
+     "no_dispel"
+    ],
+    "amount_flat_stats": {
+     "health_regen_per_second": 1.0
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  }
+ ],
+ "flat_stat_modifiers": {
+  "max_health": 300,
+  "defense": 20
+ },
+ "percent_stat_modifiers": {},
+ "model": "g12_jadebamboo",
+ "reworked": true
+}

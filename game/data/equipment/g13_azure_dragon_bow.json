@@ -1,0 +1,75 @@
+{
+ "id": "g13_azure_dragon_bow",
+ "cost": 4,
+ "color_id": "cyan",
+ "weapon_class": "bow",
+ "abilities": [
+  {
+   "id": "g13_dragon_roar",
+   "ability_class": "amulet",
+   "effect_type": "physical_damage",
+   "value_multiplier": 2.0,
+   "fixed_value": 0.0,
+   "keywords": [],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "enemy_effect": {
+     "effect_type": "physical_damage",
+     "value_multiplier": 2.0
+    },
+    "ally_effect": {
+     "effect_type": "shield",
+     "value_multiplier": 0.25
+    }
+   },
+   "cooldown": 4.0,
+   "priority": 100
+  },
+  {
+   "id": "g13_dragon_awe",
+   "ability_class": "bullet",
+   "effect_type": "stat_status",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "status_id": "g13_dragon_awe",
+    "duration": 8.0,
+    "max_stacks": 1,
+    "flags": [
+     "debuff",
+     "dispellable"
+    ],
+    "stats": {
+     "damage_taken_amp": {
+      "flat": 0.15
+     }
+    },
+    "ally_effect": {
+     "effect_type": "none"
+    }
+   },
+   "cooldown": 4.0,
+   "priority": 100
+  }
+ ],
+ "flat_stat_modifiers": {
+  "attack_power": 15,
+  "max_health": 200
+ },
+ "percent_stat_modifiers": {
+  "attack_speed_multiplier": 0.15
+ },
+ "model": "g13_azure_dragon",
+ "reworked": true,
+ "fit_add": [
+  "node_druid"
+ ]
+}

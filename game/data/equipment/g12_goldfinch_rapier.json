@@ -1,0 +1,58 @@
+{
+ "id": "g12_goldfinch_rapier",
+ "cost": 2,
+ "color_id": "yellow",
+ "weapon_class": "sword",
+ "abilities": [
+  {
+   "id": "g12_goldfinch_peck",
+   "ability_class": "bullet",
+   "effect_type": "physical_damage",
+   "value_multiplier": 1.0,
+   "fixed_value": 20.0,
+   "keywords": [
+    "basic",
+    "crit"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "extra_effects": [
+     {
+      "effect_type": "stat_status",
+      "target": "self",
+      "status_id": "g12_finch",
+      "duration": 4.0,
+      "max_stacks": 5,
+      "flags": [
+       "buff",
+       "dispellable"
+      ],
+      "stats": {
+       "crit_chance": {
+        "flat": 0.05
+       },
+       "crit_damage": {
+        "flat": 0.1
+       }
+      }
+     }
+    ]
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  }
+ ],
+ "flat_stat_modifiers": {
+  "attack_power": 15,
+  "max_health": 100
+ },
+ "percent_stat_modifiers": {},
+ "model": "g12_goldfinch",
+ "reworked": true,
+ "fit_remove": [
+  "node_commando"
+ ]
+}

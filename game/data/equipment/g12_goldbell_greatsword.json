@@ -1,0 +1,71 @@
+{
+ "id": "g12_goldbell_greatsword",
+ "cost": 4,
+ "color_id": "yellow",
+ "weapon_class": "heavy",
+ "abilities": [
+  {
+   "id": "g12_goldbell_toll",
+   "ability_class": "amulet",
+   "effect_type": "shield",
+   "value_multiplier": 0.6,
+   "fixed_value": 0.0,
+   "keywords": [
+    "multi_attack"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "ally_effect": {
+     "effect_type": "shield",
+     "value_multiplier": 0.6
+    },
+    "enemy_effect": {
+     "effect_type": "physical_damage",
+     "value_multiplier": 0.7
+    }
+   },
+   "cooldown": 3.0,
+   "priority": 100,
+   "keyword_values": {
+    "multi_attack": 4
+   }
+  },
+  {
+   "id": "g12_goldbell_quake",
+   "ability_class": "bullet",
+   "effect_type": "knockback",
+   "value_multiplier": 1.0,
+   "fixed_value": 1.2,
+   "keywords": [
+    "multi_attack"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "ally_effect": {
+     "effect_type": "none"
+    },
+    "max_dist": 1.2
+   },
+   "cooldown": 3.0,
+   "priority": 100,
+   "keyword_values": {
+    "multi_attack": 4
+   }
+  }
+ ],
+ "flat_stat_modifiers": {
+  "attack_power": 15,
+  "max_health": 250
+ },
+ "percent_stat_modifiers": {
+  "attack_speed_multiplier": 0.12
+ },
+ "model": "g12_goldbell",
+ "reworked": true
+}

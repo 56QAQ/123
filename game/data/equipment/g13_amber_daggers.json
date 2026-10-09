@@ -1,0 +1,82 @@
+{
+ "id": "g13_amber_daggers",
+ "cost": 4,
+ "color_id": "yellow",
+ "weapon_class": "dual",
+ "abilities": [
+  {
+   "id": "g13_amber_sting",
+   "ability_class": "blade",
+   "effect_type": "physical_damage",
+   "value_multiplier": 1.2,
+   "fixed_value": 0.0,
+   "keywords": [],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "pre_effects": [
+     {
+      "effect_type": "stat_status",
+      "status_id": "g13_amber_shell",
+      "duration": 5.0,
+      "max_stacks": 1,
+      "flags": [
+       "buff",
+       "dispellable"
+      ],
+      "stats": {
+       "damage_taken_pct": {
+        "flat": 0.2
+       }
+      }
+     }
+    ],
+    "ally_effect": {
+     "effect_type": "shield",
+     "value_multiplier": 1.2
+    }
+   },
+   "cooldown": 2.0,
+   "priority": 100
+  },
+  {
+   "id": "g13_amber_seal",
+   "ability_class": "bullet",
+   "effect_type": "stat_status",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "status_id": "stun",
+    "duration": 1.5,
+    "max_stacks": 1,
+    "flags": [
+     "debuff",
+     "dispellable",
+     "stun"
+    ],
+    "ally_effect": {
+     "effect_type": "none"
+    }
+   },
+   "cooldown": 2.0,
+   "priority": 100
+  }
+ ],
+ "flat_stat_modifiers": {
+  "attack_power": 25,
+  "max_health": 250
+ },
+ "percent_stat_modifiers": {},
+ "model": "g13_amber",
+ "reworked": true,
+ "fit_remove": [
+  "node_rogue"
+ ]
+}
