@@ -13,7 +13,8 @@
 #   ①【基本】【固定值】【双模】：敌人 → G10_VINE_DMG 物理伤害；不管目标是谁，携带者获得 1 层【抽枝】(本场有效，叠 G10_VINE_STACKS：
 #     每层攻击力 +x%、生命上限 +y)——扣得越勤长得越快。
 #   ② 冷却 3 秒【双模】：队友(含自己) → 回复 触发数值 × r；敌人 → 无。
-#   合手：炽照(残光 1.4 次/秒：几秒就长满)、无我(无我之刃，拿单手剑 1.6 次/秒)；守林(变身 → 自己，触发数值 323：吃第二段的回复)
+#   合手(★2 实测，换大类的基线 = 拿基础单手剑)：炽照(残光 1.4 次/秒：几秒就长满；63 → 71)、无我(无我之刃，拿单手剑 1.6 次/秒；75 → 83，84 级是墙)、
+#   守林(变身 → 自己，触发数值 323：吃第二段的回复；51 → 61)、耕植(收获时刻一场一次：主要是属性 + 抽枝；41 → 45)。首版即定稿。
 G10_VINE_ATK = 15
 G10_VINE_HP = 150
 G10_VINE_DMG = 20
@@ -36,15 +37,17 @@ E("g10_vine_sword", 3, "green", "sword",
 # 刻时剑：生命 +m、计时加速 +m；冷却 3 秒【双模】【群攻 3】：
 #   不管触发目标是谁，携带者先获得 1 层【超频】(G10_CHRONO_DUR 秒，叠 G10_CHRONO_STACKS：每层计时加速 +x——"每 x 秒"的被动 / 触发器和冷却都走得更快)；
 #   然后 队友(含自己) → 获得 触发数值 × s 的护盾；敌人 → 受到 触发数值 × r 魔法伤害。
-#   合手：和星(监护人的微笑每 3 秒给自己和护星：护盾 + 超频让微笑更勤)、圣战(神圣战争：猛击打到的一片 → 魔法伤害，超频让猛击 / 圣疗更勤)、
-#   架盾(盾破 → 自己 + 身边的敌人；超频让护盾充能更快)。执剑也适配(不带武器就 ≥100，测不出)
+#   合手(★2 实测，基线 = 拿基础单手剑)：和星(监护人的微笑每 3 秒给自己和护星：护盾 + 超频让微笑更勤；51 → 61)、
+#   圣战(神圣战争：猛击打到的一片 → 魔法伤害，超频让猛击 / 圣疗更勤；60 → 62，62 / 64 级的墙：同强度 55% → 71%、45% → 55%)、
+#   架盾(盾破 → 自己 + 身边的敌人，超频让护盾充能更快；40 级的墙下：同强度 61% → 70%)。执剑也适配(不带武器就 ≥100，测不出)
+#   (首版 护盾 / 伤害都 × 80%、超频 6 秒：和星 +18(护盾吃满)、圣战 +1 → 护盾 × 35%、伤害 × 150%、超频 8 秒：和星 +10、圣战 62 级 70% → 伤害 × 180%)
 G10_CHRONO_HP = 120
 G10_CHRONO_HASTE = 0.08
 G10_CHRONO_PER = 0.08
 G10_CHRONO_STACKS = 3
-G10_CHRONO_DUR = 6.0
-G10_CHRONO_SHIELD = 0.8
-G10_CHRONO_R = 0.8
+G10_CHRONO_DUR = 8.0
+G10_CHRONO_SHIELD = 0.35
+G10_CHRONO_R = 1.8
 E("g10_chrono_sword", 2, "blue", "sword",
   [A("g10_chrono_tick", "amulet", "shield", keywords=["multi_attack"], kv={"multi_attack": 3}, tags=EP, cooldown=3.0,
      cfg={"pre_effects": [{"effect_type": "stat_status", "status_id": "g10_overclock", "duration": G10_CHRONO_DUR,
@@ -57,17 +60,24 @@ E("g10_chrono_sword", 2, "blue", "sword",
 # ====================================================================== 血宴长剑(红 · 单手剑 · 4 费)
 # 血宴长剑：攻击力 +m、物理吸血 +m；【基本】：触发目标(队友 / 自己)回复 触发数值 × r 生命，并获得 1 层【血宴】
 #   (本场有效，叠 G10_FEAST_STACKS：每层攻击力 +x%、物理吸血 +y)。
-#   合手：狩胜(我已得胜：每次击杀 → 自己，越杀越凶)、守誓(起誓之时：觉醒 → 自己，触发数值 = 50% 最大生命——觉醒后誓血仇每一刀都在流血，吸血把它吸回来)
-G10_FEAST_ATK = 30
-G10_FEAST_HP = 150
-G10_FEAST_LS = 0.08
-G10_FEAST_HEAL = 1.0
+#   溢出的治疗变成护盾(最多补到最大生命的 G10_FEAST_SHIELD_CAP)。
+#   合手(★2 实测，基线 = 拿基础单手剑)：狩胜(我已得胜：每次击杀 → 自己，越杀越凶；61 → 67)、
+#   守誓(起誓之时：觉醒 → 自己，触发数值 = 50% 最大生命，一场一两次——觉醒后誓血仇每一刀都在流血：一大口回血 + 溢出的护盾 + 吸血；
+#   46 → 49，50 级的墙：同强度 45% → 70%)
+#   (首版 攻击 +30、生命 +150、吸血 8%、× 100%、每层 6% / 4%：狩胜 +9、守誓 +2；生命 +250、吸血 10%、× 200% + 溢出护盾：+13 / 50 级 67%；
+#    每层 3% / 3%、× 300%、护盾 50%：+13 / 66%(狩胜涨的是属性不是层数) → 攻击 +10：+6 / 70%)
+G10_FEAST_ATK = 10
+G10_FEAST_HP = 250
+G10_FEAST_LS = 0.10
+G10_FEAST_HEAL = 3.0
+G10_FEAST_SHIELD_CAP = 0.5
 G10_FEAST_STACKS = 5
-G10_FEAST_PER_ATK = 0.06
-G10_FEAST_PER_LS = 0.04
+G10_FEAST_PER_ATK = 0.03
+G10_FEAST_PER_LS = 0.03
 E("g10_feast_sword", 4, "red", "sword",
   [A("g10_feast_toast", "blade", "heal", mult=G10_FEAST_HEAL, keywords=["basic"], tags=EP,
-     cfg={"extra_effects": [{"effect_type": "stat_status", "target": "target", "status_id": "g10_feast", "duration": 0.0,
+     cfg={"overheal_to_shield": True, "shield_cap_pct": G10_FEAST_SHIELD_CAP,
+          "extra_effects": [{"effect_type": "stat_status", "target": "target", "status_id": "g10_feast", "duration": 0.0,
                              "max_stacks": G10_FEAST_STACKS, "flags": ["buff", "dispellable"],
                              "stats": {"attack_power": {"pct": G10_FEAST_PER_ATK}, "physical_lifesteal": {"flat": G10_FEAST_PER_LS}}}]})],
   flat={"attack_power": G10_FEAST_ATK, "max_health": G10_FEAST_HP, "physical_lifesteal": G10_FEAST_LS}, model="g10_feast", reworked=True)
@@ -76,13 +86,18 @@ E("g10_feast_sword", 4, "red", "sword",
 # 流水双刃：攻击速度 +m%、普攻闪避率 +m；【固定值】【双模】：
 #   队友(含自己) → G10_CURRENT_FIXED 点护盾 + 【顺流】(G10_CURRENT_DUR 秒：攻击速度 +x%、移动速度 +x%)；
 #   敌人 → G10_CURRENT_FIXED 点物理伤害 + 【逆流】(同样久：攻击速度 -y%、移动速度 -y%)。
-#   合手：踏影(淬血 → 自己：护盾垫回付掉的生命，顺流追着远程打)、追猎(灵敏身法 → 攻击者：拖慢最危险的那个敌人)；巧运(进账 → 自己)
+#   合手(★2 实测，基线 = 拿基础双匕)：踏影(淬血 → 自己：护盾垫回付掉的生命，吸血不加攻击力，顺流追着远程打；68 → 80，同强度 74 / 78 级 55% → 61%、40% → 60%)、
+#   追猎(灵敏身法 → 攻击者：拖慢最危险的那个敌人；39 → 42，过了 40 的墙，43 级同强度 51% → 60%)。
+#   巧运(进账 → 自己)标签上适配，但 42 → 43、44 级同强度不变：fit_remove
+#   (首版 120 点、没有吸血、顺流 8 秒 25%：踏影 +2、追猎 +3、巧运 +1 → 200 点、吸血 10%、10 秒 30%：踏影 +12 → 160 点、吸血 6%：踏影 80(+12，同强度 +6~20 个百分点))
 G10_CURRENT_AS = 0.15
 G10_CURRENT_DODGE = 0.08
-G10_CURRENT_FIXED = 120
-G10_CURRENT_DUR = 8.0
-G10_CURRENT_UP = 0.25
-G10_CURRENT_DOWN = 0.25
+G10_CURRENT_FIXED = 160
+G10_CURRENT_LS = 0.06
+G10_CURRENT_DUR = 10.0
+G10_CURRENT_UP = 0.30
+G10_CURRENT_MOVE = 0.25
+G10_CURRENT_DOWN = 0.30
 E("g10_current_daggers", 2, "cyan", "dual",
   [A("g10_current_shell", "bullet", "physical_damage", fixed=G10_CURRENT_FIXED, tags=EP,
      cfg={"ally_effect": {"effect_type": "shield"}}),
@@ -90,21 +105,24 @@ E("g10_current_daggers", 2, "cyan", "dual",
      cfg={"ally_effect": {"effect_type": "stat_status", "cfg": {"status_id": "g10_flow", "duration": G10_CURRENT_DUR, "max_stacks": 1,
                                                                 "flags": ["buff", "dispellable"],
                                                                 "stats": {"attack_speed_multiplier": {"flat": G10_CURRENT_UP},
-                                                                          "move_speed": {"pct": G10_CURRENT_UP}}}},
+                                                                          "move_speed": {"pct": G10_CURRENT_MOVE}}}},
           "enemy_effect": {"effect_type": "stat_status", "cfg": {"status_id": "g10_ebb", "duration": G10_CURRENT_DUR, "max_stacks": 1,
                                                                  "flags": ["debuff", "dispellable"],
                                                                  "stats": {"attack_speed_multiplier": {"flat": -G10_CURRENT_DOWN},
-                                                                           "move_speed": {"pct": -G10_CURRENT_DOWN}}}}})],
-  flat={"na_dodge": G10_CURRENT_DODGE}, pct={"attack_speed_multiplier": G10_CURRENT_AS}, model="g10_current", reworked=True)
+                                                                           "move_speed": {"pct": -G10_CURRENT_MOVE}}}}})],
+  flat={"na_dodge": G10_CURRENT_DODGE, "physical_lifesteal": G10_CURRENT_LS}, pct={"attack_speed_multiplier": G10_CURRENT_AS}, model="g10_current", reworked=True,
+  fit_remove=["node_rogue"])
 
 # ====================================================================== 蛇牙双刃(绿 · 双匕 · 4 费)
 # 蛇牙双刃：攻击力 +m、生命 +m；【固定值】【双模】：不管目标是谁，携带者先获得 1 层【蛇行】(本场有效，叠 G10_VIPER_STACKS：每层攻击力 +x%、攻击速度 +x%)；
 #   然后 敌人 → G10_VIPER_VENOM_ADD 层【蛇毒】(G10_VIPER_VENOM_DUR 秒，叠 G10_VIPER_VENOM_MAX，重复获得刷新：每层每秒 z 魔法伤害)；
 #   队友(含自己) → 回复 G10_VIPER_HEAL 生命。
 #   合手：追猎(灵敏身法 → 攻击者 = 他盯着的最危险的敌人)、巧运(鸿运 → 自己)——两个插槽都很少响(一场一两次)，所以给的东西本场都不消退
+#   ★2 实测(追猎的基线 = 拿基础双匕)：追猎 39 → 45(46 级同强度 46% → 61%)、巧运 42 → 45(46 级同强度 60% → 68%)
+#   (首版生命 +250、蛇行每层 8%：45 / 45，同一个结果；巧运拿暴击(猩红獠牙)+0、拿攻速 / 闪避(流水双刃)+1——他吃的是生命和攻击)
 G10_VIPER_ATK = 35
-G10_VIPER_HP = 250
-G10_VIPER_PER = 0.08
+G10_VIPER_HP = 350
+G10_VIPER_PER = 0.10
 G10_VIPER_STACKS = 4
 G10_VIPER_VENOM_ADD = 3
 G10_VIPER_VENOM_MAX = 6
@@ -128,7 +146,8 @@ E("g10_viper_daggers", 4, "green", "dual",
 #     敌人 → 【枯萎】(同样久：攻击力 -z%、受到的治疗 -w%)。
 #   ② 冷却 3 秒【双模】：队友 → 回复 触发数值 × r；敌人 → 触发数值 × r 魔法伤害。
 #   合手：清心(道法自然：清心符治过的队友喝甘露，弱体符打过的敌人枯萎——触发数值只有 10，吃第一段)、
-#   守林(原初血脉：变身 → 自己，触发数值 323：吃第二段的回复)
+#   守林(原初血脉：变身 → 自己，触发数值 323：吃第二段的回复)。★2 实测：清心 39 → 44(过了 40 的墙)、守林(基线 = 拿基础法器)49 → 55
+#   (首版第二段 × 120%：守林 49 → 61(+12) → × 80%)
 G10_WILLOW_AP = 20
 G10_WILLOW_HEALPCT = 0.15
 G10_WILLOW_DUR = 8.0
@@ -136,7 +155,7 @@ G10_WILLOW_RECV = 0.25
 G10_WILLOW_REGEN = 25.0
 G10_WILLOW_WEAK = 0.12
 G10_WILLOW_ANTIHEAL = 0.40
-G10_WILLOW_R = 1.2
+G10_WILLOW_R = 0.8
 E("g10_willow_vase", 3, "green", "focus",
   [A("g10_willow_twig", "bullet", "stat_status", keywords=["basic"], tags=EP,
      cfg={"ally_effect": {"effect_type": "stat_status", "cfg": {"status_id": "g10_sweet_dew", "duration": G10_WILLOW_DUR, "max_stacks": 1,
@@ -153,31 +172,39 @@ E("g10_willow_vase", 3, "green", "focus",
   flat={"ability_power": G10_WILLOW_AP, "healing_done_pct": G10_WILLOW_HEALPCT}, model="g10_willow", reworked=True)
 
 # ====================================================================== 夜莺长弓(紫 · 弓 · 3 费；2026-10-09 追加：用户"紫色弓先对着护理和和星做，之后会补紫色弓棋子")
-# 夜莺长弓：攻击力 +m、法术强度 +m、生命 +m；两段都 冷却 2 秒【双模】【群攻 2】：
+# 夜莺长弓：治疗量 +m%、生命 +m；两段都 冷却 G10_NIGHT_CD 秒【双模】(不带【群攻】：一次只给一个人)：
 #   ① 队友(含自己) → 回复 触发数值 × r；敌人 → 触发数值 × r 魔法伤害。
-#   ② 队友(含自己) → 【夜曲】(G10_NIGHT_DUR 秒：攻击速度 +x%、受到的治疗 +y%)；敌人 → 【夜啼】(同样久：攻击速度 -z%)。
-#   拿上弓以后(fitprobe class=bow)：护理 药水填充 0.08 次/秒、100% 是受伤的队友、172；和星 监护人的微笑 0.33 次/秒、自己 + 护星、291。
-#   合手：和星(微笑给自己和护星：回血 + 夜曲)、护理(药水填充打在受伤的队友身上：回血 + 夜曲——她的普攻就是治疗，攻速 = 治疗量)。
-#   护理的触发器是单目标，标签上不配【群攻】(一次只给一个人，【群攻 2】对她不浪费也不吃亏)：按测强度 fit_add
-G10_NIGHT_ATK = 15
-G10_NIGHT_AP = 15
-G10_NIGHT_HP = 120
-G10_NIGHT_R = 0.6
-G10_NIGHT_DUR = 6.0
-G10_NIGHT_AS = 0.15
-G10_NIGHT_RECV = 0.15
-G10_NIGHT_SLOW = 0.15
+#   ② 队友(含自己) → 【夜曲】(G10_NIGHT_DUR 秒：攻击速度 +x%、攻击力 +w%、受到的治疗 +y%)；敌人 → 【夜啼】(同样久：攻击速度 -z%)。
+#   拿上弓以后(fitprobe class=bow)：护理 药水填充 0.08 次/秒(强度 50 的实战里 0.055：一场一两次；拿手弩 0.24)、100% 是受伤的队友、172；
+#   和星 监护人的微笑 0.33 次/秒、自己 + 护星、291。
+#   合手：和星(微笑：回血 + 夜曲；治疗量加成还会通过"监护人的智与力"变成他的暴击率；基线 = 拿基础弓 62 → 72)、
+#   护理(药水填充打在受伤的队友身上：回一大口 + 夜曲；基线 = 拿基础弓 49，卡在 50 级的墙下：同强度 50 / 52 / 54 / 56 级 37/33/31/18% → 39/37/41/18%——
+#   弓的药水填充太少，武器效果几乎碰不到她，这一只没能做到 +4)。
+#   冷却 10 秒 = 两只一样勤(和星每 3 秒一次的微笑被冷却压住，护理本来就 13~18 秒一次)；和星的触发器是多目标，标签上不配无【群攻】的武器：按测强度 fit_add
+#   (首版 攻击 +15、法强 +15、生命 +120，冷却 2 秒【群攻 2】× 60%：和星 62 → 80(+18)、护理 49；去掉攻击 / 法强 / 群攻、冷却 4 秒、
+#    治疗量 25% + 攻速 20%：和星 76、护理 49；冷却 10 秒、× 120%、夜曲 10 秒加攻击：和星 72(+10)、护理 49。
+#    护理的对照：生命 +450 / 夜曲 攻速 40% 攻击 25% 12 秒 × 300% / 携带者攻速 +60%，50 / 54 级 48 场都只差 0~4 场——她拿弓时武器几乎不起作用)
+G10_NIGHT_HEALPCT = 0.15
+G10_NIGHT_HP = 150
+G10_NIGHT_CD = 10.0
+G10_NIGHT_R = 1.2
+G10_NIGHT_DUR = 10.0
+G10_NIGHT_BUFF_AS = 0.25
+G10_NIGHT_BUFF_ATK = 0.15
+G10_NIGHT_RECV = 0.20
+G10_NIGHT_SLOW = 0.25
 E("g10_nightingale_bow", 3, "purple", "bow",
-  [A("g10_nightingale_song", "amulet", "heal", mult=G10_NIGHT_R, keywords=["multi_attack"], kv={"multi_attack": 2}, tags=EP, cooldown=2.0,
+  [A("g10_nightingale_song", "amulet", "heal", mult=G10_NIGHT_R, tags=EP, cooldown=G10_NIGHT_CD,
      cfg={"ally_effect": {"effect_type": "heal", "value_multiplier": G10_NIGHT_R},
           "enemy_effect": {"effect_type": "magic_damage", "value_multiplier": G10_NIGHT_R}}),
-   A("g10_nightingale_verse", "amulet", "stat_status", keywords=["multi_attack"], kv={"multi_attack": 2}, tags=EP, cooldown=2.0,
+   A("g10_nightingale_verse", "amulet", "stat_status", tags=EP, cooldown=G10_NIGHT_CD,
      cfg={"ally_effect": {"effect_type": "stat_status", "cfg": {"status_id": "g10_nocturne", "duration": G10_NIGHT_DUR, "max_stacks": 1,
                                                                 "flags": ["buff", "dispellable"],
-                                                                "stats": {"attack_speed_multiplier": {"flat": G10_NIGHT_AS},
+                                                                "stats": {"attack_speed_multiplier": {"flat": G10_NIGHT_BUFF_AS},
+                                                                          "attack_power": {"pct": G10_NIGHT_BUFF_ATK},
                                                                           "healing_received_pct": {"flat": G10_NIGHT_RECV}}}},
           "enemy_effect": {"effect_type": "stat_status", "cfg": {"status_id": "g10_lament", "duration": G10_NIGHT_DUR, "max_stacks": 1,
                                                                  "flags": ["debuff", "dispellable"],
                                                                  "stats": {"attack_speed_multiplier": {"flat": -G10_NIGHT_SLOW}}}}})],
-  flat={"attack_power": G10_NIGHT_ATK, "ability_power": G10_NIGHT_AP, "max_health": G10_NIGHT_HP}, model="g10_nightingale", reworked=True,
-  fit_add=["node_nurse"])
+  flat={"healing_done_pct": G10_NIGHT_HEALPCT, "max_health": G10_NIGHT_HP},
+  model="g10_nightingale", reworked=True, fit_add=["node_druid"])

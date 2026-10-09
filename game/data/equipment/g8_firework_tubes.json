@@ -9,7 +9,7 @@
    "ability_class": "bullet",
    "effect_type": "magic_damage",
    "value_multiplier": 1.0,
-   "fixed_value": 40,
+   "fixed_value": 50,
    "keywords": [
     "basic",
     "splash"
@@ -21,8 +21,36 @@
    "effect_config": {
     "splash_filter": "target_allies",
     "splash_ratio": 0.5,
+    "heal_lowest_ally": true,
     "ally_effect": {
-     "effect_type": "heal"
+     "effect_type": "none"
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100,
+   "keyword_values": {
+    "splash": 1.25
+   }
+  },
+  {
+   "id": "g8_firework_glow",
+   "ability_class": "bullet",
+   "effect_type": "heal",
+   "value_multiplier": 1.0,
+   "fixed_value": 30,
+   "keywords": [
+    "basic",
+    "splash"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "splash_filter": "target_allies",
+    "splash_ratio": 0.5,
+    "enemy_effect": {
+     "effect_type": "none"
     }
    },
    "cooldown": 0.0,
@@ -72,10 +100,10 @@
       ],
       "stats": {
        "attack_power": {
-        "pct": 0.12
+        "pct": 0.08
        },
        "attack_speed_multiplier": {
-        "flat": 0.12
+        "flat": 0.08
        }
       }
      }
@@ -113,7 +141,7 @@
   }
  ],
  "flat_stat_modifiers": {
-  "attack_power": 30,
+  "attack_power": 20,
   "max_health": 200
  },
  "percent_stat_modifiers": {},
@@ -124,6 +152,7 @@
   "proj_speed": 16.0
  },
  "fit_remove": [
-  "node_maid"
+  "node_maid",
+  "node_rogue"
  ]
 }

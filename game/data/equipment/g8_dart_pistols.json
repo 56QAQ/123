@@ -58,6 +58,35 @@
    "priority": 100
   },
   {
+   "id": "g8_dart_sedate",
+   "ability_class": "bullet",
+   "effect_type": "stat_status",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "status_id": "stun",
+    "duration": 0.5,
+    "max_stacks": 1,
+    "flags": [
+     "debuff",
+     "dispellable",
+     "stun"
+    ],
+    "ally_effect": {
+     "effect_type": "none"
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  },
+  {
    "id": "g8_dart_tonic",
    "ability_class": "blade",
    "effect_type": "heal",
@@ -95,6 +124,7 @@
   "proj_speed": 26.0
  },
  "fit_remove": [
-  "node_maid"
+  "node_maid",
+  "node_rogue"
  ]
 }

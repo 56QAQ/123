@@ -56,7 +56,7 @@
   "max_health": 150
  },
  "percent_stat_modifiers": {
-  "attack_speed_multiplier": 0.1
+  "attack_speed_multiplier": 0.15
  },
  "model": "g9_rimetide",
  "reworked": true

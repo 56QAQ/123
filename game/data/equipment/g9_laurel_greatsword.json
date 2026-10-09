@@ -38,7 +38,7 @@
      {
       "effect_type": "heal",
       "target": "target",
-      "value_multiplier": 20.0
+      "value_multiplier": 30.0
      }
     ]
    },

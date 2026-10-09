@@ -8,7 +8,7 @@
    "id": "g9_dawnlight_rise",
    "ability_class": "blade",
    "effect_type": "shield",
-   "value_multiplier": 1.5,
+   "value_multiplier": 0.8,
    "fixed_value": 0.0,
    "keywords": [],
    "accepted_timings": [],
@@ -43,10 +43,14 @@
   }
  ],
  "flat_stat_modifiers": {
-  "max_health": 200,
+  "max_health": 150,
   "defense": 15
  },
  "percent_stat_modifiers": {},
  "model": "g9_dawnlight",
- "reworked": true
+ "reworked": true,
+ "fit_remove": [
+  "node_peasant",
+  "node_darkknight"
+ ]
 }

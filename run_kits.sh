@@ -5,5 +5,5 @@ cd "$(dirname "$0")"
 source tools/quiet_window.sh   # 不弹窗、不抢焦点(SHOW_WINDOW=1 看窗口)
 source tools/build_lock.sh     # 并行时构建 / 截图排队
 mkdir -p out
-timeout 240 "$G" --path . --script res://tools/build_kits.gd --quit-after 20 -- "$@" > out/kits.log 2>&1
+timeout "${KITS_TIMEOUT:-1200}" "$G" --path . --script res://tools/build_kits.gd --quit-after 20 -- "$@" > out/kits.log 2>&1
 grep -E "SCRIPT ERROR|Parse Error|voxels|kits built|Invalid|ERROR: [^PB1N2]" -A2 out/kits.log | head -40

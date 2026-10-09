@@ -9,24 +9,69 @@
    "ability_class": "bullet",
    "effect_type": "physical_damage",
    "value_multiplier": 1.0,
-   "fixed_value": 45,
+   "fixed_value": 55,
    "keywords": [
-    "basic"
+    "basic",
+    "splash"
    ],
    "accepted_timings": [],
    "required_trigger_tags": [
     "equipment_payload"
    ],
    "effect_config": {
+    "splash_filter": "target_allies",
+    "splash_ratio": 1.0,
     "ally_effect": {
      "effect_type": "shield"
     }
    },
    "cooldown": 0.0,
-   "priority": 100
+   "priority": 100,
+   "keyword_values": {
+    "splash": 2.0
+   }
   },
   {
    "id": "g8_peapod_shell",
+   "ability_class": "bullet",
+   "effect_type": "stat_status",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic",
+    "splash"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "splash_filter": "target_allies",
+    "splash_ratio": 1.0,
+    "status_id": "g8_podshell",
+    "duration": 8.0,
+    "max_stacks": 1,
+    "flags": [
+     "buff",
+     "dispellable"
+    ],
+    "stats": {
+     "damage_taken_pct": {
+      "flat": 0.25
+     }
+    },
+    "enemy_effect": {
+     "effect_type": "none"
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100,
+   "keyword_values": {
+    "splash": 2.0
+   }
+  },
+  {
+   "id": "g8_peapod_bonk",
    "ability_class": "bullet",
    "effect_type": "stat_status",
    "value_multiplier": 1.0,
@@ -48,21 +93,7 @@
      "stun"
     ],
     "ally_effect": {
-     "effect_type": "stat_status",
-     "cfg": {
-      "status_id": "g8_podshell",
-      "duration": 6.0,
-      "max_stacks": 1,
-      "flags": [
-       "buff",
-       "dispellable"
-      ],
-      "stats": {
-       "damage_taken_pct": {
-        "flat": 0.2
-       }
-      }
-     }
+     "effect_type": "none"
     }
    },
    "cooldown": 0.0,
@@ -70,14 +101,11 @@
   }
  ],
  "flat_stat_modifiers": {
-  "max_health": 150,
-  "reload_time_pct": -0.15
+  "max_health": 180,
+  "reload_time_pct": -0.2
  },
  "percent_stat_modifiers": {},
  "model": "g8_peapod",
  "reworked": true,
- "projectile": "g8_pea",
- "wclass_override": {
-  "proj_speed": 20.0
- }
+ "projectile": "g8_pea"
 }

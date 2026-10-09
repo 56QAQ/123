@@ -8,11 +8,9 @@
    "id": "g10_nightingale_song",
    "ability_class": "amulet",
    "effect_type": "heal",
-   "value_multiplier": 0.6,
+   "value_multiplier": 1.2,
    "fixed_value": 0.0,
-   "keywords": [
-    "multi_attack"
-   ],
+   "keywords": [],
    "accepted_timings": [],
    "required_trigger_tags": [
     "equipment_payload"
@@ -20,18 +18,15 @@
    "effect_config": {
     "ally_effect": {
      "effect_type": "heal",
-     "value_multiplier": 0.6
+     "value_multiplier": 1.2
     },
     "enemy_effect": {
      "effect_type": "magic_damage",
-     "value_multiplier": 0.6
+     "value_multiplier": 1.2
     }
    },
-   "cooldown": 2.0,
-   "priority": 100,
-   "keyword_values": {
-    "multi_attack": 2
-   }
+   "cooldown": 10.0,
+   "priority": 100
   },
   {
    "id": "g10_nightingale_verse",
@@ -39,9 +34,7 @@
    "effect_type": "stat_status",
    "value_multiplier": 1.0,
    "fixed_value": 0.0,
-   "keywords": [
-    "multi_attack"
-   ],
+   "keywords": [],
    "accepted_timings": [],
    "required_trigger_tags": [
     "equipment_payload"
@@ -51,7 +44,7 @@
      "effect_type": "stat_status",
      "cfg": {
       "status_id": "g10_nocturne",
-      "duration": 6.0,
+      "duration": 10.0,
       "max_stacks": 1,
       "flags": [
        "buff",
@@ -59,10 +52,13 @@
       ],
       "stats": {
        "attack_speed_multiplier": {
-        "flat": 0.15
+        "flat": 0.25
+       },
+       "attack_power": {
+        "pct": 0.15
        },
        "healing_received_pct": {
-        "flat": 0.15
+        "flat": 0.2
        }
       }
      }
@@ -71,7 +67,7 @@
      "effect_type": "stat_status",
      "cfg": {
       "status_id": "g10_lament",
-      "duration": 6.0,
+      "duration": 10.0,
       "max_stacks": 1,
       "flags": [
        "debuff",
@@ -79,28 +75,24 @@
       ],
       "stats": {
        "attack_speed_multiplier": {
-        "flat": -0.15
+        "flat": -0.25
        }
       }
      }
     }
    },
-   "cooldown": 2.0,
-   "priority": 100,
-   "keyword_values": {
-    "multi_attack": 2
-   }
+   "cooldown": 10.0,
+   "priority": 100
   }
  ],
  "flat_stat_modifiers": {
-  "attack_power": 15,
-  "ability_power": 15,
-  "max_health": 120
+  "healing_done_pct": 0.15,
+  "max_health": 150
  },
  "percent_stat_modifiers": {},
  "model": "g10_nightingale",
  "reworked": true,
  "fit_add": [
-  "node_nurse"
+  "node_druid"
  ]
 }

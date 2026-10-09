@@ -14,8 +14,8 @@ const SLOTS := {
 }
 ## 合手的棋子(测强度定下的)：都要在适配角色里，并且 1~3 星都装得上
 const CARRIERS := {
-	"g10_vine_sword": ["node_samurai", "node_killer"],
-	"g10_chrono_sword": ["node_druid", "node_paladin"],
+	"g10_vine_sword": ["node_samurai", "node_killer", "node_warden", "node_peasant"],
+	"g10_chrono_sword": ["node_druid", "node_paladin", "node_shielder"],
 	"g10_feast_sword": ["node_gladiator", "node_darkknight"],
 	"g10_current_daggers": ["node_knight_errant", "node_hunter"],
 	"g10_viper_daggers": ["node_hunter", "node_rogue"],
@@ -177,9 +177,10 @@ func test_text_numbers(t: TestCtx) -> void:
 			_branch("g10_chrono_sword", 0, "ally_effect")["value_multiplier"] * 100.0, _branch("g10_chrono_sword", 0, "enemy_effect")["value_multiplier"] * 100.0],
 		"g10_feast_sword": [_eq("g10_feast_sword").flat_mods["attack_power"], _eq("g10_feast_sword").flat_mods["max_health"],
 			_eq("g10_feast_sword").flat_mods["physical_lifesteal"] * 100.0, _eq("g10_feast_sword").abilities[0].value_multiplier * 100.0,
-			feast_ex["max_stacks"], feast_ex["stats"]["attack_power"]["pct"] * 100.0, feast_ex["stats"]["physical_lifesteal"]["flat"] * 100.0],
+			feast_ex["max_stacks"], feast_ex["stats"]["attack_power"]["pct"] * 100.0, feast_ex["stats"]["physical_lifesteal"]["flat"] * 100.0,
+			_cfg("g10_feast_sword")["shield_cap_pct"] * 100.0],
 		"g10_current_daggers": [_eq("g10_current_daggers").pct_mods["attack_speed_multiplier"] * 100.0, _eq("g10_current_daggers").flat_mods["na_dodge"] * 100.0,
-			_eq("g10_current_daggers").abilities[0].fixed_value, flow["duration"], flow["stats"]["attack_speed_multiplier"]["flat"] * 100.0,
+			_eq("g10_current_daggers").flat_mods["physical_lifesteal"] * 100.0, _eq("g10_current_daggers").abilities[0].fixed_value, flow["duration"], flow["stats"]["attack_speed_multiplier"]["flat"] * 100.0,
 			flow["stats"]["move_speed"]["pct"] * 100.0, ebb["stats"]["attack_speed_multiplier"]["flat"] * -100.0, ebb["stats"]["move_speed"]["pct"] * -100.0],
 		"g10_viper_daggers": [_eq("g10_viper_daggers").flat_mods["attack_power"], _eq("g10_viper_daggers").flat_mods["max_health"],
 			coil["max_stacks"], coil["stats"]["attack_power"]["pct"] * 100.0, coil["stats"]["attack_speed_multiplier"]["flat"] * 100.0,
@@ -188,10 +189,11 @@ func test_text_numbers(t: TestCtx) -> void:
 			dew["duration"], dew["stats"]["healing_received_pct"]["flat"] * 100.0, dew["stats"]["health_regen_per_second"]["flat"],
 			wither["stats"]["attack_power"]["pct"] * -100.0, wither["stats"]["healing_received_pct"]["flat"] * -100.0,
 			_eq("g10_willow_vase").abilities[1].cooldown, _branch("g10_willow_vase", 1, "ally_effect")["value_multiplier"] * 100.0],
-		"g10_nightingale_bow": [_eq("g10_nightingale_bow").flat_mods["attack_power"], _eq("g10_nightingale_bow").flat_mods["ability_power"],
-			_eq("g10_nightingale_bow").flat_mods["max_health"], _eq("g10_nightingale_bow").abilities[0].cooldown,
-			_eq("g10_nightingale_bow").abilities[0].keyword_values["multi_attack"], _branch("g10_nightingale_bow", 0, "ally_effect")["value_multiplier"] * 100.0,
+		"g10_nightingale_bow": [_eq("g10_nightingale_bow").flat_mods["healing_done_pct"] * 100.0, _eq("g10_nightingale_bow").flat_mods["max_health"],
+			_eq("g10_nightingale_bow").abilities[0].cooldown,
+			_branch("g10_nightingale_bow", 0, "ally_effect")["value_multiplier"] * 100.0,
 			noct["duration"], noct["stats"]["attack_speed_multiplier"]["flat"] * 100.0, noct["stats"]["healing_received_pct"]["flat"] * 100.0,
+			noct["stats"]["attack_power"]["pct"] * 100.0,
 			lament["stats"]["attack_speed_multiplier"]["flat"] * -100.0],
 	}
 	for id: String in nums.keys():
@@ -306,9 +308,10 @@ func test_feast_sword(t: TestCtx) -> void:
 	var ls0: float = u.get_stats().physical_lifesteal
 	# 自己(狩胜 / 守誓)：回复 触发数值 × r，再获得 1 层【血宴】
 	u.hp = 100.0
-	var evs: Array[Dictionary] = _pull(b, u, u, 300.0)
+	var evs: Array[Dictionary] = _pull(b, u, u, 100.0)
 	var hb: float = 1.0 + u.get_stats().healing_done_pct
-	t.near(_sum(evs, "heal", u), 300.0 * a.value_multiplier * hb, 1.0, "the holder heals trigger value × %.0f%%" % (a.value_multiplier * 100.0))
+	t.near(_sum(evs, "heal", u), 100.0 * a.value_multiplier * hb, 1.0, "the holder heals trigger value × %.0f%%" % (a.value_multiplier * 100.0))
+	t.eq(u.shield, 0.0, "no overhealing, no shield")
 	t.eq(u.status_stacks("g10_feast"), 1, "and gains a stack of Bloodfeast")
 	t.ok(u.get_status("g10_feast").expires_at < 0.0, "Bloodfeast lasts the battle")
 	for i in range(maxs + 2):
@@ -316,10 +319,19 @@ func test_feast_sword(t: TestCtx) -> void:
 	t.eq(u.status_stacks("g10_feast"), maxs, "【Basic】: every pull adds a stack, up to %d" % maxs)
 	t.near(u.get_stats().attack_power, atk0 * (1.0 + per_atk * float(maxs)), 0.5, "+%.0f%% attack a stack" % (per_atk * 100.0))
 	t.near(u.get_stats().physical_lifesteal, ls0 + per_ls * float(maxs), 0.001, "+%.0f%% physical lifesteal a stack" % (per_ls * 100.0))
+	# 溢出的治疗变成护盾，最多补到最大生命的 cap
+	var cap: float = float(a.effect_config["shield_cap_pct"])
+	var mh: float = u.get_stats().max_health
+	u.hp = mh - 10.0
+	_pull_noclear(b, u, u, 100.0)
+	t.near(u.shield, 100.0 * a.value_multiplier * hb - 10.0, 1.0, "overhealing becomes a shield")
+	u.hp = mh - 10.0
+	_pull_noclear(b, u, u, mh)
+	t.near(u.shield, mh * cap, 1.0, "the shield tops out at %.0f%% of max health" % (cap * 100.0))
 	# 队友：同样回复 + 一层
 	ally.hp = 100.0
-	evs = _pull(b, u, ally, 200.0)
-	t.near(_sum(evs, "heal", ally), 200.0 * a.value_multiplier * hb, 1.0, "an ally heals too")
+	evs = _pull(b, u, ally, 100.0)
+	t.near(_sum(evs, "heal", ally), 100.0 * a.value_multiplier * hb, 1.0, "an ally heals too")
 	t.eq(ally.status_stacks("g10_feast"), 1, "and gains a stack")
 	t.eq(foe.status_stacks("g10_feast"), 0, "enemies don't")
 
@@ -444,7 +456,7 @@ func test_nightingale_bow(t: TestCtx) -> void:
 	var r: float = float(e.abilities[0].effect_config["ally_effect"]["value_multiplier"])
 	var noct: Dictionary = e.abilities[1].effect_config["ally_effect"]["cfg"]
 	var lament: Dictionary = e.abilities[1].effect_config["enemy_effect"]["cfg"]
-	var ma: int = int(e.abilities[0].keyword_values["multi_attack"])
+	var ma := 1                                                     # 不带【群攻】：一次只给一个人
 	var hb: float = 1.0 + u.get_stats().healing_done_pct
 	# 队友：【群攻 2】个队友回复 触发数值 × r 并获得【夜曲】
 	for a: BUnit in _allies(b, u):
@@ -461,7 +473,8 @@ func test_nightingale_bow(t: TestCtx) -> void:
 			t.near(a2.get_stats().healing_received_pct, hr0 + float(noct["stats"]["healing_received_pct"]["flat"]), 0.001, "and more healing received")
 			t.near(_expires_in(b, a2, "g10_nocturne"), float(noct["duration"]), 0.01, "for %.0f s" % float(noct["duration"]))
 		t.eq(_sum(evs, "damage", a2), 0.0, "allies aren't hurt")
-	t.eq(sung, ma, "Multi Attack %d: %d allies" % [ma, ma])
+	t.eq(sung, ma, "no Multi Attack: one ally at a time")
+	t.near(u.get_stats().healing_done_pct, float(e.flat_mods["healing_done_pct"]), 0.001, "the holder heals more")
 	# 冷却 2 秒
 	evs = _pull_rule(b, u, "all_allies_except_self", "ally", 200.0, false)
 	var again := 0.0
@@ -480,7 +493,7 @@ func test_nightingale_bow(t: TestCtx) -> void:
 			t.near(d, 300.0 * r, 300.0 * r * 0.05, "an enemy takes value × %.0f%% magic" % (r * 100.0))
 			t.ok(f.get_status("g10_lament") != null and f.get_status("g10_nocturne") == null, "and Laments")
 		t.eq(_sum(evs, "heal", f), 0.0, "enemies aren't healed")
-	t.eq(hit, ma, "Multi Attack %d: %d enemies" % [ma, ma])
+	t.eq(hit, ma, "one enemy at a time")
 	if foe0.get_status("g10_lament") != null:
 		t.near(foe0.get_stats().attack_speed_multiplier, fas0 + float(lament["stats"]["attack_speed_multiplier"]["flat"]), 0.001, "slower attacks")
 	var kinds: Array = evs.filter(func(ev: Dictionary) -> bool: return ev.get("t") == "damage").map(func(ev: Dictionary) -> String: return str(ev["kind"]))

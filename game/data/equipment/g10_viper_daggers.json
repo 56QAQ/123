@@ -28,10 +28,10 @@
       ],
       "stats": {
        "attack_power": {
-        "pct": 0.08
+        "pct": 0.1
        },
        "attack_speed_multiplier": {
-        "flat": 0.08
+        "flat": 0.1
        }
       }
      }
@@ -60,7 +60,7 @@
  ],
  "flat_stat_modifiers": {
   "attack_power": 35,
-  "max_health": 250
+  "max_health": 350
  },
  "percent_stat_modifiers": {},
  "model": "g10_viper",

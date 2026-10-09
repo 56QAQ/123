@@ -13,12 +13,17 @@ const SLOTS := {
 }
 ## 合手的棋子(测强度定下的)：都要在适配角色里，并且 1~3 星都装得上
 const CARRIERS := {
-	"g9_rimetide_spear": ["node_cultist", "node_astronaut"],
-	"g9_dawnlight_spear": ["node_peasant", "node_warden"],
+	"g9_rimetide_spear": ["node_cultist", "node_paladin"],
+	"g9_dawnlight_spear": ["node_warden", "node_gladiator"],
 	"g9_starorbit_lance": ["node_druid", "node_magi"],
 	"g9_thornbrand": ["node_killer", "node_samurai"],
 	"g9_laurel_greatsword": ["node_gladiator", "node_darkknight"],
-	"g9_wellspring_greatsword": ["node_vampire", "node_paladin"],
+	"g9_wellspring_greatsword": ["node_paladin", "node_cultist"],
+}
+## 测强度去掉的(标签算上了，但测出来 +0~1)：不能再出现在适配角色里
+const REMOVED := {
+	"g9_dawnlight_spear": ["node_peasant", "node_darkknight"],
+	"g9_wellspring_greatsword": ["node_astronaut"],
 }
 
 
@@ -156,6 +161,10 @@ func test_fit(t: TestCtx) -> void:
 			t.ok(fits.has(uid), "%s fits %s" % [wid, uid])
 			for star: int in [1, 2, 3]:
 				t.eq(e.equip_problem(cat.get_unit(uid), star), "", "%s can be equipped by %s ★%d" % [wid, uid, star])
+	for wid2: String in REMOVED.keys():
+		var fits2: Array[String] = cat.fit_units(wid2)
+		for uid2: String in REMOVED[wid2]:
+			t.ok(not fits2.has(uid2), "%s: %s is taken out of the fits (fit_remove, measured +0~1)" % [wid2, uid2])
 
 
 # ================================================================ 凝潮长枪

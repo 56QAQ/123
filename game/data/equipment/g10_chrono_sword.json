@@ -22,7 +22,7 @@
      {
       "effect_type": "stat_status",
       "status_id": "g10_overclock",
-      "duration": 6.0,
+      "duration": 8.0,
       "max_stacks": 3,
       "flags": [
        "buff",
@@ -37,11 +37,11 @@
     ],
     "ally_effect": {
      "effect_type": "shield",
-     "value_multiplier": 0.8
+     "value_multiplier": 0.35
     },
     "enemy_effect": {
      "effect_type": "magic_damage",
-     "value_multiplier": 0.8
+     "value_multiplier": 1.8
     }
    },
    "cooldown": 3.0,

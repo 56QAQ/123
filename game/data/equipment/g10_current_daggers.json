@@ -9,7 +9,7 @@
    "ability_class": "bullet",
    "effect_type": "physical_damage",
    "value_multiplier": 1.0,
-   "fixed_value": 120,
+   "fixed_value": 160,
    "keywords": [],
    "accepted_timings": [],
    "required_trigger_tags": [
@@ -39,7 +39,7 @@
      "effect_type": "stat_status",
      "cfg": {
       "status_id": "g10_flow",
-      "duration": 8.0,
+      "duration": 10.0,
       "max_stacks": 1,
       "flags": [
        "buff",
@@ -47,7 +47,7 @@
       ],
       "stats": {
        "attack_speed_multiplier": {
-        "flat": 0.25
+        "flat": 0.3
        },
        "move_speed": {
         "pct": 0.25
@@ -59,7 +59,7 @@
      "effect_type": "stat_status",
      "cfg": {
       "status_id": "g10_ebb",
-      "duration": 8.0,
+      "duration": 10.0,
       "max_stacks": 1,
       "flags": [
        "debuff",
@@ -67,7 +67,7 @@
       ],
       "stats": {
        "attack_speed_multiplier": {
-        "flat": -0.25
+        "flat": -0.3
        },
        "move_speed": {
         "pct": -0.25
@@ -81,11 +81,15 @@
   }
  ],
  "flat_stat_modifiers": {
-  "na_dodge": 0.08
+  "na_dodge": 0.08,
+  "physical_lifesteal": 0.06
  },
  "percent_stat_modifiers": {
   "attack_speed_multiplier": 0.15
  },
  "model": "g10_current",
- "reworked": true
+ "reworked": true,
+ "fit_remove": [
+  "node_rogue"
+ ]
 }

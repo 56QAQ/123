@@ -8,7 +8,7 @@
    "id": "g10_feast_toast",
    "ability_class": "blade",
    "effect_type": "heal",
-   "value_multiplier": 1.0,
+   "value_multiplier": 3.0,
    "fixed_value": 0.0,
    "keywords": [
     "basic"
@@ -18,6 +18,8 @@
     "equipment_payload"
    ],
    "effect_config": {
+    "overheal_to_shield": true,
+    "shield_cap_pct": 0.5,
     "extra_effects": [
      {
       "effect_type": "stat_status",
@@ -31,10 +33,10 @@
       ],
       "stats": {
        "attack_power": {
-        "pct": 0.06
+        "pct": 0.03
        },
        "physical_lifesteal": {
-        "flat": 0.04
+        "flat": 0.03
        }
       }
      }
@@ -45,9 +47,9 @@
   }
  ],
  "flat_stat_modifiers": {
-  "attack_power": 30,
-  "max_health": 150,
-  "physical_lifesteal": 0.08
+  "attack_power": 10,
+  "max_health": 250,
+  "physical_lifesteal": 0.1
  },
  "percent_stat_modifiers": {},
  "model": "g10_feast",

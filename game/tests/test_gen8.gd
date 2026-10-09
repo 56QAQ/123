@@ -14,7 +14,7 @@ const CARRIERS := {
 }
 ## 标签算上、但实测不合手(拿手枪时触发器不响 / 测出来 +0)而去掉的
 const NOT_FIT := {
-	"g8_dart_pistols": ["node_maid"], "g8_firework_tubes": ["node_maid"],
+	"g8_dart_pistols": ["node_maid", "node_rogue"], "g8_firework_tubes": ["node_maid", "node_rogue"],
 }
 ## 都射自己的投射物(game/view/proj_kinds/gen8.gd)
 const OWN_PROJ := {
@@ -137,27 +137,39 @@ func test_carriers_can_equip(t: TestCtx) -> void:
 
 # ---------------------------------------------------------------- 豌豆荚双枪
 func test_peapod_pistols(t: TestCtx) -> void:
-	var b := _setup("g8_peapod_pistols")
+	# 队友身边 1 米：另一个队友(该一起拿护盾 / 荚衣)、一个敌人(不该)；敌人身边 1 米：另一个敌人(挨溅射，但不该被砸晕)
+	var b := _setup("g8_peapod_pistols", [{"def": "test_dummy", "pos": Vector2(3, -3)}, {"def": "test_dummy", "team": 1, "pos": Vector2(2, -2)},
+		{"def": "test_dummy", "team": 1, "pos": Vector2(1, 3)}])
 	var u: BUnit = b.units[0]
 	var ally: BUnit = b.units[1]
 	var foe: BUnit = b.units[2]
+	var ally2: BUnit = b.units[3]
+	var foe_by_ally: BUnit = b.units[4]
+	var foe2: BUnit = b.units[5]
 	var e: EquipmentDef = _eq("g8_peapod_pistols")
 	var fixed: float = e.abilities[0].fixed_value
-	var shell: float = float(e.abilities[1].effect_config["ally_effect"]["cfg"]["stats"]["damage_taken_pct"]["flat"])
+	var shell: float = float(e.abilities[1].effect_config["stats"]["damage_taken_pct"]["flat"])
 	var dr0: float = ally.get_stats().damage_taken_pct
 	var evs: Array[Dictionary] = _pull(b, u, ally, 999.0)
 	t.near(ally.shield, fixed, 0.5, "an ally gains a fixed %.0f shield (trigger value doesn't matter)" % fixed)
 	t.ok(ally.get_status("g8_podshell") != null, "and a Pod Shell")
 	t.near(ally.get_stats().damage_taken_pct, dr0 + shell, 0.001, "-%.0f%% damage taken" % (shell * 100.0))
-	t.eq(_sum(evs, "damage", ally), 0.0, "and isn't hurt")
-	t.ok(not ally.has_flag("stun"), "or stunned")
+	t.near(ally2.shield, fixed, 0.5, "an ally beside it gets the same shield (Splash)")
+	t.ok(ally2.get_status("g8_podshell") != null, "…and Pod Shell")
+	t.eq(foe_by_ally.shield, 0.0, "an enemy standing there gets nothing")
+	t.eq(foe_by_ally.get_status("g8_podshell"), null, "…no Pod Shell")
+	t.eq(_sum(evs, "damage", foe_by_ally), 0.0, "…and isn't hurt")
+	t.eq(_sum(evs, "damage", ally) + _sum(evs, "damage", ally2), 0.0, "allies aren't hurt")
+	t.ok(not ally.has_flag("stun") and not ally2.has_flag("stun"), "or stunned")
 	evs = _pull(b, u, foe, 999.0)
 	t.near(_sum(evs, "damage", foe), fixed, 0.5, "an enemy takes a fixed %.0f physical damage" % fixed)
 	t.eq(_kinds(evs, foe), ["physical"], "physical")
+	t.near(_sum(evs, "damage", foe2), fixed, 0.5, "its neighbor too (Splash)")
 	var st: BStatus = foe.get_status("stun")
 	t.ok(st != null and foe.has_flag("stun"), "and is Stunned (the shared Stun)")
 	if st != null:
-		t.near(st.expires_at - b.time, float(e.abilities[1].effect_config["duration"]), 0.01, "for %.1f s" % float(e.abilities[1].effect_config["duration"]))
+		t.near(st.expires_at - b.time, float(e.abilities[2].effect_config["duration"]), 0.01, "for %.1f s" % float(e.abilities[2].effect_config["duration"]))
+	t.ok(not foe2.has_flag("stun"), "only the target is stunned")
 	t.eq(foe.get_status("g8_podshell"), null, "no Pod Shell for enemies")
 	t.eq(foe.shield, 0.0, "or shield")
 	var s1: float = ally.shield
@@ -188,6 +200,9 @@ func test_rivet_guns(t: TestCtx) -> void:
 	t.eq(far_ally.shield, 0.0, "nor a far-away ally")
 	t.eq(u.status_stacks("g8_riveted"), 1, "the holder gains Riveted")
 	t.eq(near_ally.get_status("g8_riveted"), null, "only the holder")
+	var s1: float = u.shield
+	_pull_noclear(b, u, u, 1.0)
+	t.near(u.shield - s1, sh, 0.5, "【Basic】: again right away")
 	for i in range(cap + 3):
 		_pull_noclear(b, u, u, 1.0)
 	t.eq(u.status_stacks("g8_riveted"), cap, "up to %d stacks" % cap)
@@ -205,7 +220,7 @@ func test_dart_pistols(t: TestCtx) -> void:
 	var e: EquipmentDef = _eq("g8_dart_pistols")
 	var tox: Dictionary = e.abilities[0].effect_config
 	var stim: Dictionary = tox["ally_effect"]["cfg"]
-	var r: float = e.abilities[1].value_multiplier
+	var r: float = e.abilities[2].value_multiplier
 	var slow: float = float(tox["stats"]["attack_speed_multiplier"]["flat"])
 	var amp: float = float(tox["stats"]["damage_taken_amp"]["flat"])
 	var as0: float = foe.get_stats().attack_speed_multiplier
@@ -215,6 +230,10 @@ func test_dart_pistols(t: TestCtx) -> void:
 	t.near(_sum(evs, "damage", foe), 100.0 * r * (1.0 + amp), 1.0, "and takes trigger value × %.0f%% magic damage (+%.0f%% from the toxin)" % [r * 100.0, amp * 100.0])
 	t.eq(_kinds(evs, foe), ["magic"], "magic")
 	t.eq(foe.get_status("g8_stimulant"), null, "no Stimulant for enemies")
+	var sd: BStatus = foe.get_status("stun")
+	t.ok(sd != null and foe.has_flag("stun"), "and it's sedated (the shared Stun)")
+	if sd != null:
+		t.near(sd.expires_at - b.time, float(e.abilities[1].effect_config["duration"]), 0.01, "for %.1f s" % float(e.abilities[1].effect_config["duration"]))
 	for i in range(4):
 		_pull_noclear(b, u, foe, 100.0)
 	t.eq(foe.status_stacks("g8_neurotoxin"), 3, "【Basic】: Neurotoxin stacks to 3")
@@ -227,6 +246,7 @@ func test_dart_pistols(t: TestCtx) -> void:
 	t.near(_sum(evs, "heal", ally), 200.0 * r * (1.0 + u.get_stats().healing_done_pct) * (1.0 + hrx), 1.0,
 		"and heals trigger value × %.0f%% (+%.0f%% from the Stimulant)" % [r * 100.0, hrx * 100.0])
 	t.eq(ally.get_status("g8_neurotoxin"), null, "no toxin for allies")
+	t.ok(not ally.has_flag("stun"), "and no sedation")
 	t.eq(_sum(evs, "damage", ally), 0.0, "and isn't hurt")
 	var h2: float = _sum(_pull_noclear(b, u, ally, 200.0), "heal", ally)
 	t.eq(h2, 0.0, "right after: only the 【Basic】 part (the heal is on cooldown)")
@@ -310,9 +330,13 @@ func test_firework_tubes(t: TestCtx) -> void:
 	var foe_by_ally: BUnit = b.units[6]
 	var e: EquipmentDef = _eq("g8_firework_tubes")
 	var v: float = e.abilities[0].fixed_value
-	var r: float = e.abilities[2].value_multiplier
+	var hv: float = e.abilities[1].fixed_value
+	var r: float = e.abilities[3].value_multiplier
+	ally.hp = 1000.0
 	var evs: Array[Dictionary] = _pull(b, u, foe, 100.0)
 	t.near(_sum(evs, "damage", foe), v + 100.0 * r, 1.0, "an enemy takes %.0f + trigger value × %.0f%% magic damage" % [v, r * 100.0])
+	t.near(_sum(evs, "heal", ally), v * 1.5 * (1.0 + u.get_stats().healing_done_pct), 1.0,
+		"the burst's damage (target + splash) heals the most hurt ally")
 	t.eq(_kinds(evs, foe), ["magic"], "magic")
 	t.near(_sum(evs, "damage", foe2), v * 0.5, 0.5, "the burst splashes its neighbor for half")
 	t.ok(foe.get_status("g8_tinnitus") != null and foe2.get_status("g8_tinnitus") != null, "both get Ringing Ears")
@@ -321,19 +345,21 @@ func test_firework_tubes(t: TestCtx) -> void:
 	t.eq(ally_by_foe.get_status("g8_festival"), null, "…or celebrating")
 	ally.hp = 1000.0
 	ally2.hp = 1000.0
+	ally_by_foe.hp = 100000.0
 	var atk0: float = ally.get_stats().attack_power
 	evs = _pull(b, u, ally, 100.0)
 	var hb: float = 1.0 + u.get_stats().healing_done_pct
-	t.near(_sum(evs, "heal", ally), (v + 100.0 * r) * hb, 1.0, "an ally heals %.0f + trigger value × %.0f%%" % [v, r * 100.0])
-	t.near(_sum(evs, "heal", ally2), v * 0.5 * hb, 0.5, "its neighbor heals half the burst")
+	t.near(_sum(evs, "heal", ally), (hv + 100.0 * r) * hb, 1.0, "an ally heals %.0f + trigger value × %.0f%%" % [hv, r * 100.0])
+	t.near(_sum(evs, "heal", ally2), hv * 0.5 * hb, 0.5, "its neighbor heals half the burst")
 	t.ok(ally.get_status("g8_festival") != null and ally2.get_status("g8_festival") != null, "both celebrate")
-	var fb: float = float(e.abilities[1].effect_config["ally_effect"]["cfg"]["stats"]["attack_power"]["pct"])
+	var fb: float = float(e.abilities[2].effect_config["ally_effect"]["cfg"]["stats"]["attack_power"]["pct"])
 	t.near(ally.get_stats().attack_power, atk0 * (1.0 + fb), 0.5, "Festival: +%.0f%% attack" % (fb * 100.0))
 	t.eq(_sum(evs, "heal", foe_by_ally), 0.0, "an enemy beside the ally isn't healed")
 	t.eq(foe_by_ally.get_status("g8_festival"), null, "…or celebrating")
 	t.eq(_sum(evs, "damage", ally) + _sum(evs, "damage", ally2), 0.0, "allies aren't hurt")
 	var h2: float = _sum(_pull_noclear(b, u, ally, 100.0), "heal", ally)
-	t.near(h2, v * hb, 1.0, "right after: only the 【Basic】 burst (the scaled part is on cooldown)")
+	t.near(h2, hv * hb, 1.0, "right after: only the 【Basic】 burst (the scaled part is on cooldown)")
+	t.eq(_sum(evs, "damage", foe_by_ally), 0.0, "the burst over an ally doesn't hurt the enemy beside it")
 
 
 # ---------------------------------------------------------------- 金阳射线枪

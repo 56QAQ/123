@@ -66,7 +66,7 @@
    "id": "g10_willow_dew",
    "ability_class": "blade",
    "effect_type": "heal",
-   "value_multiplier": 1.2,
+   "value_multiplier": 0.8,
    "fixed_value": 0.0,
    "keywords": [],
    "accepted_timings": [],
@@ -76,11 +76,11 @@
    "effect_config": {
     "ally_effect": {
      "effect_type": "heal",
-     "value_multiplier": 1.2
+     "value_multiplier": 0.8
     },
     "enemy_effect": {
      "effect_type": "magic_damage",
-     "value_multiplier": 1.2
+     "value_multiplier": 0.8
     }
    },
    "cooldown": 3.0,
