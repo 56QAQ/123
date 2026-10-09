@@ -2,7 +2,8 @@ extends SceneTree
 ## 通用武器的分批模型文件(三批一组并行做，各写各的；见 tools/author_data.py 的"分批文件")
 const BATCH_MODELS: Array[String] = ["res://tools/weapons/gen5_models.gd", "res://tools/weapons/gen6_models.gd", "res://tools/weapons/gen7_models.gd",
 	"res://tools/weapons/gen8_models.gd", "res://tools/weapons/gen9_models.gd", "res://tools/weapons/gen10_models.gd",
-	"res://tools/weapons/gen11_models.gd", "res://tools/weapons/gen12_models.gd", "res://tools/weapons/gen13_models.gd"]
+	"res://tools/weapons/gen11_models.gd", "res://tools/weapons/gen12_models.gd", "res://tools/weapons/gen13_models.gd",
+	"res://tools/weapons/gen14_models.gd", "res://tools/weapons/gen15_models.gd", "res://tools/weapons/gen16_models.gd"]
 ## 构建"棋子模型套件"：身体网格 + 全部武器网格(9 大类 × 外观，双持武器另有左手那把) + 副手盾 + 箭(投射物)，
 ## 以及场景 scenes/unit_model.tscn。全部共用同一副骨骼与同一套动画库；阵营/武器换色由 voxel_unit.gdshader 的 instance uniform 完成。
 ## 部件命名：W_<大类>_<外观>(右手，"Bow" 骨；例外：变奏节点本人的大三角钢琴 W_focus_grand / W_focus_grand_white 整台挂 Root 骨，放在她身前) / L_<大类>_<外观>(左手，"Weapon_L" 骨) / A_<大类>_<外观>(挂在身上的附件，如炽霞的刀鞘) / P_<名字>(动作里临时出现的道具，平时隐藏，如钓鱼竿) / Body / Shield。

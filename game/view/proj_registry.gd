@@ -11,7 +11,8 @@ extends RefCounted
 ##   const TRAILS := {外观名: {base, tip, life, energy, alpha, color}}(可选)               —— 近战武器的刀光长度(WeaponTrail 先查 MODEL_STYLES 再查这里)
 const SCRIPTS: Array = [preload("res://game/view/proj_kinds/gen5.gd"), preload("res://game/view/proj_kinds/gen6.gd"), preload("res://game/view/proj_kinds/gen7.gd"),
 	preload("res://game/view/proj_kinds/gen8.gd"), preload("res://game/view/proj_kinds/gen9.gd"), preload("res://game/view/proj_kinds/gen10.gd"),
-	preload("res://game/view/proj_kinds/gen11.gd"), preload("res://game/view/proj_kinds/gen12.gd"), preload("res://game/view/proj_kinds/gen13.gd")]
+	preload("res://game/view/proj_kinds/gen11.gd"), preload("res://game/view/proj_kinds/gen12.gd"), preload("res://game/view/proj_kinds/gen13.gd"),
+	preload("res://game/view/proj_kinds/gen14.gd"), preload("res://game/view/proj_kinds/gen15.gd"), preload("res://game/view/proj_kinds/gen16.gd")]
 
 
 static func _of(kind: String) -> Variant:
