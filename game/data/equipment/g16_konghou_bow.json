@@ -1,0 +1,104 @@
+{
+ "id": "g16_konghou_bow",
+ "cost": 3,
+ "color_id": "yellow",
+ "weapon_class": "bow",
+ "abilities": [
+  {
+   "id": "g16_harp_pluck",
+   "ability_class": "amulet",
+   "effect_type": "magic_damage",
+   "value_multiplier": 1.6,
+   "fixed_value": 0.0,
+   "keywords": [
+    "splash"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "splash_filter": "target_allies",
+    "splash_ratio": 0.5,
+    "ally_effect": {
+     "effect_type": "heal",
+     "value_multiplier": 1.0
+    },
+    "enemy_effect": {
+     "effect_type": "magic_damage",
+     "value_multiplier": 1.6
+    }
+   },
+   "cooldown": 2.0,
+   "priority": 100,
+   "keyword_values": {
+    "splash": 2.0
+   }
+  },
+  {
+   "id": "g16_harp_echo",
+   "ability_class": "bullet",
+   "effect_type": "stat_status",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "ally_effect": {
+     "effect_type": "stat_status",
+     "cfg": {
+      "status_id": "g16_concord",
+      "duration": 6.0,
+      "max_stacks": 1,
+      "flags": [
+       "buff",
+       "dispellable"
+      ],
+      "stats": {
+       "attack_power": {
+        "pct": 0.12
+       },
+       "ability_power": {
+        "flat": 15
+       }
+      }
+     }
+    },
+    "enemy_effect": {
+     "effect_type": "stat_status",
+     "cfg": {
+      "status_id": "g16_discord",
+      "duration": 6.0,
+      "max_stacks": 1,
+      "flags": [
+       "debuff",
+       "dispellable"
+      ],
+      "stats": {
+       "attack_speed_multiplier": {
+        "flat": -0.15
+       }
+      }
+     }
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  }
+ ],
+ "flat_stat_modifiers": {
+  "attack_power": 20,
+  "ability_power": 20,
+  "max_health": 150
+ },
+ "percent_stat_modifiers": {},
+ "model": "g16_konghou",
+ "reworked": true,
+ "projectile": "g16_note",
+ "fit_remove": [
+  "node_nurse"
+ ]
+}

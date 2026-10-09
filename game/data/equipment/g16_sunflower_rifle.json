@@ -1,0 +1,67 @@
+{
+ "id": "g16_sunflower_rifle",
+ "cost": 4,
+ "color_id": "yellow",
+ "weapon_class": "rifle",
+ "abilities": [
+  {
+   "id": "g16_sun_seed",
+   "ability_class": "bullet",
+   "effect_type": "physical_damage",
+   "value_multiplier": 1.0,
+   "fixed_value": 30,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "heal_lowest_ally": true,
+    "ally_effect": {
+     "effect_type": "heal"
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  },
+  {
+   "id": "g16_sun_bloom",
+   "ability_class": "amulet",
+   "effect_type": "physical_damage",
+   "value_multiplier": 0.6,
+   "fixed_value": 0.0,
+   "keywords": [],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "enemy_effect": {
+     "effect_type": "physical_damage",
+     "value_multiplier": 0.6
+    },
+    "ally_effect": {
+     "effect_type": "heal",
+     "value_multiplier": 0.6
+    }
+   },
+   "cooldown": 3.0,
+   "priority": 100
+  }
+ ],
+ "flat_stat_modifiers": {
+  "attack_power": 20,
+  "max_health": 200
+ },
+ "percent_stat_modifiers": {
+  "attack_speed_multiplier": 0.12
+ },
+ "model": "g16_sunflower",
+ "reworked": true,
+ "projectile": "g16_seed",
+ "fit_remove": [
+  "node_sniper"
+ ]
+}

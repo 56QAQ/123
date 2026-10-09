@@ -1,0 +1,138 @@
+{
+ "id": "g15_cactus_revolvers",
+ "cost": 4,
+ "color_id": "green",
+ "weapon_class": "pistols",
+ "abilities": [
+  {
+   "id": "g15_cactus_volley",
+   "ability_class": "bullet",
+   "effect_type": "physical_damage",
+   "value_multiplier": 1.0,
+   "fixed_value": 50,
+   "keywords": [
+    "basic",
+    "splash"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "splash_filter": "target_allies",
+    "splash_ratio": 1.0,
+    "ally_effect": {
+     "effect_type": "stat_status",
+     "cfg": {
+      "status_id": "g15_spine_coat",
+      "duration": 8.0,
+      "max_stacks": 1,
+      "flags": [
+       "buff",
+       "dispellable"
+      ],
+      "stats": {
+       "defense": {
+        "flat": 20
+       },
+       "health_regen_per_second": {
+        "flat": 15.0
+       }
+      },
+      "pairs": [
+       {
+        "trigger": {
+         "id": "g15_spine_coat_prick",
+         "timing": "OnHitByNormalAttack",
+         "event_count_threshold": 1,
+         "base_value_mode": "fixed",
+         "base_value_ratio": 1.0,
+         "base_value_flat": 0.0,
+         "target_rule": "event_target",
+         "team_filter": "enemy",
+         "tags": [
+          "hit_by_normal_attack",
+          "status_g15_spine_coat"
+         ],
+         "runtime_conditions": [
+          {
+           "type": "source_has_status",
+           "status_id": "g15_spine_coat"
+          }
+         ]
+        },
+        "ability": {
+         "id": "g15_spine_coat_prick",
+         "ability_class": "bullet",
+         "effect_type": "physical_damage",
+         "value_multiplier": 1.0,
+         "fixed_value": 20,
+         "keywords": [
+          "basic"
+         ],
+         "accepted_timings": [
+          "OnHitByNormalAttack"
+         ],
+         "required_trigger_tags": [
+          "status_g15_spine_coat"
+         ],
+         "effect_config": {
+          "damage_category": "skill"
+         },
+         "cooldown": 0.0,
+         "priority": 100
+        }
+       }
+      ]
+     }
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100,
+   "keyword_values": {
+    "splash": 2.0
+   }
+  },
+  {
+   "id": "g15_cactus_sting",
+   "ability_class": "bullet",
+   "effect_type": "stat_status",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "status_id": "stun",
+    "duration": 1.0,
+    "max_stacks": 1,
+    "flags": [
+     "debuff",
+     "dispellable",
+     "stun"
+    ],
+    "ally_effect": {
+     "effect_type": "none"
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  }
+ ],
+ "flat_stat_modifiers": {
+  "max_health": 300,
+  "defense": 15,
+  "reload_time_pct": -0.2
+ },
+ "percent_stat_modifiers": {},
+ "model": "g15_cactus",
+ "reworked": true,
+ "projectile": "g15_spine",
+ "wclass_override": {
+  "proj_speed": 20.0
+ }
+}

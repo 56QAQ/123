@@ -1,0 +1,78 @@
+{
+ "id": "g16_jade_gourd",
+ "cost": 2,
+ "color_id": "green",
+ "weapon_class": "focus",
+ "abilities": [
+  {
+   "id": "g16_gourd_pill",
+   "ability_class": "bullet",
+   "effect_type": "magic_damage",
+   "value_multiplier": 1.0,
+   "fixed_value": 70,
+   "keywords": [
+    "basic",
+    "splash"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "splash_filter": "target_allies",
+    "splash_ratio": 1.0,
+    "ally_effect": {
+     "effect_type": "max_health_up"
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100,
+   "keyword_values": {
+    "splash": 2.0
+   }
+  },
+  {
+   "id": "g16_gourd_drunk",
+   "ability_class": "bullet",
+   "effect_type": "stat_status",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "status_id": "g16_drunk",
+    "duration": 4.0,
+    "max_stacks": 1,
+    "flags": [
+     "debuff",
+     "dispellable"
+    ],
+    "stats": {
+     "attack_power": {
+      "pct": -0.2
+     },
+     "move_speed": {
+      "pct": -0.3
+     }
+    },
+    "ally_effect": {
+     "effect_type": "none"
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  }
+ ],
+ "flat_stat_modifiers": {
+  "max_health": 200
+ },
+ "percent_stat_modifiers": {},
+ "model": "g16_gourd",
+ "reworked": true,
+ "projectile": "g16_elixir"
+}

@@ -1,0 +1,59 @@
+{
+ "id": "g14_jadescale_whip",
+ "cost": 4,
+ "color_id": "green",
+ "weapon_class": "sword",
+ "abilities": [
+  {
+   "id": "g14_jadescale_lash",
+   "ability_class": "bullet",
+   "effect_type": "physical_damage",
+   "value_multiplier": 1.0,
+   "fixed_value": 20,
+   "keywords": [
+    "basic",
+    "splash"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "splash_filter": "target_allies",
+    "splash_ratio": 0.5,
+    "extra_effects": [
+     {
+      "effect_type": "stat_status",
+      "target": "target",
+      "status_id": "g14_scale_rend",
+      "duration": 5.0,
+      "max_stacks": 6,
+      "flags": [
+       "debuff",
+       "dispellable"
+      ],
+      "stats": {
+       "defense": {
+        "flat": -4
+       }
+      }
+     }
+    ]
+   },
+   "cooldown": 0.0,
+   "priority": 100,
+   "keyword_values": {
+    "splash": 1
+   }
+  }
+ ],
+ "flat_stat_modifiers": {
+  "attack_power": 20,
+  "max_health": 200
+ },
+ "percent_stat_modifiers": {
+  "attack_speed_multiplier": 0.1
+ },
+ "model": "g14_jadescale",
+ "reworked": true
+}

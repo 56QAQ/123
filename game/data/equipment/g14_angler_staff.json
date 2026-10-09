@@ -1,0 +1,102 @@
+{
+ "id": "g14_angler_staff",
+ "cost": 3,
+ "color_id": "blue",
+ "weapon_class": "polearm",
+ "abilities": [
+  {
+   "id": "g14_angler_glow",
+   "ability_class": "bullet",
+   "effect_type": "stat_status",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic",
+    "multi_attack"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "ally_effect": {
+     "effect_type": "stat_status",
+     "cfg": {
+      "status_id": "g14_lamplight",
+      "duration": 8.0,
+      "max_stacks": 5,
+      "flags": [
+       "buff",
+       "dispellable"
+      ],
+      "stats": {
+       "ability_power": {
+        "flat": 6
+       }
+      }
+     }
+    },
+    "enemy_effect": {
+     "effect_type": "stat_status",
+     "cfg": {
+      "status_id": "g14_lured",
+      "duration": 8.0,
+      "max_stacks": 5,
+      "flags": [
+       "debuff",
+       "dispellable"
+      ],
+      "stats": {
+       "magic_resistance": {
+        "flat": -5
+       }
+      }
+     }
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100,
+   "keyword_values": {
+    "multi_attack": 4
+   }
+  },
+  {
+   "id": "g14_angler_snap",
+   "ability_class": "bullet",
+   "effect_type": "magic_damage",
+   "value_multiplier": 1.0,
+   "fixed_value": 40,
+   "keywords": [
+    "basic",
+    "multi_attack"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "ally_effect": {
+     "effect_type": "none"
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100,
+   "keyword_values": {
+    "multi_attack": 4
+   }
+  }
+ ],
+ "flat_stat_modifiers": {
+  "ability_power": 30,
+  "max_health": 150
+ },
+ "percent_stat_modifiers": {},
+ "model": "g14_angler",
+ "reworked": true,
+ "fit_add": [
+  "node_wizard"
+ ],
+ "fit_remove": [
+  "node_druid"
+ ]
+}

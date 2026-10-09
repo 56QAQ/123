@@ -1,0 +1,98 @@
+{
+ "id": "g15_magnet_pistols",
+ "cost": 4,
+ "color_id": "purple",
+ "weapon_class": "pistols",
+ "abilities": [
+  {
+   "id": "g15_magnet_field",
+   "ability_class": "bullet",
+   "effect_type": "shield",
+   "value_multiplier": 1.0,
+   "fixed_value": 45,
+   "keywords": [
+    "basic",
+    "multi_attack"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "ally_effect": {
+     "effect_type": "shield"
+    },
+    "enemy_effect": {
+     "effect_type": "stat_status",
+     "cfg": {
+      "status_id": "g15_magnetized",
+      "duration": 5.0,
+      "max_stacks": 3,
+      "flags": [
+       "debuff",
+       "dispellable"
+      ],
+      "stats": {
+       "attack_speed_multiplier": {
+        "flat": -0.06
+       },
+       "defense": {
+        "flat": -5
+       }
+      }
+     }
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100,
+   "keyword_values": {
+    "multi_attack": 2
+   }
+  },
+  {
+   "id": "g15_magnet_pull",
+   "ability_class": "blade",
+   "effect_type": "shield",
+   "value_multiplier": 0.8,
+   "fixed_value": 0.0,
+   "keywords": [
+    "multi_attack"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "ally_effect": {
+     "effect_type": "shield",
+     "value_multiplier": 0.8
+    },
+    "enemy_effect": {
+     "effect_type": "fish_pull",
+     "cfg": {
+      "taunt": 3.0
+     }
+    }
+   },
+   "cooldown": 4.0,
+   "priority": 100,
+   "keyword_values": {
+    "multi_attack": 2
+   }
+  }
+ ],
+ "flat_stat_modifiers": {
+  "attack_power": 20,
+  "max_health": 250
+ },
+ "percent_stat_modifiers": {},
+ "model": "g15_magnet",
+ "reworked": true,
+ "projectile": "g15_magnet",
+ "wclass_override": {
+  "proj_speed": 18.0
+ },
+ "fit_add": [
+  "node_nurse"
+ ]
+}

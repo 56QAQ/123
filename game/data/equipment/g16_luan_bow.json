@@ -1,0 +1,75 @@
+{
+ "id": "g16_luan_bow",
+ "cost": 3,
+ "color_id": "cyan",
+ "weapon_class": "bow",
+ "abilities": [
+  {
+   "id": "g16_luan_peck",
+   "ability_class": "amulet",
+   "effect_type": "physical_damage",
+   "value_multiplier": 1.5,
+   "fixed_value": 0.0,
+   "keywords": [],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "enemy_effect": {
+     "effect_type": "physical_damage",
+     "value_multiplier": 1.5
+    },
+    "ally_effect": {
+     "effect_type": "shield",
+     "value_multiplier": 0.3
+    }
+   },
+   "cooldown": 3.0,
+   "priority": 100
+  },
+  {
+   "id": "g16_luan_rebirth",
+   "ability_class": "bullet",
+   "effect_type": "heal",
+   "value_multiplier": 1.0,
+   "fixed_value": 500.0,
+   "keywords": [
+    "limited"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "limited_timings": [
+     "OnUnitDied"
+    ],
+    "once_per_battle": true,
+    "revive_dead": true,
+    "revive_kind": "luan",
+    "ally_effect": {
+     "effect_type": "heal"
+    },
+    "enemy_effect": {
+     "effect_type": "none"
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  }
+ ],
+ "flat_stat_modifiers": {
+  "attack_power": 20,
+  "max_health": 200
+ },
+ "percent_stat_modifiers": {
+  "attack_speed_multiplier": 0.1
+ },
+ "model": "g16_luan",
+ "reworked": true,
+ "projectile": "g16_feather",
+ "fit_add": [
+  "node_druid"
+ ]
+}

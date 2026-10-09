@@ -1,0 +1,88 @@
+{
+ "id": "g15_bat_daggers",
+ "cost": 2,
+ "color_id": "purple",
+ "weapon_class": "dual",
+ "abilities": [
+  {
+   "id": "g15_bat_bite",
+   "ability_class": "blade",
+   "effect_type": "magic_damage",
+   "value_multiplier": 0.25,
+   "fixed_value": 0.0,
+   "keywords": [],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "extra_effects": [
+     {
+      "effect_type": "heal",
+      "target": "self",
+      "value_multiplier": 1.0
+     }
+    ],
+    "ally_effect": {
+     "effect_type": "stat_status",
+     "cfg": {
+      "status_id": "g15_bat_swarm",
+      "duration": 0.0,
+      "max_stacks": 5,
+      "flags": [
+       "buff",
+       "dispellable"
+      ],
+      "stats": {
+       "physical_lifesteal": {
+        "flat": 0.04
+       },
+       "attack_power": {
+        "pct": 0.03
+       }
+      }
+     }
+    }
+   },
+   "cooldown": 2.0,
+   "priority": 100
+  },
+  {
+   "id": "g15_bat_screech",
+   "ability_class": "bullet",
+   "effect_type": "stat_status",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "status_id": "stun",
+    "duration": 0.8,
+    "max_stacks": 1,
+    "flags": [
+     "debuff",
+     "dispellable",
+     "stun"
+    ],
+    "ally_effect": {
+     "effect_type": "none"
+    }
+   },
+   "cooldown": 2.0,
+   "priority": 100
+  }
+ ],
+ "flat_stat_modifiers": {
+  "attack_power": 15,
+  "physical_lifesteal": 0.06
+ },
+ "percent_stat_modifiers": {},
+ "model": "g15_bat",
+ "reworked": true,
+ "fit_remove": [
+  "node_rogue"
+ ]
+}

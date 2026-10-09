@@ -1,0 +1,96 @@
+{
+ "id": "g14_mossmantle_greatsword",
+ "cost": 3,
+ "color_id": "green",
+ "weapon_class": "heavy",
+ "abilities": [
+  {
+   "id": "g14_mossmantle_cleave",
+   "ability_class": "bullet",
+   "effect_type": "physical_damage",
+   "value_multiplier": 1.0,
+   "fixed_value": 30,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "pre_effects": [
+     {
+      "status_id": "g14_moss",
+      "duration": 0.0,
+      "max_stacks": 8,
+      "flags": [
+       "buff",
+       "dispellable"
+      ],
+      "stats": {
+       "damage_taken_pct": {
+        "flat": 0.008
+       },
+       "health_regen_per_second": {
+        "flat": 2
+       }
+      },
+      "effect_type": "stat_status"
+     }
+    ],
+    "ally_effect": {
+     "effect_type": "none"
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  },
+  {
+   "id": "g14_mossmantle_bloom",
+   "ability_class": "bullet",
+   "effect_type": "stat_status",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [],
+   "accepted_timings": [],
+   "required_trigger_tags": [
+    "equipment_payload"
+   ],
+   "effect_config": {
+    "ally_effect": {
+     "effect_type": "stat_status",
+     "cfg": {
+      "status_id": "g14_moss",
+      "duration": 0.0,
+      "max_stacks": 8,
+      "flags": [
+       "buff",
+       "dispellable"
+      ],
+      "stats": {
+       "damage_taken_pct": {
+        "flat": 0.008
+       },
+       "health_regen_per_second": {
+        "flat": 2
+       }
+      },
+      "add_stacks": 7
+     }
+    },
+    "enemy_effect": {
+     "effect_type": "none"
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  }
+ ],
+ "flat_stat_modifiers": {
+  "attack_power": 15,
+  "max_health": 250
+ },
+ "percent_stat_modifiers": {},
+ "model": "g14_mossmantle",
+ "reworked": true
+}
