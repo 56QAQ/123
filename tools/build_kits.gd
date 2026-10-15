@@ -131,6 +131,7 @@ func _init() -> void:
 	parts["W_bow_short"] = _mesh("wpn_bow_short", func(g) -> void: W.call(g).bow_short(), true)
 	parts["W_bow_farthest"] = _mesh("wpn_bow_farthest", func(g) -> void: W.call(g).bow_farthest(), true)
 	parts["W_polearm_ember_glaive"] = _mesh("wpn_polearm_ember_glaive", func(g) -> void: W.call(g).ember_glaive(), true)
+	parts["W_polearm_beacon_lance"] = _mesh("wpn_polearm_beacon_lance", func(g) -> void: W.call(g).beacon_lance(), true)
 	parts["W_polearm_lily"] = _mesh("wpn_polearm_lily", func(g) -> void: W.call(g).lily_spear(), true)
 	parts["W_polearm_verdant"] = _mesh("wpn_polearm_verdant", func(g) -> void: W.call(g).verdant_staff(), true)
 	parts["W_polearm_dice"] = _mesh("wpn_polearm_dice", func(g) -> void: W.call(g).dice_staff(), true)

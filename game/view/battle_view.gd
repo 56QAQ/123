@@ -43,6 +43,9 @@ var _dart_n := 0
 var shadow_auras: Dictionary = {}    # 单位 uid -> 凝暗的黑烟 + 青色碎光(踏影节点)
 var shadow_blades: Dictionary = {}   # 单位 uid -> 剑上的诛影影火(挂在武器骨上)
 var link_markers: Dictionary = {}   # 单位 uid -> 脚下的增幅链路六边形(RX 增幅中继给的)
+var charge_markers: Dictionary = {}  # 单位 uid -> 脚下的【满电】刻度环(蓝之章的供能地砖给的)
+var mech_auras: Dictionary = {}     # 单位 uid -> GW-20 步行机过载的热浪 / 过热的蒸汽(Fx.overload_aura / overheat_steam)
+var rail_aims: Dictionary = {}      # RG-09 电磁轨道炮 uid -> {node 锁定激光, target, t0}
 var _muzzle_n: Dictionary = {}       # 机械炮台 / 载具：这一枪从哪根炮管出(左右轮流)
 var chain_arcs: Dictionary = {}      # 导向节点 uid(追击副本 + "c") -> 这一串连锁闪电已经画出来的每一节(LightningArc)
 var quarry_uid: Dictionary = {}     # 队伍 -> 当前狩猎对象的 uid(头顶插旗)
@@ -229,7 +232,7 @@ func clear() -> void:
 	_wreath_clear.clear()
 	chain_arcs.clear()
 	mood_notes.clear()
-	for dd0: Dictionary in [domains, paint_orbs, glyph_domains, misled_marks, stun_marks, guidance_rings, ice_blocks, stamen_buds, petal_swirls, blood_auras, lily_counters, phantoms, weapon_flames, beast_spirits, intox_marks, song_auras, funeral_wreaths, butterfly_auras, shadow_auras, shadow_blades, link_markers, rite_circles, gate_gauges]:
+	for dd0: Dictionary in [domains, paint_orbs, glyph_domains, misled_marks, stun_marks, guidance_rings, ice_blocks, stamen_buds, petal_swirls, blood_auras, lily_counters, phantoms, weapon_flames, beast_spirits, intox_marks, song_auras, funeral_wreaths, butterfly_auras, shadow_auras, shadow_blades, link_markers, charge_markers, rite_circles, gate_gauges, mech_auras]:
 		for k0: String in dd0.keys():
 			if is_instance_valid(dd0[k0]):
 				(dd0[k0] as Node3D).queue_free()
@@ -341,6 +344,7 @@ func _process(delta: float) -> void:
 	_update_blood_orbs()
 	_update_light_beams(alpha, delta)
 	_update_snipe_aims()
+	_update_rail_aims()
 	_update_marks()
 	_update_volt()
 	_update_lunges()
@@ -800,6 +804,29 @@ func _lunge_cut(u: BUnit, t: BUnit) -> void:
 		fx.knife_slash(_chest(t), Vector3(t.pos.x - u.pos.x, 0.0, t.pos.y - u.pos.y).normalized())
 
 
+## RG-09 蓄能射击：激光从炮口连到锁定的目标，蓄得越久越粗；吟唱结束 / 被打断就收掉(chant_release / interrupt)
+func _update_rail_aims() -> void:
+	for uid: String in rail_aims.keys():
+		var ra: Dictionary = rail_aims[uid]
+		var ru: BUnit = battle.get_unit_by_uid(uid)
+		var rt: BUnit = ra.get("target") as BUnit
+		if ru == null or not ru.alive or ru.phase != "chant" or rt == null or not rt.alive:
+			fx.rail_aim_end(ra["node"])
+			rail_aims.erase(uid)
+			continue
+		var k: float = clampf((battle.time - float(ra["t0"])) / 3.0, 0.0, 1.0)
+		fx.rail_aim_set(ra["node"], _mech_point(ru, "muzzles"), _chest(rt), k)
+
+
+## 机械身上某个部位的世界坐标(MECH 表：muzzles 取第一根炮管，antenna / emitter 直接取)；没有 = 胸口
+func _mech_point(u: BUnit, key: String) -> Vector3:
+	var uv: UnitView = _view(u)
+	if uv == null or not MECH.has(u.def.model) or not (MECH[u.def.model] as Dictionary).has(key):
+		return _chest(u)
+	var v: Variant = MECH[u.def.model][key]
+	return uv.bone_point(str(MECH[u.def.model].get("bone", "Chest")), (v[0] if v is Array else v) as Vector3)
+
+
 func _update_snipe_aims() -> void:
 	for uid: String in snipe_aims.keys():
 		var sa: Dictionary = snipe_aims[uid]
@@ -889,6 +916,13 @@ const MECH := {
 		"emitter": Vector3(-0.5, 44.0, -12.0)},
 	"droid_relay": {"col": "#5dffc8", "big": false, "antenna": Vector3(-3.5, 97.0, -9.5)},
 	"droid_assault": {"col": "#ff4d6d", "big": false},
+	# 蓝之章第二批(2026-10-15)：刚体部件挂在 Root / Hips / Chest / Halo / Eyelid 上(通用的倒地动作会把它们拧乱)→ vanish = 不倒地、整台炸掉；
+	# blast = 殉爆的半径(BX-09)；emitter = 维修臂的喷口(MR-05 的维修光束从这里出)；pulse = hub(CN-00 的广播波扩满全场)
+	"droid_spider": {"col": "#ffd23a", "big": false, "vanish": true, "blast": 2.2},
+	"drone_repair": {"col": "#ff5fd2", "big": false, "vanish": true, "muzzles": [Vector3(0.0, 47.3, 15.4)], "emitter": Vector3(0.0, 47.3, 15.4)},
+	"mech_walker": {"col": "#ff8a2e", "big": true},
+	"core_hub": {"col": "#9d86ff", "big": true, "bone": "Neck", "antenna": Vector3(0.0, 97.0, -1.0), "pulse": "hub"},
+	"turret_railgun": {"col": "#4f8bff", "big": true, "muzzles": [Vector3(0.0, 58.0, 53.0)]},
 }
 const SELFLESS_DRAW := 0.48       # 无我：draw_killer 拔到这一刻刀出鞘(一闪)
 const SELFLESS_HOLD := 0.6        # 一闪之后定格(黑白)多久，刀痕才"落下"(崩散)
@@ -1142,6 +1176,13 @@ func _update_song(delta: float) -> void:
 		elif lk <= 0 and is_instance_valid(link_markers.get(uid)):
 			(link_markers[uid] as Node3D).queue_free()
 			link_markers.erase(uid)
+		# 【满电】(踩上了满电的供能地砖)：脚下一圈慢慢转的青色刻度环
+		var sc_on: bool = u.alive and u.statuses.has("supercharged")
+		if sc_on and not is_instance_valid(charge_markers.get(uid)):
+			charge_markers[uid] = fx.charge_marker(v, u.radius * 1.2)
+		elif not sc_on and is_instance_valid(charge_markers.get(uid)):
+			(charge_markers[uid] as Node3D).queue_free()
+			charge_markers.erase(uid)
 		# 锁芯节点：血色仪式 = 脚下一圈暗红的仪式法阵 + 血雾；深空之门 = 脚下一圈计数石(场上累计眩晕每满 1 秒亮一颗)
 		if u.def.model == "keeper":
 			var rite_on: bool = u.alive and u.status_stacks("blood_rite") > 0
@@ -1722,6 +1763,16 @@ func _dispatch(events: Array[Dictionary]) -> void:
 						var axs: BUnit = e.get("src") as BUnit
 						var axd: BUnit = e["dst"]
 						fx.protocol_strike(_chest(axd), Vector3(axd.pos.x - axs.pos.x, 0.0, axd.pos.y - axs.pos.y) if axs != null else Vector3(0, 0, 1))
+					"elite_gw_quake":
+						# 蓝之章第二批：步行机的震荡锤 = 落锤的地方一圈橙色的冲击环 + 尘土(同一锤只画一次)
+						var gws: BUnit = e.get("src") as BUnit
+						if gws != null and _gate("quake:" + gws.uid, 0.3):
+							var gwt: BUnit = gws.attack_target if gws.attack_target != null else e["dst"] as BUnit
+							fx.ring(Vector3(gwt.pos.x, 0.05, gwt.pos.y), 2.4, Color("#ff8a2e"), 0.45, 1.6, 0.1)
+							fx.dust_ring(Vector3(gwt.pos.x, 0.0, gwt.pos.y), 1.6)
+							shake.emit(0.04)
+					"boss_os_purge":
+						fx.purge_hit(_chest(e["dst"] as BUnit))
 				# 守林节点变身形态的普攻：爪痕 / 毒液 / 长舌(只看画面上的形态：UnitView.beast_form)
 				if str(e.get("surface", "")) == "normal_attack" and e.get("src") != null:
 					var bsv: UnitView = _view(e["src"] as BUnit)
@@ -1741,6 +1792,41 @@ func _dispatch(events: Array[Dictionary]) -> void:
 				if str(e.get("ability", "")) == "node_paladin_heal" and e.get("dst") is BUnit:
 					var hsrc: BUnit = e.get("src") as BUnit
 					fx.holy_mend(_chest(e["dst"] as BUnit), _chest(hsrc) if hsrc != null and hsrc != e["dst"] else Vector3.INF)
+				# MR-05 维修无人机：维修臂对着被修的机器喷一道洋红色的焊接光
+				if str(e.get("ability", "")) == "mob_mr_repair" and e.get("src") is BUnit and e.get("dst") is BUnit:
+					var mrs: BUnit = e["src"]
+					fx.repair_beam(_mech_point(mrs, "emitter"), _chest(e["dst"] as BUnit))
+					var mrv: UnitView = _view(mrs)
+					if mrv != null and not mrv.is_busy():
+						mrv.play_once("repair_" + mrs.def.model)
+			"pad_drain":
+				# 供能地砖被吸走：电光从地砖窜到吸电的人身上
+				var pdi: int = int(e["id"])
+				var pdu: BUnit = e.get("unit") as BUnit
+				if pdi >= 0 and pdi < battle.map.pads.size() and pdu != null:
+					var pdc: Vector2 = battle.map.rect_world(battle.map.pads[pdi]["rect"]).get_center()
+					fx.pad_drain(Vector3(pdc.x, 0.0, pdc.y), _chest(pdu))
+			"pad_ready":
+				var pri: int = int(e["id"])
+				if pri >= 0 and pri < battle.map.pads.size():
+					var prr: Rect2 = battle.map.rect_world(battle.map.pads[pri]["rect"])
+					fx.pad_ready(Vector3(prr.get_center().x, 0.0, prr.get_center().y), maxf(prr.size.x, prr.size.y) * 0.7)
+			"grid_mark":
+				var gmp: Vector2 = e["pos"]
+				fx.grid_mark(Vector3(gmp.x, 0.0, gmp.y), float(e.get("radius", 1.5)), float(e.get("delay", 1.5)))
+			"grid_land":
+				var glp: Vector2 = e["pos"]
+				fx.grid_land(Vector3(glp.x, 0.0, glp.y), float(e.get("radius", 1.5)))
+				shake.emit(0.03)
+			"reassemble_start":
+				var rau: BUnit = e["unit"]
+				var rah: BUnit = e.get("src") as BUnit
+				fx.reassemble_mark(Vector3(rau.pos.x, 0.4, rau.pos.y), _mech_point(rah, "antenna") if rah != null else Vector3(rau.pos.x, 2.0, rau.pos.y), float(e.get("delay", 4.0)))
+			"reassemble_done":
+				var rdu: BUnit = e["unit"]
+				var rdh: BUnit = e.get("src") as BUnit
+				fx.reassemble_done(Vector3(rdu.pos.x, 0.4, rdu.pos.y), _mech_point(rdh, "antenna") if rdh != null else Vector3(rdu.pos.x, 2.0, rdu.pos.y))
+				fx.number(_chest(rdu) + Vector3(0, 0.8, 0), Loc.t("ui.fx.rebuild"), Color("#b9a8ff"), 0.9)
 			"field_start":
 				var f: Dictionary = e["field"]
 				if str(f["kind"]) == "paddy":
@@ -2343,13 +2429,35 @@ func _dispatch(events: Array[Dictionary]) -> void:
 					var ldst: BUnit = e["unit"] as BUnit
 					var lsv: UnitView = _view(lsrc) if lsrc != null else null
 					if lsv != null and ldst != null and MECH.has(lsrc.def.model) and (MECH[lsrc.def.model] as Dictionary).has("antenna"):
-						var ant: Vector3 = lsv.bone_point("Chest", MECH[lsrc.def.model]["antenna"])
+						var ant: Vector3 = _mech_point(lsrc, "antenna")
 						if ldst != lsrc:
 							fx.data_link(ant, _chest(ldst))
 						if _gate("relay:" + lsrc.uid, 0.8):
-							fx.relay_pulse(ant, Vector3(lsrc.pos.x, 0.0, lsrc.pos.y), 6.0)
+							if str(MECH[lsrc.def.model].get("pulse", "")) == "hub":
+								fx.hub_pulse(ant, Vector3(lsrc.pos.x, 0.0, lsrc.pos.y))     # CN-00 全频广播：信号波扩满全场
+							else:
+								fx.relay_pulse(ant, Vector3(lsrc.pos.x, 0.0, lsrc.pos.y), 6.0)
 							if not lsv.is_busy():
 								lsv.play_once("broadcast_" + lsrc.def.model)
+				# GW-20 过载 / 过热：热浪 / 蒸汽挂在身上，结束时收；OS-00 系统升级：跳一个字
+				var gwbid: String = str(e.get("base_id", e.get("id", "")))
+				if gwbid == "gw_overload" or gwbid == "gw_overheat":
+					var gu0: BUnit = e["unit"] as BUnit
+					var gv0: UnitView = _view(gu0)
+					if mech_auras.has(gu0.uid):
+						fx.overload_end(mech_auras[gu0.uid])
+						mech_auras.erase(gu0.uid)
+					if int(e.get("stacks", 0)) > 0 and gv0 != null and gu0.alive:
+						if gwbid == "gw_overload":
+							mech_auras[gu0.uid] = fx.overload_aura(gv0, gv0.body_height)
+							fx.number(_chest(gu0) + Vector3(0, 1.2, 0), Loc.t("ui.fx.overload"), Color("#ff8a2e"), 1.1)
+						else:
+							mech_auras[gu0.uid] = fx.overheat_steam(gv0, gv0.body_height)
+							fx.number(_chest(gu0) + Vector3(0, 1.2, 0), Loc.t("ui.fx.overheat"), Color("#bfe6ff"), 1.0)
+				if gwbid == "os_upgrade" and int(e.get("stacks", 0)) > 0:
+					var ou: BUnit = e["unit"] as BUnit
+					fx.number(_chest(ou) + Vector3(0, 1.3, 0), Loc.t("ui.fx.system_upgrade", [int(e.get("stacks", 0))]), Color("#7ff0ff"), 1.0)
+					fx.ring(Vector3(ou.pos.x, 0.05, ou.pos.y), 1.8, Color("#7ff0ff"), 0.6, 1.2, 0.2)
 				# 【送葬】(白羽节点)：每一层 = 一只绕着飞的黑蝶，从施加者那一侧飞进来；清零时先记下(满层结算的 funeral 事件紧跟在后面，让黑蝶扑进身体)
 				if str(e.get("base_id", e.get("id", ""))) == "funeral":
 					var fnu: BUnit = e["unit"] as BUnit
@@ -2627,7 +2735,7 @@ func _dispatch(events: Array[Dictionary]) -> void:
 				if rvu.status_stacks("golden_guidance") > 0:
 					guidance_rings[rvu.uid] = fx.guidance_ring(nv, rvu.radius * 1.5)
 				# 希望的复活(与你，再度飞翔)：光柱 / 翅膀 / 法阵由 hope_revive 画，这里不再叠一道金色光柱
-				if str(e.get("kind", "")) != "hope":
+				if str(e.get("kind", "")) != "hope" and str(e.get("kind", "")) != "reassemble":
 					fx.revive_pillar(_chest(rvu))
 					fx.number(_chest(rvu) + Vector3(0, 0.8, 0), Loc.t("ui.fx.revive"), Fx.GOLD_HOT, 0.9)
 			"refresh_once":
@@ -3230,6 +3338,15 @@ func _dispatch(events: Array[Dictionary]) -> void:
 							if circles.has(cu.uid):
 								fx.magic_circle_end(circles[cu.uid], false)
 							circles[cu.uid] = fx.magic_circle(Vector3(cu.pos.x, 0.0, cu.pos.y), Color(str(cfx["circle"])))
+				# RG-09 蓄能射击：锁定激光(每帧 _update_rail_aims)；OS-00 全域清除：头顶一道信标光柱压下来
+				if str(e.get("ability", "")) == "elite_rg_charge" and e.get("target") is BUnit:
+					if rail_aims.has(cu.uid):
+						fx.rail_aim_end(rail_aims[cu.uid]["node"])
+					rail_aims[cu.uid] = {"node": fx.rail_aim(), "target": e["target"], "t0": battle.time}
+				if str(e.get("ability", "")) == "boss_os_purge":
+					fx.light_column(Vector3(cu.pos.x, 0.0, cu.pos.y), Color("#7ff0ff"), 0.9, 9.0, float(e.get("duration", 3.0)) / maxf(0.2, speed))
+					fx.ring(Vector3(cu.pos.x, 0.05, cu.pos.y), 3.0, Color("#7ff0ff"), float(e.get("duration", 3.0)) * 0.9, 1.6, 1.0)
+					fx.number(_chest(cu) + Vector3(0, 1.6, 0), Loc.t("ui.fx.purge"), Color("#bff8ff"), 1.3)
 				# 吟唱的通用光圈(演奏不画：五线谱连线就是它的吟唱表现)
 				var cfx2: Dictionary = _chant_fx(cu, str(e.get("ability", "")))
 				if not bool(cfx2.get("perform", false)) and not bool(cfx2.get("no_ring", false)):
@@ -3255,6 +3372,25 @@ func _dispatch(events: Array[Dictionary]) -> void:
 				var rcfx: Dictionary = _chant_fx(ru, str(e.get("ability", "")))
 				if rv != null and rcfx.has("cast_anim"):
 					rv.play_once(str(rcfx["cast_anim"]))
+				# RG-09 贯穿弹：沿锁定的方向一直打到战场边
+				if str(e.get("ability", "")) == "elite_rg_charge" and bool(e.get("complete", false)) and e.get("target") is BUnit:
+					var rgt: BUnit = e["target"]
+					var rfrom: Vector3 = _mech_point(ru, "muzzles")
+					var rdir := Vector3(rgt.pos.x - ru.pos.x, 0.0, rgt.pos.y - ru.pos.y).normalized()
+					var hx: Vector2 = GC.map_half()
+					var far: float = 60.0
+					for ax: int in [0, 2]:
+						var dv: float = rdir[ax]
+						if absf(dv) > 0.001:
+							var lim: float = (hx.x if ax == 0 else hx.y) + 1.0
+							far = minf(far, ((lim if dv > 0.0 else -lim) - (ru.pos.x if ax == 0 else ru.pos.y)) / dv)
+					var rto := Vector3(ru.pos.x, 0.0, ru.pos.y) + rdir * maxf(2.0, far)
+					rto.y = _chest(rgt).y
+					fx.rail_shot(rfrom, rto)
+					shake.emit(0.08)
+				if rail_aims.has(ru.uid):
+					fx.rail_aim_end(rail_aims[ru.uid]["node"])
+					rail_aims.erase(ru.uid)
 				# 血嗜节点：吟唱结束 = 准备扔血球(什么时候扔看 throw_cast 的落地时刻)；不再从敌人身上抽血
 				if blood_orbs.has(ru.uid):
 					blood_orbs[ru.uid]["released"] = battle.time
@@ -3273,6 +3409,10 @@ func _dispatch(events: Array[Dictionary]) -> void:
 				if petal_swirls.has(iu.uid):
 					fx.petal_swirl_end(petal_swirls[iu.uid], false)
 					petal_swirls.erase(iu.uid)
+				if rail_aims.has(iu.uid):
+					fx.rail_aim_end(rail_aims[iu.uid]["node"])
+					rail_aims.erase(iu.uid)
+					fx.number(_chest(iu) + Vector3(0, 1.0, 0), Loc.t("ui.fx.interrupted"), Color("#9fc0ff"), 0.9)
 				# 血嗜节点的吟唱被打断：头顶的血球破掉、血洒一地
 				if blood_orbs.has(iu.uid) and bool(blood_orbs[iu.uid].get("chant", false)) and not blood_orbs[iu.uid].has("released"):
 					fx.blood_orb_pop(blood_orbs[iu.uid]["node"])
@@ -3700,12 +3840,18 @@ func _on_death(e: Dictionary) -> void:
 		elif MECH.has(u.def.model):
 			# 蓝之章的机械：炸开(装甲碎片、火花、黑烟)；炮台 / 载具不倒地，整台炸掉
 			var mk: Dictionary = MECH[u.def.model]
-			if bool(mk["big"]):
+			if bool(mk["big"]) or bool(mk.get("vanish", false)):
 				v.die("vanish")
 			else:
 				v.die()
 			fx.mech_explode(_chest(u), Color(str(mk["col"])), bool(mk["big"]))
 			shake.emit(0.05 if bool(mk["big"]) else 0.02)
+			if mk.has("blast"):
+				fx.detonation(_chest(u), float(mk["blast"]), Color(str(mk["col"])))      # BX-09 殉爆
+				shake.emit(0.08)
+			if mech_auras.has(u.uid):
+				fx.overload_end(mech_auras[u.uid])
+				mech_auras.erase(u.uid)
 		elif u.has_flag("spectral") or bool(u.meta.get("feral", false)):
 			v.die("vanish")                         # 魂体 / 吟唱里召出来的幽灵：不倒下，化成一团灵火
 			fx.spirit_puff(_chest(u))

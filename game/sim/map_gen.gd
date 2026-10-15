@@ -71,7 +71,8 @@ const FROST_SHAPES := [
 	{"size": Vector2i(3, 2), "styles": ["frost_xl"]},
 ]
 ## 主题 blue(第一章-B·蓝之章：蓝色穹顶下的未来都市)：科技障碍，矮 = 花坛 / 货箱 1×1 / 长凳 2×1 / 货箱堆 2×2 / 光栅 3×1，
-##   高 = 立柱 1×1 / 全息亭 2×1 / 机柜 2×2 / 门架 3×1；没有地形效果
+##   高 = 立柱 1×1 / 全息亭 2×1 / 机柜 2×2 / 门架 3×1；
+##   地形效果 = 供能地砖(pads，不占格)：1×1 / 2×1 / 2×2，踩上满电的地砖 → 【满电】，8 秒后重新充满(docs/BLUE_CHAPTER.md 第 7 节)
 const TECH_LOW := [
 	{"size": Vector2i(1, 1), "styles": ["tech_planter", "tech_crate"]},
 	{"size": Vector2i(2, 1), "styles": ["tech_bench"]},
@@ -84,10 +85,15 @@ const TECH_HIGH := [
 	{"size": Vector2i(2, 2), "styles": ["tech_server"]},
 	{"size": Vector2i(3, 1), "styles": ["tech_gate"]},
 ]
+const PAD_SHAPES := [
+	{"size": Vector2i(1, 1), "styles": ["pad_s"]},
+	{"size": Vector2i(2, 1), "styles": ["pad_m"]},
+	{"size": Vector2i(2, 2), "styles": ["pad_l"]},
+]
 const ALTAR_RECT := Rect2i(11, 0, 3, 2)      # 终点祭坛：北侧(敌方一侧)正中，3×2，高障碍
 
 
-## cfg: {"low": int, "high": int, "altar": bool, "regions": [方位...], "theme": "white"/"red"/"purple", "burning": int, "embers": int, "frost": int}
+## cfg: {"low": int, "high": int, "altar": bool, "regions": [方位...], "theme": "white"/"red"/"purple"/"blue", "burning": int, "embers": int, "frost": int, "pads": int}
 static func generate(cfg: Dictionary, seed_value: int) -> Dictionary:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = seed_value
@@ -120,9 +126,13 @@ static func generate(cfg: Dictionary, seed_value: int) -> Dictionary:
 	if int(cfg.get("embers", 0)) > 0:
 		_place_embers(m, rng, int(cfg["embers"]), keep)
 	if int(cfg.get("frost", 0)) > 0:
-		_place_patches(m, rng, FROST_SHAPES, int(cfg["frost"]), keep, true)
+		_place_patches(m, rng, FROST_SHAPES, int(cfg["frost"]), keep, "frost")
+	if int(cfg.get("pads", 0)) > 0:
+		_place_patches(m, rng, PAD_SHAPES, int(cfg["pads"]), keep, "pad")
 	var layout: Dictionary = m.to_layout()
 	layout["seed"] = seed_value
+	if cfg.has("cam_z"):
+		layout["cam_z"] = float(cfg["cam_z"])         # 战斗镜头往北挪(蓝之章精英战：中枢 / 轨道炮不会动，站在北边缘)
 	if red:
 		layout["theme"] = "red"
 	elif purple:
@@ -159,11 +169,11 @@ static func _place_obstacles(m: BattleMap, rng: RandomNumberGenerator, shapes: A
 
 ## 余烬地块：铺在空地上(不挡路，所以不影响连通)；不进我方部署区与敌人出生区，彼此不重叠
 static func _place_embers(m: BattleMap, rng: RandomNumberGenerator, want: int, keep: Array[Vector2]) -> void:
-	_place_patches(m, rng, EMBER_SHAPES, want, keep, false)
+	_place_patches(m, rng, EMBER_SHAPES, want, keep, "ember")
 
 
-## 不占格的地块(余烬 / 寒雾)：铺在空地上，不进我方部署区(外扩 1 格)与敌人出生区，和别的地块不重叠
-static func _place_patches(m: BattleMap, rng: RandomNumberGenerator, shapes: Array, want: int, keep: Array[Vector2], is_frost: bool) -> void:
+## 不占格的地块(余烬 / 寒雾 / 供能地砖，kind = ember / frost / pad)：铺在空地上，不进我方部署区(外扩 1 格)与敌人出生区，和别的地块不重叠
+static func _place_patches(m: BattleMap, rng: RandomNumberGenerator, shapes: Array, want: int, keep: Array[Vector2], kind: String) -> void:
 	var placed := 0
 	var tries := 0
 	while placed < want and tries < want * 60:
@@ -186,6 +196,9 @@ static func _place_patches(m: BattleMap, rng: RandomNumberGenerator, shapes: Arr
 		for f: Dictionary in m.frost:
 			if (f["rect"] as Rect2i).grow(1).intersects(r):
 				ok = false
+		for pd: Dictionary in m.pads:
+			if (pd["rect"] as Rect2i).grow(1).intersects(r):
+				ok = false
 		for p: Vector2 in keep:
 			var c: Vector2i = GC.world_to_cell(p)
 			if Rect2i(c - Vector2i(1, 1), Vector2i(3, 3)).intersects(r):
@@ -193,10 +206,13 @@ static func _place_patches(m: BattleMap, rng: RandomNumberGenerator, shapes: Arr
 		if not ok:
 			continue
 		var styles: Array = sh["styles"]
-		if is_frost:
-			m.add_frost(r, str(styles[rng.randi() % styles.size()]))
+		var style: String = str(styles[rng.randi() % styles.size()])
+		if kind == "frost":
+			m.add_frost(r, style)
+		elif kind == "pad":
+			m.add_pad(r, style)
 		else:
-			m.add_ember(r, str(styles[rng.randi() % styles.size()]))
+			m.add_ember(r, style)
 		placed += 1
 
 

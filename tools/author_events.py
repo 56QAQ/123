@@ -27,6 +27,9 @@
         {type: "sweep"    一个大家伙沿直线冲过战场(电车)：id, tag 地形事件的标签, z 轨道中心线, half_width, length, rest_x 发车前停在哪,
                           accel, speed, first 开战后第几秒第一班, period 每隔几秒一班, warn 提前几秒预警}
         {type: "eruption" 周期性的喷发(喷泉)：id, tag, center, height 喷口高度, first, period, warn 蓄力几秒, flight 火弧飞几秒, embers 落点 = 第几块余烬地块(重新点燃)}
+        {type: "searchlight" 扫过扇面的探照灯(宵禁广场)：id, tag, origin 塔心(世界坐标 x, z), lamp_h 灯高(表现), arc [起, 止] 度(从正南往东为正),
+                          half 光束半角, sweep 扫一遍几秒, range, exit 视线从离塔心多远开始算, first, period, warn;
+                          照到 = 和灯之间没有高障碍 / 卡车挡着(BattleMap.searchlight_exposed)}
 }
 坐标：格子 (x, y) 19×14，x 向东、y 向南；世界坐标(米)原点在地图中心，z = y - 7 + 0.5。我方部署区 = 格子 x 5..13、y 4..9，卡车在正中。
 """
@@ -154,6 +157,29 @@ ARENAS = {
         "hazards": [{"type": "sweep", "id": "tram", "tag": "tram", "z": -7.0, "half_width": 1.1, "length": 9.8, "rest_x": -17.6,
                      "accel": 7.0, "speed": 11.0, "first": 6.0, "period": 13.0, "warn": 3.0}],
     },
+    # 宵禁广场(事件「宵禁」，2026-10-15)：蓝之章的白色广场。北侧正中是安保探照塔(3×3，高障碍；塔顶的探照灯朝南)，敌人从西北 / 东北 / 两侧出来。
+    # 塔和我方部署区之间立着两座全息亭(高障碍)，加上卡车本身——探照灯照不到它们背后的影子(备战时画在地上)。
+    # 战场机制 searchlight：开战 5 秒后、之后每 11 秒，探照灯在 2.5 秒里从西(-75°)扫到东(+75°)，照到的单位(和灯之间没有高障碍 / 卡车挡着，不分敌我)
+    #   受到 12% 最大生命 + 70 的法术伤害并【过曝】3 秒(terrain.json：terrain_searchlight_hit / terrain_searchlight)。
+    "curfew_plaza": {
+        "theme": "blue", "set": "curfew_plaza", "cam_z": -2.0,
+        "regions": ["nw", "ne", "w", "e", "nw", "ne"],
+        "obstacles": [
+            {"x": 11, "y": 1, "w": 3, "h": 3, "kind": "high", "style": "sec_tower"},
+            {"x": 9, "y": 5, "w": 2, "h": 1, "kind": "high", "style": "tech_kiosk"},
+            {"x": 14, "y": 5, "w": 2, "h": 1, "kind": "high", "style": "tech_kiosk"},
+            {"x": 3, "y": 8, "w": 2, "h": 2, "kind": "high", "style": "tech_server"},
+            {"x": 20, "y": 8, "w": 2, "h": 2, "kind": "high", "style": "tech_server"},
+            {"x": 7, "y": 3, "w": 1, "h": 1, "kind": "low", "style": "tech_planter"},
+            {"x": 17, "y": 3, "w": 1, "h": 1, "kind": "low", "style": "tech_planter"},
+            {"x": 5, "y": 14, "w": 2, "h": 1, "kind": "low", "style": "tech_bench"},
+            {"x": 18, "y": 14, "w": 2, "h": 1, "kind": "low", "style": "tech_bench"},
+        ],
+        "embers": [],
+        "hazards": [{"type": "searchlight", "id": "searchlight", "tag": "searchlight", "origin": [0.0, -7.5], "lamp_h": 4.5,
+                     "arc": [-75.0, 75.0], "half": 5.0, "sweep": 2.5, "range": 40.0, "exit": 2.2,
+                     "first": 5.0, "period": 11.0, "warn": 2.0}],
+    },
 }
 
 EVENTS = [
@@ -192,6 +218,32 @@ EVENTS = [
          # 目送它离开，读站牌上的路线图：观测周围 3 格内的节点 + 一点经验
          {"id": "watch", "requires": [],
           "outcomes": [{"w": 1, "id": "watch", "effects": [{"type": "reveal", "radius": 3}, {"type": "xp", "amount": 3}]}]},
+     ]},
+    # ---------------------------------------------------------------- 蓝之章 限定(2026-10-15，docs/BLUE_CHAPTER.md)
+    # 宵禁：没有市民的城市还在执行宵禁，广场北边的安保探照塔一遍遍扫过空广场。三个选项 = 战斗 / 行动力换耐久 / 观测
+    {"id": "curfew", "rarity": 1, "pool": {"type": "exclusive", "chapter": "ch1_blue"}, "scene": "curfew_plaza",
+     "options": [
+         # 闯过广场：在宵禁广场打一场(探照灯照到谁打谁，躲在全息亭 / 卡车的影子里)，赢了额外 2 个蓝色晶球。
+         #   强度：照末班电车的 +6 / 至少 20 时机器人 24 场全胜(探照灯也照机器：站在空地上的炮台每一轮都挨)，改成和公园喷泉一样 +12、至少 26
+         OPT("dash", outcomes=[O("dash_fight", [{"type": "battle", "arena": "curfew_plaza", "intensity_bonus": 12, "min_intensity": 26, "orbs": ["blue", "blue"]}])]),
+         # 关掉车灯等到天亮：-2 行动力，趁机修车 +12 耐久
+         OPT("wait", outcomes=[O("wait", [AP(-2), {"type": "truck_heal", "amount": 12}])]),
+         # 黑进探照塔(等级 ≥ 4)：调出塔里的巡逻地图，观测周围 4 格 + 4 经验
+         OPT("hack", requires=[{"type": "level_at_least", "value": 4}], outcomes=[O("hack", [{"type": "reveal", "radius": 4}, XP(4)])]),
+     ]},
+    # 等门的家政机：一台 HM-02 家政仿生人还在等早就不会回来的主人
+    {"id": "waiting_android", "rarity": 2, "pool": {"type": "exclusive", "chapter": "ch1_blue"}, "scene": "roadside",
+     "props": [PROP("hm02_apartment", 0.0, -1.6, 0.0), PROP("hm02_android", 0.9, -0.3, -18.0),
+               LIGHT(-0.2, 1.2, -2.5, "#ffc98a", 2.4, 3.5), LIGHT(0.0, 2.2, -1.3, "#ffd9a0", 1.4, 3.5), LIGHT(1.8, 2.4, 0.8, "#9fe6ff", 1.0, 5.0)],
+     "cam": {"focus": [0.0, 1.0, -0.6], "dist": 7.5, "height": 2.8, "yaw": 12.0},
+     "options": [
+         # 陪它等一会儿(-1 行动力)：它把"主人用不上的东西"装了一箱：一把 ≤ 3 费的武器
+         OPT("wait", requires=[{"type": "ap_at_least", "value": 1}], outcomes=[O("wait", [AP(-1), {"type": "weapon", "max_cost": 3}])]),
+         # 告诉它主人不会回来了：60% 它来照顾卡车(耐久上限 +8、耐久 +15) / 40% 它关机了，留下核心电池(液态负熵 +8)
+         OPT("tell", outcomes=[O("tell_join", [{"type": "truck_max", "amount": 8}, {"type": "truck_heal", "amount": 15}], 60),
+                               O("tell_sleep", [MAT(blue=8)], 40)]),
+         # 拆下它的核心：液态负熵 +6、燃素 +2；诅咒：附近的安保机器听见了，下一场敌人强度 +4
+         OPT("salvage", outcomes=[O("salvage", [MAT(blue=6, red=2), FLAG("next_battle_intensity", 4, "next_battle")])]),
      ]},
     # ================================================================ 第二批(2026-10-06)：通用事件
     # ---------------------------------------------------------------- A. 可重复选择的选项
@@ -264,6 +316,15 @@ EVENTS = [
          OPT("drive", requires=[{"type": "truck_hp_above", "value": 20}], outcomes=[O("drive", [TRUCK(8)])]),
          OPT("wait", outcomes=[O("wait", [AP(-2)])]),
          OPT("dark", outcomes=[O("dark", [FLAG("next_battle_intensity", 6, "next_battle")])]),
+     ]},
+    # 停摆的钟(蓝色事件，2026-10-15)：蓝 = 计时器；路口的钟停在某个时刻，这里的时间像被冻住了。行动力 / 下一场战斗 / 材料
+    {"id": "stopped_clock", "rarity": 2, "pool": {"type": "color", "color": "blue"}, "scene": "roadside",
+     "props": [PROP("street_clock", 0.0, -0.4, 18.0), LIGHT(0.0, 2.6, 0.2, "#bfeaff", 2.4, 6.0)],
+     "cam": {"focus": [0.0, 1.5, -0.3], "dist": 8.0, "height": 2.6, "yaw": 10.0},
+     "options": [
+         OPT("forward", outcomes=[O("forward", [AP(2), {"type": "truck_max", "amount": -4}])]),
+         OPT("back", outcomes=[O("back", [FLAG("next_battle_ease", 5, "next_battle")])]),
+         OPT("spring", outcomes=[O("spring", [MAT(blue=5), XP(3)])]),
      ]},
     # ---------------------------------------------------------------- C. 高收益的通用事件
     # 失落的军火库：锁的是等级。破解(等级 ≥ 5：一把 ≤ 4 费武器 + 8 金) / 炸开(远程攻击 ≥ 150：一把 ≤ 3 费武器，-6 耐久) / 只拿门口的(+5 金)

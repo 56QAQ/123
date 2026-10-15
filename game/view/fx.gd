@@ -1162,6 +1162,230 @@ func mech_explode(at: Vector3, c: Color, big: bool) -> void:
 		scorch(Vector3(at.x, 0.0, at.z), 0.7, c, 2.4)
 
 
+# ---------------------------------------------------------------- 蓝之章第二批(2026-10-15)：殉爆 / 维修 / 过载 / 重构 / 轨道炮 / 格栅
+## BX-09 殉爆：警示黄的爆炸——一圈冲击环扩到殉爆半径、地上烧出焦痕，碎片 + 火花 + 黑烟
+func detonation(at: Vector3, radius: float, c: Color) -> void:
+	var g := Vector3(at.x, 0.05, at.z)
+	soft_flash(at, c.lerp(Color.WHITE, 0.5), 1.8, 0.28, 2.8)
+	ring(g, radius, c, 0.45, 1.6, 0.05)
+	ring(g + Vector3(0, 0.01, 0), radius * 0.6, Color("#fff4c0"), 0.35, 1.2, 0.05)
+	burst(at, c, 18, 4.2, 0.6, 1.2, 0.4)
+	burst(at, Color("#1a1c22"), 10, 3.0, 1.0, 1.2, 0.8, false)
+	fire_puff(at, Color("#ff9a3a"), 8, 0.5, 1.4, 0.5, 0.7)
+	fire_puff(at, Color("#3a3f48"), 8, 0.6, 1.4, 1.4, 1.2, false)
+	scorch(g, radius * 0.45, c, 2.6)
+
+
+## MR-05 维修光束：洋红色的焊接光从维修臂连到被修的机器上，目标身上迸几粒火花、一圈小小的修复环
+func repair_beam(from: Vector3, to: Vector3) -> void:
+	var c := Color("#ff5fd2")
+	tracer(from, to, 0.06, 0.35, Color("#ffe0f6"), c)
+	soft_flash(from, c, 0.5, 0.15, 2.4)
+	soft_flash(to, c, 0.7, 0.25, 2.2)
+	burst(to, Color("#ffd2f2"), 7, 1.8, 0.45, 0.6, 0.3)
+	ring(Vector3(to.x, to.y - 0.2, to.z), 0.45, c, 0.4, 1.2, 0.2)
+
+
+## GW-20 过载：挂在单位视图上的一团橙色热浪(往上冒的热气 + 一盏一闪一闪的橙光)，状态结束时 overload_end
+func overload_aura(parent: Node3D, h: float) -> Node3D:
+	var root := Node3D.new()
+	root.name = "Overload"
+	parent.add_child(root)
+	var c := Color("#ff8a2e")
+	var heat: GPUParticles3D = SoftFX.particles(30, 0.9, SoftFX.ramp([Color(1.0, 0.6, 0.2, 0.0), Color(1.0, 0.55, 0.15, 0.9), Color(1.0, 0.3, 0.1, 0.0)]), 0.22)
+	var pm: ParticleProcessMaterial = heat.process_material
+	pm.emission_shape = ParticleProcessMaterial.EMISSION_SHAPE_SPHERE
+	pm.emission_sphere_radius = h * 0.35
+	pm.direction = Vector3(0, 1, 0)
+	pm.spread = 15.0
+	pm.initial_velocity_min = 1.0
+	pm.initial_velocity_max = 2.2
+	pm.gravity = Vector3.ZERO
+	heat.position = Vector3(0, h * 0.7, 0)
+	heat.emitting = true
+	root.add_child(heat)
+	var lt := OmniLight3D.new()
+	lt.light_color = c
+	lt.light_energy = 1.6
+	lt.omni_range = 3.5
+	lt.shadow_enabled = false
+	lt.position = Vector3(0, h * 0.8, 0)
+	root.add_child(lt)
+	var tw: Tween = root.create_tween().set_loops()
+	tw.tween_property(lt, "light_energy", 2.6, 0.18)
+	tw.tween_property(lt, "light_energy", 1.2, 0.22)
+	return root
+
+
+## GW-20 过热：背上喷出一股一股的灰白蒸汽(挂在单位视图上)，状态结束时 overload_end
+func overheat_steam(parent: Node3D, h: float) -> Node3D:
+	var root := Node3D.new()
+	root.name = "Overheat"
+	parent.add_child(root)
+	var steam: GPUParticles3D = SoftFX.particles(26, 1.3, SoftFX.ramp([Color(0.9, 0.93, 1.0, 0.0), Color(0.85, 0.9, 0.95, 0.7), Color(0.8, 0.85, 0.9, 0.0)]), 0.5)
+	var pm: ParticleProcessMaterial = steam.process_material
+	pm.emission_shape = ParticleProcessMaterial.EMISSION_SHAPE_BOX
+	pm.emission_box_extents = Vector3(h * 0.25, 0.1, h * 0.15)
+	pm.direction = Vector3(0, 1, -0.4)
+	pm.spread = 20.0
+	pm.initial_velocity_min = 1.6
+	pm.initial_velocity_max = 2.8
+	pm.gravity = Vector3(0, 0.6, 0)
+	steam.position = Vector3(0, h * 0.75, -h * 0.15)
+	steam.emitting = true
+	root.add_child(steam)
+	return root
+
+
+func overload_end(n: Node3D) -> void:
+	if n == null or not is_instance_valid(n):
+		return
+	for ch: Node in n.get_children():
+		if ch is GPUParticles3D:
+			(ch as GPUParticles3D).emitting = false
+		elif ch is Light3D:
+			(ch as Light3D).visible = false
+	get_tree().create_timer(1.6).timeout.connect(n.queue_free)
+
+
+## CN-00 重构协议：倒下的机器原地留一个紫罗兰色的线框六边形 + 一道数据流从中枢连过去(要在中枢身边重组的预告)
+func reassemble_mark(at: Vector3, hub: Vector3, delay: float) -> void:
+	var c := Color("#9d86ff")
+	ring(Vector3(at.x, 0.05, at.z), 0.6, c, maxf(0.3, delay * 0.5), 1.2, 0.0)
+	tracer(hub, at, 0.04, 0.5, Color("#e6defe"), c)
+	burst(at, c, 8, 1.6, 0.6, 0.8, 0.4)
+
+
+## 重组完成：中枢身边一圈紫罗兰色的六边形光柱，组装的碎片往里收
+func reassemble_done(at: Vector3, hub: Vector3) -> void:
+	var c := Color("#9d86ff")
+	ring_in(Vector3(at.x, 0.05, at.z), 1.4, c, 0.35)
+	light_column(Vector3(at.x, 0.0, at.z), c, 0.55, 2.2, 0.5)
+	soft_flash(at + Vector3(0, 0.6, 0), c, 1.0, 0.3, 2.4)
+	tracer(hub, at + Vector3(0, 0.6, 0), 0.05, 0.35, Color("#f0eaff"), c)
+
+
+## CN-00 全频广播：中枢顶上一闪 + 一圈紫罗兰色的信号波扩满全场
+func hub_pulse(antenna: Vector3, ground: Vector3) -> void:
+	var c := Color("#9d86ff")
+	soft_flash(antenna, c, 1.2, 0.3, 2.6)
+	ring(Vector3(ground.x, 0.05, ground.z), 14.0, c, 1.1, 0.8, 0.05)
+	ring(Vector3(ground.x, 0.06, ground.z), 7.0, Color("#e2d9ff"), 0.8, 0.8, 0.05)
+
+
+## RG-09 蓄能：从炮口到锁定目标的一道电光蓝激光(细、微微闪)；BattleView 每帧 rail_aim_set 更新两端，发射 / 被打断时 rail_aim_end
+func rail_aim() -> Node3D:
+	var root := Node3D.new()
+	add_child(root)
+	var m := MeshInstance3D.new()
+	var bm := BoxMesh.new()
+	bm.size = Vector3(1, 1, 1)
+	m.mesh = bm
+	var mat: StandardMaterial3D = _emissive(Color("#4f8bff"), 3.0, 0.75).duplicate() as StandardMaterial3D
+	m.material_override = mat
+	m.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	m.name = "Laser"
+	root.add_child(m)
+	var dot := MeshInstance3D.new()
+	dot.mesh = _box
+	dot.material_override = _emissive(Color("#cfe0ff"), 4.0)
+	dot.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	dot.scale = Vector3.ONE * 2.5
+	dot.name = "Dot"
+	root.add_child(dot)
+	return root
+
+
+func rail_aim_set(root: Node3D, from: Vector3, to: Vector3, k: float) -> void:
+	if root == null or not is_instance_valid(root):
+		return
+	var las: MeshInstance3D = root.get_node("Laser")
+	var d: Vector3 = to - from
+	var L: float = maxf(0.05, d.length())
+	var w: float = 0.025 + 0.03 * k + 0.012 * sin(Time.get_ticks_msec() * 0.04)
+	las.global_transform = Transform3D(Basis.looking_at(d / L, Vector3.UP if absf(d.normalized().y) < 0.95 else Vector3.RIGHT).scaled(Vector3(w, w, L)), from + d * 0.5)
+	(root.get_node("Dot") as Node3D).global_position = to
+
+
+func rail_aim_end(root: Node3D) -> void:
+	if root != null and is_instance_valid(root):
+		root.queue_free()
+
+
+## RG-09 贯穿弹：从炮口沿锁定方向一直打到战场边的一道粗电光(白芯 + 电光蓝)，炮口大闪 + 冲击环，沿线迸火花
+func rail_shot(from: Vector3, to: Vector3) -> void:
+	var c := Color("#4f8bff")
+	tracer(from, to, 0.22, 0.45, Color("#eef4ff"), c)
+	tracer(from, to, 0.09, 0.25, Color.WHITE, Color("#bcd2ff"))
+	soft_flash(from, c.lerp(Color.WHITE, 0.4), 1.6, 0.3, 2.8)
+	ring(Vector3(from.x, 0.05, from.z), 1.6, c, 0.4, 1.4, 0.1)
+	var n: int = 6
+	for i in range(n):
+		var p: Vector3 = from.lerp(to, (float(i) + 0.5) / float(n))
+		burst(p, Color("#cfe0ff"), 4, 1.8, 0.35, 0.5, 0.25)
+
+
+## OS-00 格栅：落点地上一块方格网的光盘(青白)从大到小收紧，delay 秒后落下(grid_land)
+func grid_mark(pos: Vector3, radius: float, delay: float) -> Node3D:
+	var n := Node3D.new()
+	n.position = pos + Vector3(0, 0.02, 0)
+	add_child(n)
+	var tint: MeshInstance3D = _amp_disc(radius, false, Color("#0e2a4a"), 0.45)
+	n.add_child(tint)
+	var glow: MeshInstance3D = _amp_disc(radius, true, Color("#7ff0ff"), 0.9)
+	glow.position.y = 0.006
+	n.add_child(glow)
+	ring_in(Vector3(pos.x, 0.05, pos.z), radius, Color("#bff8ff"), maxf(0.2, delay / maxf(0.2, speed_scale)))
+	n.scale = Vector3(0.2, 1.0, 0.2)
+	var d: float = maxf(0.1, delay / maxf(0.2, speed_scale))
+	var tw: Tween = n.create_tween()
+	tw.tween_property(n, "scale", Vector3.ONE, 0.25 * d).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	tw.tween_interval(0.75 * d)
+	tw.tween_callback(n.queue_free)
+	return n
+
+
+## 格栅落下：一圈竖直的光栅从天上砸下来 + 白闪 + 青色的冲击环
+func grid_land(pos: Vector3, radius: float) -> void:
+	var c := Color("#7ff0ff")
+	light_column(Vector3(pos.x, 0.0, pos.z), c, radius * 0.75, 3.0, 0.35)
+	soft_flash(pos + Vector3(0, 0.4, 0), c.lerp(Color.WHITE, 0.5), 1.4, 0.2, 2.8)
+	ring(Vector3(pos.x, 0.05, pos.z), radius, c, 0.35, 1.5, 0.05)
+	burst(pos + Vector3(0, 0.3, 0), Color("#dffbff"), 10, 2.6, 0.45, 0.8, 0.3)
+
+
+## 一根竖直的六棱光柱(半径 r、高 h，从脚下立起来，dur 秒内收细淡掉)
+func light_column(pos: Vector3, color: Color, r: float, h: float, dur: float) -> void:
+	var m := MeshInstance3D.new()
+	var cm := CylinderMesh.new()
+	cm.top_radius = r * 0.85
+	cm.bottom_radius = r
+	cm.height = h
+	cm.radial_segments = 6
+	cm.cap_top = false
+	cm.cap_bottom = false
+	m.mesh = cm
+	var mat := _emissive(color, 2.6, 0.55).duplicate() as StandardMaterial3D
+	mat.cull_mode = BaseMaterial3D.CULL_DISABLED
+	m.material_override = mat
+	m.position = pos + Vector3(0, h * 0.5, 0)
+	m.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	add_child(m)
+	var s: float = maxf(0.2, speed_scale)
+	var tw: Tween = create_tween().set_parallel(true)
+	tw.tween_property(m, "scale", Vector3(0.15, 1.1, 0.15), dur / s).set_ease(Tween.EASE_IN)
+	tw.tween_property(mat, "albedo_color:a", 0.0, dur / s)
+	tw.chain().tween_callback(m.queue_free)
+
+
+## OS-00 全域清除：每个敌人头顶落下一道青白的光柱
+func purge_hit(at: Vector3) -> void:
+	var c := Color("#7ff0ff")
+	light_column(Vector3(at.x, 0.0, at.z), c, 0.55, 5.0, 0.45)
+	soft_flash(at, c.lerp(Color.WHITE, 0.5), 1.0, 0.25, 2.6)
+	burst(at, Color("#e8fdff"), 8, 2.2, 0.45, 0.8, 0.3)
+
+
 func remove_field(n: Node3D) -> void:
 	var tw: Tween = n.create_tween()
 	tw.tween_property(n, "scale", Vector3(0.05, 1.0, 0.05), 0.35 / speed_scale).set_ease(Tween.EASE_IN)
@@ -1243,6 +1467,66 @@ func _arc_mesh() -> ArrayMesh:
 	_arc = ArrayMesh.new()
 	_arc.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arr)
 	return _arc
+
+
+# ---------------------------------------------------------------- 蓝之章地形：供能地砖(2026-10-15)
+const PAD_CYAN := Color("#3fe0ff")
+
+
+## 有人把一块供能地砖的电吸走：地砖上冒起一圈青光，一道电光 + 一串数据块从地砖窜到他胸口，身上一闪
+func pad_drain(pad: Vector3, to: Vector3) -> void:
+	var g := Vector3(pad.x, 0.06, pad.z)
+	ring(g, 0.9, PAD_CYAN, 0.4, 1.2, 0.3)
+	burst(g + Vector3(0, 0.1, 0), PAD_CYAN, 10, 1.6, 0.45, 2.2, 0.45)
+	tracer(g + Vector3(0, 0.1, 0), to, 0.06, 0.35, Color("#e8fbff"), PAD_CYAN)
+	var s: float = maxf(0.2, speed_scale)
+	for i in range(4):
+		var m := MeshInstance3D.new()
+		m.mesh = _box
+		m.material_override = _emissive(PAD_CYAN, 2.8)
+		m.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+		m.scale = Vector3.ONE * 0.8
+		add_child(m)
+		m.global_position = g + Vector3(randf_range(-0.3, 0.3), 0.05, randf_range(-0.3, 0.3))
+		var tw: Tween = create_tween()
+		tw.tween_interval(0.05 * float(i) / s)
+		tw.tween_property(m, "global_position", to, 0.2 / s).set_ease(Tween.EASE_IN)
+		tw.tween_callback(m.queue_free)
+	get_tree().create_timer(0.25 / s).timeout.connect(soft_flash.bind(to, PAD_CYAN, 0.7, 0.2, 2.4))
+
+
+## 供能地砖重新充满：地砖上扩开一圈青色的光环，几点光往上飘
+func pad_ready(pad: Vector3, r: float) -> void:
+	var g := Vector3(pad.x, 0.06, pad.z)
+	ring(g, r, PAD_CYAN, 0.5, 1.0, 0.5)
+	burst(g + Vector3(0, 0.1, 0), Color("#bff4ff"), 6, 0.6, 0.4, 2.6, 0.6)
+
+
+## 【满电】：脚下一圈 8 格的青色刻度环(和地砖边上的充电刻度同一个样子)慢慢转、一明一暗(挂在单位视图上)
+func charge_marker(parent: Node3D, r: float) -> Node3D:
+	var root := Node3D.new()
+	root.name = "ChargeMarker"
+	parent.add_child(root)
+	var spin := Node3D.new()
+	spin.position.y = 0.05
+	root.add_child(spin)
+	var mat: StandardMaterial3D = _emissive(PAD_CYAN, 2.4, 0.85).duplicate() as StandardMaterial3D
+	for i in range(8):
+		var a: float = TAU * float(i) / 8.0
+		var m := MeshInstance3D.new()
+		m.mesh = _box
+		m.material_override = mat
+		m.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+		m.position = Vector3(sin(a) * r, 0.0, cos(a) * r)
+		m.rotation.y = a
+		m.scale = Vector3(r * 6.0, 0.25, 0.9)          # 一格的弧长约 0.43r(_box 边长 0.07 米)
+		spin.add_child(m)
+	var tw: Tween = root.create_tween().set_loops()
+	tw.tween_property(spin, "rotation:y", TAU / 8.0, 0.8).from(0.0)
+	var tw2: Tween = root.create_tween().set_loops()
+	tw2.tween_property(mat, "albedo_color:a", 0.35, 0.4)
+	tw2.tween_property(mat, "albedo_color:a", 0.9, 0.4)
+	return root
 
 
 # ---------------------------------------------------------------- 体素小图标(爱心 / 十字)

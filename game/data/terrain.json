@@ -319,6 +319,166 @@
     "cooldown": 0.0,
     "priority": 100
    }
+  },
+  {
+   "trigger": {
+    "id": "terrain_searchlight_hit",
+    "timing": "OnTerrainHit",
+    "event_count_threshold": 1,
+    "base_value_mode": "max_health_ratio",
+    "base_value_ratio": 0.12,
+    "base_value_flat": 70.0,
+    "target_rule": "self",
+    "team_filter": "any",
+    "tags": [
+     "terrain_payload",
+     "terrain_searchlight_hit"
+    ],
+    "runtime_conditions": [
+     {
+      "type": "event_has_tag",
+      "tag": "searchlight"
+     }
+    ]
+   },
+   "ability": {
+    "id": "terrain_searchlight_hit_dmg",
+    "ability_class": "blade",
+    "effect_type": "magic_damage",
+    "value_multiplier": 1.0,
+    "fixed_value": 0.0,
+    "keywords": [
+     "basic"
+    ],
+    "accepted_timings": [
+     "OnTerrainHit"
+    ],
+    "required_trigger_tags": [
+     "terrain_payload",
+     "terrain_searchlight_hit"
+    ],
+    "effect_config": {
+     "sourceless": true
+    },
+    "cooldown": 0.0,
+    "priority": 110
+   }
+  },
+  {
+   "trigger": {
+    "id": "terrain_searchlight",
+    "timing": "OnTerrainHit",
+    "event_count_threshold": 1,
+    "base_value_mode": "fixed",
+    "base_value_flat": 0.0,
+    "target_rule": "self",
+    "team_filter": "any",
+    "tags": [
+     "terrain_payload",
+     "terrain_searchlight"
+    ],
+    "runtime_conditions": [
+     {
+      "type": "event_has_tag",
+      "tag": "searchlight"
+     }
+    ]
+   },
+   "ability": {
+    "id": "terrain_searchlight_dazzle",
+    "ability_class": "blade",
+    "effect_type": "stat_status",
+    "value_multiplier": 1.0,
+    "fixed_value": 0.0,
+    "keywords": [
+     "basic"
+    ],
+    "accepted_timings": [
+     "OnTerrainHit"
+    ],
+    "required_trigger_tags": [
+     "terrain_payload",
+     "terrain_searchlight"
+    ],
+    "effect_config": {
+     "status_id": "dazzled",
+     "duration": 3.0,
+     "max_stacks": 1,
+     "flags": [
+      "debuff",
+      "dispellable"
+     ],
+     "sourceless": true,
+     "stats": {
+      "attack_speed_multiplier": {
+       "flat": -0.3
+      }
+     }
+    },
+    "cooldown": 0.0,
+    "priority": 100
+   }
+  },
+  {
+   "trigger": {
+    "id": "terrain_power_tile",
+    "timing": "OnTerrainEnter",
+    "event_count_threshold": 1,
+    "base_value_mode": "fixed",
+    "base_value_flat": 0.0,
+    "target_rule": "self",
+    "team_filter": "any",
+    "tags": [
+     "terrain_payload",
+     "terrain_power_tile"
+    ],
+    "runtime_conditions": [
+     {
+      "type": "event_has_tag",
+      "tag": "power_tile"
+     }
+    ]
+   },
+   "ability": {
+    "id": "terrain_power_tile_charge",
+    "ability_class": "blade",
+    "effect_type": "stat_status",
+    "value_multiplier": 1.0,
+    "fixed_value": 0.0,
+    "keywords": [
+     "basic"
+    ],
+    "accepted_timings": [
+     "OnTerrainEnter"
+    ],
+    "required_trigger_tags": [
+     "terrain_payload",
+     "terrain_power_tile"
+    ],
+    "effect_config": {
+     "status_id": "supercharged",
+     "duration": 6.0,
+     "max_stacks": 1,
+     "flags": [
+      "buff",
+      "dispellable"
+     ],
+     "sourceless": true,
+     "stats": {
+      "attack_speed_multiplier": {
+       "flat": 0.25
+      },
+      "haste": {
+       "flat": 0.25
+      },
+      "passive_amplify_bonus": {
+       "flat": 1.0
+      }
+     }
+    },
+    "cooldown": 0.0,
+    "priority": 100
+   }
   }
  ]
 }

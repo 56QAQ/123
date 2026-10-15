@@ -1447,16 +1447,18 @@ func _update_terrain_tip(pos: Vector2) -> void:
 		if m != null and hit.has("point"):
 			var lp: Vector3 = hit["point"]
 			var c: Vector2i = GC.world_to_cell(Vector2(lp.x, lp.z))
-			var purple: bool = str(run.current_layout().get("theme", "")) == "purple"
+			var theme: String = str(run.current_layout().get("theme", ""))
 			for o: Dictionary in m.obstacles:
-				if (o["rect"] as Rect2i).has_point(c):
-					kind = "burning" if str(o.get("terrain", "")) == "burning" else ("ice" if purple else "ash")
+				if (o["rect"] as Rect2i).has_point(c) and not bool(o.get("destroyed", false)):
+					kind = "burning" if str(o.get("terrain", "")) == "burning" else ("ice" if theme == "purple" else ("tech" if theme == "blue" else "ash"))
 			for e: Dictionary in m.embers:
 				if bool(e["lit"]) and (e["rect"] as Rect2i).has_point(c):
 					kind = "ember"
 			for f: Dictionary in m.frost:
 				if (f["rect"] as Rect2i).has_point(c):
 					kind = "frost"
+			if m.pad_at_cell(c) >= 0:
+				kind = "pad"
 	if kind == "":
 		if hud._tip_owner == world.battlefield:
 			hud.hide_tip()
@@ -1470,6 +1472,8 @@ func _update_terrain_tip(pos: Vector2) -> void:
 		tv.add_child(UIKit.rich("[color=%s]%s[/color]" % [UIKit.hx(UIKit.GOLD), Loc.t("ui.burning_hint")], 12, 300))
 	elif kind == "frost":
 		tv.add_child(UIKit.rich("[color=%s]%s[/color]" % [UIKit.hx(UIKit.GOLD), Loc.t("ui.chill_hint")], 12, 300))
+	elif kind == "pad":
+		tv.add_child(UIKit.rich("[color=%s]%s[/color]" % [UIKit.hx(UIKit.GOLD), Loc.t("ui.supercharged_hint")], 12, 300))
 	hud.show_tip(tv, world.battlefield)
 
 

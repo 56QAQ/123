@@ -23,6 +23,9 @@ const ICON_POSE := {
 	"focus": {"rot": Vector3(-90, 0, 0), "cam": Vector3(-0.7, 0.55, 0.35)},
 }
 
+## 头像镜头看的高度(米)：默认看胸口(1.0)；矮的身体模型要看低一点(殉爆蛛机整台只有半米高)
+const FRAME_Y := {"droid_spider": 0.34}
+
 var textures: Dictionary = {}
 var weapon_textures: Dictionary = {}
 var material_textures: Dictionary = {}     # 材料 -> {"s": 小号, "l": 大号}
@@ -56,6 +59,9 @@ func _render_units(cat: Catalog) -> void:
 		v.set_bar_visible(false)
 		v.set_team_ring_visible(false)
 		v.rotation.y = 0.0
+		var fy: float = float(FRAME_Y.get(def.model, 1.0))
+		cam.position = Vector3(0.62, fy + 0.12, 2.55)
+		cam.look_at(Vector3(0.02, fy, 0.0), Vector3.UP)
 		v.ap.play(UnitSkin.anim(v.look, "idle"))
 		v.ap.seek(1.1, true)
 		v.ap.advance(0.0)

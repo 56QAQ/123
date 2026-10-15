@@ -54,47 +54,53 @@
  "intensity": {
   "base": 11,
   "per_depth": 3.0,
-  "max": 36,
+  "max": 40,
   "jitter": 0.1,
-  "elite_bonus": 12,
-  "boss": 43,
-  "hunt": 54,
+  "elite_bonus": 20,
+  "boss": 45,
+  "hunt": 58,
   "strong": {
    "chance": 0.35,
    "from": 0.5,
    "bump": [
-    4,
-    7
+    6,
+    10
    ]
   }
  },
  "monsters": {
   "mob_sg_sentry": {
-   "power": 3.4
+   "power": 5.3
   },
   "mob_rx_relay": {
-   "power": 2.4
+   "power": 2.7
   },
   "mob_hv_carrier": {
-   "power": 3.8
+   "power": 3.9
   },
   "mob_ax_assault": {
-   "power": 5.5
+   "power": 6.0
   },
-  "elite_ember_vanity": {
-   "power": 29.5,
+  "mob_bx_spider": {
+   "power": 2.5
+  },
+  "mob_mr_drone": {
+   "power": 3.3
+  },
+  "elite_gw_walker": {
+   "power": 12.2,
    "head": true
   },
-  "elite_ember_melancholy": {
-   "power": 12.4,
+  "elite_cn_hub": {
+   "power": 9.0,
    "head": true
   },
-  "elite_ember_pride": {
-   "power": 12.4,
+  "elite_rg_railgun": {
+   "power": 11.2,
    "head": true
   },
-  "boss_ember_dragon": {
-   "power": 35.6,
+  "boss_os_overseer": {
+   "power": 25.4,
    "head": true
   }
  },
@@ -181,6 +187,39 @@
   {
    "w": 1,
    "req": [
+    "mob_bx_spider",
+    "mob_bx_spider"
+   ],
+   "extra": [
+    "mob_ax_assault",
+    "mob_rx_relay"
+   ]
+  },
+  {
+   "w": 1,
+   "req": [
+    "mob_bx_spider",
+    "mob_sg_sentry"
+   ],
+   "extra": [
+    "mob_mr_drone",
+    "mob_hv_carrier"
+   ]
+  },
+  {
+   "w": 1,
+   "req": [
+    "mob_hv_carrier",
+    "mob_mr_drone"
+   ],
+   "extra": [
+    "mob_sg_sentry",
+    "mob_ax_assault"
+   ]
+  },
+  {
+   "w": 1,
+   "req": [
     "mob_ax_assault",
     "mob_sg_sentry",
     "mob_rx_relay"
@@ -224,6 +263,42 @@
    "extra": [
     "mob_ax_assault",
     "mob_ax_assault"
+   ]
+  },
+  {
+   "w": 1,
+   "req": [
+    "mob_bx_spider",
+    "mob_bx_spider",
+    "mob_rx_relay"
+   ],
+   "extra": [
+    "mob_ax_assault",
+    "mob_bx_spider"
+   ]
+  },
+  {
+   "w": 1,
+   "req": [
+    "mob_hv_carrier",
+    "mob_mr_drone",
+    "mob_sg_sentry"
+   ],
+   "extra": [
+    "mob_ax_assault",
+    "mob_bx_spider"
+   ]
+  },
+  {
+   "w": 1,
+   "req": [
+    "mob_ax_assault",
+    "mob_bx_spider",
+    "mob_hv_carrier"
+   ],
+   "extra": [
+    "mob_mr_drone",
+    "mob_sg_sentry"
    ]
   },
   {
@@ -284,83 +359,83 @@
  ],
  "elites": [
   {
-   "unit": "elite_ember_vanity"
+   "unit": "elite_gw_walker"
   },
   {
-   "unit": "elite_ember_melancholy",
+   "unit": "elite_cn_hub",
    "forms": [
     {
      "w": 1,
      "req": [
+      "mob_ax_assault",
+      "mob_sg_sentry"
+     ],
+     "extra": [
+      "mob_bx_spider",
       "mob_rx_relay",
+      "mob_hv_carrier"
+     ]
+    },
+    {
+     "w": 1,
+     "req": [
+      "mob_hv_carrier",
       "mob_sg_sentry"
      ],
      "extra": [
       "mob_ax_assault",
-      "mob_hv_carrier",
-      "mob_sg_sentry"
+      "mob_mr_drone",
+      "mob_bx_spider"
      ]
     },
     {
      "w": 1,
      "req": [
-      "mob_sg_sentry",
-      "mob_ax_assault"
-     ],
-     "extra": [
-      "mob_rx_relay",
-      "mob_hv_carrier",
-      "mob_sg_sentry"
-     ]
-    },
-    {
-     "w": 1,
-     "req": [
-      "mob_rx_relay",
-      "mob_ax_assault"
+      "mob_ax_assault",
+      "mob_bx_spider"
      ],
      "extra": [
       "mob_sg_sentry",
-      "mob_hv_carrier",
+      "mob_mr_drone",
       "mob_ax_assault"
      ]
     }
    ]
   },
   {
-   "unit": "elite_ember_pride",
+   "unit": "elite_rg_railgun",
    "forms": [
     {
      "w": 1,
      "req": [
-      "mob_ax_assault",
-      "mob_hv_carrier"
+      "mob_hv_carrier",
+      "mob_ax_assault"
      ],
      "extra": [
-      "mob_rx_relay",
-      "mob_sg_sentry"
-     ]
-    },
-    {
-     "w": 1,
-     "req": [
-      "mob_sg_sentry",
-      "mob_rx_relay"
-     ],
-     "extra": [
-      "mob_ax_assault",
-      "mob_hv_carrier"
+      "mob_mr_drone",
+      "mob_bx_spider"
      ]
     },
     {
      "w": 1,
      "req": [
       "mob_ax_assault",
-      "mob_sg_sentry"
+      "mob_ax_assault"
      ],
      "extra": [
       "mob_hv_carrier",
       "mob_rx_relay"
+     ]
+    },
+    {
+     "w": 1,
+     "req": [
+      "mob_hv_carrier",
+      "mob_bx_spider"
+     ],
+     "extra": [
+      "mob_ax_assault",
+      "mob_mr_drone"
      ]
     }
    ]
@@ -368,12 +443,12 @@
  ],
  "elite_star2_share": 0.8,
  "boss": {
-  "unit": "boss_ember_dragon",
+  "unit": "boss_os_overseer",
   "star": 1,
   "solo": true
  },
  "hunt": {
-  "unit": "boss_ember_dragon",
+  "unit": "boss_os_overseer",
   "star": 2,
   "region": "s",
   "solo": true
@@ -402,19 +477,24 @@
  "battle_map": {
   "fight": {
    "low": 3,
-   "high": 2
+   "high": 2,
+   "pads": 3
   },
   "elite": {
    "low": 2,
-   "high": 3
+   "high": 3,
+   "pads": 3,
+   "cam_z": -1.6
   },
   "boss": {
    "low": 2,
-   "high": 2
+   "high": 2,
+   "pads": 4
   },
   "hunt": {
    "low": 2,
-   "high": 2
+   "high": 2,
+   "pads": 4
   }
  },
  "shops": {

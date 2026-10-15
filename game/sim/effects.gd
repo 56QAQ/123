@@ -923,6 +923,60 @@ func create_field(src: BUnit, pos: Vector2, cfg: Dictionary, amount: float) -> v
 	b.add_field(f)
 
 
+## 格栅打击(OS-00 箱庭管理者)：在目标现在站的地方展开一块格栅(半径 radius)，delay 秒后落下——那时站在格栅里的 src 的敌人
+## 各受到 amount 的伤害(damage_kind，默认法术)。落点在展开时就定了：走出去就躲得掉(棋子不会主动躲，但被击退 / 换位会)
+func grid_strike(src: BUnit, t: BUnit, amount: float, cfg: Dictionary, o: Dictionary) -> void:
+	if src == null or t == null:
+		return
+	var r: float = float(cfg.get("radius", 1.5))
+	var delay: float = float(cfg.get("delay", 1.5))
+	b.fx({"t": "grid_mark", "src": src, "pos": t.pos, "radius": r, "delay": delay})
+	var o2: Dictionary = o.duplicate()
+	o2.erase("ev_meta")
+	b.schedule(b.time + delay, _grid_land.bind(src, src.team, t.pos, r, amount, str(cfg.get("damage_kind", "magic")), o2))
+
+
+func _grid_land(src: BUnit, team: int, pos: Vector2, r: float, amount: float, kind: String, o: Dictionary) -> void:
+	if b.state != "running" and b.state != "raid":
+		return
+	b.fx({"t": "grid_land", "src": src, "pos": pos, "radius": r})
+	for u: BUnit in b.units.duplicate():
+		if u.alive and u.team != team and u.pos.distance_to(pos) <= r + u.radius * 0.5:
+			damage(src if src != null and src.alive else null, u, amount, kind, o)
+
+
+## 重构协议(CN-00 中枢主机)：友方机器倒下 delay 秒后，在 src(中枢)身边重新组装起来，生命 = 上限 × hp_pct。
+## 每台只重构一次，召唤物不算；到点时中枢已经倒下 = 作废。晶球只在第一次倒下时掉(组装好的那台不再带掉落标记)
+func reassemble(src: BUnit, dead: BUnit, cfg: Dictionary) -> void:
+	if src == null or dead == null or dead.alive or dead == src or dead.is_summon or dead.team != src.team:
+		return
+	if bool(dead.meta.get("reassembled", false)):
+		return
+	dead.meta["reassembled"] = true
+	dead.meta.erase("orb")
+	var delay: float = float(cfg.get("delay", 4.0))
+	b.fx({"t": "reassemble_start", "unit": dead, "src": src, "delay": delay})
+	b.schedule(b.time + delay, _reassemble_done.bind(src, dead, float(cfg.get("hp_pct", 0.5))))
+
+
+func _reassemble_done(src: BUnit, dead: BUnit, pct: float) -> void:
+	if dead.alive or not src.alive or (b.state != "running" and b.state != "raid"):
+		if not dead.alive:
+			b.fx({"t": "reassemble_fail", "unit": dead, "src": src})
+		return
+	# 组装在中枢的前面(朝最近的敌人那一侧)
+	var dir := Vector2(0.0, 1.0)
+	var best := INF
+	for e: BUnit in b.enemies_of(src):
+		var d: float = e.pos.distance_to(src.pos)
+		if d < best and d > 0.01:
+			best = d
+			dir = (e.pos - src.pos).normalized()
+	dead.pos = b.find_free_position(src.pos + dir * (src.radius + dead.radius + 0.5), dead.radius, dead)
+	b.revive(dead, pct, -1.0, "reassemble")
+	b.fx({"t": "reassemble_done", "unit": dead, "src": src})
+
+
 # ---------------------------------------------------------------- 嘲讽 / 位移 / 召唤
 func taunt(src: BUnit, radius: float, duration: float) -> void:
 	for u: BUnit in b.units:

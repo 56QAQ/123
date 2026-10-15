@@ -7,6 +7,8 @@ extends Node3D
 ##   · 往上飘的火星和黑灰
 ## 精英(mode "elite")：脚下一圈慢转的纹章(身份色) + 往上飘的光点，比首领克制得多。
 ## 颜色：hot = 最亮的火，mid = 主色(身份色)，smoke = 烟。size = 脚下的半径(米，按体型)，height = 身高(米)。
+## tech = 蓝之章的机械 / 管理者(2026-10-15)：首领脚下换成深藏青的六边形网格 + 三道转动的分段环(和信标的光环一样) + 往外推的数据波，
+##   缠绕的火蛇换成身份色的光带(烟带 = 深藏青)，往上飘的是发光的数据方块。
 
 const BEAT := 2.4
 const DISC_SHADER := """
@@ -18,6 +20,7 @@ uniform float beat = 0.0;
 uniform float fade = 1.0;
 uniform float spin = 0.0;
 uniform float boss = 1.0;
+uniform float tech = 0.0;
 float hash(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
 float noise(vec2 p) {
 	vec2 i = floor(p);
@@ -34,7 +37,27 @@ void fragment() {
 	float a = atan(p.y, p.x);
 	vec3 col = vec3(0.0);
 	float alpha = 0.0;
-	if (boss > 0.5) {
+	if (boss > 0.5 && tech > 0.5) {
+		// 管理者：深藏青的底 + 六边形网格(越往外越亮)、一圈圈往外推的数据波、三道分段的环各自朝不同方向转
+		float dark = (1.0 - smoothstep(0.3, 0.98, r)) * 0.5;
+		vec2 q = p * 8.0;
+		vec2 s2 = vec2(1.0, 1.732);
+		vec2 ga = mod(q, s2) - s2 * 0.5;
+		vec2 gb = mod(q - s2 * 0.5, s2) - s2 * 0.5;
+		vec2 gv = dot(ga, ga) < dot(gb, gb) ? ga : gb;
+		vec2 ag = abs(gv);
+		float hd = max(dot(ag, normalize(vec2(1.0, 1.732))), ag.x);
+		float line = smoothstep(0.41, 0.47, hd) * (1.0 - smoothstep(0.82, 0.96, r));
+		float wave = pow(0.5 + 0.5 * sin(r * 12.0 - TIME * 2.4), 4.0);
+		float r1 = smoothstep(0.022, 0.0, abs(r - 0.46)) * step(0.35, fract(a / 6.2831853 * 6.0 + spin * 1.3));
+		float r2 = smoothstep(0.018, 0.0, abs(r - 0.68)) * step(0.5, fract(a / 6.2831853 * 18.0 - spin * 0.9));
+		float r3 = smoothstep(0.03, 0.0, abs(r - 0.9)) * step(0.25, fract(a / 6.2831853 * 3.0 + spin * 0.5));
+		float rings = r1 + r2 * 0.8 + r3;
+		float pulse = smoothstep(0.06, 0.0, abs(r - (1.0 - fract(TIME * 0.4)))) * 0.5;
+		float v = line * (0.18 + 0.6 * wave) * (0.35 + 0.65 * r) + rings * (0.9 + 0.8 * beat) + pulse;
+		col = mix(vec3(0.02, 0.05, 0.14), mix(mid.rgb, hot.rgb, clamp(rings, 0.0, 1.0) * 0.6) * (1.6 + 1.8 * beat), clamp(v, 0.0, 1.0));
+		alpha = max(dark, clamp(v * 1.1, 0.0, 1.0));
+	} else if (boss > 0.5) {
 		// 焦土：中间最暗，往外淡出
 		float dark = (1.0 - smoothstep(0.25, 0.95, r)) * 0.62;
 		// 放射状的裂纹：11 条主缝，沿半径弯折、时断时续、粗细不一；外加一段段细的环向支缝
@@ -78,6 +101,7 @@ void fragment() {
 """
 
 var mode: String = "boss"
+var tech: bool = false
 var hot: Color = Color("#ffb04a")
 var mid: Color = Color("#e4182a")
 var smoke: Color = Color(0.06, 0.02, 0.03)
@@ -98,9 +122,12 @@ var _fading_out: bool = false
 var _snakes: Array = []          # [{phase, speed, rad, rise, width}]
 
 
-static func make(p_mode: String, p_hot: Color, p_mid: Color, p_size: float, p_height: float) -> BossAura:
+static func make(p_mode: String, p_hot: Color, p_mid: Color, p_size: float, p_height: float, p_tech: bool = false) -> BossAura:
 	var a := BossAura.new()
 	a.mode = p_mode
+	a.tech = p_tech
+	if p_tech:
+		a.smoke = Color(0.04, 0.09, 0.22)
 	a.hot = p_hot
 	a.mid = p_mid
 	a.size = p_size
@@ -122,6 +149,7 @@ func _ready() -> void:
 	_disc_mat.set_shader_parameter("hot", hot)
 	_disc_mat.set_shader_parameter("mid", mid)
 	_disc_mat.set_shader_parameter("boss", 1.0 if mode == "boss" else 0.0)
+	_disc_mat.set_shader_parameter("tech", 1.0 if tech else 0.0)
 	_disc_mat.render_priority = -2
 	_disc.material_override = _disc_mat
 	_disc.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
@@ -147,7 +175,7 @@ func _ready() -> void:
 			_snakes.append({"phase": float(i) * TAU / 3.0 + randf() * 0.4, "speed": 1.55 + 0.25 * float(i % 2), "rad": 0.95 + 0.18 * float(i),
 				"rise": 0.45 + 0.13 * float(i), "width": 0.085 - 0.012 * float(i), "dir": 1.0 if i != 1 else -1.0})
 		_add_particles(hot, 22, 1.4, 0.9, 0.055, true)
-		_add_particles(Color(0.08, 0.04, 0.04), 16, 0.6, 2.2, 0.09, false)
+		_add_particles(smoke if tech else Color(0.08, 0.04, 0.04), 16, 0.6, 2.2, 0.09, false)
 		_add_particles(mid, 10, 2.2, 0.7, 0.04, true)
 	else:
 		_add_particles(hot, 8, 0.9, 1.1, 0.04, true)

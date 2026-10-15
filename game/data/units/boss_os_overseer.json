@@ -1,0 +1,224 @@
+{
+ "id": "boss_os_overseer",
+ "cost": 5,
+ "role": "warrior",
+ "base_weapon_class": "polearm",
+ "weapon_classes": [
+  "polearm"
+ ],
+ "faction_id": "white",
+ "profession_id": "",
+ "available_in_shop": false,
+ "model": "overseer",
+ "weapon_look": "beacon_lance",
+ "skin": "porcelain",
+ "target_priority": "nearest",
+ "radius": 0.5,
+ "scale": 1.4,
+ "ai": {
+  "run_ref_speed": 1.95
+ },
+ "anim_overrides": {
+  "polearm": {
+   "idle": "idle_overseer",
+   "run": "run_overseer",
+   "attack": "attack_overseer",
+   "attack_multi": "pierce_overseer"
+  }
+ },
+ "chant_fx": {
+  "boss_os_purge": {
+   "anim": "purge_overseer",
+   "no_ring": true
+  }
+ },
+ "base_stats": {
+  "attack_power": 130,
+  "ability_power": 0.0,
+  "defense": 50,
+  "magic_resistance": 55,
+  "max_health": 8000,
+  "health_regen_per_second": 0.0,
+  "physical_lifesteal": 0.0,
+  "spell_lifesteal": 0.0,
+  "omnivamp": 0.0,
+  "crit_chance": 0.05,
+  "crit_damage": 1.5,
+  "physical_flat_penetration": 0.0,
+  "physical_percent_penetration": 0.0,
+  "magic_flat_penetration": 0.0,
+  "magic_percent_penetration": 0.0,
+  "move_speed": 2.0,
+  "attack_speed_multiplier": 1.0,
+  "damage_dealt_pct": 0.0,
+  "damage_dealt_flat": 0.0,
+  "damage_taken_pct": 0.0,
+  "damage_taken_flat": 0.0,
+  "healing_done_pct": 0.0,
+  "healing_received_pct": 0.0
+ },
+ "triggers": [
+  {
+   "id": "boss_os_upgrade",
+   "timing": "OnBattleFrame",
+   "event_count_threshold": 40,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "self",
+   "team_filter": "any",
+   "tags": [
+    "battle_frame",
+    "passive_os_upgrade"
+   ]
+  },
+  {
+   "id": "boss_os_grid",
+   "timing": "OnBattleFrame",
+   "event_count_threshold": 20,
+   "base_value_mode": "attack_ratio_keyword",
+   "base_value_ratio": 0.25,
+   "base_value_flat": 0.0,
+   "target_rule": "all_enemies",
+   "team_filter": "enemy",
+   "tags": [
+    "battle_frame",
+    "passive_os_grid"
+   ],
+   "target_sort_rule": "random",
+   "max_targets": 3,
+   "runtime_conditions": [
+    {
+     "type": "has_enemies"
+    }
+   ],
+   "base_value_keyword": "amplify"
+  },
+  {
+   "id": "boss_os_purge",
+   "timing": "OnBattleFrame",
+   "event_count_threshold": 96,
+   "base_value_mode": "attack_ratio_keyword",
+   "base_value_ratio": 0.4,
+   "base_value_flat": 0.0,
+   "target_rule": "all_enemies",
+   "team_filter": "enemy",
+   "tags": [
+    "battle_frame",
+    "passive_os_purge"
+   ],
+   "runtime_conditions": [
+    {
+     "type": "has_enemies"
+    }
+   ],
+   "base_value_keyword": "amplify"
+  }
+ ],
+ "passive_abilities": [
+  {
+   "id": "boss_os_upgrade",
+   "ability_class": "blade",
+   "effect_type": "stat_status",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic",
+    "stacking"
+   ],
+   "accepted_timings": [
+    "OnBattleFrame"
+   ],
+   "required_trigger_tags": [
+    "passive_os_upgrade"
+   ],
+   "effect_config": {
+    "status_id": "os_upgrade",
+    "duration": 0.0,
+    "flags": [
+     "buff",
+     "no_dispel"
+    ],
+    "stats": {
+     "passive_amplify_bonus": {
+      "flat": 1.0
+     }
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100,
+   "keyword_values": {
+    "stacking": 6
+   }
+  },
+  {
+   "id": "boss_os_grid",
+   "ability_class": "blade",
+   "effect_type": "grid_strike",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic",
+    "amplify"
+   ],
+   "accepted_timings": [
+    "OnBattleFrame"
+   ],
+   "required_trigger_tags": [
+    "passive_os_grid"
+   ],
+   "effect_config": {
+    "all_targets": true,
+    "radius": 1.5,
+    "delay": 1.5
+   },
+   "cooldown": 0.0,
+   "priority": 100,
+   "keyword_values": {
+    "amplify": 2
+   },
+   "keyword_values_by_star": {
+    "amplify": {
+     "1": 2,
+     "2": 3,
+     "3": 3
+    }
+   }
+  },
+  {
+   "id": "boss_os_purge",
+   "ability_class": "blade",
+   "effect_type": "magic_damage",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic",
+    "amplify",
+    "chant"
+   ],
+   "accepted_timings": [
+    "OnBattleFrame"
+   ],
+   "required_trigger_tags": [
+    "passive_os_purge"
+   ],
+   "effect_config": {
+    "all_targets": true,
+    "chant_pct_per_second": 0.0
+   },
+   "cooldown": 0.0,
+   "priority": 100,
+   "keyword_values": {
+    "amplify": 2,
+    "chant": 3
+   },
+   "keyword_values_by_star": {
+    "amplify": {
+     "1": 2,
+     "2": 3,
+     "3": 3
+    }
+   }
+  }
+ ]
+}

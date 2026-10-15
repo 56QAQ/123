@@ -289,6 +289,41 @@ func _step_embers() -> void:
 		pipeline.emit("OnTerrainEnter", u, u, 0.0, ["terrain", "ember"], {"terrain": "ember", "ember_id": id})
 
 
+## 供能地砖(蓝之章)：充满电的地砖上站着棋子(不分敌我) → 离地砖中心最近的那个把电吸走，发 OnTerrainEnter(power_tile)
+## (【满电】走 terrain.json 的触发器)，地砖 PAD_RECHARGE 秒后重新充满；充满的那一刻有人站着就立刻被他吸走。
+## 所以一直站在地砖上 = 每 PAD_RECHARGE 秒吸一次(tools/author_chapters.py 的 PAD["recharge"] 要和它一致)
+const PAD_RECHARGE := 8.0
+
+
+func _step_pads() -> void:
+	if map.pads.is_empty() or (state != "running" and state != "raid"):
+		return
+	for pd: Dictionary in map.pads:
+		if bool(pd.get("destroyed", false)):
+			continue
+		var id: int = int(pd["id"])
+		if not bool(pd["charged"]):
+			if time < float(pd["ready_at"]):
+				continue
+			pd["charged"] = true
+			fx({"t": "pad_ready", "id": id})
+		var best: BUnit = null
+		var best_d := INF
+		var mid: Vector2 = map.rect_world(pd["rect"]).get_center()
+		for u: BUnit in units:
+			if u.alive and map.on_pad(id, u.pos, u.radius):
+				var d: float = u.pos.distance_squared_to(mid)
+				if d < best_d:
+					best_d = d
+					best = u
+		if best == null:
+			continue
+		pd["charged"] = false
+		pd["ready_at"] = time + PAD_RECHARGE
+		fx({"t": "pad_drain", "id": id, "unit": best, "ready_at": time + PAD_RECHARGE})
+		pipeline.emit("OnTerrainEnter", best, best, 0.0, ["terrain", "power_tile"], {"terrain": "power_tile", "pad": id})
+
+
 ## 我方再生的效能倍率：在场(活着)的友方里，带 regen_amp 被动(调香节点·飘香)的取它【叠加 N】的 N(几个调香节点不相乘，取最大)；没有就是 1
 func regen_mult(team: int) -> float:
 	var m := 1.0
@@ -347,6 +382,8 @@ func _step_hazards() -> void:
 				_step_sweep(hz, rt)
 			"eruption":
 				_step_eruption(hz, rt)
+			"searchlight":
+				_step_searchlight(hz, rt)
 
 
 ## 电车：平时停在 rest_x(地图外)，到点从静止加速冲过整条轨道(z ± half_width)，车身扫到的单位每班只撞一次
@@ -437,6 +474,68 @@ func _step_eruption(hz: Dictionary, rt: float) -> void:
 				fx({"t": "hazard", "id": hz["id"], "ev": "end"})
 
 
+## 探照灯(宵禁广场)：灯在 origin(塔心)，朝南(+z)。到点后光束在 sweep 秒里从 arc[0] 度扫到 arc[1] 度(从正南往东为正：-75 = 西、+75 = 东)，
+## 光束半角 half 度。光束扫过、离灯 range 米以内、而且和灯之间没有高障碍 / 卡车挡着的单位(不分敌我)每次扫描被照到一次：发 OnTerrainHit[tag]。
+## 视线从塔身外沿(离塔心 exit 米)开始算(塔自己不挡自己的光)。hz.x / prev_x = 光束这一帧 / 上一帧的角度(弧度，表现层画光束用)
+func _step_searchlight(hz: Dictionary, rt: float) -> void:
+	var hc: Dictionary = hz["cfg"]
+	var nxt: float = float(hz["next"])
+	var arc: Array = hc.get("arc", [-75.0, 75.0])
+	var a0: float = deg_to_rad(float(arc[0]))
+	var a1: float = deg_to_rad(float(arc[1]))
+	match str(hz["phase"]):
+		"idle":
+			hz["x"] = a0
+			if rt >= nxt - float(hc.get("warn", 2.0)):
+				hz["phase"] = "warn"
+				fx({"t": "hazard", "id": hz["id"], "ev": "warn", "lead": nxt - rt})
+		"warn":
+			hz["x"] = a0
+			if rt >= nxt:
+				hz["phase"] = "run"
+				hz["t0"] = rt
+				hz["hit"] = {}
+				fx({"t": "hazard", "id": hz["id"], "ev": "go", "sweep": float(hc.get("sweep", 2.5))})
+		"run":
+			var dur: float = maxf(0.1, float(hc.get("sweep", 2.5)))
+			var k: float = clampf((rt - float(hz["t0"])) / dur, 0.0, 1.0)
+			var ang: float = lerpf(a0, a1, k)
+			hz["x"] = ang
+			var o: Array = hc.get("origin", [0.0, 0.0])
+			var origin := Vector2(float(o[0]), float(o[1]))
+			var half: float = deg_to_rad(float(hc.get("half", 5.0)))
+			var lo: float = minf(float(hz["prev_x"]), ang) - half
+			var hi: float = maxf(float(hz["prev_x"]), ang) + half
+			var rng_m: float = float(hc.get("range", 40.0))
+			var exit_m: float = float(hc.get("exit", 2.2))
+			for u: BUnit in units.duplicate():
+				if not u.alive or (hz["hit"] as Dictionary).has(u.uid):
+					continue
+				var rel: Vector2 = u.pos - origin
+				var dist: float = rel.length()
+				if dist < exit_m or dist > rng_m:
+					continue
+				var ua: float = atan2(rel.x, rel.y)
+				var pad: float = asin(clampf(u.radius / dist, 0.0, 1.0))
+				if ua < lo - pad or ua > hi + pad:
+					continue
+				if not map.has_los(origin + rel / dist * exit_m, u.pos, -1):
+					continue
+				(hz["hit"] as Dictionary)[u.uid] = true
+				var tag: String = str(hc.get("tag", hz["id"]))
+				fx({"t": "hazard_hit", "id": hz["id"], "unit": u})
+				pipeline.emit("OnTerrainHit", u, u, 0.0, ["terrain", tag], {"terrain": tag})
+			if k >= 1.0:
+				hz["phase"] = "idle"
+				hz["next"] = nxt + float(hc.get("period", 11.0))
+				fx({"t": "hazard", "id": hz["id"], "ev": "end"})
+
+
+## 探照灯照不照得到 p(给表现层 / 部署时的提示用：在扇面里、离灯够近、和灯之间没有东西挡着)
+func searchlight_exposed(hc: Dictionary, p: Vector2) -> bool:
+	return BattleMap.searchlight_exposed(map, hc, p)
+
+
 ## 界面用：每个战场机制离下一次发动还有几秒(正在发动 = 0)
 func hazard_info() -> Array[Dictionary]:
 	var out: Array[Dictionary] = []
@@ -517,6 +616,7 @@ func step() -> void:
 	_step_fields()
 	_step_hazards()
 	_step_embers()
+	_step_pads()
 	_step_pending()
 	_step_projectiles(dt)
 	_step_knocks()
@@ -1715,6 +1815,11 @@ func break_terrain_in_cone(origin: Vector2, dir: Vector2, cone: Dictionary, src:
 		if not bool(f.get("destroyed", false)) and _rect_in_cone(f["rect"], origin, dir, cone):
 			map.destroy_frost(int(f["id"]))
 			fx({"t": "terrain_break", "kind": "frost", "id": int(f["id"]), "unit": src})
+			n += 1
+	for pd: Dictionary in map.pads:
+		if not bool(pd.get("destroyed", false)) and _rect_in_cone(pd["rect"], origin, dir, cone):
+			map.destroy_pad(int(pd["id"]))
+			fx({"t": "terrain_break", "kind": "pad", "id": int(pd["id"]), "unit": src})
 			n += 1
 	return n
 

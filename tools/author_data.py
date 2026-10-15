@@ -2579,6 +2579,171 @@ units.append({
     ],
 })
 
+# ---------------------------------------------------------------- 蓝之章第二批(2026-10-15，设计稿 docs/BLUE_CHAPTER.md)：2 只普通怪物 + 3 只精英 + 首领
+# 【增幅】往新的方向用：死亡时(殉爆)、治疗(维修)、节奏(过载 / 过热)、全队与重构(中枢)、蓄力狙击(轨道炮)、随时间成长(首领)。
+# 精英 / 首领的【吟唱】不吃"吟唱越久越强"的翻倍(chant_pct_per_second 0：文案上的数就是实际的数)，被打断就白唱了。
+# BX-09 殉爆蛛机(快速冲锋的近战)：被摧毁时引爆，BX_RADIUS 米内所有单位(不分敌我)受到 攻击力 × BX_RATIO × 增幅 的法术伤害——增幅按死的那一刻算
+#   (死在中继旁边 / 力场里炸得更狠)；殉爆炸死旁边另一只蛛机 = 连锁殉爆
+BX_RATIO, BX_RADIUS = 1.2, 2.2
+BX_AMP = {"1": 2, "2": 2, "3": 3}
+units.append({
+    "id": "mob_bx_spider", "cost": 1, "role": "warrior", **W("dual", ["dual"]), **DROID_BODY, "model": "droid_spider",
+    "target_priority": "nearest", "radius": 0.42, "scale": 0.9,
+    "anim_overrides": {"dual": {"idle": "idle_spider", "run": "run_spider", "attack": "attack_spider"}},
+    "base_stats": S(attack_power=46, defense=14, magic_resistance=14, max_health=560, move_speed=3.2),
+    "triggers": [
+        T("mob_bx_detonate", "OnUnitDied", ["unit_died", "passive_bx_detonate"], mode="attack_ratio_keyword", kw="amplify", ratio=BX_RATIO,
+          rule="nearby_units", team="any", radius=BX_RADIUS),
+    ],
+    "passive_abilities": [
+        A("mob_bx_detonate", "blade", "magic_damage", keywords=["basic", "amplify"], kv={"amplify": 2}, kv_star={"amplify": BX_AMP},
+          timings=["OnUnitDied"], tags=["passive_bx_detonate"], cfg={"all_targets": True}),
+    ],
+})
+# MR-05 维修无人机(后排的治疗)：每 2 秒修复生命比例最低的一台友方机器(含自己)，回复 攻击力 × MR_RATIO × 增幅
+MR_RATIO = 0.75
+MR_AMP = {"1": 2, "2": 2, "3": 3}
+units.append({
+    "id": "mob_mr_drone", "cost": 1, "role": "caster", **W("focus", ["focus"]), **DROID_BODY, "model": "drone_repair",
+    "target_priority": "nearest", "radius": 0.44, "scale": 1.0,
+    "anim_overrides": {"focus": {"idle": "idle_drone", "run": "run_drone", "attack": "attack_drone"}},
+    "base_stats": S(attack_power=40, defense=10, magic_resistance=28, max_health=640, move_speed=1.6),
+    "triggers": [
+        T("mob_mr_repair", "OnBattleFrame", ["battle_frame", "passive_mr_repair"], count=8, mode="attack_ratio_keyword", kw="amplify", ratio=MR_RATIO,
+          rule="all_allies", team="ally", sort="health_ratio_asc", conds=[{"type": "has_hurt_ally"}]),
+    ],
+    "passive_abilities": [
+        A("mob_mr_repair", "blade", "heal", keywords=["basic", "amplify"], kv={"amplify": 2}, kv_star={"amplify": MR_AMP},
+          timings=["OnBattleFrame"], tags=["passive_mr_repair"]),
+    ],
+})
+# ---------------------------------------------------------------- 蓝之章的精英
+# GW-20 重装步行机(大型精英：体型 ×2，和虚荣的余烬一样大；战士 / 重武器，普攻不旋斩：一锤一圈震荡波)
+# 震荡锤【增幅 2/3】：普攻命中时，目标周围 GW_RADIUS 米内的敌人(含目标)受到 攻击力 × GW_RATIO × 增幅 的物理伤害
+# 过载循环：开战 GW_FIRST 秒后进入【过载】GW_OVERLOAD 秒(被动增幅 +GW_OVER_AMP、攻速 +GW_OVER_AS)，结束立刻【过热】GW_OVERHEAT 秒
+#   (无法行动、受到的伤害 +GW_HEAT_VULN；精英的眩晕减半不算它)，过热结束 GW_COOL 秒后再过载……三个阶段状态到期时 OnStatusBurst 接力，都不可驱散
+GW_RATIO, GW_RADIUS = 0.3, 2.4
+GW_AMP = {"1": 2, "2": 3, "3": 3}
+GW_FIRST, GW_OVERLOAD, GW_OVERHEAT, GW_COOL = 6.0, 5.0, 3.0, 6.0
+GW_OVER_AMP, GW_OVER_AS, GW_HEAT_VULN = 3.0, 0.6, 0.5
+
+
+def GW_PHASE(sid, dur, flags, **kw):
+    d = {"status_id": sid, "duration": dur, "max_stacks": 1, "flags": flags, "burst": True}
+    d.update(kw)
+    return d
+
+
+GW_COOLING = GW_PHASE("gw_cooling", GW_COOL, ["no_dispel"])
+GW_OVER = GW_PHASE("gw_overload", GW_OVERLOAD, ["buff", "no_dispel"],
+                   stats={"passive_amplify_bonus": {"flat": GW_OVER_AMP}, "attack_speed_multiplier": {"flat": GW_OVER_AS}})
+GW_HEAT = GW_PHASE("gw_overheat", GW_OVERHEAT, ["no_dispel", "stun", "overheat"], no_cc_halving=True,
+                   stats={"damage_taken_pct": {"flat": -GW_HEAT_VULN}})
+units.append({
+    "id": "elite_gw_walker", "cost": 3, "role": "warrior", **W("heavy", ["heavy"]), **DROID_BODY, "model": "mech_walker",
+    "target_priority": "nearest", "radius": 0.5, "scale": 2.0,
+    "wclass_overrides": {"heavy": {"na_keywords": {}, "multi": {}}},
+    "anim_overrides": {"heavy": {"idle": "idle_walker", "run": "run_walker", "attack": "attack_walker", "overheat": "overheat_walker"}},
+    "base_stats": S(attack_power=70, defense=45, magic_resistance=30, max_health=3600, move_speed=1.2, attack_speed_multiplier=0.75),
+    "triggers": [
+        T("elite_gw_quake", NA, ["normal_attack", "passive_gw_quake"], mode="attack_ratio_keyword", kw="amplify", ratio=GW_RATIO,
+          rule="around_current_target", team="enemy", radius=GW_RADIUS),
+        T("elite_gw_start", "OnBattleStart", ["battle_start", "passive_gw_cool"], rule="self", team="any"),
+        T("elite_gw_vent", "OnStatusBurst", ["status_burst", "passive_gw_cool"], rule="self", team="any",
+          conds=[{"type": "event_has_tag", "tag": "gw_overheat"}]),
+        T("elite_gw_overload", "OnStatusBurst", ["status_burst", "passive_gw_overload"], rule="self", team="any",
+          conds=[{"type": "event_has_tag", "tag": "gw_cooling"}]),
+        T("elite_gw_overheat", "OnStatusBurst", ["status_burst", "passive_gw_overheat"], rule="self", team="any",
+          conds=[{"type": "event_has_tag", "tag": "gw_overload"}]),
+    ],
+    "passive_abilities": [
+        A("elite_gw_quake", "blade", "physical_damage", keywords=["basic", "amplify"], kv={"amplify": 2}, kv_star={"amplify": GW_AMP},
+          timings=[NA], tags=["passive_gw_quake"], cfg={"all_targets": True}),
+        A("elite_gw_cool", "blade", "stat_status", keywords=["basic"], timings=["OnBattleStart", "OnStatusBurst"], tags=["passive_gw_cool"],
+          cfg=dict(GW_COOLING)),
+        A("elite_gw_overload", "blade", "stat_status", keywords=["basic"], timings=["OnStatusBurst"], tags=["passive_gw_overload"], cfg=dict(GW_OVER)),
+        A("elite_gw_overheat", "blade", "stat_status", keywords=["basic"], timings=["OnStatusBurst"], tags=["passive_gw_overheat"], cfg=dict(GW_HEAT)),
+    ],
+})
+# CN-00 中枢主机(支援精英：不会攻击、不会移动，站在敌方阵型的最后面)
+# 全频广播【增幅 2/3】：每 4 秒，全场所有其他友方获得【增幅链路】5 秒(被动增幅 +增幅基础值；和 RX-03 中继的链路是同一个状态)
+# 重构协议：中枢还在时，友方机器被摧毁 CN_DELAY 秒后在中枢身边重新组装(生命 CN_HP)；每台只能重构 1 次，召唤物不算；中枢倒下 → 还没组装好的作废
+CN_AMP = {"1": 2, "2": 3, "3": 3}
+CN_DELAY, CN_HP = 4.0, 0.5
+units.append({
+    "id": "elite_cn_hub", "cost": 3, "role": "tank", **W("focus", ["focus"]), **DROID_BODY, "model": "core_hub",
+    "target_priority": "nearest", "radius": 0.55, "scale": 1.5,
+    "anim_overrides": {"focus": {"idle": "idle_hub", "run": "run_hub", "attack": "attack_hub"}},
+    "base_stats": S(attack_power=10, defense=30, magic_resistance=45, max_health=2800, move_speed=0.0),
+    "triggers": [
+        T("elite_cn_idle", "OnBattleStart", ["battle_start", "passive_cn_idle"], rule="self", team="any"),
+        T("elite_cn_broadcast", "OnBattleFrame", ["battle_frame", "passive_cn_broadcast"], count=16, mode="ability_keyword_base", kw="amplify",
+          rule="all_allies_except_self", team="ally", conds=[{"type": "has_enemies"}]),
+        T("elite_cn_rebuild", "OnAllyUnitDied", ["ally_unit_died", "passive_cn_rebuild"], rule="event_dead", team="ally")
+        | {"target_filter": {"allow_dead": True}},
+    ],
+    "passive_abilities": [
+        A("elite_cn_idle", "blade", "stat_status", keywords=["basic"], timings=["OnBattleStart"], tags=["passive_cn_idle"],
+          cfg={"status_id": "cn_idle", "duration": 0.0, "flags": ["no_dispel", "disarm"]}),
+        A("elite_cn_broadcast", "blade", "stat_status", keywords=["basic", "amplify"], kv={"amplify": 2}, kv_star={"amplify": CN_AMP},
+          timings=["OnBattleFrame"], tags=["passive_cn_broadcast"], cfg=dict(AMP_LINK, all_targets=True)),
+        A("elite_cn_rebuild", "blade", "reassemble", keywords=["basic"], timings=["OnAllyUnitDied"], tags=["passive_cn_rebuild"],
+          cfg={"allow_dead": True, "delay": CN_DELAY, "hp_pct": CN_HP}),
+    ],
+})
+# RG-09 电磁轨道炮(炮台精英：不会移动；平时用慢速的步枪打)
+# 蓄能射击【增幅 2/3】【吟唱 3】：每 9 秒，锁定离自己最远的敌人吟唱 3 秒(锁定激光连着目标)，然后沿这条线发射贯穿弹：
+#   线上(半宽 RG_HALF 米，一直打到战场边)的所有敌人受到 攻击力 × RG_RATIO × 增幅 的物理伤害；被打断(眩晕 / 击退)就白充了
+RG_RATIO, RG_HALF = 0.6, 0.6
+RG_AMP = {"1": 2, "2": 3, "3": 3}
+units.append({
+    "id": "elite_rg_railgun", "cost": 3, "role": "archer", **W("rifle", ["rifle"]), **DROID_BODY, "model": "turret_railgun",
+    "target_priority": "nearest", "radius": 0.6, "scale": 1.5,
+    "anim_overrides": {"rifle": {"idle": "idle_railgun", "run": "run_railgun", "attack": "attack_railgun"}},
+    "chant_fx": {"elite_rg_charge": {"anim": "charge_railgun", "cast_anim": "fire_railgun", "no_ring": True}},
+    # 端枪 / 装弹不用人形的 aim_rifle / reload_rifle(会动 Eyelid 骨：轨道炮的电容光条挂在上面)：装弹 = 电容重新充能
+    "wclass_overrides": {"rifle": {"hold_anim": "", "ammo": {"status_id": "ammo", "reload": 78.0 / 30.0, "anim": "charge_railgun"}}},
+    "base_stats": S(attack_power=110, defense=20, magic_resistance=25, max_health=2000, move_speed=0.0, attack_speed_multiplier=0.6),
+    "triggers": [
+        T("elite_rg_charge", "OnBattleFrame", ["battle_frame", "passive_rg_charge"], count=36, mode="attack_ratio_keyword", kw="amplify", ratio=RG_RATIO,
+          rule="rail_line", radius=RG_HALF, conds=[{"type": "has_enemies"}]),
+    ],
+    "passive_abilities": [
+        A("elite_rg_charge", "blade", "physical_damage", keywords=["basic", "amplify", "chant"], kv={"amplify": 2, "chant": 3}, kv_star={"amplify": RG_AMP},
+          timings=["OnBattleFrame"], tags=["passive_rg_charge"], cfg={"all_targets": True, "chant_pct_per_second": 0.0}),
+    ],
+})
+# ---------------------------------------------------------------- 蓝之章的首领：OS-00 箱庭管理者(人形仿生人；没有手下，纯单体战斗)
+# 白色长发、白 + 深藏青装甲、背后三道和信标一样的光环，双手持光刃长枪(weapon_look = beacon_lance)。一场限时的输出检测：
+# 系统升级【叠加 6】：每 10 秒获得 1 层【系统升级】(被动增幅 +1 / 层，不可驱散)
+# 格栅打击【增幅 2/3】：每 5 秒在 OS_GRID_N 个随机敌人脚下展开格栅(半径 OS_GRID_R 米)，1.5 秒后落下：格栅里的敌人受到 攻击力 × OS_GRID × 增幅 的法术伤害
+# 全域清除【增幅 2/3】【吟唱 3】：每 24 秒吟唱 3 秒，然后对所有敌人造成 攻击力 × OS_PURGE × 增幅 的法术伤害；被打断就白唱了
+OS_GRID, OS_GRID_N, OS_GRID_R, OS_PURGE = 0.25, 3, 1.5, 0.4
+OS_AMP = {"1": 2, "2": 3, "3": 3}
+units.append({
+    "id": "boss_os_overseer", "cost": 5, "role": "warrior", **W("polearm", ["polearm"]), "faction_id": "white", "profession_id": "",
+    "available_in_shop": False, "model": "overseer", "weapon_look": "beacon_lance", "skin": "porcelain",
+    "target_priority": "nearest", "radius": 0.5, "scale": 1.4, "ai": {"run_ref_speed": 1.95},     # 她的跑步动作原速约 1.9 米/秒(scale 1.4)
+    "anim_overrides": {"polearm": {"idle": "idle_overseer", "run": "run_overseer", "attack": "attack_overseer", "attack_multi": "pierce_overseer"}},
+    "chant_fx": {"boss_os_purge": {"anim": "purge_overseer", "no_ring": True}},
+    "base_stats": S(attack_power=130, defense=50, magic_resistance=55, max_health=8000, move_speed=2.0),
+    "triggers": [
+        T("boss_os_upgrade", "OnBattleFrame", ["battle_frame", "passive_os_upgrade"], count=40, rule="self", team="any"),
+        T("boss_os_grid", "OnBattleFrame", ["battle_frame", "passive_os_grid"], count=20, mode="attack_ratio_keyword", kw="amplify", ratio=OS_GRID,
+          rule="all_enemies", sort="random", max_targets=OS_GRID_N, conds=[{"type": "has_enemies"}]),
+        T("boss_os_purge", "OnBattleFrame", ["battle_frame", "passive_os_purge"], count=96, mode="attack_ratio_keyword", kw="amplify", ratio=OS_PURGE,
+          rule="all_enemies", conds=[{"type": "has_enemies"}]),
+    ],
+    "passive_abilities": [
+        A("boss_os_upgrade", "blade", "stat_status", keywords=["basic", "stacking"], kv={"stacking": 6}, timings=["OnBattleFrame"], tags=["passive_os_upgrade"],
+          cfg={"status_id": "os_upgrade", "duration": 0.0, "flags": ["buff", "no_dispel"], "stats": {"passive_amplify_bonus": {"flat": 1.0}}}),
+        A("boss_os_grid", "blade", "grid_strike", keywords=["basic", "amplify"], kv={"amplify": 2}, kv_star={"amplify": OS_AMP},
+          timings=["OnBattleFrame"], tags=["passive_os_grid"], cfg={"all_targets": True, "radius": OS_GRID_R, "delay": 1.5}),
+        A("boss_os_purge", "blade", "magic_damage", keywords=["basic", "amplify", "chant"], kv={"amplify": 2, "chant": 3}, kv_star={"amplify": OS_AMP},
+          timings=["OnBattleFrame"], tags=["passive_os_purge"], cfg={"all_targets": True, "chant_pct_per_second": 0.0}),
+    ],
+})
+
 LOOKS = {
     "node_archer":       ("#c43c2e", "fair"),       # 赤铜红短发(绿斗篷配暖红)
     "node_dancer":       ("#d42c4a", "peach"),      # 玫瑰红卷发，暖一点的肤色

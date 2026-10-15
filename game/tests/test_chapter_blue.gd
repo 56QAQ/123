@@ -1,5 +1,5 @@
 extends RefCounted
-## 第一章-B·蓝之章：穹顶箱庭的方格网(圆形的轮廓、首领在最北的信标下、起点在最南的边缘)、未来风的战斗地图(科技障碍、没有地形效果)、
+## 第一章-B·蓝之章：穹顶箱庭的方格网(圆形的轮廓、首领在最北的信标下、起点在最南的边缘)、未来风的战斗地图(科技障碍 + 供能地砖)、
 ## 从第零章的分支进入蓝之章。怪物暂时是红之章的占位。
 
 
@@ -21,7 +21,8 @@ func test_chapter_data(t: TestCtx) -> void:
 	t.ok(ch.has("monsters") and not (ch["monsters"] as Dictionary).is_empty(), "placeholder monsters are listed")
 	for kind: String in ["fight", "elite", "boss", "hunt"]:
 		var bm: Dictionary = ch["battle_map"][kind]
-		t.ok(not bm.has("burning") and not bm.has("embers") and not bm.has("frost"), "%s battle maps have no terrain effects" % kind)
+		t.ok(not bm.has("burning") and not bm.has("embers") and not bm.has("frost"), "%s battle maps have no fire / frost" % kind)
+		t.ok(int(bm.get("pads", 0)) >= 3, "%s battle maps have power tiles (%d)" % [kind, int(bm.get("pads", 0))])
 	var avail := false
 	for b: Dictionary in (cat.chapters["ch0"]["next"] as Dictionary).get("branches", []):
 		if str(b["id"]) == "ch1_blue":
@@ -87,7 +88,7 @@ func test_dome_map_shape(t: TestCtx) -> void:
 
 func test_blue_battle_maps_are_city_tech(t: TestCtx) -> void:
 	for sd in [3, 4, 5]:
-		var layout: Dictionary = MapGen.generate({"low": 3, "high": 2, "theme": "blue", "regions": ["n", "nw", "ne"]}, sd)
+		var layout: Dictionary = MapGen.generate({"low": 3, "high": 2, "pads": 3, "theme": "blue", "regions": ["n", "nw", "ne"]}, sd)
 		t.eq(str(layout["theme"]), "blue", "blue layout (seed %d)" % sd)
 		var obs: Array = layout["obstacles"]
 		t.eq(obs.size(), 5, "five obstacles")
@@ -97,6 +98,19 @@ func test_blue_battle_maps_are_city_tech(t: TestCtx) -> void:
 		t.ok((layout.get("embers", []) as Array).is_empty() and (layout.get("frost", []) as Array).is_empty(), "no ember / frost patches")
 		var m: BattleMap = BattleMap.from_layout(layout)
 		t.eq(m.reachable_count(GC.DEPLOY_RECT.position), m.free_count(), "connected")
+		t.eq(m.pads.size(), 3, "three power tiles")
+		t.ok(m.has_terrain(), "power tiles are terrain")
+		for pd: Dictionary in m.pads:
+			var pr: Rect2i = pd["rect"]
+			t.ok(str(pd["style"]).begins_with("pad_") and bool(pd["charged"]), "a charged power tile (%s)" % str(pd["style"]))
+			t.ok(not pr.intersects(GC.DEPLOY_RECT.grow(1)), "no power tile in or next to the deploy zone")
+			for y in range(pr.position.y, pr.end.y):
+				for x in range(pr.position.x, pr.end.x):
+					t.ok(not m.blocks_move(Vector2i(x, y)), "power tiles lie on open ground")
+			for pd2: Dictionary in m.pads:
+				if pd2 != pd:
+					t.ok(not (pd2["rect"] as Rect2i).intersects(pr.grow(1)), "power tiles don't touch each other")
+		t.eq(BattleMap.from_layout(m.to_layout()).pads.size(), 3, "power tiles survive the layout round trip")
 	for nm: String in ["sf_tower_a", "sf_tower_b", "sf_block", "sf_pylon", "sf_tree", "sf_lamp", "sf_sign", "sf_beacon"]:
 		t.ok(ResourceLoader.exists("res://assets/world/%s.res" % nm), "big-map model %s" % nm)
 
@@ -127,4 +141,64 @@ func test_entering_the_blue_chapter(t: TestCtx) -> void:
 		t.eq(str(lay.get("theme", "")), "blue", "blue battle map")
 		for o: Dictionary in lay.get("obstacles", []):
 			t.ok(str(o["style"]).begins_with("tech_"), "tech obstacle %s" % str(o["style"]))
-		t.ok((lay.get("embers", []) as Array).is_empty() and (lay.get("frost", []) as Array).is_empty(), "no terrain effects")
+		t.ok((lay.get("embers", []) as Array).is_empty() and (lay.get("frost", []) as Array).is_empty(), "no fire / frost")
+		t.ok((lay.get("pads", []) as Array).size() >= 1, "power tiles on the battle map (%d)" % (lay.get("pads", []) as Array).size())
+
+
+## 供能地砖(docs/BLUE_CHAPTER.md 第 7 节)：满电时踩上去的棋子(不分敌我、离中心最近的那个)把电吸走 → 【满电】6 秒
+## (攻速 +25%、计时加速 +25%、被动增幅 +1)；8 秒后重新充满，有人站着就立刻被吸走；没人站着就一直满着
+func test_power_tiles_supercharge_whoever_drains_them(t: TestCtx) -> void:
+	var layout := {"truck": false, "obstacles": [], "pads": [{"x": 6, "y": 6, "w": 2, "h": 2, "style": "pad_l"}]}
+	var mid: Vector2 = GC.cell_to_world(6, 6) + Vector2(0.5, 0.5)
+	var b: Battle = Fixture.make([{"def": "mob_sg_sentry", "team": 1, "pos": mid},
+		{"def": "test_dummy", "pos": GC.cell_to_world(7, 7) + Vector2(0.3, 0.3)},
+		{"def": "test_dummy", "pos": GC.cell_to_world(20, 15)}], 7, layout)
+	var sg: BUnit = b.units[0]
+	var du: BUnit = b.units[1]
+	var far: BUnit = b.units[2]
+	t.eq(b.map.pads.size(), 1, "one power tile on the map")
+	t.ok(b.map.has_terrain(), "power tiles count as terrain")
+	t.ok(b.map.on_pad(0, sg.pos, sg.radius) and b.map.on_pad(0, du.pos, du.radius) and not b.map.on_pad(0, far.pos, far.radius), "two pieces on the tile, one away")
+	t.ok(bool(b.map.pads[0]["charged"]), "charged before the battle")
+	var amp: AbilityDef = null
+	for pa: AbilityDef in sg.def.passives:
+		if pa.has_keyword("amplify"):
+			amp = pa
+	t.ok(amp != null, "(the sentry's passive has Amplify)")
+	var kw0: int = Pipeline.kw_value(sg, amp, "amplify")
+	var as0: float = du.get_stats().attack_speed_multiplier
+	b.start()
+	b.advance_pending(GC.START_DELAY)
+	for i in range(int(0.3 / GC.SIM_DT)):
+		b.step()
+	var t_drain: float = b.time
+	t.ok(sg.statuses.has("supercharged"), "the piece nearest the middle drains it: Supercharged")
+	t.ok(not du.statuses.has("supercharged") and not far.statuses.has("supercharged"), "only one piece gets the charge")
+	t.ok(not bool(b.map.pads[0]["charged"]), "the tile is empty now")
+	t.ok(absf(float(b.map.pads[0]["ready_at"]) - (b.time + Battle.PAD_RECHARGE)) < 0.31, "recharges in %.0f s" % Battle.PAD_RECHARGE)
+	t.eq(Pipeline.kw_value(sg, amp, "amplify"), kw0 + 1, "passive Amplify +1")
+	t.near(sg.get_stats().haste, 0.25, 0.001, "haste +25%")
+	t.eq(Fixture.events_of(b, "pad_drain").size(), 1, "one drain event")
+	for i2 in range(int(6.2 / GC.SIM_DT)):
+		b.step()
+	t.ok(not sg.statuses.has("supercharged"), "Supercharged lasts 6 s")
+	t.ok(not du.statuses.has("supercharged"), "an empty tile gives nothing")
+	while b.time < t_drain + Battle.PAD_RECHARGE + 0.2:
+		b.step()
+	t.ok(sg.statuses.has("supercharged"), "still standing on it: drained again the moment it recharges")
+	t.eq(Fixture.events_of(b, "pad_ready").size(), 1, "the recharge is announced")
+	t.eq(Fixture.events_of(b, "pad_drain").size(), 2, "two drains in ~8 s")
+	# 炮台挪走：下一次充满归还站在上面的那个(我方的木桩)
+	sg.pos = GC.cell_to_world(2, 2)
+	var t2: float = b.time
+	while b.time < t2 + Battle.PAD_RECHARGE + 0.2:
+		b.step()
+	t.ok(du.statuses.has("supercharged"), "either side can drain it")
+	t.near(du.get_stats().attack_speed_multiplier - as0, 0.25, 0.001, "attack speed +25%")
+	# 没人站着：充满以后一直满着
+	du.pos = GC.cell_to_world(2, 4)
+	var t3: float = b.time
+	while b.time < t3 + Battle.PAD_RECHARGE + 1.0:
+		b.step()
+	t.ok(bool(b.map.pads[0]["charged"]), "nobody on it: it stays charged")
+	t.eq(Fixture.events_of(b, "pad_drain").size(), 3, "no drain without anyone on it")

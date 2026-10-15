@@ -1767,10 +1767,89 @@ func chapter_blue() -> void:
 		await frames(2)
 		g4 += 2
 	await shot("ch1b battlefield (tech obstacles)")
+	# 供能地砖(蓝之章的地形效果，2026-10-15)：备战时满电亮着，悬停有提示
+	var pads: Array = gr.run.current_layout().get("pads", [])
+	ok(pads.size() > 0 and gr.world.battlefield._pad_nodes.size() == pads.size(), "power tiles on the battlefield (%d)" % pads.size())
+	var pc := Vector2(INF, INF)
+	for p0: Dictionary in pads:
+		var c0: Vector2 = (GC.cell_to_world(int(p0["x"]), int(p0["y"])) + GC.cell_to_world(int(p0["x"]) + int(p0["w"]) - 1, int(p0["y"]) + int(p0["h"]) - 1)) * 0.5
+		if c0.length() < pc.length():
+			pc = c0
+	if pc.x < INF:
+		gr._update_terrain_tip(gr.world.rig.project(Vector3(pc.x, 0.0, pc.y)))
+		await frames(4)
+		ok(gr.hud._tip_owner == gr.world.battlefield, "hovering a power tile shows what it does")
+		await shot("ch1b battlefield: power tile tip")
+		gr._update_terrain_tip(Vector2(-1, -1))
 	gr._start_battle()
 	await frames(90)
-	ok(gr.state == "battle", "the placeholder encounter fights")
+	ok(gr.state == "battle", "the machines fight")
 	await shot("ch1b battle")
+	# 有人踩上了满电的地砖：电被吸走(地砖暗下去、边上的刻度开始充，电光窜到他身上)，吸电的人脚下一圈【满电】的刻度环
+	# (AI 不会去找地砖：把我方一个棋子挪到离中心最近的那块上)
+	var pb: Battle = gr.world.battle_view.battle
+	if pb != null and pb.state != "ended" and pc.x < INF:
+		var pu: BUnit = null
+		for u: BUnit in pb.units:
+			if u.alive and u.team == GC.TEAM_PLAYER and pu == null:
+				pu = u
+		var pid: int = pb.map.pad_at_cell(GC.world_to_cell(pc))
+		ok(pu != null and pid >= 0, "(a piece to put on the tile)")
+		if pu != null and pid >= 0:
+			var pw := 0
+			while pb.time < GC.START_DELAY + 1.8 and pb.state != "ended" and pw < 600:      # 等"作战开始"的横幅收起
+				pw += 1
+				await frames(1)
+			pu.pos = pc
+			pu.prev_pos = pc
+			var pg := 0
+			while bool(pb.map.pads[pid]["charged"]) and pb.state != "ended" and pg < 200:
+				pg += 1
+				await frames(1)
+			ok(not bool(pb.map.pads[pid]["charged"]) and pu.statuses.has("supercharged"), "stepping on a charged tile drains it: Supercharged")
+			await frames(8)
+			await shot("ch1b battle: a power tile drained")
+	# ---- 蓝之章的事件(2026-10-15)：宵禁(画面 = 宵禁广场，探照灯一直在扫) / 等门的家政机 / 停摆的钟
+	for evr: Array in [["curfew", "curfew_plaza", "ch1b event: curfew"], ["waiting_android", "roadside", "ch1b event: the android at the door"],
+			["stopped_clock", "roadside", "ch1b event: the stopped clock"]]:
+		gr.run.phase = "event"
+		gr.run.event_state = {"id": str(evr[0]), "node": gr.run.pos, "option": -1, "outcome": "", "picks": {}, "closed": [], "gains": [], "repeat": false}
+		gr._open_node_screen()
+		await frames(30)
+		var bes: EventScreen = gr.screens.event_screen()
+		ok(bes != null and bes.event_id == str(evr[0]) and bes.stage != null and bes.stage.scene_id == str(evr[1]), "%s: its own scene (%s)" % [str(evr[0]), str(evr[1])])
+		if bes != null and str(evr[1]) == "curfew_plaza":
+			ok(bes.stage.arena != null and bes.stage.arena._sweeping, "the searchlight keeps sweeping the plaza")
+		await frames(30)
+		await shot(str(evr[2]))
+	# ---- 宵禁的事件战斗：宵禁广场(和事件画面是同一个地方)；备战时地上画着探照灯照不到的影子，开打后光束按时刻表扫过
+	gr.run.phase = "event"
+	gr.run.event_state = {"id": "curfew", "node": gr.run.pos, "option": 0, "outcome": "dash_fight",
+		"battle": (((gr.cat.events["curfew"]["options"] as Array)[0]["outcomes"] as Array)[0]["effects"] as Array)[0]}
+	gr.run.event_continue()
+	ok(gr.run.phase == "prepare" and str(gr.run.current_layout().get("arena", "")) == "curfew_plaza", "making a run for it: the battle is in the curfew plaza")
+	await gr._goto_battlefield(true)
+	await frames(40)
+	var car: ArenaSet = gr.world.battlefield.arena
+	ok(car != null and car.set_id == "curfew_plaza" and car.battle and car._shadows != null, "the plaza with the searchlight's shadows drawn on the ground")
+	ok(gr.hud.arena_box != null and gr.hud.arena_box.visible, "the searchlight rule is written out while preparing")
+	await shot("ch1b event battle: curfew plaza (prepare)")
+	gr._start_battle()
+	await frames(10)
+	var cb: Battle = gr.world.battle_view.battle
+	ok(cb != null and cb.hazards.size() == 1 and str(cb.hazards[0]["type"]) == "searchlight", "the battle carries the searchlight")
+	if cb != null:
+		gr._set_speed(2.0)
+		var cg := 0
+		while str(cb.hazards[0]["phase"]) != "run" and cb.state != "ended" and cg < 3000:
+			cg += 1
+			await frames(1)
+		var t0c: int = Time.get_ticks_msec()
+		while Time.get_ticks_msec() - t0c < 500:
+			await frames(1)
+		ok(car != null and car._sweeping, "the beam sweeps across the plaza")
+		await shot("ch1b event battle: the searchlight sweeps")
+		gr._set_speed(1.0)
 	gr._show_title()
 	await frames(10)
 	gr.cli.erase("chapter")

@@ -333,6 +333,40 @@ static func _candidates(b: Battle, ev: Dictionary, trig: TriggerDef, unit: BUnit
 					best_d = dd
 			if best_d != null:
 				out.append(best_d)
+		"event_dead":
+			# 这个事件里倒下的那个单位(OnAllyUnitDied / OnUnitKilled 的 meta.dead；CN-00 中枢主机·重构协议；触发器要带 target_filter.allow_dead)
+			var evd: BUnit = (ev.get("meta", {}) as Dictionary).get("dead") as BUnit
+			if evd != null:
+				out.append(evd)
+		"rail_line":
+			# RG-09 电磁轨道炮·蓄能射击：从自己穿过锁定的目标(吟唱开始时锁定的 meta.chant_target；还没锁定 = 离自己最远的敌人)
+			# 一直打到战场边的直线上(半宽 target_radius，默认 0.6 米)的敌人；锁定的目标排第一，其余按离自己的远近
+			var aim: BUnit = (ev.get("meta", {}) as Dictionary).get("chant_target") as BUnit
+			if aim == null or not aim.alive or aim.team == unit.team:
+				aim = null
+				var far := -1.0
+				for fe: BUnit in b.enemies_of(unit):
+					var fd: float = fe.pos.distance_to(unit.pos)
+					if fd > far:
+						far = fd
+						aim = fe
+			if aim != null:
+				out.append(aim)
+				var rdir: Vector2 = aim.pos - unit.pos
+				if rdir.length() > 0.01:
+					rdir = rdir.normalized()
+					var rhw: float = trig.target_radius if trig.target_radius > 0.0 else 0.6
+					var on_line: Array = []
+					for le2: BUnit in b.enemies_of(unit):
+						if le2 == aim:
+							continue
+						var rel: Vector2 = le2.pos - unit.pos
+						var along: float = rel.dot(rdir)
+						if along > 0.0 and absf(rel.cross(rdir)) <= rhw + le2.radius * 0.5:
+							on_line.append([along, le2])
+					on_line.sort_custom(func(x: Array, y: Array) -> bool: return float(x[0]) < float(y[0]))
+					for ol: Array in on_line:
+						out.append(ol[1] as BUnit)
 		"first_star_allies":
 			# 所有友方初星系节点(含自己)
 			for u7: BUnit in b.units:

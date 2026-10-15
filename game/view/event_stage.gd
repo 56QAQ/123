@@ -39,6 +39,8 @@ func setup(p_scene: String, px: Vector2i = Vector2i(1000, 760), cat: Catalog = n
 			_build_fountain_park(cat)
 		"tram_stop":
 			_build_tram_stop(cat)
+		"curfew_plaza":
+			_build_curfew_plaza(cat)
 		"roadside":
 			_build_roadside()
 		_:
@@ -190,6 +192,24 @@ func _build_tram_stop(cat: Catalog) -> void:
 	cam_dist = 16.5
 	cam_height = 3.2
 	cam_yaw = deg_to_rad(160.0)
+
+
+# ---------------------------------------------------------------- 宵禁：宵禁广场(= 专属战场 curfew_plaza，蓝之章)
+## 镜头在南边(卡车停的那一侧)朝北看：广场正北是安保探照塔，光束一遍遍地扫过空广场(ArenaSet 在事件画面里让它一直扫)；
+## 塔前两座全息亭、两侧机柜，背后一圈白色的未来街区和塔楼，蓝色的夜
+func _build_curfew_plaza(cat: Catalog) -> void:
+	_night_env(Color("#13285a"), Color("#3f5f96"), 18.0, 56.0, Color("#081634"))
+	_arena_set(cat)
+	_backdrop([["tech_gate", Vector3(-9.5, 0, -11.5), 0.0], ["tech_gate", Vector3(9.5, 0, -11.5), 0.0], ["tech_server", Vector3(-15.0, 0, -6.0), 15.0],
+		["tech_server", Vector3(15.5, 0, -5.0), -20.0], ["tech_pillar", Vector3(-5.5, 0, -13.0), 0.0], ["tech_pillar", Vector3(5.5, 0, -13.0), 0.0],
+		["sf_block", Vector3(-20.0, 0, -24.0), 0.0], ["sf_tower_a", Vector3(-8.0, 0, -32.0), 0.0], ["sf_block", Vector3(14.0, 0, -26.0), 0.0],
+		["sf_tower_b", Vector3(26.0, 0, -36.0), 0.0], ["sf_block", Vector3(-30.0, 0, -12.0), 90.0], ["sf_tree", Vector3(-17.0, 0, 3.0), 0.0],
+		["sf_tree", Vector3(17.5, 0, 2.0), 0.0], ["sf_lamp", Vector3(-11.0, 0, 6.0), 0.0], ["sf_lamp", Vector3(11.0, 0, 6.0), 180.0]])
+	root3d.add_child(FireFX.snow(Vector2(34, 34), 110, 11.0))
+	focus = Vector3(0, 2.6, -5.5)
+	cam_dist = 17.0
+	cam_height = 5.0
+	cam_yaw = deg_to_rad(12.0)
 
 
 # ---------------------------------------------------------------- 街景套件：路边(第二批事件共用)

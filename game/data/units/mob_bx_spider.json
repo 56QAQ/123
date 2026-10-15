@@ -1,0 +1,101 @@
+{
+ "id": "mob_bx_spider",
+ "cost": 1,
+ "role": "warrior",
+ "base_weapon_class": "dual",
+ "weapon_classes": [
+  "dual"
+ ],
+ "faction_id": "white",
+ "profession_id": "",
+ "available_in_shop": false,
+ "hide_weapon": true,
+ "model": "droid_spider",
+ "target_priority": "nearest",
+ "radius": 0.42,
+ "scale": 0.9,
+ "anim_overrides": {
+  "dual": {
+   "idle": "idle_spider",
+   "run": "run_spider",
+   "attack": "attack_spider"
+  }
+ },
+ "base_stats": {
+  "attack_power": 46,
+  "ability_power": 0.0,
+  "defense": 14,
+  "magic_resistance": 14,
+  "max_health": 560,
+  "health_regen_per_second": 0.0,
+  "physical_lifesteal": 0.0,
+  "spell_lifesteal": 0.0,
+  "omnivamp": 0.0,
+  "crit_chance": 0.05,
+  "crit_damage": 1.5,
+  "physical_flat_penetration": 0.0,
+  "physical_percent_penetration": 0.0,
+  "magic_flat_penetration": 0.0,
+  "magic_percent_penetration": 0.0,
+  "move_speed": 3.2,
+  "attack_speed_multiplier": 1.0,
+  "damage_dealt_pct": 0.0,
+  "damage_dealt_flat": 0.0,
+  "damage_taken_pct": 0.0,
+  "damage_taken_flat": 0.0,
+  "healing_done_pct": 0.0,
+  "healing_received_pct": 0.0
+ },
+ "triggers": [
+  {
+   "id": "mob_bx_detonate",
+   "timing": "OnUnitDied",
+   "event_count_threshold": 1,
+   "base_value_mode": "attack_ratio_keyword",
+   "base_value_ratio": 1.2,
+   "base_value_flat": 0.0,
+   "target_rule": "nearby_units",
+   "team_filter": "any",
+   "tags": [
+    "unit_died",
+    "passive_bx_detonate"
+   ],
+   "target_radius": 2.2,
+   "base_value_keyword": "amplify"
+  }
+ ],
+ "passive_abilities": [
+  {
+   "id": "mob_bx_detonate",
+   "ability_class": "blade",
+   "effect_type": "magic_damage",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic",
+    "amplify"
+   ],
+   "accepted_timings": [
+    "OnUnitDied"
+   ],
+   "required_trigger_tags": [
+    "passive_bx_detonate"
+   ],
+   "effect_config": {
+    "all_targets": true
+   },
+   "cooldown": 0.0,
+   "priority": 100,
+   "keyword_values": {
+    "amplify": 2
+   },
+   "keyword_values_by_star": {
+    "amplify": {
+     "1": 2,
+     "2": 2,
+     "3": 3
+    }
+   }
+  }
+ ]
+}

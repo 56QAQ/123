@@ -3,6 +3,7 @@ extends SceneTree
 ## 第零章打完接着打第一章·红之章(方格网地图：挑节点、修整、商店、追猎)，统计各类战斗(弱怪池/强怪池/精英/首领/追猎)的胜率与卡车受损。
 ## 用法: godot --headless --path . --script res://tools/campaign_bench.gd --quit-after 6000 -- n=40 seed=1 [starter=smart|none] [dump=8] [ch1=0] [branch=ch1_red|ch1_blue]
 ##   tram=board|follow|watch：机器人在事件「末班电车」里固定选哪一项(默认 board = 上车打一场)
+##   curfew=dash|wait|hack：事件「宵禁」(蓝之章)里固定选哪一项(默认 dash = 闯过广场打一场)
 ##   dump=K：打印第 K 个地图节点每场战斗的双方输出/承伤(调平衡用)
 ##   basic=bench：空白节点一直不上场(默认 deploy = 每场都放到卡车后面)
 var cat: Catalog
@@ -17,6 +18,7 @@ var use_workshop := true     # workshop=0：机器人不用车间(对照)
 var craft_at := 12           # 材料攒到这么多份就全投进去造一件
 var ws_stat := {"crafted": 0, "salvaged": 0, "cost": 0}
 var tram_pick := "board"     # tram=board|follow|watch：事件「末班电车」里机器人选哪一项
+var curfew_pick := "dash"    # curfew=dash|wait|hack：事件「宵禁」(蓝之章)里机器人选哪一项(默认闯过广场打一场)
 
 
 var _args: Dictionary = {}
@@ -55,6 +57,8 @@ func _init() -> void:
 			craft_at = int(a.substr(9))
 		elif a.begins_with("tram="):
 			tram_pick = a.substr(5)
+		elif a.begins_with("curfew="):
+			curfew_pick = a.substr(7)
 	cat = Catalog.load_all()
 	# 调第一章的强度用(不改数据就能并行试几组)：ch1_iv=base:per_depth:max:elite_bonus:boss:hunt  strong=chance:from:bump_lo:bump_hi
 	if _args.has("ch1_iv") or _args.has("strong"):
@@ -283,6 +287,8 @@ func _play_grid(r: Run, kinds: Dictionary, c1: Dictionary) -> void:
 							if oid == "destroy" or (oid == "collect" and r.truck_hp > 60 and pick < 0):
 								pick = oi
 							if str(r.event_state.get("id", "")) == "last_tram" and oid == tram_pick:
+								pick = oi
+							if str(r.event_state.get("id", "")) == "curfew" and oid == curfew_pick:
 								pick = oi
 					var eid: String = str(r.event_state.get("id", ""))
 					var seen_ev: Dictionary = c1.get("event_ids", {})

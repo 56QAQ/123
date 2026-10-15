@@ -225,6 +225,8 @@ for k, zh, en in [("rapid_fire", "连射", "Rapid Fire"), ("quick_reload", "快�
                   ("guardian_wisdom", "监护人的智慧", "Guardian's Wisdom"), ("guardian_wisdom_crit", "监护人的力量", "Guardian's Strength"), ("witch_fire", "魔女之火", "Witch's Fire"), ("witch_ice", "魔女之冰", "Witch's Ice"), ("idol_song_as", "舞与歌·攻速", "Dance and Song · Speed"), ("idol_song_ap", "舞与歌·攻击", "Dance and Song · Attack"), ("knowledge_bombard", "知识轰炸", "Knowledge Bombardment"),
                   ("burning", "燃烧", "Burning"),
                   ("amp_link", "增幅链路", "Amp Link"), ("amp_field", "增幅力场", "Amp Field"),
+                  ("gw_cooling", "散热", "Cooling"), ("gw_overload", "过载", "Overload"), ("gw_overheat", "过热", "Overheat"),
+                  ("cn_idle", "中枢", "Hub"), ("os_upgrade", "系统升级", "System Upgrade"), ("dazzled", "过曝", "Dazzled"), ("supercharged", "满电", "Supercharged"),
                   ("sloth_preheat", "预热", "Preheat"), ("lust_bind", "色欲的侵蚀", "Lust's Erosion"), ("lust_regrowth", "蠕生", "Writhing Growth"),
                   ("glut_meltdown", "崩解", "Collapse"), ("elite_vanity", "虚荣", "Vanity"),
                   ("envy_spite", "妒恨", "Spite"), ("greed_hoard", "贪婪", "Greed"), ("melancholy_listless", "忧郁", "Melancholy"),
@@ -372,7 +374,7 @@ UI = [
     ("fx.perform.regen", "愈音", "Healing Note"), ("fx.perform.repel", "震音", "Shock Note"), ("fx.perform.wound", "哀音", "Lament"), ("fx.perform.shred", "破音", "Discord"), ("fx.wither", "-%d 上限", "-%d max"), ("fx.greed", "金焰", "Gilded Flame"),
     ("fx.edict", "傲慢敕令", "Edict of Pride"), ("fx.charge_up", "充能 +1", "Charge +1"), ("fx.revive", "复活!", "Revived!"),
     ("fx.true_heart", "少女真心", "True Heart"), ("fx.refresh", "再一次!", "Once more!"),
-    ("err.unique", "该节点是唯一的", "That node is unique"), ("fx.backstab", "背刺!", "Backstab!"), ("fx.xp", "经验 +%s", "EXP +%s"), ("fx.starfall", "渡星而来", "Starfall"), ("fx.familiar", "使魔 %s/6", "Familiar %s/6"), ("fx.hooked", "上钩!", "Hooked!"), ("fx.notes", "笔记 +%s%%", "Notes +%s%%"), ("fx.rekindle", "重燃 ×%s", "Rekindle ×%s"), ("fx.afterglow", "残光", "Afterglow"),
+    ("err.unique", "该节点是唯一的", "That node is unique"), ("fx.backstab", "背刺!", "Backstab!"), ("fx.xp", "经验 +%s", "EXP +%s"), ("fx.starfall", "渡星而来", "Starfall"), ("fx.familiar", "使魔 %s/6", "Familiar %s/6"), ("fx.hooked", "上钩!", "Hooked!"), ("fx.notes", "笔记 +%s%%", "Notes +%s%%"), ("fx.rekindle", "重燃 ×%s", "Rekindle ×%s"), ("fx.afterglow", "残光", "Afterglow"), ("fx.overload", "过载!", "Overload!"), ("fx.overheat", "过热", "Overheat"), ("fx.system_upgrade", "系统升级 %s", "Upgrade %s"), ("fx.rebuild", "重构", "Rebuilt"), ("fx.purge", "全域清除", "Total Purge"), ("fx.interrupted", "打断", "Interrupted"),
     ("err.not_wearable", "这件物品不能佩戴", "This item can't be worn"),
     ("err.flag_on_enemy", "把狩猎旗标拖到敌人身上", "Drag the Hunting Flag onto an enemy"),
     ("tip.drag_flag", "拖到敌人身上：标记为狩猎对象", "Drag onto an enemy to mark it as the quarry"),
@@ -522,6 +524,49 @@ event("last_tram", ("末班电车", "The Last Tram"),
                  "站牌上的路线图还没有烧完。节点们照着它，把附近几条街的情况一一标到了地图上。",
                  "The doors close and the streetcar rolls off down the street trailing a long string of sparks, turns at the next junction, and is gone.\n"
                  "The route map on the stop sign has not burned away yet. Following it, the Nodes mark the nearby streets on the map one by one.")})
+# ---------------------------------------------------------------- 蓝之章 限定(2026-10-15，docs/BLUE_CHAPTER.md)
+event("curfew", ("宵禁", "Curfew"),
+      ("广播在空荡荡的街道上响起来：「现在是宵禁时间，请市民立即回到室内。」\n"
+       "广场北边的安保探照塔亮了。一道白光从塔顶落下来，一遍又一遍地扫过空无一人的广场，照亮了每一张长椅、每一块地砖。\n"
+       "这座城早就没有市民了，宵禁却还在照常执行。卡车停在广场边的阴影里，光束离车头只差几米。\n"
+       "要怎么做？",
+       "An announcement rings out over the empty streets: \"Curfew is now in effect. All citizens, return indoors immediately.\"\n"
+       "The security searchlight tower north of the plaza lights up. A white beam falls from its top and sweeps the deserted plaza again and again, picking out every bench and every tile.\n"
+       "This city has had no citizens for a long time, yet the curfew is still enforced on schedule. The truck waits in the shadow at the edge of the plaza, a few meters short of the beam.\n"
+       "What will you do?"),
+      {"dash": ("闯过广场。", "Make a run across the plaza."),
+       "wait": ("关掉车灯，等到天亮。", "Kill the lights and wait for dawn."),
+       "hack": ("黑进探照塔。", "Hack the searchlight tower.")},
+      {"dash_fight": ("卡车冲进光里的那一刻，警报变了调。\n"
+                      "广场四周的闸门一扇扇打开，巡逻的机器从里面走了出来。探照灯没有停——它照到谁，谁就是违反宵禁的人。\n"
+                      "躲在影子里。",
+                      "The moment the truck rolls into the light, the siren changes pitch.\n"
+                      "One by one the gates around the plaza slide open, and patrol machines step out. The searchlight doesn't stop — whoever it touches is breaking curfew.\n"
+                      "Stay in the shadows."),
+       "wait": ("你们熄了火，在阴影里等了一整夜。光束每隔十几秒就扫过车头一次。\n天亮的时候宵禁解除了，广播换成了轻快的晨间音乐。节点们趁着这一夜把车修了修。",
+                "You kill the engine and wait out the night in the shadow. Every dozen seconds the beam sweeps past the hood.\nAt dawn the curfew lifts and the speakers switch to cheerful morning music. The Nodes used the night to patch up the truck."),
+       "hack": ("塔底的检修口还亮着一块终端。几分钟后，探照灯在半空中停住了，塔里的巡逻地图一张张弹了出来——附近几条街上的东西一览无余。",
+                "A maintenance terminal at the foot of the tower is still lit. A few minutes later the searchlight freezes mid-sweep and the tower's patrol maps pop up one after another — everything on the nearby streets laid bare.")})
+event("waiting_android", ("等门的家政机", "The Android at the Door"),
+      ("一扇半开的公寓门前，一台 HM-02 家政仿生人正在扫门口的台阶。\n"
+       "它看见卡车，放下扫帚，规规矩矩地鞠了一躬：「欢迎回家。主人今天也会晚一点回来吗？」\n"
+       "门牌上的名字已经褪色得看不清了。门缝里亮着暖色的灯，餐桌上摆着两副碗筷。\n"
+       "要怎么做？",
+       "In front of a half-open apartment door, an HM-02 housekeeping android is sweeping the front steps.\n"
+       "It sees the truck, sets down its broom and bows neatly: \"Welcome home. Will the master be late again today?\"\n"
+       "The name on the nameplate has faded past reading. Warm light spills through the gap in the door, and two place settings wait on the dining table.\n"
+       "What will you do?"),
+      {"wait": ("陪它等一会儿。", "Wait with it a while."),
+       "tell": ("告诉它，主人不会回来了。", "Tell it the master isn't coming back."),
+       "salvage": ("拆下它的核心。", "Pull out its core.")},
+      {"wait": ("你们在台阶上坐了一下午。它给每个人都倒了茶，讲了很多主人的事。\n天黑的时候它抱出一个箱子：「这些是主人用不上的东西，请收下吧。」",
+                "You sit on the steps all afternoon. It pours tea for everyone and talks a great deal about its master.\nAt dusk it carries out a crate: \"These are things the master no longer needs. Please take them.\""),
+       "tell_join": ("它沉默了很久，然后把扫帚靠在门边，关上了门里的灯。\n「那么，我去照顾各位的车吧。」它把卡车里里外外擦了一遍，顺手把松掉的螺栓全都拧紧了。",
+                     "It is silent for a long time. Then it leans the broom by the door and switches off the light inside.\n\"Then I shall look after your vehicle.\" It cleans the truck inside and out, and tightens every loose bolt while it's at it."),
+       "tell_sleep": ("它沉默了很久，然后慢慢坐在台阶上，眼部的灯带一格一格地暗了下去。\n它的手里还握着一块电池——像是早就准备好要交给谁。",
+                      "It is silent for a long time, then slowly sits down on the steps as the light strip across its eyes dims, one segment at a time.\nIn its hand it holds a battery — as if it had long been ready to give it to someone."),
+       "salvage": ("核心比想象中好拆。它到最后都在鞠躬。\n远处的街口传来一声短促的警报——附近的安保机器听见了。",
+                   "The core comes out more easily than you expected. It keeps bowing to the very end.\nFrom a street corner in the distance comes a short burst of alarm — the security machines nearby heard it.")})
 event("quiet_street", ("寂静的街道", "A Quiet Street"),
       ("卡车驶过一条烧空了的商店街。\n卷帘门半开着，招牌在风里吱呀作响，除此之外什么也没有。",
        "The truck rolls down a burned-out shopping street.\nShutters hang half open and signs creak in the wind. Other than that, there is nothing."),
@@ -625,6 +670,20 @@ event("ash_storm", ("余烬风暴", "Ash Storm"),
        "wait": ("你们停在一堵墙下面等风过去。等了很久。", "You pull up under a wall and wait for it to blow over. It takes a long time."),
        "dark": ("灯、雷达、引擎，全部关掉。黑暗里有东西贴着车壁走过去了，不止一个。它们记住了卡车的气味。",
                 "Lights, radar, engine — all off. Things pass along the side of the truck in the dark, more than one. They have your scent now.")})
+event("stopped_clock", ("停摆的钟", "The Stopped Clock"),
+      ("路口立着一座钟，秒针停在两个刻度中间，一动不动。\n"
+       "卡车开近的时候，仪表盘上的数字也慢了下来，雨刷停在半空。连风声都像是被拉长了。\n"
+       "这里的时间像是被冻住了。",
+       "A clock stands at the crossroads, its second hand stopped between two ticks.\n"
+       "As the truck draws near, the numbers on the dashboard slow down and the wipers freeze mid-swipe. Even the wind sounds stretched.\n"
+       "Time seems to have frozen here."),
+      {"forward": ("把指针往前拨。", "Turn the hands forward."), "back": ("把指针往回拨。", "Turn the hands back."), "spring": ("取下发条。", "Take out the mainspring.")},
+      {"forward": ("指针一转，路就短了一截——卡车凭空到了下一个街口。车身上的漆却一下子褪了色，螺栓上长满了锈，像是一路开了好几年。",
+                   "With a turn of the hands the road grows shorter — the truck is suddenly at the next junction. But the paint has faded all at once and the bolts are thick with rust, as if it had been driving for years."),
+       "back": ("指针往回拨了一格。整条街都晚了半拍：飞鸟、落叶、远处巡逻机器的脚步。\n下一个遇到你们的东西，也会慢上半拍。",
+                "You turn the hands back a single tick. The whole street falls half a beat behind: the birds, the falling leaves, the footsteps of a distant patrol.\nWhatever meets you next will be half a beat late, too."),
+       "spring": ("发条被取下来的那一刻，钟面上的指针终于转了起来——飞快地追赶着这些年落下的时间。\n发条里浸满了液态的负熵，冰凉，几乎没有重量。",
+                  "The moment the mainspring comes out, the hands on the clock face start to move at last — racing to catch up on all the years they missed.\nThe spring is soaked in liquid negentropy: ice-cold, and nearly weightless.")})
 event("lost_armory", ("失落的军火库", "The Lost Armory"),
       ("公路边的土坡里半埋着一扇钢门。门缝里透出灯光。\n"
        "门上的电子锁还亮着，键盘旁边贴着一张褪色的告示：「仅限 5 级以上人员」。\n"
@@ -740,6 +799,14 @@ for k, zh, en in [
      "砸到的单位[b]不分敌我[/b]受到 [color=#ffd36b]80[/color] 点法术伤害，落火点重新烧成余烬地块。紧挨着喷泉的单位每秒被点燃。",
      "The fountain first erupts 5 s into the battle, then [b]every 9 s[/b]: seven arcs of fire land on the scorch marks around it. "
      "Anything they hit, [b]friend or foe[/b], takes [color=#ffd36b]80[/color] magic damage, and the scorch marks burn again as ember patches. Pieces right next to the fountain are set alight every second."),
+    ("arena.curfew_plaza.name", "宵禁广场", "The Curfew Plaza"),
+    ("arena.curfew_plaza.rule", "开战 5 秒后探照灯第一次扫过广场，之后[b]每 11 秒一次[/b](塔顶的红灯提前 2 秒闪)：光束从西扫到东。"
+     "被照到、和探照塔之间又没有高障碍或卡车挡着的单位[b]不分敌我[/b]受到 [color=#ffd36b]12% 最大生命 + 70[/color] 点法术伤害，并【过曝】3 秒(攻击速度 -30%)。"
+     "地上的暗影 = 照不到的地方。",
+     "The searchlight first sweeps the plaza 5 s into the battle, then [b]every 11 s[/b] (the red lamp on the tower flashes 2 s ahead): the beam sweeps from west to east. "
+     "Anything it touches with no tall obstacle or truck between it and the tower, [b]friend or foe[/b], takes [color=#ffd36b]12% of its max health + 70[/color] magic damage and is 【Dazzled】 for 3 s (-30% attack speed). "
+     "The dark patches on the ground are where the light can't reach."),
+    ("hazard.searchlight.label", "探照灯", "Searchlight"), ("hazard.searchlight.now", "扫描中", "Sweeping"),
     ("hazard.tram.label", "下一班电车", "Next tram"), ("hazard.tram.now", "电车进站", "Tram passing"),
     ("hazard.fountain.label", "喷泉喷发", "Eruption"), ("hazard.fountain.now", "喷发", "Erupting"),
     ("ui.arena.rule", "战场机制", "Battlefield rule")]:
@@ -747,8 +814,10 @@ for k, zh, en in [
 add("ui.err.event_choose", "先做出选择", "Make a choice first")
 # 事件留下的局内状态(Run.flags，Events.FLAG_IDS)：名字 / 说明(%d = 数值) / 选项上的效果文字
 for k, zh, en, dzh, den, gzh, gen in [
-    ("next_battle_intensity", "风暴里的敌人", "Things in the Storm", "下一场作战的敌人强度 +%d", "Next battle: enemy intensity +%d",
+    ("next_battle_intensity", "被盯上了", "Hunted", "下一场作战的敌人强度 +%d", "Next battle: enemy intensity +%d",
      "诅咒：下一场敌人强度 +%d", "Curse: next battle's enemies +%d intensity"),
+    ("next_battle_ease", "慢了半拍", "Half a Beat Behind", "下一场作战的敌人强度 -%d", "Next battle: enemy intensity -%d",
+     "祝福：下一场敌人强度 -%d", "Blessing: next battle's enemies -%d intensity"),
     ("shop_odds_shift", "祭坛的祝福", "The Altar's Blessing", "本章节点制造按高 %d 级的概率抽", "This chapter, fabrication rolls as if %d level higher",
      "祝福：本章节点制造按高 %d 级的概率抽", "Blessing: fabrication rolls as if %d level higher this chapter"),
     ("income_bonus", "旧友的人情", "An Old Friend's Favor", "本章每个节点的收入 +%d 金币", "This chapter, every node pays +%d gold",
@@ -885,6 +954,9 @@ for k, zh, en in [
     ("terrain.ash", "死灰废墟", "Dead-Ash Ruin"), ("terrain.ash.desc", "占格，不可通行，没有其他效果。高的还挡远程视线与弹道。", "Blocks its cells; no other effect. Tall ones also block line of sight and projectiles."),
     ("terrain.ice", "坚冰", "Hard Ice"), ("terrain.ice.desc", "占格，不可通行，没有其他效果。高的还挡远程视线与弹道。", "Blocks its cells; no other effect. Tall ones also block line of sight and projectiles."),
     ("terrain.frost", "寒雾地块", "Frost"), ("terrain.frost.desc", "不占格。站在上面的棋子(敌我都算)每秒被施加一个 4.5 秒的【寒气】；一直站着，第 5 秒就会冻住。", "Doesn't block. Pieces standing in it (both sides) gain a 4.5 s 【Chill】 every second; linger and you freeze on the fifth second."),
+    ("terrain.tech", "科技障碍", "Tech Barrier"), ("terrain.tech.desc", "占格，不可通行，没有其他效果。高的还挡远程视线与弹道。", "Blocks its cells; no other effect. Tall ones also block line of sight and projectiles."),
+    ("terrain.pad", "供能地砖", "Power Tile"), ("terrain.pad.desc", "不占格。满电时第一个踩上去的棋子(敌我都算)把电吸走，获得【满电】6 秒；地砖 8 秒后重新充满(边上的刻度一格一格亮起来)，充满时站在上面的人立刻吸走。一直站着 = 每 8 秒满电 6 秒。", "Doesn't block. When charged, the first piece to step on it (either side) drains it and becomes 【Supercharged】 for 6 s; the tile recharges in 8 s (the ticks around its edge light up one by one), and whoever stands on it then drains it at once. Stay on it = supercharged 6 s out of every 8."),
+    ("supercharged_hint", "满电：增益状态，攻击速度 +25%、计时加速 +25%(“每 x 秒”的效果与冷却走得更快)、被动技能的【增幅】+1；蓝之章的机器全都靠【增幅】，别让它们站上去", "Supercharged: a buff, +25% attack speed, +25% haste (“every x seconds” effects and cooldowns tick faster), +1 【Amplify】 on passive skills; every machine in the Blue Chapter runs on 【Amplify】 — keep them off the tiles"),
     ("chill_hint", "寒气：负面状态，每个降低 10% 攻击速度；每次施加独立计时；身上的寒气合计超过 40% 时全部消耗，变为【冻结】5 秒(眩晕)；可驱散", "Chill: a debuff, each lowers attack speed by 10%; every application is timed separately; when the chill on a unit adds up to more than 40% it is all consumed and becomes 【Frozen】 for 5 s (a stun); dispellable"),
 ]:
     add("ui." + k, zh, en)
@@ -1806,6 +1878,51 @@ unit("mob_ax_assault", "AX-01 突击仿生人", "AX-01 Assault Android",
      "The dome city's mass-produced assault unit, a vibro-blade on each forearm. One cut in three is the real full-power stroke.",
      {"mob_ax_protocol": ("[b]输出协议[/b]【增幅 {★1/1/2}】：每第 3 次普通攻击命中，追加 攻击力 × 60% × 增幅 的物理伤害。",
                           "[b]Output Protocol[/b] 【Amplify {★1/1/2}】: every 3rd normal attack hit deals an extra attack × 60% × Amplify as physical damage.")})
+# ---------------------------------------------------------------- 蓝之章第二批(2026-10-15)：殉爆蛛机 / 维修无人机，精英 步行机 / 中枢 / 轨道炮，首领 箱庭管理者
+unit("mob_bx_spider", "BX-09 殉爆蛛机", "BX-09 Detonator Spider",
+     "背着一颗黄黑斜纹弹头的四足蛛形机。它跑得比谁都快，倒下的时候比谁都响——旁边是谁都一样。",
+     "A four-legged spider drone hauling a yellow-and-black striped warhead. It runs faster than anything else, and goes down louder than anything else — whoever happens to be next to it.",
+     {"mob_bx_detonate": ("[b]殉爆协议[/b]【增幅 {★2/2/3}】：被摧毁时引爆，对 2.2 米内的所有单位(不分敌我)造成 攻击力 × 120% × 增幅 的法术伤害(增幅按倒下的那一刻算)。",
+                          "[b]Detonation Protocol[/b] 【Amplify {★2/2/3}】: when destroyed, it detonates, dealing attack × 120% × Amplify as magic damage to every unit within 2.2 m, friend or foe (Amplify counts at the moment it goes down).")})
+unit("mob_mr_drone", "MR-05 维修无人机", "MR-05 Repair Drone",
+     "嗡嗡作响的四旋翼无人机，机腹吊着一条焊枪臂。城里早就没有需要修的东西了，它就修还在打仗的机器。",
+     "A buzzing quadcopter with a welding arm slung under its belly. Nothing in the city needs fixing anymore, so it fixes the machines that are still fighting.",
+     {"mob_mr_repair": ("[b]维修协议[/b]【增幅 {★2/2/3}】：每 2 秒，修复生命比例最低的一台友方机器(含自己)，回复 攻击力 × 75% × 增幅 的生命。",
+                        "[b]Repair Protocol[/b] 【Amplify {★2/2/3}】: every 2 s, repairs the allied machine with the lowest health ratio (itself included), restoring attack × 75% × Amplify health.")})
+unit("elite_gw_walker", "GW-20 重装步行机", "GW-20 Siege Walker",
+     "两条粗腿撑着一座移动的工事，左臂是一柄液压锤。它按一套固定的节奏工作：过载、砸、过热、喘气，再过载。",
+     "A moving fortification on two massive legs, a hydraulic hammer for a left arm. It works to a fixed rhythm: overload, smash, overheat, vent — and overload again.",
+     {"elite_gw_quake": ("[b]震荡锤[/b]【增幅 {★2/3/3}】：普通攻击命中时，目标周围 2.4 米内的敌人(含目标)受到 攻击力 × 30% × 增幅 的物理伤害。",
+                         "[b]Shock Hammer[/b] 【Amplify {★2/3/3}】: on a normal attack hit, enemies within 2.4 m of the target (the target included) take attack × 30% × Amplify as physical damage."),
+      "elite_gw_overload": ("[b]过载循环[/b]：开战 6 秒后进入【过载】5 秒(被动技能的增幅 +3，攻击速度 +60%)；过载结束立刻【过热】3 秒(无法行动，受到的伤害 +50%)；过热结束 6 秒后再次过载。都不可驱散。",
+                            "[b]Overload Cycle[/b]: 6 s into the battle it enters 【Overload】 for 5 s (+3 Amplify to its passives, +60% attack speed); then immediately 【Overheats】 for 3 s (can't act, takes 50% more damage); 6 s after cooling down it overloads again. None of these can be dispelled.")},
+     note=("过热的 3 秒是集火的窗口。", "The 3 s of Overheat are your window to burst it down."))
+unit("elite_cn_hub", "CN-00 中枢主机", "CN-00 Central Hub",
+     "悬浮在基座上的白色球形主机，三道数据环绕着它转。它从不出手——它只负责让每一台机器都不会真正倒下。",
+     "A white spherical mainframe floating over its plinth, three data rings orbiting it. It never fights — it just makes sure no machine ever truly falls.",
+     {"elite_cn_idle": ("[b]中枢[/b]：不会攻击，也不会移动。",
+                        "[b]Hub[/b]: never attacks and never moves."),
+      "elite_cn_broadcast": ("[b]全频广播[/b]【增幅 {★2/3/3}】：每 4 秒，全场所有其他友方获得【增幅链路】5 秒：被动技能的增幅 +增幅(本技能的基础值)。",
+                             "[b]All-Band Broadcast[/b] 【Amplify {★2/3/3}】: every 4 s, every other ally on the field gains 【Amp Link】 for 5 s: their passives' Amplify +Amplify (this skill's base value)."),
+      "elite_cn_rebuild": ("[b]重构协议[/b]：中枢还在时，友方机器被摧毁 4 秒后在中枢身边重新组装(生命 50%)。每台只能重构 1 次，召唤物不算；中枢倒下时还没组装好的全部作废。",
+                           "[b]Rebuild Protocol[/b]: while the hub stands, an allied machine destroyed is reassembled beside the hub 4 s later (at 50% health). Each machine can be rebuilt only once, summons excluded; if the hub falls, any rebuild in progress is lost.")},
+     note=("先打中枢：不然打倒的机器都会被重新组装起来。", "Take out the hub first, or every machine you destroy comes back."))
+unit("elite_rg_railgun", "RG-09 电磁轨道炮", "RG-09 Railgun",
+     "三脚架上一根长得过分的电磁轨道炮管。它充能的时候会用一道蓝色的激光点着你——那是一种礼貌。",
+     "An absurdly long railgun barrel on a tripod. While it charges it points a blue laser at you — a courtesy, of sorts.",
+     {"elite_rg_charge": ("[b]蓄能射击[/b]【增幅 {★2/3/3}】【吟唱 3】：每 9 秒，锁定离自己最远的敌人吟唱 3 秒，然后沿这条线发射贯穿弹：线上(宽 1.2 米，一直打到战场边)的所有敌人受到 攻击力 × 60% × 增幅 的物理伤害。被打断就白充了。",
+                          "[b]Charged Shot[/b] 【Amplify {★2/3/3}】【Chant 3】: every 9 s, locks onto the farthest enemy and charges for 3 s, then fires a piercing round down that line: every enemy on it (1.2 m wide, all the way to the edge of the field) takes attack × 60% × Amplify as physical damage. Interrupt it and the charge is wasted.")},
+     note=("别排成一条线；切到后面打掉它，或者打断它的蓄能。", "Don't line up; dive it in the back line, or interrupt the charge."))
+unit("boss_os_overseer", "OS-00 箱庭管理者", "OS-00 Garden Overseer",
+     "城北信标里的管理者：白色长发，背后悬着三道和信标一样的光环。整座箱庭都还在按她写下的规则运转——包括宵禁，包括清除。",
+     "The overseer inside the northern beacon: long white hair, three rings like the beacon's hovering behind her. The whole garden still runs on the rules she wrote — the curfew, and the purge.",
+     {"boss_os_upgrade": ("[b]系统升级[/b]【叠加 6】：每 10 秒获得 1 层【系统升级】：被动技能的增幅 +1(不可驱散)。",
+                          "[b]System Upgrade[/b] 【Stacking 6】: every 10 s gains 1 stack of 【System Upgrade】: +1 Amplify to her passives (can't be dispelled)."),
+      "boss_os_grid": ("[b]格栅打击[/b]【增幅 {★2/3/3}】：每 5 秒，在 3 个随机敌人脚下展开半径 1.5 米的格栅，1.5 秒后落下：格栅里的敌人受到 攻击力 × 25% × 增幅 的法术伤害。",
+                       "[b]Grid Strike[/b] 【Amplify {★2/3/3}】: every 5 s, unfolds a 1.5 m grid under 3 random enemies; 1.5 s later it drops: enemies inside take attack × 25% × Amplify as magic damage."),
+      "boss_os_purge": ("[b]全域清除[/b]【增幅 {★2/3/3}】【吟唱 3】：每 24 秒，举枪吟唱 3 秒，然后对所有敌人造成 攻击力 × 40% × 增幅 的法术伤害。被打断就白唱了。",
+                        "[b]Total Purge[/b] 【Amplify {★2/3/3}】【Chant 3】: every 24 s, raises her lance and chants for 3 s, then deals attack × 40% × Amplify as magic damage to every enemy. Interrupt it and the chant is wasted.")},
+     note=("拖得越久，她的每一个技能都越强。", "The longer the fight drags on, the stronger every one of her skills becomes."))
 unit("elite_ember_melancholy", "忧郁的余烬", "Ember of Melancholy", "在烧焦的街道上空缓缓漂浮的熔岩水母。它从不出手，只是把靠近的人都拖进自己的悲伤里。",
      "A lava jellyfish drifting slowly above the scorched streets. It never strikes — it just drags whoever comes near into its sorrow.",
      {"elite_melancholy_listless": ("[b]忧郁之潮[/b]【溅射 2】：不会攻击。每秒嘲讽周围 2.4 米内的敌人，持续 1.2 秒。",
@@ -2027,6 +2144,10 @@ add("status.frozen.desc",
     "不可叠加，可驱散，负面状态。效果等同于眩晕。精英 / 首领从冻结中恢复的速度不会更快，但同一单位每场战斗每次被冻结的时长减半(5 → 2.5 → 1.25 秒……)；重复施加叠加持续时间。",
     "Doesn't stack; dispellable; a debuff. Works like a stun. Elites / bosses don't recover from it faster, but each freeze a unit takes in a battle lasts half as long "
     "as the last (5 → 2.5 → 1.25 s…); re-applying adds to the duration.")
+add("status.supercharged.desc",
+    "不可叠加，可驱散，增益状态(蓝之章的供能地砖)。攻击速度 +25%，计时加速 +25%(“每 x 秒”的效果与冷却走得更快)，被动技能的【增幅】+1；再吸一次电刷新持续时间。",
+    "Doesn't stack; dispellable; a buff (from the Power Tiles of the Blue Chapter). +25% attack speed, +25% haste (“every x seconds” effects and cooldowns tick faster), "
+    "+1 【Amplify】 on passive skills; draining another tile refreshes the duration.")
 add("status.regen.desc",
     "每次施加独立，可驱散。每个每秒回复 10 点生命(算施加者的治疗)。",
     "Each application is separate; dispellable. Each heals 10 health per second (counted as the applier's healing).")

@@ -402,6 +402,8 @@ func show_battlefield(layout: Dictionary, seed_value: int) -> void:
 func apply_truck(layout: Dictionary) -> void:
 	truck.glide(Vector3.ZERO, layout)
 	stage.apply_layout(layout)
+	if battlefield != null and battlefield.arena != null:
+		battlefield.arena.refresh_shadows(layout)          # 宵禁广场：卡车也挡光，挪了就重新画影子
 
 
 ## 从 a 到 b 画一条贴地的粗线(箭头朝 b，战斗坐标)；visible_now=false 时清空

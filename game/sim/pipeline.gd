@@ -920,6 +920,8 @@ func _begin_chant(ev: Dictionary, trig: TriggerDef, unit: BUnit, entry: Dictiona
 		unit.chant_until = GC.START_DELAY + dur     # 开战时机就开始的吟唱：从倒计时结束、真正开打才开始计时
 	unit.chant_ability = ability
 	unit.chant_event = {"ev": ev, "trig": trig, "entry": entry, "target": target}
+	if target != null:
+		(ev["meta"] as Dictionary)["chant_target"] = target     # 吟唱开始时锁定的目标(电磁轨道炮的贯穿线：释放时按它重新瞄)
 	unit.vel = Vector2.ZERO
 	if target != null and target.team != unit.team:
 		unit.target = target                        # 吟唱时转身朝着它(猎人笔记：盯着威胁最高的敌人)
@@ -1086,7 +1088,7 @@ func execute(ctx: Dictionary) -> void:
 		ev_meta["executed"] = true
 		return
 	var allow_dead: bool = str((ctx["ev"] as Dictionary).get("timing", "")) in ["OnBattleEnd", "OnTeamWiped", "OnUnitDied"] \
-		or bool(ability.effect_config.get("revive_dead", false))         # 希望：已阵亡的触发目标 = 复活它
+		or bool(ability.effect_config.get("revive_dead", false)) 		or bool(ability.effect_config.get("allow_dead", false))          # 希望：已阵亡的触发目标 = 复活它；重构协议：组装倒下的机器
 	var aoe_mult: float
 	var mgroup: Dictionary = ctx.get("meteor_group", {})
 	if mgroup.is_empty():
@@ -1569,6 +1571,10 @@ func _apply_effect(unit: BUnit, t: BUnit, eff_type: String, amount: float, abili
 		"create_field":
 			var fcfg: Dictionary = o.get("cfg", ability.effect_config)
 			fx.create_field(unit, t.pos, fcfg, amount)
+		"grid_strike":
+			fx.grid_strike(unit, t, amount, o.get("cfg", ability.effect_config), o)
+		"reassemble":
+			fx.reassemble(unit, t, o.get("cfg", ability.effect_config))
 		"dash_strike":
 			fx.dash_strike(unit, ability, amount, o)
 		"escort_dash":

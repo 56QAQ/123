@@ -181,11 +181,11 @@ func test_assault_android_third_hit(t: TestCtx) -> void:
 	t.near(raw / maxf(1.0, float(sk[1])), atk * 0.6 * 1.0, atk * 0.02, "stroke = attack × 60% × Amplify 1")
 
 
-## 蓝之章的配怪：普通作战只出这四种机器(精英 / 首领仍是红之章的占位)
+## 蓝之章的配怪：普通作战只出蓝之章的机器(2026-10-15 第二批加了殉爆蛛机 / 维修无人机；精英 / 首领见 test_blue_elites.gd)
 func test_blue_chapter_spawns_the_machines(t: TestCtx) -> void:
 	var cat: Catalog = Fixture.catalog()
 	var ch: Dictionary = cat.chapters["ch1_blue"]
-	var mobs: Array = ["mob_sg_sentry", "mob_rx_relay", "mob_hv_carrier", "mob_ax_assault"]
+	var mobs: Array = ["mob_sg_sentry", "mob_rx_relay", "mob_hv_carrier", "mob_ax_assault", "mob_bx_spider", "mob_mr_drone"]
 	for id: String in mobs:
 		t.ok((ch["monsters"] as Dictionary).has(id), "%s has strength points" % id)
 	for fm: Dictionary in ch["formations"]:

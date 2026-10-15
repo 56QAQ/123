@@ -1769,7 +1769,7 @@ func _make_encounter(kind: String, intensity: int = -1, strong: bool = false) ->
 			_:
 				inten = node_intensity(pos)
 		strong = kind == "fight" and node_strong(pos)
-	inten = maxi(1, inten + int(flag_value("next_battle_intensity")))
+	inten = maxi(1, inten + int(flag_value("next_battle_intensity")) - int(flag_value("next_battle_ease")))     # 诅咒 / 祝福(事件)
 	var pool: String = kind
 	if kind == "fight":
 		pool = "strong" if strong else "weak"

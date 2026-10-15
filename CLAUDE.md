@@ -37,10 +37,14 @@
   + `mountain`(首领在岛中央冰山顶的神社里，山占 3×3 格，只有一条背对剑痕的上山路绕山腰 4 级台阶上去，节点带 `h`；画面是立体的台阶 + 冰堤 + 晶体)，
   大地图布景 `game/view/island_overworld.gd`(章节数据 `overworld: island`)，战斗主题 `purple`(坚冰 `ice_*` + 寒雾地块 `frost`：每秒一个【寒气】)，模型 `tools/model_frost.gd`(`./run_world.sh`)；怪物暂时是红之章的占位。
   第一章-B·蓝之章(`ch1_blue`，第零章的分支之一，已开放)是蓝色穹顶下的未来都市"箱庭"：`mask: dome`(圆，首领在最北的信标 `sf_beacon` 下、起点在最南)，
-  布景 `game/view/dome_overworld.gd`(`overworld: dome`：穹顶 / 肋条 / 光柱 / 方块楼着色器)，战斗主题 `blue`(科技障碍 `tech_*`，没有地形效果)，模型 `tools/model_dome.gd`。
+  布景 `game/view/dome_overworld.gd`(`overworld: dome`：穹顶 / 肋条 / 光柱 / 方块楼着色器)，战斗主题 `blue`(科技障碍 `tech_*` + 地形 **供能地砖** `pads`：踩上满电的地砖 → 【满电】，8 秒后重新充满，`Battle._step_pads`，设计稿 `docs/BLUE_CHAPTER.md` 第 7 节)，模型 `tools/model_dome.gd`。
   蓝之章的怪物是机械造物(`mob_sg_sentry` 哨戒炮台 / `mob_rx_relay` 增幅中继 / `mob_hv_carrier` 场域载具 / `mob_ax_assault` 突击仿生人；命名 = 产品编号 + 功能；
   模型 `tools/chars/_droid.gd` 一族，动作 `anim_chars.gd` 的 `blue_table`)：核心原语【增幅】——增幅来源(链路状态 `amp_link` / 力场地形 `kind: amp`)放出去的数值用
-  触发模式 `ability_keyword_base`(不吃加成)，输出终端用 `attack_ratio_keyword`(攻击力 × r × 增幅)。精英 / 首领 / 强度仍是红之章的占位。
+  触发模式 `ability_keyword_base`(不吃加成)，输出终端用 `attack_ratio_keyword`(攻击力 × r × 增幅)。
+  第二批(设计稿 `docs/BLUE_CHAPTER.md`)：`mob_bx_spider` 殉爆蛛机(倒下时不分敌我引爆) / `mob_mr_drone` 维修无人机，精英 `elite_gw_walker` 重装步行机(过载 → 过热的状态链，
+  `OnStatusBurst` 接力) / `elite_cn_hub` 中枢主机(全场链路 + 效果 `reassemble` 重构倒下的机器) / `elite_rg_railgun` 电磁轨道炮(吟唱 + 目标规则 `rail_line`)，
+  首领 `boss_os_overseer` 箱庭管理者(系统升级叠层 + 效果 `grid_strike` + 吟唱全域清除)；事件 `curfew`(专属战场 `curfew_plaza`，战场机制 `searchlight`：
+  高障碍 / 卡车挡光，`BattleMap.searchlight_exposed`) / `waiting_android` / 蓝色事件 `stopped_clock`(局内状态 `next_battle_ease`)。
   怪物点数用 `tools/fit_power.py` 标定(`intensity_bench mode=calib`，红蓝数据合在一起拟合)，再用 `./run_intensity.sh … chapter=ch1_blue` 对齐红之章的刻度；
   `tools/campaign_bench.gd -- branch=ch1_blue` 打蓝之章。
   节点类型/遭遇池/商店/修整写在 `author_chapters.py` 的章节数据里。战斗地形(燃烧废墟 / 余烬地块)的效果也是触发器：`terrain.json`(tag `terrain_payload`)，

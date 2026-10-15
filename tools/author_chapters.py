@@ -68,6 +68,10 @@ VANITY, MEL, PRIDE = "elite_ember_vanity", "elite_ember_melancholy", "elite_embe
 DRAGON = "boss_ember_dragon"
 # 第一章-B·蓝之章的机械造物(2026-10-07)：哨戒炮台 / 增幅中继 / 场域载具 / 突击仿生人
 SG, RX, HV, AX = "mob_sg_sentry", "mob_rx_relay", "mob_hv_carrier", "mob_ax_assault"
+# 蓝之章第二批(2026-10-15，docs/BLUE_CHAPTER.md)：殉爆蛛机 / 维修无人机，精英 重装步行机 / 中枢主机 / 电磁轨道炮，首领 箱庭管理者
+BX, MR = "mob_bx_spider", "mob_mr_drone"
+GW, CN, RG = "elite_gw_walker", "elite_cn_hub", "elite_rg_railgun"
+OVERSEER = "boss_os_overseer"
 
 
 def F(req, extra=(), w=1):
@@ -168,36 +172,54 @@ CH2_PURPLE.update({
 # ---------------------------------------------------------------- 第一章-B·蓝之章(2026-10-07：先做地图)
 # 蓝色穹顶包围的"箱庭"——穹顶下一座未来风的科幻都市；蓝色靠穿过穹顶的光来表现(World 的 blue 主题 + 大地图上的光柱)。
 # 方格网：圆形的轮廓(mask = dome)，首领在最北(城北巨大的未来风信标 sf_beacon 之下)，起点在最南的边缘。
-# 战斗地图：科技障碍(TECH_LOW / TECH_HIGH：花坛 / 货箱 / 长凳 / 光栅 / 立柱 / 全息亭 / 机柜 / 门架)，没有地形效果(主题待定)。
-# 怪物 / 精英 / 首领 / 阵型 / 强度：和红之章一样(占位)，它是第一章的另一条分支。
+# 战斗地图：科技障碍(TECH_LOW / TECH_HIGH：花坛 / 货箱 / 长凳 / 光栅 / 立柱 / 全息亭 / 机柜 / 门架)；
+#   地形效果(2026-10-15) = 供能地砖(pads，不占格)：棋子踩上满电的地砖吸走电 → 【满电】，地砖 8 秒后重新充满(docs/BLUE_CHAPTER.md 第 7 节)。
+# 怪物(2026-10-07 第一版 4 只 + 2026-10-15 第二批 2 只普通怪物 / 3 只精英 / 首领，docs/BLUE_CHAPTER.md)；强度刻度和红之章一样(第一章的另一条分支)。
 CH1_BLUE = dict(CH1_RED)
 CH1_BLUE.update({
     "id": "ch1_blue", "chapter_no": 1, "color": "blue", "theme": "blue", "ui_theme": "dome", "branch": "blue", "overworld": "dome",
     "material_weights": {"red": 1, "green": 1, "blue": 2},        # 蓝之章的晶球里液态负熵多一些
-    # 怪物(第一版 4 只普通怪物；精英 / 首领仍是红之章的占位，手下换成机械造物)：点数由 tools/fit_power.py 标定(2026-10-07，
+    # 怪物(第一版 4 只普通怪物，2026-10-07)：点数由 tools/fit_power.py 标定(2026-10-07，
     #   3 套参考阵容 × 红 / 蓝 × 随机 / 游戏配怪约 2500 场，锚点仍是愤怒的余烬 3.6)。按红之章同类估的第一版(3.5 / 3.0 / 7.6 / 3.6)把载具高估了一倍多、
     #   中继拟合 ≈ 0(所以中继改 +2 / 6 米、载具改投射力场后再标)。拟合值(2.7 / 1.9 / 3.0 / 4.3)让参考阵容在蓝之章只过 70(红之章 89)——
     #   拟合的 gamma / 星级系数和章节常量不同，刻度偏紧——按 89/70 整体乘 1.27 对齐到红之章的刻度(比例照拟合)。
-    "monsters": {SG: {"power": 3.4}, RX: {"power": 2.4}, HV: {"power": 3.8}, AX: {"power": 5.5},
-                 VANITY: {"power": 29.5, "head": True}, MEL: {"power": 12.4, "head": True}, PRIDE: {"power": 12.4, "head": True},
-                 DRAGON: {"power": 35.6, "head": True}},
-    # 阵型：输出终端(炮台 / 突击) + 增幅来源(中继 / 载具)的组合——两只起步的基础组合，三四只起步的是"来源 + 终端"的配合
+    # 2026-10-15 第二批重新标定(out/calib_blue3 + 沿用 out/calib_fit2 的红之章 / 第一版蓝之章数据，fit_power.py --mrange=0.6,2.4)：
+    #   拟合值 SG 4.15 / RX 2.13 / HV 3.04 / AX 4.76 / BX 1.95 / MR 2.62 / GW 9.59 / CN 7.07 / RG 8.80，照第一版的做法 × 1.27 对齐到红之章的刻度。
+    #   首领的标定数据里参考阵容全胜(配怪的总量没到首领赢的那一段，拟合 ≈ 0 没有信息)，改用胜率曲线量：TB(★1 三人)50% 在首领强度 ≈ 37.5、
+    #   TA(★2 四人)到 170 还全胜 → 拟合刻度上 ≈ 20(× 1.27 = 25.4)；比龙的余烬(36.6)弱一截：她是"拖得越久越强"的限时输出检测，开头的伤害低
+    "monsters": {SG: {"power": 5.3}, RX: {"power": 2.7}, HV: {"power": 3.9}, AX: {"power": 6.0}, BX: {"power": 2.5}, MR: {"power": 3.3},
+                 GW: {"power": 12.2, "head": True}, CN: {"power": 9.0, "head": True}, RG: {"power": 11.2, "head": True},
+                 OVERSEER: {"power": 25.4, "head": True}},
+    # 阵型：输出终端(炮台 / 突击 / 蛛机 / 维修) + 增幅来源(中继 / 载具)的组合——两只起步的基础组合，三四只起步的是"来源 + 终端"的配合
+    #   (中继 + 一群蛛机 = 每一只都炸得更狠；载具挡在前面 + 维修无人机在后面修；突击和蛛机一起压上来)
     "formations": [F([AX, SG], [RX, HV]), F([SG, RX], [AX, HV]), F([AX, AX], [SG, RX]), F([HV, SG], [AX, RX]), F([RX, HV], [SG, AX]),
+                   F([BX, BX], [AX, RX]), F([BX, SG], [MR, HV]), F([HV, MR], [SG, AX]),
                    F([AX, SG, RX], [HV, AX]), F([SG, SG, RX], [HV, AX]), F([AX, AX, HV], [RX, SG]), F([HV, RX, SG], [AX, AX]),
+                   F([BX, BX, RX], [AX, BX]), F([HV, MR, SG], [AX, BX]), F([AX, BX, HV], [MR, SG]),
                    F([AX, SG, RX, HV], [AX, SG])],
-    "elites": [{"unit": VANITY},
-               {"unit": MEL, "forms": [F([RX, SG], [AX, HV, SG]), F([SG, AX], [RX, HV, SG]), F([RX, AX], [SG, HV, AX])]},
-               {"unit": PRIDE, "forms": [F([AX, HV], [RX, SG]), F([SG, RX], [AX, HV]), F([AX, SG], [HV, RX])]}],
+    # 精英：步行机本体大、点数高(像虚荣的余烬，用通用阵型配手下)；中枢 / 轨道炮本体点数低、靠手下打(forms = 它自己的阵型)：
+    #   中枢配一整队能被重新组装的机器，轨道炮躲在载具 / 突击仿生人后面
+    "elites": [{"unit": GW},
+               {"unit": CN, "forms": [F([AX, SG], [BX, RX, HV]), F([HV, SG], [AX, MR, BX]), F([AX, BX], [SG, MR, AX])]},
+               {"unit": RG, "forms": [F([HV, AX], [MR, BX]), F([AX, AX], [HV, RX]), F([HV, BX], [AX, MR])]}],
+    "boss": {"unit": OVERSEER, "star": 1, "solo": True},
+    "hunt": {"unit": OVERSEER, "star": 2, "region": "s", "solo": True},
+    # 强度(2026-10-15)：圆形的大地图(28 个节点、路长 9~14)比红之章(7~9)多走好几个节点，队伍到首领时更强(campaign_bench：
+    #   机器人在蓝之章打 15 个节点、红之章 10 个)——照红之章的刻度会偏简单(普通 / 强怪 / 精英 / 首领 99 / 100 / 82 / 77%，红之章 98 / 87 / 66 / 56%)，
+    #   所以普通作战的上限、精英加成、强怪、首领 / 追猎都往上抬一点
+    "intensity": {"base": 11, "per_depth": 3.0, "max": 40, "jitter": 0.10, "elite_bonus": 20, "boss": 45, "hunt": 58,
+                  "strong": {"chance": 0.35, "from": 0.5, "bump": [6, 10]}},
     "grid": {"w": 9, "h": 9, "mask": "dome", "nodes": 28, "loops": 5, "min_path": 9, "max_path": 14, "ap_spare": 4,
              "weights": {"fight": 46, "event": 16, "elite": 14, "rest": 8, "shop_black": 8, "shop_parts": 8},
              "min_depth": {"elite": 3, "rest": 4, "shop_black": 2, "shop_parts": 2, "event": 2},
              "min_count": {"elite": 2, "shop_black": 1, "shop_parts": 1, "event": 2},
              "max_count": {"elite": 4, "rest": 3, "shop_black": 2, "shop_parts": 2, "event": 5}},
+    # pads = 供能地砖(地形效果，2026-10-15)：踩上满电的地砖 → 【满电】，8 秒后重新充满(TERRAIN 的 terrain_power_tile)
     "battle_map": {
-        "fight": {"low": 3, "high": 2},
-        "elite": {"low": 2, "high": 3},
-        "boss": {"low": 2, "high": 2},
-        "hunt": {"low": 2, "high": 2},
+        "fight": {"low": 3, "high": 2, "pads": 3},
+        "elite": {"low": 2, "high": 3, "pads": 3, "cam_z": -1.6},        # 精英战镜头往北挪：中枢主机 / 电磁轨道炮不会动，站在北边缘(不然被顶部的 HUD 挡住)
+        "boss": {"low": 2, "high": 2, "pads": 4},
+        "hunt": {"low": 2, "high": 2, "pads": 4},
     },
 })
 
@@ -269,6 +291,33 @@ def _terrain_chill(tid, timing, tag, every, dur):
     return p
 
 
+# 探照灯(事件「宵禁」的专属战场·宵禁广场，2026-10-15)：被光束照到 = 法术伤害 12% 最大生命 + 70，再【过曝】3 秒(攻击速度 -30%，可驱散)
+SEARCHLIGHT_HIT = {"ratio": 0.12, "flat": 70.0, "dazzle": 3.0, "dazzle_as": 0.30}
+
+
+def _terrain_dazzle(tid, tag, dur, slow):
+    p = _terrain_pair(tid, "OnTerrainHit", tag, 1, dur)
+    p["ability"]["id"] = tid + "_dazzle"
+    p["ability"]["effect_config"] = {"status_id": "dazzled", "duration": float(dur), "max_stacks": 1, "flags": ["debuff", "dispellable"],
+                                     "sourceless": True, "stats": {"attack_speed_multiplier": {"flat": -slow}}}
+    return p
+
+
+# 供能地砖(蓝之章，2026-10-15，docs/BLUE_CHAPTER.md 第 7 节)：棋子(敌我都算)踩上满电的地砖 → 把电吸走(Battle._step_pads 发 OnTerrainEnter[power_tile])，
+#   获得【满电】：攻击速度 +25%、计时加速 +25%、被动技能的【增幅】+1(不叠加，再吸一次刷新时间；增益、可驱散、没有施加者)；
+#   地砖 PAD["recharge"] 秒后重新充满(逻辑在 Battle.PAD_RECHARGE，测试会对)
+PAD = {"recharge": 8.0, "dur": 6.0, "as": 0.25, "haste": 0.25, "amp": 1.0}
+
+
+def _terrain_supercharge(tid, tag):
+    p = _terrain_pair(tid, "OnTerrainEnter", tag, 1, PAD["dur"])
+    p["ability"]["id"] = tid + "_charge"
+    p["ability"]["effect_config"] = {"status_id": "supercharged", "duration": PAD["dur"], "max_stacks": 1, "flags": ["buff", "dispellable"],
+                                     "sourceless": True, "stats": {"attack_speed_multiplier": {"flat": PAD["as"]}, "haste": {"flat": PAD["haste"]},
+                                                                   "passive_amplify_bonus": {"flat": PAD["amp"]}}}
+    return p
+
+
 TERRAIN = {"pairs": [
     _terrain_pair("terrain_burning_ruin", "OnTerrainTick", "burning_ruin", 4, 2.0),   # 燃烧废墟：周围的棋子(每 4 个战斗帧 = 每秒一次)
     _terrain_pair("terrain_ember", "OnTerrainEnter", "ember", 1, 5.0),                # 余烬地块：踩上去的棋子(然后余烬熄灭)
@@ -276,6 +325,9 @@ TERRAIN = {"pairs": [
     _terrain_pair("terrain_tram", "OnTerrainHit", "tram", 1, TRAM_HIT["burn"]),
     _terrain_hit("terrain_fire_arc_hit", "fire_arc", "magic", 0.0, FIRE_ARC_HIT["flat"]),
     _terrain_chill("terrain_frost", "OnTerrainTick", "frost", 4, FROST_CHILL),         # 寒雾地块(紫之章)：站在上面的棋子每秒一个【寒气】
+    _terrain_hit("terrain_searchlight_hit", "searchlight", "magic", SEARCHLIGHT_HIT["ratio"], SEARCHLIGHT_HIT["flat"]),
+    _terrain_dazzle("terrain_searchlight", "searchlight", SEARCHLIGHT_HIT["dazzle"], SEARCHLIGHT_HIT["dazzle_as"]),
+    _terrain_supercharge("terrain_power_tile", "power_tile"),                             # 供能地砖(蓝之章)：踩上满电的地砖 → 【满电】
 ]}
 
 

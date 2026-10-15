@@ -26,6 +26,7 @@ var hover_ring: MeshInstance3D
 var mark_ring: MeshInstance3D           # QoL 高亮(可装备/同名/羁绊成员)
 var scale_mult: float = 1.0
 var aura: BossAura = null                # 首领 / 精英的存在感特效(缠绕的火蛇、焦土、纹章……)
+const TECH_AURA := ["overseer", "mech_walker", "core_hub", "turret_railgun"]     # 蓝之章：科技风的存在感
 var _blade_fire: GPUParticles3D = null   # 首领薙刀上一直烧着的火(武器收起 = 武器骨缩到 0 时熄掉)
 var lev_target: float = 0.0              # 悬浮高度(米，吟唱大招时升到空中)：抬的是骨架节点，不碰 model 的位置(受击 / 跳跃会写它)
 const FLY_HIGH := 0.95                   # 会飞的(鸟)：移动时飞多高
@@ -156,10 +157,14 @@ func _build_aura(kind: String) -> void:
 	var ident: Dictionary = UnitSkin.identity_of(def.model)
 	var mid: Color = Color(str(ident.get("rim", "#e4182a")))
 	var hot: Color = mid.lerp(Color("#fff2c8"), 0.55)
-	if kind == "boss":
+	# 蓝之章的机械 / 管理者：科技风的存在感(六边形网格 + 分段环 + 光带)，不是余烬的焦土和火蛇
+	var tech: bool = TECH_AURA.has(def.model)
+	if kind == "boss" and tech:
+		hot = mid.lerp(Color.WHITE, 0.6)
+	elif kind == "boss":
 		mid = mid.lerp(Color("#c00818"), 0.35)
 		hot = Color("#ff8a2a")
-	aura = BossAura.make(kind, hot, mid, def.radius * scale_mult, body_height)
+	aura = BossAura.make(kind, hot, mid, def.radius * scale_mult, body_height, tech)
 	add_child(aura)
 	# 首领的熔岩薙刀一直烧着：刀头(武器骨局部 +Y 63~97 体素)上挂一团火，挥起来拖出火尾
 	if kind == "boss" and str(look.get("model", "")) == "ember_glaive":
@@ -1068,6 +1073,14 @@ func update_battle(alpha: float) -> void:
 			ap.play("turtle", 0.22)
 		ap.speed_scale = time_scale
 		return
+	# 过热(GW-20 重装步行机)：动不了的那几秒单膝跪下喷蒸汽(动作覆盖 overrides.overheat)
+	if bu.has_flag("overheat"):
+		var oh: String = str((look.get("overrides", {}) as Dictionary).get("overheat", ""))
+		if oh != "" and ap.has_animation(oh):
+			if ap.current_animation != oh:
+				ap.play(oh, 0.3)
+			ap.speed_scale = time_scale
+			return
 	if bu.phase == "chant":
 		play_loop(chant_anim if chant_anim != "" and ap.has_animation(chant_anim) else "idle")
 		return

@@ -194,6 +194,240 @@
    ]
   },
   {
+   "id": "curfew",
+   "rarity": 1,
+   "pool": {
+    "type": "exclusive",
+    "chapter": "ch1_blue"
+   },
+   "scene": "curfew_plaza",
+   "options": [
+    {
+     "id": "dash",
+     "requires": [],
+     "outcomes": [
+      {
+       "w": 1,
+       "id": "dash_fight",
+       "effects": [
+        {
+         "type": "battle",
+         "arena": "curfew_plaza",
+         "intensity_bonus": 12,
+         "min_intensity": 26,
+         "orbs": [
+          "blue",
+          "blue"
+         ]
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "wait",
+     "requires": [],
+     "outcomes": [
+      {
+       "w": 1,
+       "id": "wait",
+       "effects": [
+        {
+         "type": "ap",
+         "amount": -2
+        },
+        {
+         "type": "truck_heal",
+         "amount": 12
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "hack",
+     "requires": [
+      {
+       "type": "level_at_least",
+       "value": 4
+      }
+     ],
+     "outcomes": [
+      {
+       "w": 1,
+       "id": "hack",
+       "effects": [
+        {
+         "type": "reveal",
+         "radius": 4
+        },
+        {
+         "type": "xp",
+         "amount": 4
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "waiting_android",
+   "rarity": 2,
+   "pool": {
+    "type": "exclusive",
+    "chapter": "ch1_blue"
+   },
+   "scene": "roadside",
+   "props": [
+    {
+     "kind": "model",
+     "model": "hm02_apartment",
+     "pos": [
+      0.0,
+      0.0,
+      -1.6
+     ],
+     "yaw": 0.0,
+     "scale": 1.0
+    },
+    {
+     "kind": "model",
+     "model": "hm02_android",
+     "pos": [
+      0.9,
+      0.0,
+      -0.3
+     ],
+     "yaw": -18.0,
+     "scale": 1.0
+    },
+    {
+     "kind": "light",
+     "pos": [
+      -0.2,
+      1.2,
+      -2.5
+     ],
+     "color": "#ffc98a",
+     "energy": 2.4,
+     "range": 3.5
+    },
+    {
+     "kind": "light",
+     "pos": [
+      0.0,
+      2.2,
+      -1.3
+     ],
+     "color": "#ffd9a0",
+     "energy": 1.4,
+     "range": 3.5
+    },
+    {
+     "kind": "light",
+     "pos": [
+      1.8,
+      2.4,
+      0.8
+     ],
+     "color": "#9fe6ff",
+     "energy": 1.0,
+     "range": 5.0
+    }
+   ],
+   "cam": {
+    "focus": [
+     0.0,
+     1.0,
+     -0.6
+    ],
+    "dist": 7.5,
+    "height": 2.8,
+    "yaw": 12.0
+   },
+   "options": [
+    {
+     "id": "wait",
+     "requires": [
+      {
+       "type": "ap_at_least",
+       "value": 1
+      }
+     ],
+     "outcomes": [
+      {
+       "w": 1,
+       "id": "wait",
+       "effects": [
+        {
+         "type": "ap",
+         "amount": -1
+        },
+        {
+         "type": "weapon",
+         "max_cost": 3
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "tell",
+     "requires": [],
+     "outcomes": [
+      {
+       "w": 60,
+       "id": "tell_join",
+       "effects": [
+        {
+         "type": "truck_max",
+         "amount": 8
+        },
+        {
+         "type": "truck_heal",
+         "amount": 15
+        }
+       ]
+      },
+      {
+       "w": 40,
+       "id": "tell_sleep",
+       "effects": [
+        {
+         "type": "materials",
+         "blue": 8
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "salvage",
+     "requires": [],
+     "outcomes": [
+      {
+       "w": 1,
+       "id": "salvage",
+       "effects": [
+        {
+         "type": "materials",
+         "blue": 6,
+         "red": 2
+        },
+        {
+         "type": "flag",
+         "id": "next_battle_intensity",
+         "value": 4,
+         "until": "next_battle"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
    "id": "gacha_machine",
    "rarity": 2,
    "pool": {
@@ -1377,6 +1611,109 @@
    ]
   },
   {
+   "id": "stopped_clock",
+   "rarity": 2,
+   "pool": {
+    "type": "color",
+    "color": "blue"
+   },
+   "scene": "roadside",
+   "props": [
+    {
+     "kind": "model",
+     "model": "street_clock",
+     "pos": [
+      0.0,
+      0.0,
+      -0.4
+     ],
+     "yaw": 18.0,
+     "scale": 1.0
+    },
+    {
+     "kind": "light",
+     "pos": [
+      0.0,
+      2.6,
+      0.2
+     ],
+     "color": "#bfeaff",
+     "energy": 2.4,
+     "range": 6.0
+    }
+   ],
+   "cam": {
+    "focus": [
+     0.0,
+     1.5,
+     -0.3
+    ],
+    "dist": 8.0,
+    "height": 2.6,
+    "yaw": 10.0
+   },
+   "options": [
+    {
+     "id": "forward",
+     "requires": [],
+     "outcomes": [
+      {
+       "w": 1,
+       "id": "forward",
+       "effects": [
+        {
+         "type": "ap",
+         "amount": 2
+        },
+        {
+         "type": "truck_max",
+         "amount": -4
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "back",
+     "requires": [],
+     "outcomes": [
+      {
+       "w": 1,
+       "id": "back",
+       "effects": [
+        {
+         "type": "flag",
+         "id": "next_battle_ease",
+         "value": 5,
+         "until": "next_battle"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "spring",
+     "requires": [],
+     "outcomes": [
+      {
+       "w": 1,
+       "id": "spring",
+       "effects": [
+        {
+         "type": "materials",
+         "blue": 5
+        },
+        {
+         "type": "xp",
+         "amount": 3
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
    "id": "lost_armory",
    "rarity": 3,
    "pool": {
@@ -2264,6 +2601,117 @@
      "first": 6.0,
      "period": 13.0,
      "warn": 3.0
+    }
+   ]
+  },
+  "curfew_plaza": {
+   "theme": "blue",
+   "set": "curfew_plaza",
+   "cam_z": -2.0,
+   "regions": [
+    "nw",
+    "ne",
+    "w",
+    "e",
+    "nw",
+    "ne"
+   ],
+   "obstacles": [
+    {
+     "x": 11,
+     "y": 1,
+     "w": 3,
+     "h": 3,
+     "kind": "high",
+     "style": "sec_tower"
+    },
+    {
+     "x": 9,
+     "y": 5,
+     "w": 2,
+     "h": 1,
+     "kind": "high",
+     "style": "tech_kiosk"
+    },
+    {
+     "x": 14,
+     "y": 5,
+     "w": 2,
+     "h": 1,
+     "kind": "high",
+     "style": "tech_kiosk"
+    },
+    {
+     "x": 3,
+     "y": 8,
+     "w": 2,
+     "h": 2,
+     "kind": "high",
+     "style": "tech_server"
+    },
+    {
+     "x": 20,
+     "y": 8,
+     "w": 2,
+     "h": 2,
+     "kind": "high",
+     "style": "tech_server"
+    },
+    {
+     "x": 7,
+     "y": 3,
+     "w": 1,
+     "h": 1,
+     "kind": "low",
+     "style": "tech_planter"
+    },
+    {
+     "x": 17,
+     "y": 3,
+     "w": 1,
+     "h": 1,
+     "kind": "low",
+     "style": "tech_planter"
+    },
+    {
+     "x": 5,
+     "y": 14,
+     "w": 2,
+     "h": 1,
+     "kind": "low",
+     "style": "tech_bench"
+    },
+    {
+     "x": 18,
+     "y": 14,
+     "w": 2,
+     "h": 1,
+     "kind": "low",
+     "style": "tech_bench"
+    }
+   ],
+   "embers": [],
+   "hazards": [
+    {
+     "type": "searchlight",
+     "id": "searchlight",
+     "tag": "searchlight",
+     "origin": [
+      0.0,
+      -7.5
+     ],
+     "lamp_h": 4.5,
+     "arc": [
+      -75.0,
+      75.0
+     ],
+     "half": 5.0,
+     "sweep": 2.5,
+     "range": 40.0,
+     "exit": 2.2,
+     "first": 5.0,
+     "period": 11.0,
+     "warn": 2.0
     }
    ]
   }

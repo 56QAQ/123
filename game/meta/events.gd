@@ -14,9 +14,9 @@ const REQ_TYPES: Array[String] = ["truck_hp_above", "ranged_attack_at_least", "g
 	"roster_at_least", "has_weapon", "has_part", "picked_at_least", "picked_below"]
 const EFFECT_TYPES: Array[String] = ["truck_damage", "materials", "gold", "xp", "ap", "reveal", "battle",
 	"truck_heal", "truck_max", "unit", "weapon", "orb", "perm", "star_up", "lose_unit", "lose_weapon", "lose_part", "part", "flag"]
-const HAZARD_TYPES: Array[String] = ["sweep", "eruption"]
+const HAZARD_TYPES: Array[String] = ["sweep", "eruption", "searchlight"]
 ## 局内状态(诅咒 / 祝福，Run.flags)：下一场敌人强度 ± / 本章节点制造按高(低)几级的概率抽 / 本章每个节点的收入 ±
-const FLAG_IDS: Array[String] = ["next_battle_intensity", "shop_odds_shift", "income_bonus"]
+const FLAG_IDS: Array[String] = ["next_battle_intensity", "next_battle_ease", "shop_odds_shift", "income_bonus"]
 const FLAG_UNTIL: Array[String] = ["next_battle", "chapter", "run"]
 ## 收益类效果(纯负面事件里不许出现)
 const GAIN_EFFECTS: Array[String] = ["xp", "reveal", "truck_heal", "unit", "weapon", "orb", "perm", "star_up", "part"]

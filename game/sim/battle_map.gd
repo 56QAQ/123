@@ -12,9 +12,11 @@ extends RefCounted
 ##   障碍物可以带 terrain = "burning"(燃烧废墟：占格，周围的棋子会被施加【燃烧】)；不带的就是普通的断壁残垣(死灰废墟)
 ##   embers 余烬地块：不占格、不挡路，棋子踩上去被施加【燃烧】，然后这块余烬熄灭清空(lit = false)
 ##   frost 寒雾地块(紫之章)：不占格、不挡路，站在上面的棋子每秒被施加【寒气】(OnTerrainTick[frost])，不会消失
+##   pads 供能地砖(蓝之章)：不占格、不挡路，棋子踩上满电的地砖把电吸走(OnTerrainEnter[power_tile] → 【满电】)，
+##     地砖 ready_at(战斗时间)以后重新充满(charged)；充电的计时由 Battle._step_pads 推进
 ##   hazards 战场机制(事件战斗的专属战场，配置见 tools/author_events.py 的 ARENAS)：按时刻表冲过战场的电车 / 周期性喷发的喷泉；
 ##     时刻表由 Battle 推进(Battle.hazards)，这里只存配置
-##   打碎(圣战节点·裂地猛击)：障碍物 / 寒雾标 destroyed = true(数组下标就是表现层的 id，不删)，障碍物占的格子清空；余烬直接熄灭
+##   打碎(圣战节点·裂地猛击)：障碍物 / 寒雾 / 供能地砖标 destroyed = true(数组下标就是表现层的 id，不删)，障碍物占的格子清空；余烬直接熄灭
 ##   效果本身由 Battle 发出地形事件(OnTerrainTick / OnTerrainEnter / OnTerrainHit)，交给每个单位身上的地形触发器走管线，地图只管"在不在范围里"。
 ## 棋子在战斗中仍是连续坐标，地图只负责：能不能走、看不看得见、怎么绕路。
 
@@ -29,6 +31,7 @@ var cells: PackedByteArray = PackedByteArray()
 var obstacles: Array[Dictionary] = []      # {rect: Rect2i, kind: LOW/HIGH, style: String, terrain: ""/"burning"}
 var embers: Array[Dictionary] = []         # 余烬地块 {id:int, rect: Rect2i, style: String, lit: bool}
 var frost: Array[Dictionary] = []          # 寒雾地块 {id:int, rect: Rect2i, style: String}
+var pads: Array[Dictionary] = []           # 供能地砖 {id:int, rect: Rect2i, style: String, charged: bool, ready_at: float}
 var hazards: Array = []                    # 战场机制的配置 [{type: sweep / eruption, id, tag, …}]
 var truck_rect: Rect2i = GC.TRUCK_RECT
 var truck_rot: int = 0                     # 卡车朝向(TruckLayout.rot)
@@ -69,6 +72,9 @@ static func from_layout(layout: Dictionary) -> BattleMap:
 	for fr: Variant in layout.get("frost", []):
 		var fd: Dictionary = fr
 		m.add_frost(Rect2i(int(fd["x"]), int(fd["y"]), int(fd.get("w", 1)), int(fd.get("h", 1))), str(fd.get("style", "")))
+	for pd_v: Variant in layout.get("pads", []):
+		var pd: Dictionary = pd_v
+		m.add_pad(Rect2i(int(pd["x"]), int(pd["y"]), int(pd.get("w", 1)), int(pd.get("h", 1))), str(pd.get("style", "")))
 	m.hazards = (layout.get("hazards", []) as Array).duplicate(true)
 	return m
 
@@ -110,6 +116,30 @@ func add_ember(r: Rect2i, style: String) -> int:
 func add_frost(r: Rect2i, style: String) -> int:
 	frost.append({"id": frost.size(), "rect": r, "style": style})
 	return frost.size() - 1
+
+
+## 供能地砖：开战时满电
+func add_pad(r: Rect2i, style: String) -> int:
+	pads.append({"id": pads.size(), "rect": r, "style": style, "charged": true, "ready_at": 0.0})
+	return pads.size() - 1
+
+
+func destroy_pad(id: int) -> void:
+	if id >= 0 and id < pads.size():
+		pads[id]["destroyed"] = true
+
+
+## 半径 radius 的单位(圆心附近)有没有踩着第 id 块供能地砖(和踩余烬同一个判据)
+func on_pad(id: int, p: Vector2, radius: float) -> bool:
+	return id >= 0 and id < pads.size() and not bool(pads[id].get("destroyed", false)) and _dist_to_rect(p, rect_world(pads[id]["rect"])) <= radius * 0.35
+
+
+## 盖着格子 c 的供能地砖；没有返回 -1
+func pad_at_cell(c: Vector2i) -> int:
+	for pd: Dictionary in pads:
+		if not bool(pd.get("destroyed", false)) and (pd["rect"] as Rect2i).has_point(c):
+			return int(pd["id"])
+	return -1
 
 
 ## 单位(圆心附近)踩着的寒雾地块；没有返回 -1
@@ -175,6 +205,14 @@ func to_layout() -> Dictionary:
 			var fr: Rect2i = f["rect"]
 			fl.append({"x": fr.position.x, "y": fr.position.y, "w": fr.size.x, "h": fr.size.y, "style": f["style"]})
 		out["frost"] = fl
+	if not pads.is_empty():
+		var pl: Array = []
+		for pd: Dictionary in pads:
+			if bool(pd.get("destroyed", false)):
+				continue
+			var pr: Rect2i = pd["rect"]
+			pl.append({"x": pr.position.x, "y": pr.position.y, "w": pr.size.x, "h": pr.size.y, "style": pd["style"]})
+		out["pads"] = pl
 	return out
 
 
@@ -184,7 +222,7 @@ const BURN_REACH := 0.6
 
 
 func has_terrain() -> bool:
-	if not embers.is_empty() or not hazards.is_empty() or not frost.is_empty():
+	if not embers.is_empty() or not hazards.is_empty() or not frost.is_empty() or not pads.is_empty():
 		return true
 	for o: Dictionary in obstacles:
 		if str(o.get("terrain", "")) != "" and not bool(o.get("destroyed", false)):
@@ -327,6 +365,23 @@ func has_los(a: Vector2, b: Vector2, team: int) -> bool:
 		if blocks_los(c, team):
 			return false
 	return true
+
+
+## 探照灯(宵禁广场的战场机制 searchlight)照不照得到 p：在扇面(arc ± half)里、离灯 range 米以内，而且和灯之间没有高障碍 / 卡车挡着
+## (视线从塔身外沿 exit 米开始算)。逻辑层判定 Battle._step_searchlight 和备战时画"影子"用的是同一个判据
+static func searchlight_exposed(m: BattleMap, hc: Dictionary, p: Vector2) -> bool:
+	var o: Array = hc.get("origin", [0.0, 0.0])
+	var origin := Vector2(float(o[0]), float(o[1]))
+	var rel: Vector2 = p - origin
+	var dist: float = rel.length()
+	if dist < float(hc.get("exit", 2.2)) or dist > float(hc.get("range", 40.0)):
+		return false
+	var arc: Array = hc.get("arc", [-75.0, 75.0])
+	var half: float = float(hc.get("half", 5.0))
+	var ua: float = rad_to_deg(atan2(rel.x, rel.y))
+	if ua < minf(float(arc[0]), float(arc[1])) - half or ua > maxf(float(arc[0]), float(arc[1])) + half:
+		return false
+	return m.has_los(origin + rel / dist * float(hc.get("exit", 2.2)), p, -1)
 
 
 ## 移动：半径 radius 的圆沿 a→b 平移时会不会撞上挡路格子

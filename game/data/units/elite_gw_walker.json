@@ -1,0 +1,281 @@
+{
+ "id": "elite_gw_walker",
+ "cost": 3,
+ "role": "warrior",
+ "base_weapon_class": "heavy",
+ "weapon_classes": [
+  "heavy"
+ ],
+ "faction_id": "white",
+ "profession_id": "",
+ "available_in_shop": false,
+ "hide_weapon": true,
+ "model": "mech_walker",
+ "target_priority": "nearest",
+ "radius": 0.5,
+ "scale": 2.0,
+ "wclass_overrides": {
+  "heavy": {
+   "na_keywords": {},
+   "multi": {}
+  }
+ },
+ "anim_overrides": {
+  "heavy": {
+   "idle": "idle_walker",
+   "run": "run_walker",
+   "attack": "attack_walker",
+   "overheat": "overheat_walker"
+  }
+ },
+ "base_stats": {
+  "attack_power": 70,
+  "ability_power": 0.0,
+  "defense": 45,
+  "magic_resistance": 30,
+  "max_health": 3600,
+  "health_regen_per_second": 0.0,
+  "physical_lifesteal": 0.0,
+  "spell_lifesteal": 0.0,
+  "omnivamp": 0.0,
+  "crit_chance": 0.05,
+  "crit_damage": 1.5,
+  "physical_flat_penetration": 0.0,
+  "physical_percent_penetration": 0.0,
+  "magic_flat_penetration": 0.0,
+  "magic_percent_penetration": 0.0,
+  "move_speed": 1.2,
+  "attack_speed_multiplier": 0.75,
+  "damage_dealt_pct": 0.0,
+  "damage_dealt_flat": 0.0,
+  "damage_taken_pct": 0.0,
+  "damage_taken_flat": 0.0,
+  "healing_done_pct": 0.0,
+  "healing_received_pct": 0.0
+ },
+ "triggers": [
+  {
+   "id": "elite_gw_quake",
+   "timing": "OnNormalAttackHit",
+   "event_count_threshold": 1,
+   "base_value_mode": "attack_ratio_keyword",
+   "base_value_ratio": 0.3,
+   "base_value_flat": 0.0,
+   "target_rule": "around_current_target",
+   "team_filter": "enemy",
+   "tags": [
+    "normal_attack",
+    "passive_gw_quake"
+   ],
+   "target_radius": 2.4,
+   "base_value_keyword": "amplify"
+  },
+  {
+   "id": "elite_gw_start",
+   "timing": "OnBattleStart",
+   "event_count_threshold": 1,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "self",
+   "team_filter": "any",
+   "tags": [
+    "battle_start",
+    "passive_gw_cool"
+   ]
+  },
+  {
+   "id": "elite_gw_vent",
+   "timing": "OnStatusBurst",
+   "event_count_threshold": 1,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "self",
+   "team_filter": "any",
+   "tags": [
+    "status_burst",
+    "passive_gw_cool"
+   ],
+   "runtime_conditions": [
+    {
+     "type": "event_has_tag",
+     "tag": "gw_overheat"
+    }
+   ]
+  },
+  {
+   "id": "elite_gw_overload",
+   "timing": "OnStatusBurst",
+   "event_count_threshold": 1,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "self",
+   "team_filter": "any",
+   "tags": [
+    "status_burst",
+    "passive_gw_overload"
+   ],
+   "runtime_conditions": [
+    {
+     "type": "event_has_tag",
+     "tag": "gw_cooling"
+    }
+   ]
+  },
+  {
+   "id": "elite_gw_overheat",
+   "timing": "OnStatusBurst",
+   "event_count_threshold": 1,
+   "base_value_mode": "fixed",
+   "base_value_ratio": 1.0,
+   "base_value_flat": 0.0,
+   "target_rule": "self",
+   "team_filter": "any",
+   "tags": [
+    "status_burst",
+    "passive_gw_overheat"
+   ],
+   "runtime_conditions": [
+    {
+     "type": "event_has_tag",
+     "tag": "gw_overload"
+    }
+   ]
+  }
+ ],
+ "passive_abilities": [
+  {
+   "id": "elite_gw_quake",
+   "ability_class": "blade",
+   "effect_type": "physical_damage",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic",
+    "amplify"
+   ],
+   "accepted_timings": [
+    "OnNormalAttackHit"
+   ],
+   "required_trigger_tags": [
+    "passive_gw_quake"
+   ],
+   "effect_config": {
+    "all_targets": true
+   },
+   "cooldown": 0.0,
+   "priority": 100,
+   "keyword_values": {
+    "amplify": 2
+   },
+   "keyword_values_by_star": {
+    "amplify": {
+     "1": 2,
+     "2": 3,
+     "3": 3
+    }
+   }
+  },
+  {
+   "id": "elite_gw_cool",
+   "ability_class": "blade",
+   "effect_type": "stat_status",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [
+    "OnBattleStart",
+    "OnStatusBurst"
+   ],
+   "required_trigger_tags": [
+    "passive_gw_cool"
+   ],
+   "effect_config": {
+    "status_id": "gw_cooling",
+    "duration": 6.0,
+    "max_stacks": 1,
+    "flags": [
+     "no_dispel"
+    ],
+    "burst": true
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  },
+  {
+   "id": "elite_gw_overload",
+   "ability_class": "blade",
+   "effect_type": "stat_status",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [
+    "OnStatusBurst"
+   ],
+   "required_trigger_tags": [
+    "passive_gw_overload"
+   ],
+   "effect_config": {
+    "status_id": "gw_overload",
+    "duration": 5.0,
+    "max_stacks": 1,
+    "flags": [
+     "buff",
+     "no_dispel"
+    ],
+    "burst": true,
+    "stats": {
+     "passive_amplify_bonus": {
+      "flat": 3.0
+     },
+     "attack_speed_multiplier": {
+      "flat": 0.6
+     }
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  },
+  {
+   "id": "elite_gw_overheat",
+   "ability_class": "blade",
+   "effect_type": "stat_status",
+   "value_multiplier": 1.0,
+   "fixed_value": 0.0,
+   "keywords": [
+    "basic"
+   ],
+   "accepted_timings": [
+    "OnStatusBurst"
+   ],
+   "required_trigger_tags": [
+    "passive_gw_overheat"
+   ],
+   "effect_config": {
+    "status_id": "gw_overheat",
+    "duration": 3.0,
+    "max_stacks": 1,
+    "flags": [
+     "no_dispel",
+     "stun",
+     "overheat"
+    ],
+    "burst": true,
+    "no_cc_halving": true,
+    "stats": {
+     "damage_taken_pct": {
+      "flat": -0.5
+     }
+    }
+   },
+   "cooldown": 0.0,
+   "priority": 100
+  }
+ ]
+}

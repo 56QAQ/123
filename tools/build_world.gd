@@ -120,6 +120,12 @@ const MODELS := {
 	"tech_kiosk": [Vector3i(-22, -2, -12), Vector3i(22, 50, 12), "tech_kiosk", "dome"],
 	"tech_server": [Vector3i(-22, -2, -22), Vector3i(22, 54, 22), "tech_server", "dome"],
 	"tech_gate": [Vector3i(-32, -2, -8), Vector3i(32, 60, 8), "tech_gate", "dome"],
+	# 蓝之章的事件道具(体素 5 cm)：安保探照塔(3×3 格) + 灯头(原点 = 转轴，装在塔身 (0, 4.5, 0) 米)、HM-02 家政仿生人(体素 2.5 cm)、公寓门口、停摆的钟
+	"sec_tower": [Vector3i(-30, -2, -30), Vector3i(30, 112, 30), "sec_tower", "dome"],
+	"sec_tower_lamp": [Vector3i(-20, -2, -16), Vector3i(20, 32, 12), "sec_tower_lamp", "dome"],
+	"hm02_android": [Vector3i(-30, -2, -16), Vector3i(16, 58, 22), "hm02_android", "dome", 2.0],
+	"hm02_apartment": [Vector3i(-42, -2, -29), Vector3i(41, 64, 17), "hm02_apartment", "dome"],
+	"street_clock": [Vector3i(-14, -2, -8), Vector3i(14, 68, 8), "street_clock", "dome"],
 	# 蓝之章的大地图：未来风的楼 / 高杆 / 树 / 路灯 / 路牌(体素 25 cm，缩放 20)，城北的巨大信标(体素 50 cm，缩放 40)
 	"sf_tower_a": [Vector3i(-12, -2, -12), Vector3i(12, 158, 12), "sf_tower_a", "dome", 20.0],
 	"sf_tower_b": [Vector3i(-16, -2, -16), Vector3i(16, 146, 16), "sf_tower_b", "dome", 20.0],

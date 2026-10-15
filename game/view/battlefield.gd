@@ -54,8 +54,77 @@ var _embers: Dictionary = {}           # 余烬地块 id -> 贴花节点
 var theme_purple: bool = false        # 紫之章(碎掉的是冰)
 var _obs_nodes: Dictionary = {}        # 障碍物下标 -> 节点(裂地猛击打碎时拿来演)
 var _frost_nodes: Dictionary = {}      # 寒雾地块 id -> 节点
+var _pad_nodes: Dictionary = {}        # 供能地砖 id -> {node, mat, curtain}
 static var _ember_shader: Shader = null
 static var _frost_shader: Shader = null
+static var _pad_shader: Shader = null
+static var _curtain_shader: Shader = null
+
+## 供能地砖(蓝之章)：嵌在地里的深藏青面板，里面是六边形的导光格；边上一圈 8 格刻度 = 充电进度(从正北顺时针一格一格亮)，
+## 满电时整块亮起青光、光波从中心往外推；charge = 0..1(1 = 满电)，flash = 刚被吸走的那一下
+const PAD_SHADER := """
+shader_type spatial;
+render_mode unshaded, blend_mix, depth_draw_never, cull_disabled, shadows_disabled;
+uniform vec2 size = vec2(1.0, 1.0);
+uniform float charge = 1.0;
+uniform float flash = 0.0;
+float hexd(vec2 p) { p = abs(p); return max(dot(p, vec2(0.8660254, 0.5)), p.y); }
+void fragment() {
+	vec2 p = (UV - 0.5) * size;
+	vec2 hs = size * 0.5;
+	float edge = min(hs.x - abs(p.x), hs.y - abs(p.y));
+	float full = step(0.999, charge);
+	float pulse = 0.5 + 0.5 * sin(TIME * 3.2 - length(p) * 5.0);
+	vec3 cyan = vec3(0.25, 0.88, 1.0);
+	vec3 col = vec3(0.075, 0.12, 0.22);
+	vec2 g = p / 0.3;
+	vec2 r = vec2(1.0, 1.7320508);
+	vec2 h1 = mod(g, r) - r * 0.5;
+	vec2 h2 = mod(g - r * 0.5, r) - r * 0.5;
+	vec2 hc = dot(h1, h1) < dot(h2, h2) ? h1 : h2;
+	float line = smoothstep(0.40, 0.48, hexd(hc));
+	float glow = mix(0.10 + 0.25 * charge, 0.6 + 0.4 * pulse, full) + flash;
+	col = mix(col, cyan, clamp(line * glow, 0.0, 1.0));
+	col += cyan * (0.22 * full * (0.6 + 0.4 * pulse) + 0.5 * flash) * (1.0 - smoothstep(0.0, max(hs.x, hs.y) * 1.2, length(p)));
+	float ang = fract(atan(p.x, -p.y) / 6.2831853);
+	float fs = fract(ang * 8.0);
+	float lit = step((floor(ang * 8.0) + 1.0) / 8.0, charge + 0.001);
+	float blink = step(floor(ang * 8.0) / 8.0, charge) * (1.0 - lit) * (0.5 + 0.5 * sin(TIME * 9.0));
+	float rim = (1.0 - smoothstep(0.075, 0.095, edge)) * smoothstep(0.03, 0.045, edge) * step(0.1, fs) * step(fs, 0.9);
+	vec3 rim_c = mix(vec3(0.16, 0.22, 0.32), cyan * (1.3 + 0.4 * full * pulse), max(lit, blink * 0.6));
+	col = mix(col, rim_c, rim);
+	col = mix(col, vec3(0.78, 0.84, 0.92), 1.0 - smoothstep(0.012, 0.025, edge));
+	// 正中一个电源图标(缺口朝北的圆 + 竖杠)：充电时从下往上一点点灌满，满电时白青色发亮
+	float s = min(hs.x, hs.y) * 0.5;
+	float disc = 1.0 - smoothstep(s * 1.08, s * 1.16, length(p));
+	col = mix(col, vec3(0.05, 0.08, 0.15), disc * 0.85);
+	float ring_d = abs(length(p) - s * 0.72);
+	float gap = step(abs(atan(p.x, -p.y)), 0.62);
+	float icon = max((1.0 - smoothstep(s * 0.1, s * 0.15, ring_d)) * (1.0 - gap),
+		(1.0 - smoothstep(s * 0.1, s * 0.15, abs(p.x))) * step(-s * 0.98, p.y) * step(p.y, -s * 0.05));
+	float filled = step(1.0 - clamp(charge, 0.0, 1.0), (p.y + s) / (2.0 * s));
+	vec3 icon_c = mix(vec3(0.2, 0.27, 0.38), mix(cyan * 1.2, vec3(0.85, 1.0, 1.0) * (1.3 + 0.5 * pulse), full), max(filled, full));
+	col = mix(col, icon_c, icon);
+	ALBEDO = col;
+	ALPHA = 0.94;
+}
+"""
+## 满电的地砖四边往上冒一道淡淡的青色光幕(加色；顶面 / 底面不画)
+const CURTAIN_SHADER := """
+shader_type spatial;
+render_mode unshaded, blend_add, depth_draw_never, cull_disabled, shadows_disabled;
+uniform float level = 1.0;
+varying float side;
+varying float hy;
+void vertex() { side = 1.0 - step(0.5, abs(NORMAL.y)); hy = VERTEX.y; }
+void fragment() {
+	if (side < 0.5) discard;
+	float k = 1.0 - clamp(hy / 0.5 + 0.5, 0.0, 1.0);
+	float shimmer = 0.75 + 0.25 * sin(TIME * 4.0 + UV.x * 18.0);
+	ALBEDO = vec3(0.25, 0.85, 1.0);
+	ALPHA = k * k * 0.55 * level * shimmer;
+}
+"""
 
 ## 寒雾地块：一片白霜(霜花从中心向外、边缘参差)，上面有慢慢旋转的冷雾，零星的紫色冰晶闪光
 const FROST_SHADER := """
@@ -92,6 +161,7 @@ func build(layout: Dictionary, seed_value: int) -> void:
 	_embers.clear()
 	_obs_nodes.clear()
 	_frost_nodes.clear()
+	_pad_nodes.clear()
 	_lights = 0
 	arena = null
 	var red: bool = str(layout.get("theme", "")) == "red"
@@ -134,6 +204,12 @@ func build(layout: Dictionary, seed_value: int) -> void:
 		add_child(fn)
 		_frost_nodes[fi] = fn
 		fi += 1
+	var pdi := 0
+	for pd: Variant in layout.get("pads", []):
+		var pdn: Dictionary = pad_node(pd as Dictionary)
+		add_child(pdn["node"])
+		_pad_nodes[pdi] = pdn
+		pdi += 1
 	if red:
 		_scatter_city(seed_value, set_id == "fountain_park")
 		var snow: GPUParticles3D = FireFX.ember_snow(Vector2(40, 34), 160, 12.0)
@@ -221,6 +297,60 @@ static func frost_node(id: int, f: Dictionary) -> Node3D:
 	mist.position = Vector3(0, 0.1, 0)
 	n.add_child(mist)
 	return n
+
+
+## 一块供能地砖的贴花：{node, mat(地砖面板), curtain(满电的光幕材质)}
+static func pad_node(pd: Dictionary) -> Dictionary:
+	var r := Rect2i(int(pd["x"]), int(pd["y"]), int(pd.get("w", 1)), int(pd.get("h", 1)))
+	var mid: Vector2 = _rect_mid(r)
+	var sz := Vector2(float(r.size.x) * GC.CELL - 0.12, float(r.size.y) * GC.CELL - 0.12)
+	var n := Node3D.new()
+	n.position = Vector3(mid.x, 0.035, mid.y)
+	var mi := MeshInstance3D.new()
+	var q := QuadMesh.new()
+	q.size = sz
+	q.orientation = PlaneMesh.FACE_Y
+	mi.mesh = q
+	if _pad_shader == null:
+		_pad_shader = Shader.new()
+		_pad_shader.code = PAD_SHADER
+		_curtain_shader = Shader.new()
+		_curtain_shader.code = CURTAIN_SHADER
+	var m := ShaderMaterial.new()
+	m.shader = _pad_shader
+	m.set_shader_parameter("size", sz)
+	mi.material_override = m
+	mi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	n.add_child(mi)
+	var cb := MeshInstance3D.new()
+	var bm := BoxMesh.new()
+	bm.size = Vector3(sz.x - 0.1, 0.5, sz.y - 0.1)
+	cb.mesh = bm
+	cb.position.y = 0.25
+	var cm := ShaderMaterial.new()
+	cm.shader = _curtain_shader
+	cb.material_override = cm
+	cb.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	n.add_child(cb)
+	return {"node": n, "mat": m, "curtain": cm, "charge": 1.0}
+
+
+## 战斗中：供能地砖的充电进度跟着逻辑层走(吸空 → 刻度一格一格亮 → 满电)；刚被吸走的那一下闪一下
+func _sync_pads(b: Battle) -> void:
+	for id: int in _pad_nodes.keys():
+		if id >= b.map.pads.size():
+			continue
+		var pd: Dictionary = b.map.pads[id]
+		var d: Dictionary = _pad_nodes[id]
+		var c: float = 1.0
+		if not bool(pd["charged"]):
+			c = clampf(1.0 - (float(pd["ready_at"]) - b.time) / Battle.PAD_RECHARGE, 0.0, 0.999)
+		if float(d["charge"]) >= 0.999 and c < 0.999:
+			var fm: ShaderMaterial = d["mat"]
+			create_tween().tween_method(func(v: float) -> void: fm.set_shader_parameter("flash", v), 1.0, 0.0, 0.45)
+		d["charge"] = c
+		(d["mat"] as ShaderMaterial).set_shader_parameter("charge", c)
+		(d["curtain"] as ShaderMaterial).set_shader_parameter("level", 1.0 if c >= 0.999 else 0.0)
 
 
 ## 紫之章战场外围：近处坚冰 / 石灯笼，中景冰柱 / 雪松 / 白墙，远处民家 / 神社，天际是宝塔和大冰晶
@@ -336,6 +466,20 @@ static func ember_node(id: int, e: Dictionary) -> Dictionary:
 
 ## 地形被打碎(圣战节点·裂地猛击)：障碍物炸开一团碎石、往下沉着缩没；寒雾地块淡掉
 func break_terrain(kind: String, id: int, fx: Fx) -> void:
+	if kind == "pad":
+		# 供能地砖被砸碎：迸一团青色的火花，面板沉下去
+		if not _pad_nodes.has(id):
+			return
+		var pn: Node3D = (_pad_nodes[id] as Dictionary)["node"]
+		_pad_nodes.erase(id)
+		if fx != null and is_instance_valid(pn):
+			fx.terrain_shatter(pn.position, 0.6, "stone")
+			fx.burst(pn.position + Vector3(0, 0.2, 0), Color("#3fe0ff"), 14, 2.6, 0.5, 1.2, 0.4)
+		if is_instance_valid(pn):
+			var tw0: Tween = create_tween()
+			tw0.tween_property(pn, "scale", Vector3(0.01, 1.0, 0.01), 0.5).set_ease(Tween.EASE_IN)
+			tw0.tween_callback(pn.queue_free)
+		return
 	var dict: Dictionary = _obs_nodes if kind == "obstacle" else _frost_nodes
 	if not dict.has(id):
 		return
@@ -412,6 +556,8 @@ func on_hazard(e: Dictionary) -> void:
 
 ## 每帧：布景里跟着逻辑层走的东西(电车的位置)
 func sync_battle(b: Battle, alpha: float) -> void:
+	if not _pad_nodes.is_empty() and b != null:
+		_sync_pads(b)
 	if arena != null:
 		arena.sync_battle(b, alpha)
 

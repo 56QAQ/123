@@ -33,10 +33,10 @@ func _pair(cat: Catalog, trig_id: String) -> Dictionary:
 
 func test_arenas_validate_and_match_their_events(t: TestCtx) -> void:
 	var cat: Catalog = Fixture.catalog()
-	t.eq(cat.arenas.keys().size(), 2, "two arenas: the park fountain and the tram stop")
+	t.eq(cat.arenas.keys().size(), 3, "three arenas: the park fountain, the tram stop and the curfew plaza (blue chapter)")
 	t.eq(Events.validate_arenas(cat), [], "arenas validate")
 	t.eq(cat.validate_all().filter(func(e: String) -> bool: return e.begins_with("arena") or e.begins_with("event") or e.begins_with("terrain")), [], "content validates")
-	for pr: Array in [["burning_fountain", "fountain_park"], ["last_tram", "tram_stop"]]:
+	for pr: Array in [["burning_fountain", "fountain_park"], ["last_tram", "tram_stop"], ["curfew", "curfew_plaza"]]:
 		var ev: Dictionary = cat.events[pr[0]]
 		t.eq(str(ev["scene"]), str(cat.arenas[pr[1]]["set"]), "%s: the event picture is the battlefield's own set" % pr[0])
 		var found := false

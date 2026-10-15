@@ -6719,8 +6719,12 @@ const BLUE_TABLE := {
 
 
 func blue_table(t: Dictionary) -> void:
-	for nm: String in BLUE_TABLE.keys():
-		t[nm] = {"dur": float(BLUE_TABLE[nm][0]), "loop": bool(BLUE_TABLE[nm][1]), "fn": Callable(self, nm)}
+	for tb: Dictionary in [BLUE_TABLE, BLUE_A_TABLE, BLUE_B_TABLE, BLUE_C_TABLE, BLUE_D_TABLE]:
+		for nm: String in tb.keys():
+			var e: Array = tb[nm]
+			t[nm] = {"dur": float(e[0]), "loop": bool(e[1]), "fn": Callable(self, nm)}
+			if e.size() > 2 and e[2] is Dictionary:
+				(t[nm] as Dictionary).merge(e[2] as Dictionary)     # 额外的条目参数(wing_custom 等)
 
 
 ## 炮台待机(2.4s 循环)：底座不动，炮塔一段一段地扫视——转过去、停住、炮口点一下(锁定)、再转回来，像在搜索目标
@@ -6890,6 +6894,1110 @@ func victory_droid_relay(t: float, p) -> void:
 	up[0] = (G_RX_UP[0] as Vector3) + Vector3(1.5 * sin(th), 1.5 * sin(th * 2.0), 0.0)
 	_hand_mix(p, "L", up, up, 0.0)
 	_hand_mix(p, "R", up, up, 0.0)
+
+
+# =============================================================== 蓝之章第二批(2026-10-15)：每台机器一节，各自的动作表在本节的 const 里登记(blue_table 会读)
+# ---------------------------------------------------------------- [BLUE-A] BX-09 殉爆蛛机(droid_spider) / MR-05 维修无人机(drone_repair)
+## 两台都是"非人形挂人形骨骼"：每个刚体部件挂一根有位置轨道的骨头(Root / Hips / Chest / Halo / Eyelid_L / Eyelid_R)，
+## 动作里先在模型空间里算出每个部件的变换(绕它自己的关节转)，再用 _bx_set 按父骨骼当前的姿势反算局部的旋转 / 位移(父骨骼先设)。
+##   蛛机(tools/chars/droid_spider.gd)：机身 Root；四条腿 左前 Hips / 右前 Chest / 左后 Eyelid_L / 右后 Eyelid_R，各绕髋关节转。
+##     腿给的是"脚尖要落到哪"(模型空间)：_bxs_leg 先绕竖轴把腿转到那个方向、再在腿自己的竖直面里抬 / 放，让脚尖正好在那个高度
+##     → 机身怎么起伏 / 倾斜 / 扑出去，踩着地的脚都钉在原地。
+##   无人机(tools/chars/drone_repair.gd)：机身 Root；维修臂 上臂 Hips(绕肩座)、前臂 Halo(绕肘)、焊枪头 Chest(绕腕)；
+##     设的顺序 Root → Hips → Chest → Halo(骨骼树里 Chest 是 Hips 的后代、Halo 是 Chest 的后代)。
+## 普攻的时长 / 出手时刻和武器大类一致：蛛机 = 双刃 15f，右前腿 0.18 s、左前腿 0.28 s 各戳一下；无人机 = 法器 27f，0.36 s 焊枪喷出一发。
+## 机器没有眼皮(不眨眼)；小动作 / 胜利照例 _stow(没有武器模型，只是满足测试)。
+const BLUE_A_TABLE := {
+	"idle_spider": [2.4, true], "run_spider": [12.0 * F, true], "attack_spider": [15.0 * F, false],
+	"fidget_droid_spider": [3.6, false], "victory_droid_spider": [2.4, true],
+	"idle_drone": [2.4, true], "run_drone": [24.0 * F, true], "attack_drone": [27.0 * F, false],
+	"repair_drone_repair": [0.8, false],
+	"fidget_drone_repair": [3.6, false], "victory_drone_repair": [2.4, true],
+}
+
+
+## 把 bone 的蒙皮变换(相对静止姿势，模型空间)设成 m：按父骨骼当前的姿势反算局部的旋转 / 位移(Root 没有父骨骼)
+func _bx_set(p, bone: String, m: Transform3D) -> void:
+	var i: int = rig.ids[bone]
+	var want: Transform3D = m * Transform3D(Basis.IDENTITY, rig.pos[i])
+	var par: int = rig.parent[i]
+	var loc: Transform3D = want
+	if par >= 0:
+		p.fk()
+		loc = p.gx[par].affine_inverse() * want
+	p.rot[i] = loc.basis.get_rotation_quaternion()
+	p.off[i] = loc.origin - p.rest_local[i]
+	p.dirty = true
+
+
+## 绕模型空间的点 c 转 q，再平移 off
+static func _bx_rot(c: Vector3, q: Quaternion, off: Vector3 = Vector3.ZERO) -> Transform3D:
+	return Transform3D(Basis(q), c - q * c + off)
+
+
+# ---------------------------------------------------------------- BX-09 殉爆蛛机
+const SPIDER_C := Vector3(0.0, 21.0, 0.0)          # 机身转动的支点(机身中心)
+const SPIDER_FOOT := 33.0                          # 脚尖离髋关节(沿腿的方向，水平)
+## [骨头, 髋关节, 水平方向(x, z)]：和 tools/chars/droid_spider.gd 的 LEGS 一致(顺序 = 父骨骼在前)
+const SPIDER_LEGS := [
+	["Hips", Vector3(10.0, 21.0, 7.0), Vector2(1.0, 0.8)],          # 0 左前
+	["Chest", Vector3(-10.0, 21.0, 7.0), Vector2(-1.0, 0.8)],       # 1 右前(主手：先戳)
+	["Eyelid_L", Vector3(10.0, 21.0, -7.0), Vector2(1.0, -0.85)],   # 2 左后
+	["Eyelid_R", Vector3(-10.0, 21.0, -7.0), Vector2(-1.0, -0.85)], # 3 右后
+]
+
+
+func _bxs_dir(i: int) -> Vector3:
+	var d2: Vector2 = (SPIDER_LEGS[i][2] as Vector2).normalized()
+	return Vector3(d2.x, 0.0, d2.y)
+
+
+## 机身：by = 起伏，bz = 往前(体素)；pitch + = 低头，yaw + = 向左转，roll + = 右侧往下(度，绕机身中心)
+func _bxs_body(p, by: float, bz: float, pitch: float, yaw: float, roll: float) -> Transform3D:
+	var B: Transform3D = _bx_rot(SPIDER_C, Lib.E(pitch, yaw, roll), Vector3(0.0, by, bz))
+	_bx_set(p, "Root", B)
+	return B
+
+
+## 第 i 条腿脚尖的目标(模型空间)：静止的脚尖绕髋关节(地面上的投影)往前转 fwd 度，抬高 raise 体素；
+## 整组再绕机身中心的竖轴转 spin 度(原地转圈时脚跟着转)
+func _bxs_foot(i: int, fwd: float, raise: float, spin: float = 0.0) -> Vector3:
+	var h: Vector3 = SPIDER_LEGS[i][1]
+	var hf := Vector3(h.x, 0.6, h.z)
+	var f0: Vector3 = hf + _bxs_dir(i) * SPIDER_FOOT
+	var f: Vector3 = hf + Quaternion(Vector3.UP, deg_to_rad(-signf(h.x) * fwd)) * (f0 - hf)
+	f = Quaternion(Vector3.UP, deg_to_rad(spin)) * f
+	return f + Vector3(0.0, raise, 0.0)
+
+
+func _bxs_fy(B: Transform3D, h: Vector3, qy: Quaternion, ax: Vector3, f0: Vector3, l: float) -> float:
+	return (B * (h + qy * (Quaternion(ax, l) * f0))).y
+
+
+## 第 i 条腿：先绕竖轴转到脚尖目标的方向，再在腿的竖直面里抬 / 放，让脚尖正好在目标的高度(离髋关节的距离不变，水平上可能差一点)
+func _bxs_leg(p, B: Transform3D, i: int, target: Vector3) -> void:
+	var e: Array = SPIDER_LEGS[i]
+	var h: Vector3 = e[1]
+	var d: Vector3 = _bxs_dir(i)
+	var ax: Vector3 = d.cross(Vector3.UP).normalized()
+	var f0: Vector3 = Vector3(h.x, 0.6, h.z) + d * SPIDER_FOOT - h
+	var tl: Vector3 = B.affine_inverse() * target - h
+	var yaw: float = wrapf(atan2(tl.x, tl.z) - atan2(d.x, d.z), -PI, PI)
+	var qy := Quaternion(Vector3.UP, yaw)
+	var l0: float = atan2(tl.y, Vector2(tl.x, tl.z).length()) - atan2(f0.y, Vector2(f0.x, f0.z).length())
+	var y0: float = _bxs_fy(B, h, qy, ax, f0, l0)
+	var l1: float = l0 + 0.05
+	var y1: float = _bxs_fy(B, h, qy, ax, f0, l1)
+	for _k in range(4):
+		if absf(y1 - y0) < 1e-6 or absf(y1 - target.y) < 0.01:
+			break
+		var l2: float = clampf(l1 + (target.y - y1) * (l1 - l0) / (y1 - y0), -1.2, 1.9)
+		l0 = l1
+		y0 = y1
+		l1 = l2
+		y1 = _bxs_fy(B, h, qy, ax, f0, l1)
+	_bx_set(p, str(e[0]), B * _bx_rot(h, qy * Quaternion(ax, l1)))
+
+
+## 整只：机身 + 四条腿(feet = 四个脚尖目标，顺序同 SPIDER_LEGS)
+func _bxs_pose(p, by: float, bz: float, pitch: float, yaw: float, roll: float, feet: Array) -> void:
+	var B: Transform3D = _bxs_body(p, by, bz, pitch, yaw, roll)
+	for i in range(4):
+		_bxs_leg(p, B, i, feet[i])
+
+
+## 一条腿的碎步：u = 这条腿的相位(0..1)，前一半抬起来往前迈(raise 拱起)、后一半踩着地往后蹬；返回 [fwd, raise]
+static func _bxs_gait(u: float, amp: float, lift: float) -> Array:
+	u = fposmod(u, 1.0)
+	if u < 0.5:
+		var s: float = u / 0.5
+		return [lerpf(-amp, amp, s * s * (3.0 - 2.0 * s)), lift * sin(PI * s)]
+	return [lerpf(amp, -amp, (u - 0.5) / 0.5), 0.0]
+
+
+## 待机(2.4s)：机身微微起伏，像炮台一样转过去看一眼、再转回来(脚钉在地上)；左前腿点两下地，右后腿挪一下
+func idle_spider(t: float, p) -> void:
+	p.reset()
+	var th: float = TAU * t / 2.4
+	var yaw: float = kf_f([[0.0, 0.0], [0.35, 8.0], [0.9, 8.0], [1.35, -7.0], [1.9, -7.0], [2.4, 0.0]], t)
+	var tap: float = _arc(t, 0.95, 1.13, 3.0) + _arc(t, 1.17, 1.35, 3.0)
+	var shift: float = _arc(t, 1.95, 2.25, 2.5)
+	var feet: Array = [_bxs_foot(0, 3.0 * minf(1.0, tap), tap), _bxs_foot(1, 0.0, 0.0), _bxs_foot(2, 0.0, 0.0),
+		_bxs_foot(3, 4.0 * shift / 2.5, shift)]
+	_bxs_pose(p, -0.3 + 0.5 * sin(th), 0.0, 1.0 * sin(th + 1.0), yaw, 0.8 * sin(th + 2.0), feet)
+
+
+## 跑(12f 循环)：对角的两条腿一起迈(左前 + 右后 / 右前 + 左后)，碎步飞快；机身压低、低头往前冲，一步一颠
+func run_spider(t: float, p) -> void:
+	p.reset()
+	var ph: float = t / (12.0 * F)
+	var feet: Array = []
+	for i in range(4):
+		var gt: Array = _bxs_gait(ph + (0.0 if i == 0 or i == 3 else 0.5), 15.0, 7.0)
+		feet.append(_bxs_foot(i, gt[0], gt[1]))
+	_bxs_pose(p, -1.2 + 0.7 * cos(TAU * 2.0 * ph), 1.0, 6.0, 2.5 * sin(TAU * ph + 0.5), 2.0 * sin(TAU * ph), feet)
+
+
+## 普攻(双刃 15f)：右前腿高高抬起往前 → 0.18 s 狠狠戳下去(机身往前一扑、往右压)；左前腿接着抬起 → 0.28 s 再戳一下(往左压)；
+## 两条后腿钉在地上撑着，0.5 s 收回待机
+func attack_spider(t: float, p) -> void:
+	p.reset()
+	var r_raise: float = kf_f([[0.0, 0.0], [0.09, 28.0], [0.18, -1.0, "i"], [0.26, -0.5], [0.5, 0.0]], t) + _arc(t, 0.26, 0.44, 3.5)
+	var r_fwd: float = kf_f([[0.0, 0.0], [0.09, 24.0], [0.18, 34.0, "i"], [0.26, 31.0], [0.44, 0.0], [0.5, 0.0]], t)
+	var l_raise: float = kf_f([[0.0, 0.0], [0.08, 2.0], [0.19, 28.0], [0.28, -1.0, "i"], [0.36, -0.5], [0.5, 0.0]], t) + _arc(t, 0.36, 0.49, 3.5)
+	var l_fwd: float = kf_f([[0.0, 0.0], [0.08, 4.0], [0.19, 24.0], [0.28, 34.0, "i"], [0.36, 31.0], [0.49, 0.0], [0.5, 0.0]], t)
+	var bz: float = kf_f([[0.0, 0.0], [0.08, -1.5], [0.18, 3.5, "i"], [0.23, 2.8], [0.28, 4.5, "i"], [0.36, 3.8], [0.5, 0.0]], t)
+	var pitch: float = kf_f([[0.0, 0.0], [0.08, -5.0], [0.18, 6.0, "i"], [0.23, 2.0], [0.28, 7.0, "i"], [0.36, 3.0], [0.5, 0.0]], t)
+	var roll: float = kf_f([[0.0, 0.0], [0.08, -2.0], [0.18, 4.0, "i"], [0.23, 0.0], [0.28, -4.0, "i"], [0.36, -1.0], [0.5, 0.0]], t)
+	var yaw: float = kf_f([[0.0, 0.0], [0.18, -5.0, "i"], [0.28, 5.0, "i"], [0.42, 0.0], [0.5, 0.0]], t)
+	var by: float = kf_f([[0.0, 0.0], [0.08, 1.0], [0.18, -1.0, "i"], [0.23, -0.5], [0.28, -1.2, "i"], [0.42, 0.0], [0.5, 0.0]], t)
+	var feet: Array = [_bxs_foot(0, l_fwd, l_raise), _bxs_foot(1, r_fwd, r_raise), _bxs_foot(2, 0.0, 0.0), _bxs_foot(3, 0.0, 0.0)]
+	_bxs_pose(p, by, bz, pitch, yaw, roll, feet)
+
+
+## 小动作(3.6s)：一蹲 → 后腿撑着整只立起来(抬头)，两条前腿高高举在前面来回挥(恐吓) → 砸回地上 →
+## 碎步原地转一整圈 → 小跳一下落回原样
+func fidget_droid_spider(t: float, p) -> void:
+	p.reset()
+	_stow(p)
+	var rear: float = kf_f([[0.0, 0.0], [0.35, -0.35], [0.6, 1.0, "o"], [1.5, 1.0], [1.68, -0.4, "i"], [1.95, 0.0], [3.6, 0.0]], t)
+	var wave: float = sin(TAU * 3.0 * (t - 0.6)) * kf_f([[0.0, 0.0], [0.6, 0.0], [0.75, 1.0], [1.4, 1.0], [1.5, 0.0], [3.6, 0.0]], t)
+	var spin: float = kf_f([[0.0, 0.0], [2.0, 0.0], [3.0, 360.0], [3.6, 360.0]], t)
+	var stepping: float = kf_f([[0.0, 0.0], [1.95, 0.0], [2.05, 1.0], [2.95, 1.0], [3.05, 0.0], [3.6, 0.0]], t)
+	var hop: float = _arc(t, 3.05, 3.35, 2.5)
+	var up: float = maxf(rear, 0.0)
+	var feet: Array = []
+	for i in range(4):
+		var gt: Array = _bxs_gait((t - 2.0) / 0.25 + (0.0 if i == 0 or i == 3 else 0.5), 9.0, 5.0)
+		var fwd: float = float(gt[0]) * stepping
+		var raise: float = float(gt[1]) * stepping
+		if i < 2:
+			var sgn: float = 1.0 if i == 0 else -1.0
+			fwd += up * (18.0 + 7.0 * wave * sgn)
+			raise += up * (26.0 + 6.0 * wave * sgn)
+		feet.append(_bxs_foot(i, fwd, raise, spin))
+	var slam: float = kf_f([[0.0, 0.0], [1.5, 0.0], [1.68, 1.0, "i"], [1.95, 0.0], [3.6, 0.0]], t)
+	_bxs_pose(p, 3.0 * up - 2.5 * maxf(0.0, -rear) - 1.5 * slam + hop, -2.0 * up, -16.0 * up + 5.0 * slam, spin + 4.0 * wave * up, 0.0, feet)
+
+
+## 胜利(2.4s 循环)：一颠一颠地跳舞——机身一拍一颠(0.6 s 一拍)、左右扭，两条前腿举在前面轮流挥，后腿轮流跺地
+func victory_droid_spider(t: float, p) -> void:
+	p.reset()
+	_stow(p)
+	var th: float = TAU * t / 1.2
+	var s: float = sin(th)
+	var feet: Array = [
+		_bxs_foot(0, 16.0 + 9.0 * s, 20.0 + 8.0 * s),
+		_bxs_foot(1, 16.0 - 9.0 * s, 20.0 - 8.0 * s),
+		_bxs_foot(2, 0.0, 3.0 * maxf(0.0, sin(th * 2.0))),
+		_bxs_foot(3, 0.0, 3.0 * maxf(0.0, -sin(th * 2.0))),
+	]
+	_bxs_pose(p, 1.5 + 2.0 * absf(sin(th)), 0.0, -8.0 + 2.0 * absf(sin(th)), 12.0 * sin(TAU * t / 2.4), 4.0 * s, feet)
+
+
+# ---------------------------------------------------------------- MR-05 维修无人机
+const DRONE_C := Vector3(0.0, 72.0, 0.0)           # 机身转动的支点(机身中心)
+const DRONE_M := Vector3(0.0, 65.5, 2.5)           # 维修臂的肩座(和 tools/chars/drone_repair.gd 一致)
+const DRONE_E := Vector3(0.0, 57.0, 4.0)           # 肘
+const DRONE_W := Vector3(0.0, 50.5, 9.0)           # 腕
+
+
+## 无人机：机身 by = 起伏，bz = 往前(体素)；pitch + = 机头往下，yaw + = 向左转，roll + = 右侧往下(度，绕机身中心)；
+## 维修臂(度，都相对上一节)：sh_f + = 上臂往前抬，sh_s + = 往左摆，el + = 前臂往前弯，wr + = 枪口往上抬
+func _mrd_pose(p, by: float, bz: float, pitch: float, yaw: float, roll: float, sh_f: float, sh_s: float, el: float, wr: float) -> void:
+	var B: Transform3D = _bx_rot(DRONE_C, Lib.E(pitch, yaw, roll), Vector3(0.0, by, bz))
+	_bx_set(p, "Root", B)
+	var U: Transform3D = B * _bx_rot(DRONE_M, Lib.E(-sh_f, 0.0, sh_s))
+	_bx_set(p, "Hips", U)
+	var Fo: Transform3D = U * _bx_rot(DRONE_E, Lib.E(-el, 0.0, 0.0))
+	_bx_set(p, "Chest", Fo * _bx_rot(DRONE_W, Lib.E(-wr, 0.0, 0.0)))
+	_bx_set(p, "Halo", Fo)
+
+
+## 待机(2.4s)：悬停——上下浮，轻轻地前后左右晃；维修臂像钟摆一样慢半拍地荡
+func idle_drone(t: float, p) -> void:
+	p.reset()
+	var th: float = TAU * t / 2.4
+	var roll: float = 2.0 * sin(th + 1.7)
+	_mrd_pose(p, 1.2 * sin(th), 0.0, 1.5 * sin(th + 0.8), 3.0 * sin(th), roll,
+		4.0 * sin(th - 0.4), -0.7 * roll + 2.0 * sin(th + 2.6), 3.0 + 3.0 * sin(th - 1.4), 3.0 * sin(2.0 * th))
+
+
+## 移动(24f 循环)：机头压低往前飞，机身左右轻摆；维修臂被风往后拖、枪口翘起来
+func run_drone(t: float, p) -> void:
+	p.reset()
+	var th: float = TAU * t / (24.0 * F)
+	_mrd_pose(p, 0.6 * sin(2.0 * th), 1.0, 14.0 + 1.5 * sin(th), 2.0 * sin(th + 0.5), 2.5 * sin(th),
+		-16.0 + 3.0 * sin(th - 1.0), -1.5 * sin(th), -8.0 + 2.0 * sin(th - 1.6), 12.0)
+
+
+## 普攻(法器 27f，0.36 s 出手)：维修臂往前抬起、焊枪对准前方，枪口一阵蓄力的颤 → 0.36 s 喷出一发(臂往上一弹、机身往后一顶)→ 回到待机
+func attack_drone(t: float, p) -> void:
+	p.reset()
+	var a: float = kf_f([[0.0, 0.0], [0.22, 1.0], [0.62, 1.0], [0.9, 0.0]], t)
+	var k: float = kf_f([[0.0, 0.0], [0.36, 0.0], [0.39, 1.0, "o"], [0.55, 0.15], [0.7, 0.0], [0.9, 0.0]], t)
+	var j: float = sin(t * 120.0) * _arc(t, 0.2, 0.37, 1.0)
+	_mrd_pose(p, 0.5 * a + 0.3 * k, -1.5 * k, -4.0 * a - 4.0 * k, 0.0, 0.0,
+		48.0 * a - 10.0 * k, 0.0, 18.0 * a, -50.0 * a + 9.0 * k + 2.5 * j)
+
+
+## 维修(0.8s，主会话在它给队友回血时放)：机头往下一压、维修臂伸向前下方，焊枪对着前下方喷一阵(枪头高频地颤)，再收回待机
+func repair_drone_repair(t: float, p) -> void:
+	p.reset()
+	var r: float = kf_f([[0.0, 0.0], [0.18, 1.0, "o"], [0.6, 1.0], [0.8, 0.0]], t)
+	var s: float = kf_f([[0.0, 0.0], [0.18, 0.0], [0.22, 1.0], [0.56, 1.0], [0.62, 0.0], [0.8, 0.0]], t)
+	var jit: float = s * sin(t * 140.0)
+	_mrd_pose(p, -0.8 * r, 1.0 * r, 9.0 * r + 0.6 * jit, 0.0, 0.0,
+		40.0 * r, 1.5 * jit, 10.0 * r, -40.0 * r + 4.0 * jit)
+
+
+## 小动作(3.6s)：左右扫视一圈 → 往下一沉 → 往前翻一个跟头(维修臂收起来) → 晃两下稳住
+func fidget_drone_repair(t: float, p) -> void:
+	p.reset()
+	_stow(p)
+	var yaw: float = kf_f([[0.0, 0.0], [0.3, 30.0, "o"], [0.7, 30.0], [1.05, -30.0, "o"], [1.4, -30.0], [1.65, 0.0, "o"], [3.6, 0.0]], t)
+	var dip: float = kf_f([[0.0, 0.0], [1.6, 0.0], [1.85, 1.0], [1.95, 0.6], [2.45, 0.0], [3.6, 0.0]], t)
+	var flip: float = kf_f([[0.0, 0.0], [1.85, 0.0], [2.45, 360.0, "s"], [3.6, 360.0]], t)
+	var pop: float = _arc(t, 1.9, 2.55, 4.5)
+	var tuck: float = kf_f([[0.0, 0.0], [1.75, 0.0], [1.95, 1.0], [2.4, 1.0], [2.6, 0.0], [3.6, 0.0]], t)
+	var wob: float = sin(TAU * (t - 2.45) / 0.45) * kf_f([[0.0, 0.0], [2.45, 0.0], [2.5, 1.0], [3.4, 0.0], [3.6, 0.0]], t)
+	var swing: float = sin(TAU * (t - 2.45) / 0.7) * kf_f([[0.0, 0.0], [2.45, 0.0], [2.55, 1.0], [3.5, 0.0], [3.6, 0.0]], t)
+	_mrd_pose(p, -2.5 * dip + pop, 0.0, -8.0 * dip + flip, yaw, 10.0 * wob,
+		25.0 * tuck + 14.0 * swing, -8.0 * wob, 55.0 * tuck, 20.0 * tuck)
+
+
+## 胜利(2.4s 循环)：浮高一点、原地慢慢转一整圈，机身一颠一颠地左右摇，维修臂举在前面左右挥
+func victory_drone_repair(t: float, p) -> void:
+	p.reset()
+	_stow(p)
+	var th: float = TAU * t / 1.2
+	_mrd_pose(p, 4.0 + 1.5 * sin(th), 0.0, 3.0 * sin(th), 360.0 * t / 2.4, 6.0 * sin(th + 1.0),
+		40.0 + 8.0 * sin(th), 28.0 * sin(th), 25.0, 15.0 + 10.0 * sin(2.0 * th))
+# ---------------------------------------------------------------- [BLUE-A END]
+
+# ---------------------------------------------------------------- [BLUE-B] GW-20 重装步行机(mech_walker) / RG-09 电磁轨道炮(turret_railgun)
+## GW-20 重装步行机(tools/chars/mech_walker.gd，游戏里 scale 2.0)：全刚体，手臂直接 FK 转骨头(不用人形的手势 IK，手指 / 拇指骨不动)；
+##   idle_walker(3.0s 循环)：沉胯屈膝、左脚在前站稳，引擎怠速一样细细地颤；传感器头一段一段地左右扫；锤头垂在左脚外前方，右臂屈肘端着副炮
+##   run_walker(30f 循环，移速 1.2 米/秒 = 模型里 48 体素/秒：步幅 ±13、支撑相 55%，脚不打滑)：沉重的踏步——每一脚落地整台往下一沉、
+##     上身晃一下，重心左右换，锤子跟着步子小幅前后摆，副炮一直端着
+##   attack_walker(36f = 重武器大类，0.52s 砸地)：锤子往后一收 → 举过头顶(上身后仰、左肩往后拧，右脚往后撑) → 0.52s 狠狠砸在左前方的地上
+##     (上身前扑、左脚往前踏、沉胯) → 落地的震颤 → 收回待机
+##   overheat_walker(3.0s 循环；过热的 3 秒里循环播)：右膝跪地、左脚在前，上身塌下去、头垂着，锤头杵在地上，副炮臂耷拉着；
+##     背(散热鳍)一起一伏地喘(1 秒一口)，整台细细地抖
+##   fidget_mech_walker(4.0s)：低头看锤子 → 把锤子提到身前、转着手腕翻看锤面 → 放下，副炮臂"咔"地上膛一抖 → 整台一颤(抖一抖背上的散热鳍)
+##   victory_mech_walker(2.4s 循环)：锤子高举过头、一下下往上顶，副炮臂往外撑开，右脚跺地，头仰着
+## RG-09 电磁轨道炮(tools/chars/turret_railgun.gd，游戏里 scale 1.5)：Hips = 底座(不动)、Spine = 回转座(左右转)、Chest = 炮身(俯仰 / 后坐，耳轴 y 58)；
+##   两排电容的光条挂在 Eyelid_L / R 上，_rail_cells(p, n) = 亮 n 格(0..6，沿 z 缩放、锚在凹槽后端；平移按锚点算，动作间交叉淡化时光条也不会飘)
+##   idle_railgun(4.8s 循环)：炮身慢慢地左右扫、停住、微微抬一下炮口；电容亮 2 格(待机)
+##   run_railgun = idle_railgun(炮台不走路)
+##   attack_railgun(20f = 步枪大类，0.10s 出手)：小后坐(炮身往后一缩、炮口一抬)，电容掉一格再回来
+##   charge_railgun(1.0s 循环；蓄能的 3 秒里循环播)：炮管压低一点稳住、微微地颤，电容 1 → 6 格一格格充亮(每秒充满一次)
+##   fire_railgun(0.8s，一开始就是发射的那一下)：大后坐——炮身猛地往后一缩、炮口往上一跳，整台(连底座)往后一坐，再慢慢回来；电容满格 → 全灭 → 回到 2 格
+##   fidget_turret_railgun(3.6s)：自检——转向左边、炮口抬起，电容从 0 一格格数到 6、全亮全灭闪两下，放下、转回来空放一下
+##   victory_turret_railgun(2.4s 循环)：炮口高高抬起、左右摆着"庆祝"，电容一涨一落
+const BLUE_B_TABLE := {
+	"idle_walker": [3.0, true], "run_walker": [30.0 * F, true], "attack_walker": [36.0 * F, false],
+	"overheat_walker": [3.0, true], "fidget_mech_walker": [4.0, false], "victory_mech_walker": [2.4, true],
+	"idle_railgun": [4.8, true], "run_railgun": [4.8, true], "attack_railgun": [20.0 * F, false],
+	"charge_railgun": [1.0, true], "fire_railgun": [24.0 * F, false],
+	"fidget_turret_railgun": [3.6, false], "victory_turret_railgun": [2.4, true],
+}
+const WK_DROP := 5.0                       # 待机沉胯(屈膝)：重心低、站得稳
+const WK_SPREAD := 6.0                     # 脚踝离中线(骨头在 5.5；脚的体素又往外放了 3.5)
+const WK_HIT := 0.52                       # 砸地 = 重武器大类的出手时刻
+const WK_STRIDE := 13.0                    # 跑：脚相对骨盆前后 ±13 体素
+const WK_STANCE := 0.55                    # 跑：支撑相占一个周期的 55%(2 × 13 / (0.55 × 1.0s) ≈ 47 体素/秒 ≈ 1.2 米/秒 ÷ 2)
+## 手臂(FK)：[肩前后(往前抬为负), 肩外展(往外为正，右臂自动镜像), 屈肘(往前为负), 腕前后, 腕绕前臂转]
+const WK_ARM_L := [-14.0, 12.0, -16.0, 26.0, 0.0]     # 待机的锤臂：锤柄竖直，锤头平放在左脚外前方的地上
+const WK_ARM_R := [-10.0, 9.0, -76.0, 0.0, 0.0]       # 待机的副炮臂：屈肘，炮口朝前
+
+
+## 身体：drop 沉胯、push 骨盆前后(体素)；lean 前倾、yaw 上身左转、roll 往右歪(度)；sway 骨盆横移；hyaw = 只转骨盆(上身扭回来)
+func _wk_body(p, drop: float, lean: float, yaw: float, roll: float = 0.0, sway: float = 0.0, push: float = 0.0, hyaw: float = 0.0) -> void:
+	p.move("Hips", Vector3(sway, -drop, push))
+	p.r("Hips", lean * 0.25, yaw * 0.2 + hyaw, roll * 0.4)
+	p.r("Spine", lean * 0.3, yaw * 0.35 - hyaw * 0.5, roll * 0.3)
+	p.r("Chest", lean * 0.45, yaw * 0.45 - hyaw * 0.5, roll * 0.3)
+
+
+## 双脚(世界坐标)：lz / rz 前后，ll / rl 抬起(体素)，lp / rp 脚尖下压(度)
+func _wk_feet(p, lz: float, ll: float, rz: float, rl: float, lp: float = 0.0, rp: float = 0.0, spread: float = WK_SPREAD) -> void:
+	legs(p, Vector3(spread, ANKLE_Y + ll, -0.5 + lz), Vector3(-spread, ANKLE_Y + rl, -0.5 + rz), Lib.E(lp, 7.0, 0.0), Lib.E(rp, -7.0, 0.0))
+
+
+func _wk_arm(p, side: String, a: Array) -> void:
+	var m: float = 1.0 if side == "L" else -1.0
+	p.r("UpperArm_" + side, float(a[0]), 0.0, float(a[1]) * m)
+	p.r("LowerArm_" + side, float(a[2]), 0.0, 0.0)
+	p.r("Hand_" + side, float(a[3]), float(a[4]) * m, 0.0)
+
+
+static func _wk_mix(a: Array, b: Array, w: float) -> Array:
+	var r: Array = []
+	for i in range(a.size()):
+		r.append(lerpf(float(a[i]), float(b[i]), w))
+	return r
+
+
+func idle_walker(t: float, p) -> void:
+	p.reset()
+	var br: float = sin(TAU * t / 3.0)
+	var hum: float = sin(TAU * t * 5.0)
+	_wk_body(p, WK_DROP + 0.6 * br + 0.15 * hum, 4.0 + 1.2 * br, 0.0)
+	_wk_feet(p, 2.5, 0.0, -2.5, 0.0)
+	var look: float = kf_f([[0.0, 0.0], [0.35, 16.0, "o"], [1.2, 16.0], [1.55, -14.0, "o"], [2.4, -14.0], [2.75, 0.0, "o"], [3.0, 0.0]], t)
+	p.r("Head", 2.0 - 1.0 * br, look, 0.0)
+	var al: Array = WK_ARM_L.duplicate()
+	al[0] = float(al[0]) + 1.5 * br
+	var ar: Array = WK_ARM_R.duplicate()
+	ar[0] = float(ar[0]) + 1.0 * br
+	ar[2] = float(ar[2]) - 1.5 * br
+	_wk_arm(p, "L", al)
+	_wk_arm(p, "R", ar)
+
+
+## 跑的一只脚：[前后, 抬起, 脚尖下压]；ph = 0 落地
+static func _wk_step(ph: float) -> Array:
+	if ph < WK_STANCE:
+		return [lerpf(WK_STRIDE, -WK_STRIDE, ph / WK_STANCE), 0.0, 0.0]
+	var u: float = (ph - WK_STANCE) / (1.0 - WK_STANCE)
+	return [lerpf(-WK_STRIDE, WK_STRIDE, Lib.smooth(u)), 7.5 * pow(sin(PI * u), 0.8), lerpf(10.0, -8.0, u) * sin(PI * u)]
+
+
+## 落地的一沉：ph = 0 落地 → 0.1 周期沉到底 → 0.42 周期撑回来
+static func _wk_thud(ph: float) -> float:
+	if ph < 0.1:
+		return sin(0.5 * PI * ph / 0.1)
+	if ph < 0.42:
+		return 0.5 + 0.5 * cos(PI * (ph - 0.1) / 0.32)
+	return 0.0
+
+
+func run_walker(t: float, p) -> void:
+	p.reset()
+	var ph: float = fposmod(t / (30.0 * F), 1.0)
+	var th: float = TAU * ph
+	var fl: Array = _wk_step(ph)
+	var fr: Array = _wk_step(fposmod(ph + 0.5, 1.0))
+	var thud: float = _wk_thud(ph) + _wk_thud(fposmod(ph + 0.5, 1.0))
+	_wk_body(p, WK_DROP + 1.5 + 2.4 * thud, 9.0 + 2.0 * thud, 0.0, -2.5 * sin(th), 1.8 * sin(th), 0.0, -6.0 * cos(th))
+	_wk_feet(p, fl[0], fl[1], fr[0], fr[1], fl[2], fr[2])
+	p.r("Head", -5.0 + 2.5 * thud, 3.0 * cos(th), 1.5 * sin(th))
+	var al: Array = WK_ARM_L.duplicate()
+	al[0] = -30.0 + 8.0 * cos(th)
+	al[2] = -40.0 - 4.0 * cos(th)
+	al[3] = -(9.0 + 2.0 * thud) - float(al[0]) - float(al[2]) - 4.0 + 5.0 * thud     # 腕把锤柄扳回竖直(只跟着步子晃一点)
+	var ar: Array = WK_ARM_R.duplicate()
+	ar[0] = float(ar[0]) - 3.0 * cos(th)
+	ar[2] = float(ar[2]) + 3.0 * thud
+	_wk_arm(p, "L", al)
+	_wk_arm(p, "R", ar)
+
+
+## 砸地：锤头在 0.50s(第 15 帧)就落到地上并压住到 0.62s——烘焙按 30 帧采样，0.52s 落在两帧之间，
+## 要是"落地"那一帧正好卡在 0.52 上，播放时这一刻锤子还在半空
+func attack_walker(t: float, p) -> void:
+	p.reset()
+	var hit: float = WK_HIT - 0.02
+	var lean: float = kf_f([[0.0, 4.0], [0.12, 8.0], [0.36, -12.0, "o"], [0.40, -13.0], [hit, 30.0, "i"], [0.60, 34.0, "o"], [0.76, 30.0],
+		[1.0, 12.0], [1.2, 4.0]], t)
+	var yaw: float = kf_f([[0.0, 0.0], [0.12, -8.0], [0.36, 18.0, "o"], [0.40, 20.0], [hit, -20.0, "i"], [0.62, -24.0, "o"], [0.80, -20.0],
+		[1.2, 0.0]], t)
+	var drop: float = kf_f([[0.0, WK_DROP], [0.12, WK_DROP + 2.5], [0.36, WK_DROP - 2.0, "o"], [0.40, WK_DROP - 2.5], [hit, WK_DROP + 7.5, "i"],
+		[0.62, WK_DROP + 8.5, "o"], [0.80, WK_DROP + 7.5], [1.2, WK_DROP]], t)
+	var push: float = kf_f([[0.0, 0.0], [0.36, -2.0, "o"], [hit, 4.0, "i"], [0.62, 5.0], [0.85, 4.0], [1.2, 0.0]], t)
+	# 砸地后的震颤(很快衰减)
+	var shake: float = 0.0
+	if t > hit:
+		shake = exp(-(t - hit) * 9.0) * sin((t - hit) * 70.0)
+	_wk_body(p, drop - 1.2 * shake, lean + 2.0 * shake, yaw, 1.5 * shake, 0.0, push)
+	# 脚：右脚往后撑(蓄力) → 左脚往前踏(砸下) → 收势时两脚回来
+	var lz: float = kf_f([[0.0, 2.5], [0.38, 2.5], [0.48, 10.0, "o"], [0.95, 10.0], [1.15, 2.5]], t)
+	var ll: float = _arc(t, 0.38, 0.48, 4.5) + _arc(t, 0.95, 1.15, 3.0)
+	var rz: float = kf_f([[0.0, -2.5], [0.10, -2.5], [0.30, -6.0, "o"], [0.90, -6.0], [1.10, -2.5]], t)
+	var rl: float = _arc(t, 0.10, 0.30, 2.5) + _arc(t, 0.90, 1.10, 2.5)
+	_wk_feet(p, lz, ll, rz, rl)
+	p.r("Head", kf_f([[0.0, 2.0], [0.36, -10.0], [hit, 14.0, "i"], [0.8, 10.0], [1.2, 2.0]], t) + 3.0 * shake, -0.5 * yaw, 0.0)
+	# 锤臂：肩往后一收 → 举过头顶、锤头甩到脑后 → 砸下
+	var sx: float = kf_f([[0.0, WK_ARM_L[0]], [0.12, 14.0], [0.36, -168.0, "o"], [0.40, -172.0], [hit, -73.0, "i"], [0.62, -71.0],
+		[0.80, -70.0], [1.2, WK_ARM_L[0]]], t)
+	var sz: float = kf_f([[0.0, WK_ARM_L[1]], [0.36, 28.0], [0.40, 28.0], [hit, 6.0], [1.2, WK_ARM_L[1]]], t)
+	var el: float = kf_f([[0.0, WK_ARM_L[2]], [0.12, -8.0], [0.36, -44.0, "o"], [0.40, -50.0], [hit, -6.0, "i"], [0.80, -8.0],
+		[1.2, WK_ARM_L[2]]], t)
+	var wx: float = kf_f([[0.0, WK_ARM_L[3]], [0.12, 10.0], [0.36, -24.0], [0.40, -26.0], [hit, -10.0, "i"], [0.80, -10.0], [1.2, WK_ARM_L[3]]], t)
+	_wk_arm(p, "L", [sx + 3.0 * shake, sz, el, wx, 0.0])
+	# 副炮臂：往外后撑开保持平衡
+	var bal: float = kf_f([[0.0, 0.0], [0.36, 1.0], [hit, 0.6], [0.9, 0.5], [1.2, 0.0]], t)
+	_wk_arm(p, "R", _wk_mix(WK_ARM_R, [20.0, 30.0, -40.0, 0.0, 0.0], bal))
+
+
+func overheat_walker(t: float, p) -> void:
+	p.reset()
+	var pant: float = sin(TAU * t)
+	var jit: float = sin(TAU * t * 11.0)
+	p.move("Hips", Vector3(1.5, -20.0 + 0.6 * pant, -3.0))
+	p.r("Hips", 8.0, -10.0, 2.0)
+	p.r("Spine", 8.0 + 1.0 * pant, 4.0, 0.0)
+	p.r("Chest", 12.0 + 3.0 * pant, 4.0, -2.0 + 0.3 * jit)
+	p.move("Chest", Vector3(0.0, 0.9 * pant, -0.4 * pant))
+	p.r("Head", 24.0 - 4.0 * pant, 8.0, 5.0 + 0.5 * jit)
+	legs(p, Vector3(7.0, ANKLE_Y, 12.0), Vector3(-6.0, 9.0, -20.0), Lib.E(0.0, 12.0, 0.0), Lib.E(6.0, -6.0, 0.0))
+	_wk_arm(p, "L", [-42.0 - 1.0 * pant, 16.0, -58.0, 12.0, 0.0])
+	_wk_arm(p, "R", [6.0 + 2.0 * pant, 10.0, -14.0, 0.0, 0.0])
+
+
+func fidget_mech_walker(t: float, p) -> void:
+	p.reset()
+	_stow(p)
+	var look: float = kf_f([[0.0, 0.0], [0.4, 1.0, "o"], [2.5, 1.0], [2.9, 0.0], [4.0, 0.0]], t)
+	var lift: float = kf_f([[0.0, 0.0], [0.5, 0.0], [1.0, 1.0, "o"], [2.2, 1.0], [2.7, 0.0], [4.0, 0.0]], t)
+	var turn: float = kf_f([[0.0, 0.0], [1.0, 0.0], [1.3, 1.0], [1.7, -1.0], [2.05, 0.0], [4.0, 0.0]], t)
+	var cock: float = kf_f([[0.0, 0.0], [2.75, 0.0], [2.85, 1.0, "o"], [3.1, 0.0], [4.0, 0.0]], t)
+	var shud: float = 0.0
+	if t > 3.25 and t < 3.95:
+		shud = sin((t - 3.25) * 55.0) * (1.0 - (t - 3.25) / 0.7)
+	_wk_body(p, WK_DROP + 1.0 * lift - 0.8 * absf(shud), 4.0 + 5.0 * look - 1.5 * shud, -8.0 * lift, 1.5 * shud)
+	_wk_feet(p, 2.5, 0.0, -2.5, 0.0)
+	p.r("Head", 2.0 + 18.0 * look - 4.0 * lift, 14.0 * look - 6.0 * lift, 6.0 * turn)
+	_wk_arm(p, "L", _wk_mix(WK_ARM_L, [-34.0, 14.0, -56.0, -6.0, 50.0 * turn], lift))
+	var ar: Array = WK_ARM_R.duplicate()
+	ar[0] = float(ar[0]) + 8.0 * cock
+	ar[2] = float(ar[2]) + 14.0 * cock
+	ar[3] = -10.0 * cock
+	_wk_arm(p, "R", ar)
+
+
+func victory_mech_walker(t: float, p) -> void:
+	p.reset()
+	_stow(p)
+	var th: float = TAU * t / 2.4
+	var pump: float = 0.5 + 0.5 * sin(th * 2.0)
+	var stomp: float = _arc(fposmod(t, 1.2), 0.0, 0.35, 1.0)
+	_wk_body(p, WK_DROP + 3.0 * pump - 1.0 * stomp, -5.0 - 4.0 * (1.0 - pump), 6.0 * sin(th), 0.0)
+	_wk_feet(p, 3.0, 0.0, -3.0, 5.0 * stomp)
+	p.r("Head", -14.0 - 8.0 * (1.0 - pump), 8.0 * sin(th), 0.0)
+	_wk_arm(p, "L", [-178.0 + 26.0 * pump, 18.0, -4.0 - 26.0 * pump, -8.0 - 10.0 * pump, 0.0])
+	_wk_arm(p, "R", [-24.0 - 8.0 * (1.0 - pump), 40.0, -50.0, 0.0, 0.0])
+
+
+# ---- RG-09 电磁轨道炮
+const RAIL_CELLS := 6
+const RAIL_Z0 := -17.0                                   # 凹槽后端(光条的锚点)，与 turret_railgun.gd 的 CAP_Z0 一致
+const RAIL_LEN := 23.0                                   # 凹槽长度：6 格 × 3 + 5 根肋
+const RAIL_ANCHOR := Vector3(8.5, 61.5, RAIL_Z0)        # 左边光条的锚点(右边 x 取负)
+
+
+## 电容亮 n 格(0..6)：Eyelid 骨沿 z 缩放到 (4n - 1) / 23，n = 0 时整条缩成一点；平移让锚点不动
+func _rail_cells(p, n: float) -> void:
+	var c: int = clampi(int(floor(n + 0.001)), 0, RAIL_CELLS)
+	var s: Vector3 = Vector3.ONE * 0.001
+	if c > 0:
+		s = Vector3(1.0, 1.0, (4.0 * float(c) - 1.0) / RAIL_LEN)
+	for side: String in ["L", "R"]:
+		var nm: String = "Eyelid_" + side
+		var m: float = 1.0 if side == "L" else -1.0
+		var a: Vector3 = Vector3(RAIL_ANCHOR.x * m, RAIL_ANCHOR.y, RAIL_ANCHOR.z)
+		var d: Vector3 = a - rig.pos[rig.ids[nm]]
+		p.scale_(nm, s)
+		p.move(nm, Vector3((1.0 - s.x) * d.x, (1.0 - s.y) * d.y, (1.0 - s.z) * d.z))
+
+
+func idle_railgun(t: float, p) -> void:
+	p.reset()
+	var yaw: float = kf_f([[0.0, 0.0], [0.8, 20.0], [1.8, 20.0], [3.0, -18.0], [4.0, -18.0], [4.8, 0.0]], t)
+	var pitch: float = kf_f([[0.0, 0.0], [0.8, -3.0], [1.3, -1.0], [1.8, -3.0], [3.0, 1.5], [4.0, 0.5], [4.8, 0.0]], t)
+	p.r("Spine", 0.0, yaw, 0.0)
+	p.r("Chest", pitch, 0.0, 0.0)
+	_rail_cells(p, 2.0)
+
+
+func run_railgun(t: float, p) -> void:
+	idle_railgun(t, p)
+
+
+func attack_railgun(t: float, p) -> void:
+	p.reset()
+	var kick: float = kf_f([[0.0, 0.0], [0.06, -0.12], [0.10, 0.0], [0.13, 1.0, "o"], [0.32, 0.15], [0.48, -0.05], [20.0 * F, 0.0]], t)
+	var k: float = maxf(kick, 0.0)
+	p.move("Chest", Vector3(0.0, 0.3 * k, -2.6 * kick))
+	p.r("Chest", -4.0 * kick, 0.8 * sin(t * 80.0) * k, 0.0)
+	_rail_cells(p, 1.0 if (t > 0.10 and t < 0.45) else 2.0)
+
+
+func charge_railgun(t: float, p) -> void:
+	p.reset()
+	var tr: float = sin(TAU * t * 15.0)
+	var tr2: float = sin(TAU * t * 11.0 + 1.0)
+	p.r("Spine", 0.0, 0.25 * tr2, 0.0)
+	p.r("Chest", 3.0 + 0.35 * tr, 0.0, 0.25 * tr2)
+	p.move("Chest", Vector3(0.0, -0.6 + 0.12 * tr, -0.8))
+	_rail_cells(p, 1.0 + floor(t * 6.0))
+
+
+func fire_railgun(t: float, p) -> void:
+	p.reset()
+	var kick: float = kf_f([[0.0, 0.0], [0.03, 0.0], [0.08, 1.0, "o"], [0.30, 0.35], [0.55, -0.06], [0.8, 0.0]], t)
+	var k: float = maxf(kick, 0.0)
+	var jit: float = sin(t * 95.0) * k
+	var base: float = kf_f([[0.0, 3.0], [0.5, 1.0], [0.8, 0.0]], t)
+	p.move("Chest", Vector3(0.0, 1.2 * k, -7.0 * kick - 0.8 * base / 3.0))
+	p.r("Chest", -13.0 * kick + base, 0.8 * jit, 0.0)
+	p.r("Spine", 0.0, 0.5 * jit, 0.0)
+	p.move("Hips", Vector3(0.0, 0.3 * k, -2.2 * k))
+	p.r("Hips", -2.5 * k, 0.0, 0.0)
+	var n: float = 6.0 if t < 0.03 else kf_f([[0.0, 0.0], [0.35, 0.0], [0.55, 1.0, "l"], [0.75, 2.0, "l"], [0.8, 2.0]], t)
+	_rail_cells(p, n)
+
+
+func fidget_turret_railgun(t: float, p) -> void:
+	p.reset()
+	_stow(p)
+	var yaw: float = kf_f([[0.0, 0.0], [0.5, 34.0, "o"], [2.2, 34.0], [2.7, -14.0, "o"], [3.2, -14.0], [3.6, 0.0]], t)
+	var pitch: float = kf_f([[0.0, 0.0], [0.5, 0.0], [0.9, -24.0, "o"], [2.1, -24.0], [2.6, 0.0], [3.6, 0.0]], t)
+	var kick: float = kf_f([[0.0, 0.0], [2.85, 0.0], [2.9, 1.0, "o"], [3.15, 0.0], [3.6, 0.0]], t)
+	p.r("Spine", 0.0, yaw, 0.0)
+	p.r("Chest", pitch - 4.0 * kick, 0.0, 0.0)
+	p.move("Chest", Vector3(0.0, 0.0, -2.0 * kick))
+	var n: float = 2.0
+	if t >= 0.6 and t < 1.5:
+		n = (t - 0.6) / 0.9 * 7.0
+	elif t >= 1.5 and t < 2.3:
+		n = 6.0 if fposmod(t - 1.5, 0.4) < 0.2 else 0.0
+	elif t >= 2.3:
+		n = kf_f([[2.3, 0.0], [2.85, 0.0], [3.0, 0.0], [3.5, 2.0, "l"]], t)
+	_rail_cells(p, n)
+
+
+func victory_turret_railgun(t: float, p) -> void:
+	p.reset()
+	_stow(p)
+	var th: float = TAU * t / 2.4
+	p.r("Spine", 0.0, 22.0 * sin(th), 0.0)
+	p.r("Chest", -28.0 - 4.0 * sin(th * 2.0), 0.0, 4.0 * sin(th))
+	p.move("Chest", Vector3(0.0, 1.0 * absf(sin(th * 2.0)), 0.0))
+	_rail_cells(p, 3.5 + 3.0 * sin(th * 2.0))
+# ---------------------------------------------------------------- [BLUE-B END]
+
+# ---------------------------------------------------------------- [BLUE-C] CN-00 中枢主机(core_hub)
+## 模型 tools/chars/core_hub.gd：基座 Root(永远不动)；球体 Chest；瞳核 Spine；顶盖 + 天线 Neck；三道数据环 Eyelid_L(内) / Eyelid_R(中) / Halo(外)。
+## Hips / Head 不挂体素：Hips 的位移把 Spine(瞳核，没有位移轨道)摆成"绕瞳核中心缩放"，Head 的缩放给 Halo(外环，没有缩放轨道)用。
+## 每道环在模型里的法线 = (骨头关节 − 球心) 的方向；动作里先给一个固定的预旋转(HUB_TILT = 游戏里的倾角 / 朝向)，再绕这条法线在环面里转：
+## 这样骨头的位移跟转角无关，不同动作之间交叉淡化时环不会被甩离球心(只要两边的预旋转差不多)。
+## 球体 / 环都用 _hub_set 直接摆"想要的蒙皮变换"(绕球心转、缩放)，父骨骼怎么动都抵消掉。机器没有眼皮，不眨眼(Eyelid 骨是环)。
+## 每个动作里各环 / 顶盖转过的角度都是 360° 的整数倍(build_anims 会把循环的最后几帧往第 0 帧 slerp，转不满一圈会在接缝处猛转一下；
+## 一次性动作的结尾 = 待机第 0 帧，回到待机的交叉淡化也不会转)。
+## 注意：通用动作(眨眼的 set_lids、通用 death)会动 Eyelid / Halo，这台机器只该播下面这几个动作。
+const BLUE_C_TABLE := {
+	"idle_hub": [18.0, true], "run_hub": [18.0, true], "attack_hub": [27.0 * F, false],
+	"broadcast_core_hub": [0.8, false], "fidget_core_hub": [3.6, false], "victory_core_hub": [4.8, true],
+}
+const HUB_C := Vector3(0.0, 62.0, -1.0)       # 球心(与模型 core_hub.gd 的 C 一致)
+const HUB_EYE := Vector3(0.0, 62.0, 15.0)     # 瞳核中心(模型的 EYE)
+const HUB_RINGS := ["Eyelid_L", "Eyelid_R", "Halo"]   # 内 / 中 / 外
+## 各环在游戏里的朝向：[倾角(度，法线偏离竖直多少), 方位(度，法线往哪边倒：0 = 前，90 = 左)]
+const HUB_TILT := [[55.0, 25.0], [64.0, -36.0], [22.0, 8.0]]
+## (内 / 中环的法线都朝前上方倒：从正面和俯视的战斗镜头看，两道环像两个错开的框套着那只眼，不会横在眼前；外环几乎是平的，前沿压在眼睛下面。
+##  环倾得再陡，顶上会扫到天线的横杆、底下会擦到基座的托爪)
+const HUB_SPIN := [1080.0, -720.0, 360.0]     # 待机一圈(18 s)里各环在环面里转多少度(60 / 40 / 20 °/s)
+const HUB_PITCH := -10.0                       # 球平时微微仰着(眼睛朝上一点：俯视的战斗镜头里看得见)
+const HUB_CAP_SPIN := -360.0                   # 待机一圈里顶盖转多少度(20 °/s)
+const HUB_WOB_K := [3.0, 2.0, 1.0]             # 待机里各环章动的频率(一圈 18 s 里几次)
+
+
+## 法线方向：倾角 tilt、方位 az(度)
+static func _hub_dir(tilt: float, az: float) -> Vector3:
+	var a: float = deg_to_rad(tilt)
+	var b: float = deg_to_rad(az)
+	return Vector3(sin(a) * sin(b), cos(a), sin(a) * cos(b))
+
+
+## 第 i 道环在模型里的法线(骨头关节 − 球心)
+func _hub_n(i: int) -> Vector3:
+	return (rig.pos[rig.ids[str(HUB_RINGS[i])]] - HUB_C).normalized()
+
+
+## 第 i 道环的预旋转：模型里的法线 → 游戏里的朝向
+func _hub_r0(i: int) -> Quaternion:
+	var e: Array = HUB_TILT[i]
+	return Quaternion(_hub_n(i), _hub_dir(float(e[0]), float(e[1])))
+
+
+## 把 bone 的蒙皮变换(相对静止姿势，模型空间)设成 m：按父骨骼当前的姿势反算局部的旋转 / 位移 / 缩放
+func _hub_set(p, bone: String, m: Transform3D) -> void:
+	var i: int = rig.ids[bone]
+	p.fk()
+	var want: Transform3D = m * Transform3D(Basis.IDENTITY, rig.pos[i])
+	var loc: Transform3D = p.gx[rig.parent[i]].affine_inverse() * want
+	p.rot[i] = loc.basis.get_rotation_quaternion()
+	p.scl[i] = loc.basis.get_scale()
+	p.off[i] = loc.origin - p.rest_local[i]
+	p.dirty = true
+
+
+## 摆整台主机(基座不动)：
+##   bob = 球上下飘(体素)，rs = 球绕球心的旋转，ss = 球的缩放，core = 瞳核缩放，push = 瞳核往前顶(体素)，cap = 顶盖转角(度)；
+##   spin[i] = 第 i 道环在环面里的转角(度)，rsc[i] = 环的缩放，wob[i] = 叠在预旋转外面的额外旋转(绕球心：摆动 / 进动 / 放平)，
+##   rbob = 环相对球的上下滞后(体素)。环跟着球的旋转 rs 一起转
+func _hub_pose(p, bob: float, rs: Quaternion, ss: float, core: float, push: float, cap: float, spin: Array, rsc: Array, wob: Array, rbob: float = 0.0) -> void:
+	var cb := HUB_C + Vector3(0.0, bob, 0.0)
+	var bs := Basis(rs).scaled(Vector3.ONE * ss)
+	var m_s := Transform3D(bs, cb - bs * HUB_C)
+	# 瞳核(Spine)：在球的坐标系里绕瞳核中心缩放、往前顶；Spine 没有位移轨道，用 Hips(不挂体素)的位移把它摆到位
+	var k_t := Transform3D(Basis().scaled(Vector3.ONE * core), HUB_EYE + Vector3(0.0, 0.0, push) - HUB_EYE * core)
+	var m_c: Transform3D = m_s * k_t
+	var js: Vector3 = rig.pos[rig.ids["Spine"]]
+	p.move("Hips", m_c * js - js)
+	p.rq("Spine", m_c.basis.get_rotation_quaternion())
+	p.scale_("Spine", m_c.basis.get_scale())
+	p.dirty = true
+	_hub_set(p, "Chest", m_s)
+	# 顶盖(Neck)绕球自己的竖轴转，Head 再转回来(环不跟顶盖转)；Head 的缩放 = 外环(Halo)的缩放
+	p.r("Neck", 0.0, cap, 0.0)
+	p.r("Head", 0.0, -cap, 0.0)
+	p.scale_("Head", Vector3.ONE * float(rsc[2]) / ss)
+	p.dirty = true
+	var cr := HUB_C + Vector3(0.0, bob + rbob, 0.0)
+	for i in range(3):
+		var q: Quaternion = rs * (wob[i] as Quaternion) * _hub_r0(i) * Quaternion(_hub_n(i), deg_to_rad(float(spin[i])))
+		var b := Basis(q).scaled(Vector3.ONE * float(rsc[i]))
+		_hub_set(p, str(HUB_RINGS[i]), Transform3D(b, cr - b * HUB_C))
+
+
+const HUB_SEAM_BONES := ["Spine", "Chest", "Neck", "Head", "Halo", "Eyelid_L", "Eyelid_R"]
+
+
+## build_anims 会把循环动作最后 8 帧的局部旋转往第 0 帧 slerp(权重 w = smooth)：来回摆的动作这样能抹平接缝，
+## 匀速转的环却会在接缝前先猛转一下再停住。这里先把这几帧的旋转往"远离第 0 帧"的方向外推 1/(1−w) 倍，
+## slerp 回去正好落回匀速的轨迹(外推超过 178° 的最后一两帧只能补一部分)。fn = 这个循环动作自己(取第 0 帧)
+func _hub_seam(p, t: float, dur: float, fn: Callable) -> void:
+	var j: float = t * 30.0 - (roundf(dur * 30.0) - 8.0)
+	if j <= 0.0 or j >= 8.0:
+		return
+	var w: float = Lib.smooth(j / 8.0)
+	var p0 = Lib.Pose.new(rig)
+	fn.call(0.0, p0)
+	for nm: String in HUB_SEAM_BONES:
+		var i: int = rig.ids[nm]
+		var q0: Quaternion = p0.rot[i]
+		var d: Quaternion = (q0.inverse() * p.rot[i]).normalized()
+		if d.w < 0.0:
+			d = -d
+		var v := Vector3(d.x, d.y, d.z)
+		var ang: float = 2.0 * atan2(v.length(), d.w)
+		if ang < 1e-4:
+			continue
+		var k: float = minf(1.0 / maxf(1.0 - w, 1e-3), deg_to_rad(178.0) / ang)
+		p.rot[i] = q0 * Quaternion(v.normalized(), ang * k)
+	p.dirty = true
+
+
+## 待机(18 s 循环)：球上下飘(3 s 一次)、眼睛慢慢左右扫，顶盖慢慢自转；三道环各转各的(内环快、中环反着转、外环慢)，各自一点点章动，
+## 环的起伏比球慢半拍；瞳核轻轻地呼吸
+func idle_hub(t: float, p) -> void:
+	p.reset()
+	var th: float = TAU * t / 18.0
+	var u: float = t / 18.0
+	var rs: Quaternion = Lib.E(HUB_PITCH + 2.5 * sin(6.0 * th + 0.7), 9.0 * sin(2.0 * th) + 3.0 * sin(5.0 * th + 1.0), 1.2 * sin(3.0 * th + 2.0))
+	var wob: Array = []
+	for i in range(3):
+		var a: float = float(HUB_WOB_K[i]) * th + float(i) * 2.1
+		wob.append(Lib.E(3.0 * sin(a), 0.0, 3.0 * cos(a)))
+	_hub_pose(p, 1.4 * sin(6.0 * th), rs, 1.0, 1.0 + 0.05 * sin(12.0 * th), 0.0, HUB_CAP_SPIN * u,
+		[HUB_SPIN[0] * u, HUB_SPIN[1] * u, HUB_SPIN[2] * u], [1.0, 1.0, 1.0], wob, 0.6 * sin(6.0 * th - 0.9))
+	_hub_seam(p, t, 18.0, Callable(self, "idle_hub"))
+
+
+func run_hub(t: float, p) -> void:
+	idle_hub(t, p)
+
+
+## 它不攻击：普攻只是占位(待机的前 27 帧)
+func attack_hub(t: float, p) -> void:
+	idle_hub(t, p)
+
+
+## 待机第 0 帧的球旋转 / 环章动 / 环的起伏(一次性动作的开头、结尾都对齐到它)
+func _hub_rs0() -> Quaternion:
+	return Lib.E(HUB_PITCH + 2.5 * sin(0.7), 3.0 * sin(1.0), 1.2 * sin(2.0))
+
+
+func _hub_wob0() -> Array:
+	var r: Array = []
+	for i in range(3):
+		var a: float = float(i) * 2.1
+		r.append(Lib.E(3.0 * sin(a), 0.0, 3.0 * cos(a)))
+	return r
+
+
+const HUB_RBOB0 := -0.47     # 0.6 * sin(-0.9)
+
+
+## 广播(0.8 s，主会话在它给全场的机器挂增幅链路时放)：球往下一沉、环往里一收(蓄力)，
+## 然后瞳核一亮(放大往前顶)、球胀一下抬头往上一顶，三道环往外一张、猛转一下，再收回到待机第 0 帧
+func broadcast_core_hub(t: float, p) -> void:
+	p.reset()
+	var wind: float = kf_f([[0.0, 0.0], [0.12, 1.0], [0.2, 0.0], [0.8, 0.0]], t)
+	var burst: float = kf_f([[0.0, 0.0], [0.13, 0.0], [0.25, 1.0, "o"], [0.4, 0.8], [0.8, 0.0]], t)
+	var u: float = kf_f([[0.0, 0.0], [0.13, 0.02], [0.45, 0.7, "l"], [0.8, 1.0, "o"]], t)
+	var rs: Quaternion = Lib.E(2.0 * wind - 8.0 * burst, 0.0, 0.0) * _hub_rs0()
+	var rsc: Array = [1.0 - 0.04 * wind + 0.16 * burst, 1.0 - 0.05 * wind + 0.15 * burst, 1.0 - 0.04 * wind + 0.14 * burst]    # 三道环的缩放差不多：各自的球壳不会撞到一起
+	_hub_pose(p, -1.3 * wind + 2.2 * burst, rs, 1.0 - 0.02 * wind + 0.07 * burst, 1.0 - 0.25 * wind + 0.55 * burst, 2.2 * burst,
+		0.0, [360.0 * u, -360.0 * u, 360.0 * u], rsc, _hub_wob0(), HUB_RBOB0 - 1.0 * burst)
+
+
+## 待机小动作(3.6 s，自检)：眼睛往左扫、停、往右扫、停(每停一下往下看一眼，瞳核收小 = 对焦)，环跟着慢下来；
+## 然后三道环一起放平成同心的一盘、同一个方向猛转一阵(校准)，瞳核亮一下，再各自倾回去
+func fidget_core_hub(t: float, p) -> void:
+	p.reset()
+	_stow(p)
+	var yaw: float = kf_f([[0.0, 0.0], [0.45, 0.0], [0.85, 30.0, "o"], [1.3, 30.0], [1.75, -30.0, "o"], [2.2, -30.0], [2.6, 0.0, "o"], [3.6, 0.0]], t)
+	var nod: float = _arc(t, 0.8, 1.35, 1.0) + _arc(t, 1.7, 2.25, 1.0)
+	var flat: float = kf_f([[0.0, 0.0], [1.9, 0.0], [2.45, 1.0, "o"], [2.95, 1.0], [3.45, 0.0], [3.6, 0.0]], t)
+	var focus: float = kf_f([[0.0, 0.0], [0.6, 1.0], [2.2, 1.0], [2.45, 0.0], [3.6, 0.0]], t)
+	var lock: float = _arc(t, 2.4, 3.1, 1.0)
+	var rs: Quaternion = Lib.E(6.0 * nod - 3.0 * lock, yaw, 0.0) * _hub_rs0()
+	var wob0: Array = _hub_wob0()
+	var wob: Array = []
+	for i in range(3):
+		var e: Array = HUB_TILT[i]
+		var lay := Quaternion(_hub_dir(float(e[0]), float(e[1])), Vector3.UP)    # 把这道环放平
+		wob.append((wob0[i] as Quaternion).slerp(lay, flat))
+	var sp: Array = [
+		kf_f([[0.0, 0.0], [0.6, 40.0, "o"], [1.9, 70.0], [2.45, 120.0], [2.95, 560.0, "l"], [3.6, 720.0, "o"]], t),
+		kf_f([[0.0, 0.0], [0.6, -30.0, "o"], [1.9, -45.0], [2.45, 0.0], [2.95, 300.0, "l"], [3.6, 360.0, "o"]], t),
+		kf_f([[0.0, 0.0], [0.6, 15.0, "o"], [1.9, 25.0], [2.45, 40.0], [2.95, 300.0, "l"], [3.6, 360.0, "o"]], t),
+	]
+	var cap: float = kf_f([[0.0, 0.0], [1.9, -20.0], [2.45, -20.0], [2.95, -300.0, "l"], [3.6, -360.0, "o"]], t)
+	var bob: float = kf_f([[0.0, 0.0], [0.5, -0.6], [1.9, -0.6], [2.45, 1.6, "o"], [2.95, 1.6], [3.6, 0.0]], t)
+	_hub_pose(p, bob, rs, 1.0 + 0.03 * lock, 1.0 - 0.22 * focus + 0.2 * lock, 0.8 * lock, cap, sp, [1.0, 1.0, 1.0], wob,
+		HUB_RBOB0 * (1.0 - flat))
+
+
+## 胜利(4.8 s 循环)：球浮得更高、一颠一颠地往上顶(1.2 s 一下)，仰着头左右晃；瞳核亮着一跳一跳；
+## 三道环转得飞快，整个环架一边进动(内、外环往左绕，中环往右绕)，顶盖也转得快。
+## (转速别再加：每帧超过约 7.5° 的话循环接缝的补偿就补不全了，接缝处会顿一下)
+func victory_core_hub(t: float, p) -> void:
+	p.reset()
+	_stow(p)
+	var th: float = TAU * t / 4.8
+	var u: float = t / 4.8
+	var rs: Quaternion = Lib.E(HUB_PITCH - 8.0 + 4.0 * sin(4.0 * th), 14.0 * sin(2.0 * th), 3.0 * sin(2.0 * th + 1.0))
+	var wob: Array = []
+	var prec := [360.0, -360.0, 360.0]
+	for i in range(3):
+		wob.append(Quaternion(Vector3.UP, deg_to_rad(float(prec[i]) * u)) * Lib.E(5.0 * sin(4.0 * th + float(i)), 0.0, 0.0))
+	var pump: float = maxf(0.0, sin(4.0 * th))
+	_hub_pose(p, 2.6 + 1.6 * sin(4.0 * th), rs, 1.0 + 0.02 * pump, 1.12 + 0.18 * pump, 0.8 * pump, -720.0 * u,
+		[720.0 * u, -720.0 * u, 360.0 * u], [1.0 + 0.05 * pump, 1.0 + 0.04 * pump, 1.0 + 0.03 * pump], wob, 0.8 * sin(4.0 * th - 1.0))
+	_hub_seam(p, t, 4.8, Callable(self, "victory_core_hub"))
+# ---------------------------------------------------------------- [BLUE-C END]
+
+# ---------------------------------------------------------------- [BLUE-D] OS-00 箱庭管理者(overseer，首领)
+## 模型 tools/chars/overseer.gd(女性款，长柄 = 光刃长枪 W_polearm_beacon_lance)。所有动作都标 wing_custom：背后三道光环里的两道挂在 Wing_L / Wing_R 上，
+## 不能叠妖精翅膀的扑动。三道环(静止时同一个中心 OS_RC，在后脑后上方)：
+##   大环 = Halo 骨(Head 的子骨，有位移轨道)：_os_rings 每帧把它摆回"跟着胸口走"的位置(不跟着点头 / 仰头)，再叠环自己的位移、绕环心的转动；
+##   中环 = Wing_L、小环 = Wing_R(胸口的子骨，只有转动)：绕"肩胛枢轴 → 环心"那根轴转 = 环心不动、环面翻转(像陀螺仪)；再叠一个绕枢轴的摆动(展开时把环甩到身侧)。
+## 待机(6.4 s)：右手竖握长枪立在身侧(枪尾点在右脚旁、光刃高过头顶)，重心压在左腿、微微低头俯视；两次呼吸，大环在自己的平面里慢慢转一整圈
+##   (6 个卡箍等距，转一圈首尾接得上)，中 / 小环像陀螺仪一样左右翻；眨两次眼
+## 跑(20f)：前倾往前冲，长枪平端在右胯、光刃朝前下(枪尾往后上方翘、离开头发)，左臂摆；大环往后仰、两只小环往后拖
+## 普攻(24f = 0.8 s，出手 0.30 s)：单手大斜斩(袈裟斩) —— 枪从右肩前面举起、往右肩后上方抡(只转枪身不拧刃面)，上身往右拧、后仰，
+##   左手往前探着瞄(0 ~ 0.20 s)，顶点一顿 → 左脚踏出、拧腰前压，光刃绕过右侧、斜着劈过正前方(出手)、带到左前下(随挥)，
+##   左手往腰后一收 → 收回竖握。枪尾从右肩后面甩上去，大环往左上让一让；两只小环跟着甩
+## 贯穿(24f，出手 0.30 s；群攻)：双手(two_hand)把枪收到右腰、左肩朝前、往后坐(蓄力) → 左脚大步踏出、双手往前直刺(出手) → 刺到底停住 → 抽枪、回到单手竖握
+##   (开头 0.14 s、收尾 0.55 ~ 0.72 s 是单手 ↔ 双手的手臂逐节 slerp)
+## 全域清除(3.0 s 循环，吟唱)：长枪竖着高举向天(右手举到肩前)、左手往外上方张开掌心朝天，仰头、身子微微后仰；
+##   大环升到头顶上方、放平(像信标的环)套着枪杆快速转，两只小环甩到身体两侧、环面朝前，随着两拍的脉动一张一收
+## 小动作(3.8 s)：收枪，左手掌心朝上托到胸前(看掌心里的全息屏)，低头看、右手食指在掌心上划两下，合掌收起，抬眼往左边冷冷一瞥
+## 胜利(3.2 s 循环)：收枪，左手按在胸口、右手往外摊开掌心朝上(展示)，仰着头、半垂着眼，大环转一圈、两只小环展开到身侧慢慢翻
+const BLUE_D_TABLE := {
+	"idle_overseer": [6.4, true, {"wing_custom": true}], "run_overseer": [20.0 * F, true, {"wing_custom": true}],
+	"attack_overseer": [24.0 * F, false, {"wing_custom": true}], "pierce_overseer": [24.0 * F, false, {"wing_custom": true}],
+	"purge_overseer": [3.0, true, {"wing_custom": true}],
+	"fidget_overseer": [3.8, false, {"wing_custom": true}], "victory_overseer": [3.2, true, {"wing_custom": true}],
+}
+const OS_IDLE := 6.4
+const OS_BREATH := 3.2
+const OS_RUN := 20.0 * F
+const OS_GRIP := Vector3(-14.5, 48.0, 7.0)         # 待机：右手竖握长枪的握点(胸腔局部)
+const OS_AXIS := Vector3(-0.03, 1.0, 0.08)         # 枪身方向(胸腔局部)：竖直、略往前
+const OS_YAW := -6.0
+const OS_LEAN := 2.0
+const OS_SWAY := 1.2                               # 重心压在左腿
+const OS_SPREAD := 5.5
+const OS_LZ := -0.5
+const OS_RZ := 1.0
+## 三道环(= tools/chars/overseer.gd 的 RING_A / B / C)：共同的环心、大环的法线；中 / 小环的法线
+const OS_RC := Vector3(0.0, 88.0, -25.0)
+const OS_NA := Vector3(0.0, 0.2, 0.98)
+const OS_NB := Vector3(0.46, 0.17, 0.87)
+const OS_NC := Vector3(-0.55, -0.24, 0.8)
+const G_OS_LEFT := [Vector3(14.2, 49.5, 3.6), Vector3(0.6, -0.2, -1.0), Vector3(0.12, -1.0, 0.25), Vector3(-1.0, 0.0, 0.25), 20.0]
+const G_OS_AIM := [Vector3(13.0, 62.0, 15.5), Vector3(1.0, -0.5, -0.3), Vector3(0.1, 0.15, 1.0), Vector3(0.0, -1.0, 0.1), 10.0]      # 左手往前探着瞄
+const G_OS_BACK := [Vector3(14.5, 51.5, -3.0), Vector3(0.8, 0.0, -0.8), Vector3(0.05, -0.3, 1.0), Vector3(0.0, -1.0, -0.3), 70.0]    # 左手收到腰后
+const G_OS_CALL := [Vector3(20.5, 74.0, 7.0), Vector3(1.0, -0.4, -0.5), Vector3(0.45, 0.55, 0.7), Vector3(0.1, 1.0, -0.3), 8.0]     # 往外上方张开、掌心朝天
+const G_OS_PALM := [Vector3(5.5, 61.0, 14.0), Vector3(1.0, -0.6, -0.3), Vector3(-0.2, 0.25, 1.0), Vector3(0.0, 1.0, 0.0), 18.0]     # 掌心朝上托在胸前
+const G_OS_FIST := [Vector3(5.5, 60.5, 13.5), Vector3(1.0, -0.6, -0.3), Vector3(-0.2, 0.25, 1.0), Vector3(0.0, 1.0, 0.0), 85.0]
+const G_OS_SWIPE := [Vector3(-0.5, 66.0, 17.0), Vector3(1.0, -0.6, -0.1), Vector3(-0.6, -0.35, 0.75), Vector3(0.0, -1.0, 0.1), 8.0]  # 右手(左手约定，自动镜像)：指尖悬在左掌上方
+const G_OS_SWIPE2 := [Vector3(-2.5, 66.5, 17.5), Vector3(1.0, -0.6, -0.1), Vector3(-0.75, -0.3, 0.6), Vector3(0.0, -1.0, 0.1), 8.0]  # 往左划到头
+const G_OS_SWIPE0 := [Vector3(6.0, 60.0, 15.0), Vector3(1.0, -0.6, -0.3), Vector3(-0.3, -0.5, 0.8), Vector3(0.0, -1.0, 0.1), 10.0]  # 抬到身前(过渡)
+const G_OS_HEART := [Vector3(3.5, 61.5, 11.0), Vector3(1.0, -0.5, -0.4), Vector3(-1.0, 0.2, 0.2), Vector3(0.0, 0.0, -1.0), 22.0]      # 按在胸口
+const G_OS_PRESENT := [Vector3(21.5, 74.0, 5.0), Vector3(1.0, -0.5, -0.5), Vector3(0.75, 0.35, 0.55), Vector3(-0.1, 1.0, 0.1), 8.0] # 往外上方摊开、掌心朝天
+
+
+## 身体：sway = 重心往左(+)，bob = 上下，yaw = 上身扭转(+ = 右肩往前)，lean = 前倾，roll = 侧弯，push = 胯往前送；两只脚的前后 / 抬起
+func _os_body(p, sway: float, bob: float, yaw: float, lean: float, roll: float, push: float, lz: float, ll: float, rz: float, rl: float,
+		spread: float = OS_SPREAD) -> void:
+	p.move("Hips", Vector3(sway, -1.7 + bob, push))
+	p.r("Hips", lean * 0.35, yaw * 0.32, sway * 0.8 + roll * 0.2)
+	p.r("Spine", lean * 0.3, yaw * 0.3, roll * 0.4 - sway * 0.5)
+	p.r("Chest", lean * 0.35, yaw * 0.38, roll * 0.5 - sway * 0.4)
+	_feet(p, spread, lz, ll, rz, rl, 8.0, -10.0)
+
+
+## 右手单手握枪：grip = 胸腔局部握点，q = 枪的世界朝向
+func _os_lance(p, grip: Vector3, q: Quaternion, pole: Vector3 = Vector3(-1.0, -0.3, -0.4)) -> void:
+	hold_bow(p, follow(p, "Chest", grip), q, pole)
+	fist_r(p, 84.0)
+
+
+## 竖握的朝向(刃面朝前：俯视镜头看得到光刃的宽面)
+func _os_upright(p, axis: Vector3 = OS_AXIS) -> Quaternion:
+	return _chest_q(p) * wrot(axis, Vector3(1.0, 0.0, 0.0))
+
+
+## 两组(轴, 法线)之间的转动：a1 → a2，并让 n1 尽量转到 n2(环心方向 + 环面朝向)
+static func _os_frame(a1: Vector3, n1: Vector3, a2: Vector3, n2: Vector3) -> Quaternion:
+	var x1: Vector3 = a1.normalized()
+	var y1: Vector3 = (n1 - x1 * n1.dot(x1)).normalized()
+	var x2: Vector3 = a2.normalized()
+	var y2: Vector3 = (n2 - x2 * n2.dot(x2)).normalized()
+	var b1 := Basis(x1, y1, x1.cross(y1))
+	var b2 := Basis(x2, y2, x2.cross(y2))
+	return Quaternion((b2 * b1.transposed()).orthonormalized())
+
+
+## 小环甩到身侧的转动(side = "L" 中环 / "R" 小环)：环心转到肩胛枢轴的外上方，环面朝前偏外
+func _os_spread_q(side: String) -> Quaternion:
+	var m: float = 1.0 if side == "L" else -1.0
+	var piv: Vector3 = rig.pos[rig.ids["Wing_" + side]]
+	var n0: Vector3 = OS_NB if side == "L" else OS_NC
+	return _os_frame(OS_RC - piv, n0, Vector3(21.5 * m, 22.0, -5.0), Vector3(0.38 * m, 0.12, 0.92))
+
+
+## 三道环：a_off / a_rot = 大环在胸腔局部的位移、绕环心的转动；b_spin / c_spin = 中 / 小环绕"枢轴 → 环心"的翻转(度)；
+## spread = 两只小环甩到身侧的程度(0..1)，b_sw / c_sw = 再叠的绕枢轴摆动(胸腔局部)。要在身体、头都摆好之后调用
+func _os_rings(p, a_off: Vector3, a_rot: Quaternion, b_spin: float, c_spin: float, spread: float = 0.0,
+		b_sw: Quaternion = Quaternion.IDENTITY, c_sw: Quaternion = Quaternion.IDENTITY) -> void:
+	p.fk()
+	var cq := Quaternion(p.gx[rig.ids["Chest"]].basis.orthonormalized())
+	var hp: Vector3 = rig.pos[rig.ids["Halo"]]
+	var at: Vector3 = follow(p, "Chest", OS_RC + a_off + a_rot * (hp - OS_RC))
+	p.set_grot("Halo", cq * a_rot)
+	p.set_gpos_via_off("Halo", at)
+	var pl: Vector3 = rig.pos[rig.ids["Wing_L"]]
+	var pr: Vector3 = rig.pos[rig.ids["Wing_R"]]
+	var qb: Quaternion = Quaternion.IDENTITY.slerp(_os_spread_q("L"), spread) if spread > 0.0 else Quaternion.IDENTITY
+	var qc: Quaternion = Quaternion.IDENTITY.slerp(_os_spread_q("R"), spread) if spread > 0.0 else Quaternion.IDENTITY
+	p.rq("Wing_L", b_sw * qb * Quaternion((OS_RC - pl).normalized(), deg_to_rad(b_spin)))
+	p.rq("Wing_R", c_sw * qc * Quaternion((OS_RC - pr).normalized(), deg_to_rad(c_spin)))
+
+
+## 大环在自己的平面里转 deg 度
+static func _os_spin_a(deg: float) -> Quaternion:
+	return Quaternion(OS_NA.normalized(), deg_to_rad(deg))
+
+
+## 待机的姿势(t0 = 待机里的时刻；攻击动作的首尾帧 = t0 = 0)
+func _os_idle_pose(p, t0: float) -> void:
+	var th: float = TAU * t0 / OS_BREATH
+	var br: float = 0.5 - 0.5 * cos(th)
+	var sw: float = sin(TAU * t0 / OS_IDLE)
+	_os_body(p, OS_SWAY + 0.4 * sw, -0.3 * br, OS_YAW + 1.5 * sw, OS_LEAN - 1.0 * br, -2.0, 0.0, OS_LZ, 0.0, OS_RZ, 0.0)
+	_head(p, 5.0 - 1.5 * br, -0.8 * OS_YAW + 3.0 * sin(TAU * t0 / OS_IDLE + 0.6), -3.0 + 1.0 * sw)
+	_os_lance(p, OS_GRIP + Vector3(0.0, 0.3 * br, 0.0), _os_upright(p))
+	var lh: Array = G_OS_LEFT.duplicate()
+	lh[0] = (G_OS_LEFT[0] as Vector3) + Vector3(0.0, 0.3 * br, 0.2 * sw)
+	_hand_mix(p, "L", lh, lh, 0.0)
+
+
+func _os_idle_rings(p, t0: float, k: float = 1.0) -> void:
+	var th: float = TAU * t0 / OS_BREATH
+	_os_rings(p, Vector3(0.0, 0.8 * sin(th), 0.0), _os_spin_a(360.0 * t0 / OS_IDLE), 12.0 * sin(th) * k, -16.0 * sin(th + 1.2) * k)
+
+
+func idle_overseer(t: float, p) -> void:
+	p.reset()
+	_os_idle_pose(p, t)
+	set_lids(p, maxf(blink_k(t, 2.0), blink_k(t, 5.1)))
+	_os_idle_rings(p, t)
+
+
+func run_overseer(t: float, p) -> void:
+	p.reset()
+	var ph: float = fposmod(t / OS_RUN, 1.0)
+	var th: float = TAU * ph
+	var fl: Array = foot_track(ph, 14.0, 11.0, 0.38)
+	var fr: Array = foot_track(fposmod(ph + 0.5, 1.0), 14.0, 11.0, 0.38)
+	var s: float = cos(th)
+	p.move("Hips", Vector3(0.8 * sin(th), -7.0 + 3.0 * absf(sin(th)), 1.0))
+	p.r("Hips", 10.0 + 1.5 * sin(2.0 * th), -8.0 * s, 2.5 * sin(th))
+	p.r("Spine", 3.5, 5.0 * s, -1.5 * sin(th))
+	p.r("Chest", 3.0 + 1.5 * sin(2.0 * th + 0.4), 5.5 * s, -1.5 * sin(th))
+	_head(p, -12.0 - 2.0 * sin(2.0 * th), -3.0 * s, 1.5 * sin(th))
+	legs(p, foot_target(1.0, fl, 5.8), foot_target(-1.0, fr, 5.8), Lib.E(fl[2], 4.0, 0), Lib.E(fr[2], -4.0, 0),
+		-0.6 * maxf(float(fl[2]), 0.0), -0.6 * maxf(float(fr[2]), 0.0))
+	# 长枪平端在右胯：光刃朝前下、略往里收，枪尾往后上方翘到身体外侧；刃面放平(俯视看得到宽面)
+	var ax := Vector3(0.2, -0.13, 0.97)
+	_os_lance(p, Vector3(-13.5, 53.0 + 1.0 * sin(2.0 * th), 6.0 - 1.5 * s), _chest_q(p) * wrot(ax, Vector3.UP.cross(ax)), Vector3(-1.0, -0.4, -0.5))
+	p.r("UpperArm_L", 26.0 * s - 3.0, 0, 9.0)
+	p.r("LowerArm_L", -(46.0 + 16.0 * (0.5 - 0.5 * s)), 0, 0)
+	p.r("Hand_L", -8.0, 0, 0)
+	p.r("Fingers_L", -30.0, 0, -18.0)
+	p.r("Thumb_L", -10.0, 0, 0)
+	set_lids(p, 0.0)
+	# 环往后拖：大环往后仰，两只小环往后下方甩，跟着步子颤
+	_os_rings(p, Vector3(0.0, 1.0 * sin(2.0 * th) - 1.0, -1.5), Quaternion(Vector3.RIGHT, deg_to_rad(-14.0)) * _os_spin_a(0.0),
+		8.0 * sin(th), -8.0 * sin(th + 0.8), 0.0, Lib.E(-12.0 - 2.0 * sin(2.0 * th), 6.0, 0.0), Lib.E(-12.0 - 2.0 * sin(2.0 * th + 0.5), -6.0, 0.0))
+
+
+## 斜斩的挥动平面法线(世界)：光刃从右肩后上方绕过右侧、斜着劈过正前方到左前下(袈裟斩)；刃口 = 法线 × 枪身，始终领着挥动方向。
+## 枪握在离枪尾 44 格的地方：斜斩时枪尾从身前下方经右肩后面甩上去(在三道环下面过)，不会横穿躯干
+const OS_SWEEP_N := Vector3(0.7, 0.62, -0.35)
+
+
+func _os_sweep_q(axis: Vector3) -> Quaternion:
+	return wrot(axis, OS_SWEEP_N.normalized().cross(axis.normalized()))
+
+
+func attack_overseer(t: float, p) -> void:
+	p.reset()
+	var dur := 24.0 * F
+	var yaw: float = kf_f([[0.0, OS_YAW], [0.12, -40.0], [0.20, -46.0], [0.30, 6.0, "i"], [0.38, 16.0, "o"], [0.50, 12.0], [dur, OS_YAW]], t)
+	var lean: float = kf_f([[0.0, OS_LEAN], [0.12, -6.0], [0.20, -7.0], [0.30, 13.0, "i"], [0.42, 14.0], [0.62, 6.0], [dur, OS_LEAN]], t)
+	var bob: float = kf_f([[0.0, 0.0], [0.12, 0.6], [0.20, 0.5], [0.30, -3.5, "i"], [0.45, -3.5], [dur, 0.0]], t)
+	var sway: float = kf_f([[0.0, OS_SWAY], [0.12, -1.0], [0.20, -1.2], [0.30, 1.5, "i"], [0.5, 1.4], [dur, OS_SWAY]], t)
+	var push: float = kf_f([[0.0, 0.0], [0.12, -1.0], [0.30, 2.5, "i"], [0.45, 2.5], [dur, 0.0]], t)
+	var lz: float = kf_f([[0.0, OS_LZ], [0.20, OS_LZ], [0.29, 8.0, "o"], [0.55, 8.0], [0.75, OS_LZ]], t)
+	_os_body(p, sway, bob, yaw, lean, -2.0, push, lz, _arc(t, 0.20, 0.29, 3.0) + _arc(t, 0.56, 0.74, 1.5), OS_RZ, 0.0)
+	_head(p, kf_f([[0.0, 5.0], [0.12, -4.0], [0.30, 7.0, "i"], [0.5, 7.0], [dur, 5.0]], t), -0.85 * yaw, kf_f([[0.0, -3.0], [0.12, 5.0], [0.30, -5.0], [dur, -3.0]], t))
+	# 枪：世界朝向关键帧(竖握 → 右肩后上方(蓄力) → 绕过右侧 → 正前下(出手) → 左前下(随挥) → 回竖握)
+	# 蓄力这一段只转枪身、不拧刃面(从竖握最小转动到右肩后上方)：手腕不会一下子拧半圈；刃面在劈下去的那几帧再转成刃口领先
+	var q_up: Quaternion = _os_upright(p)
+	var a_up: Vector3 = q_up * Vector3.UP
+	var q_w1: Quaternion = Quaternion(a_up, Vector3(-0.40, 0.62, -0.67).normalized()) * q_up
+	var q_w2: Quaternion = Quaternion(a_up, Vector3(-0.36, 0.55, -0.75).normalized()) * q_up
+	var q: Quaternion = kf_q([[0.0, q_up], [0.12, q_w1], [0.20, q_w2],
+		[0.25, _os_sweep_q(Vector3(-0.65, 0.70, 0.30)), "i"], [0.30, _os_sweep_q(Vector3(0.20, -0.20, 0.96)), "l"], [0.35, _os_sweep_q(Vector3(0.70, -0.45, 0.55)), "o"],
+		[0.48, _os_sweep_q(Vector3(0.78, -0.50, 0.38))], [0.64, wrot(Vector3(0.55, 0.45, 0.70), Vector3(1.0, 0.0, 0.0))], [dur, q_up]], t)
+	var grip: Vector3 = kf_v([[0.0, OS_GRIP], [0.12, Vector3(-14.5, 66.0, 8.0)], [0.20, Vector3(-14.5, 74.5, 0.5)],
+		[0.25, Vector3(-11.0, 72.0, 8.0), "i"], [0.30, Vector3(-5.5, 56.0, 16.0), "l"], [0.35, Vector3(-5.0, 51.5, 15.5), "o"],
+		[0.48, Vector3(-6.5, 51.0, 14.5)], [0.64, Vector3(-10.5, 50.0, 11.0)], [dur, OS_GRIP]], t)
+	# 肘的朝向(胸腔局部)：手先从右肩前面举上去、再到右肩上方，肘一直朝外下方(和"肩 → 手"不平行，IK 不会翻)
+	var pole: Vector3 = kf_v([[0.0, Vector3(-1.0, -0.3, -0.4)], [0.12, Vector3(-1.0, -0.4, -0.1)], [0.20, Vector3(-1.0, -0.3, 0.2)], [0.25, Vector3(-0.8, -0.6, 0.0)],
+		[0.30, Vector3(-1.0, -0.4, -0.25)], [0.48, Vector3(-0.8, -0.5, -0.3)], [dur, Vector3(-1.0, -0.3, -0.4)]], t)
+	_os_lance(p, grip, q, _cdir(p, pole))
+	_hand_track(p, "L", [[0.0, G_OS_LEFT], [0.12, G_OS_AIM], [0.24, G_OS_AIM], [0.32, G_OS_BACK, "i"], [0.50, G_OS_BACK], [dur, G_OS_LEFT]], t)
+	set_lids(p, 0.0)
+	# 环：蓄力时两只小环往右后方荡，斜斩时跟着甩到左前，再荡回来；大环往左上让一让(枪尾从右肩后面甩上去)
+	var swing: float = kf_f([[0.0, 0.0], [0.12, -16.0], [0.20, -18.0], [0.32, 18.0, "i"], [0.48, 10.0], [dur, 0.0]], t)
+	var lift: float = kf_f([[0.0, 0.0], [0.20, -6.0], [0.32, 8.0, "i"], [dur, 0.0]], t)
+	var dodge: float = kf_f([[0.0, 0.0], [0.20, 0.3], [0.30, 1.0, "i"], [0.45, 1.0], [dur, 0.0]], t)
+	_os_rings(p, Vector3(4.0 * dodge, 5.0 * dodge, 0.0), Quaternion(Vector3.UP, deg_to_rad(swing * 0.4)) * _os_spin_a(0.0), swing, -swing * 1.2, 0.0,
+		Lib.E(lift, swing, 0.0), Lib.E(lift, swing * 1.3, 0.0))
+
+
+func pierce_overseer(t: float, p) -> void:
+	p.reset()
+	var dur := 24.0 * F
+	var yaw: float = kf_f([[0.0, OS_YAW], [0.16, -50.0], [0.21, -52.0], [0.30, -18.0, "i"], [0.42, -16.0], [dur, OS_YAW]], t)
+	var lean: float = kf_f([[0.0, OS_LEAN], [0.16, -4.0], [0.21, -5.0], [0.30, 16.0, "i"], [0.42, 16.0], [0.62, 8.0], [dur, OS_LEAN]], t)
+	var bob: float = kf_f([[0.0, 0.0], [0.16, -4.0], [0.21, -4.5], [0.30, -5.0, "i"], [0.42, -5.0], [dur, 0.0]], t)
+	var push: float = kf_f([[0.0, 0.0], [0.16, -3.5], [0.21, -4.0], [0.30, 8.0, "i"], [0.42, 8.5], [0.60, 3.0], [dur, 0.0]], t)
+	var lz: float = kf_f([[0.0, OS_LZ], [0.16, 1.0], [0.21, 1.0], [0.29, 13.0, "o"], [0.46, 13.0], [0.70, OS_LZ]], t)
+	var rz: float = kf_f([[0.0, OS_RZ], [0.16, -2.0], [0.46, -2.0], [0.70, OS_RZ]], t)
+	_os_body(p, kf_f([[0.0, OS_SWAY], [0.16, -1.0], [0.30, 1.0], [dur, OS_SWAY]], t), bob, yaw, lean, -2.0, push, lz,
+		_arc(t, 0.21, 0.29, 4.0) + _arc(t, 0.48, 0.68, 2.0), rz, _arc(t, 0.05, 0.15, 1.5), kf_f([[0.0, OS_SPREAD], [0.16, 6.5], [0.62, 6.5], [dur, OS_SPREAD]], t))
+	_head(p, kf_f([[0.0, 5.0], [0.16, 0.0], [0.30, -8.0, "i"], [0.45, -6.0], [dur, 5.0]], t), -0.85 * yaw, 0.0)
+	# 单手竖握 ↔ 双手突刺：手臂逐节 slerp
+	var two: float = kf_f([[0.0, 0.0], [0.14, 1.0], [0.55, 1.0], [0.72, 0.0]], t)
+	var base: Array[Quaternion] = p.rot.duplicate()
+	var rot_one: Array[Quaternion] = base
+	if two < 1.0:
+		_os_lance(p, OS_GRIP, _os_upright(p))
+		_hand_mix(p, "L", G_OS_LEFT, G_OS_LEFT, 0.0)
+		rot_one = p.rot.duplicate()
+	if two > 0.0:
+		p.rot = base.duplicate()
+		p.dirty = true
+		var grip: Vector3 = kf_v([[0.0, Vector3(-7.0, 50.5, 4.0)], [0.16, Vector3(-7.5, 50.0, 1.0)], [0.21, Vector3(-7.5, 49.5, 0.0)],
+			[0.30, Vector3(-3.0, 55.0, 14.0), "i"], [0.42, Vector3(-3.0, 55.0, 14.5), "o"], [0.58, Vector3(-4.0, 52.5, 10.0)], [dur, Vector3(-5.0, 51.0, 8.0)]], t)
+		var axis: Vector3 = kf_v([[0.0, Vector3(0.8, 0.3, 0.5)], [0.16, Vector3(0.88, 0.25, 0.4)], [0.21, Vector3(0.88, 0.22, 0.42)],
+			[0.30, Vector3(0.45, 0.42, 0.8), "i"], [0.42, Vector3(0.45, 0.42, 0.8)], [0.58, Vector3(0.5, 0.52, 0.68)], [dur, Vector3(0.6, 0.5, 0.6)]], t)
+		var span: float = kf_f([[0.0, 10.0], [0.16, 12.5], [0.21, 12.5], [0.30, 6.5, "i"], [0.42, 6.5], [0.62, 9.0], [dur, 10.0]], t)
+		var wa: Vector3 = _chest_dir(p, axis)
+		two_hand(p, follow(p, "Chest", grip), wrot(wa, Vector3.UP.cross(wa)), span, Vector3(-1.0, -0.5, -0.3), Vector3(1.0, -0.5, -0.2))
+		if two < 1.0:
+			for nm: String in ARM_BONES:
+				var i: int = rig.ids[nm]
+				p.rot[i] = rot_one[i].slerp(p.rot[i], two)
+			p.dirty = true
+	set_lids(p, 0.0)
+	# 环：蓄力时往后收(两只小环往里并)，刺出去时往后一拖再弹回
+	var drag: float = kf_f([[0.0, 0.0], [0.16, 6.0], [0.21, 7.0], [0.30, -12.0, "i"], [0.45, -6.0], [dur, 0.0]], t)
+	_os_rings(p, Vector3(0.0, 0.0, -0.08 * drag), Quaternion(Vector3.RIGHT, deg_to_rad(drag)) * _os_spin_a(0.0), 1.5 * drag, -1.5 * drag, 0.0,
+		Lib.E(drag, 0.0, 0.0), Lib.E(drag, 0.0, 0.0))
+
+
+## 全域清除的吟唱(3.0 s 循环)：两拍(1.5 s)的脉动 —— 一吸一顶，环一张一收
+func purge_overseer(t: float, p) -> void:
+	p.reset()
+	var th: float = TAU * t / 1.5
+	var pulse: float = 0.5 - 0.5 * cos(th)
+	_os_body(p, 0.3 * sin(TAU * t / 3.0), 0.4 * pulse, -4.0, -6.0 - 1.5 * pulse, 0.0, 1.0, 0.5, 0.0, 1.5, 0.0, 6.5)
+	_head(p, -24.0 - 3.0 * pulse, 4.0, -2.0)
+	# 长枪竖着高举：右手举到右肩前，枪身朝天(世界)，刃面朝前
+	_os_lance(p, Vector3(-11.0, 71.0 + 0.6 * pulse, 10.0), wrot(Vector3(0.0, 1.0, 0.02), Vector3(1.0, 0.0, 0.0)), Vector3(-1.0, -0.6, -0.2))
+	var up_l: Array = G_OS_CALL.duplicate()
+	up_l[0] = (G_OS_CALL[0] as Vector3) + Vector3(0.4 * pulse, 0.8 * pulse, 0.0)
+	_hand_mix(p, "L", up_l, up_l, 0.0)
+	set_lids(p, 0.25)
+	# 大环升到头顶上方、放平(信标的环)，套着枪杆快速转(一圈 / 3 s)；两只小环甩到身侧，跟着脉动一张一收
+	var a_rot: Quaternion = Quaternion(Vector3.UP, TAU * t / 3.0) * Quaternion(OS_NA.normalized(), Vector3.UP)
+	_os_rings(p, Vector3(-9.0, 20.0 + 1.5 * pulse, 30.0), a_rot, 20.0 * sin(TAU * t / 3.0), -24.0 * sin(TAU * t / 3.0 + 1.0), 1.0,
+		Lib.E(0.0, 0.0, -6.0 * pulse), Lib.E(0.0, 0.0, 6.0 * pulse))
+
+
+func fidget_overseer(t: float, p) -> void:
+	p.reset()
+	_stow(p)
+	var up: float = kf_f([[0.0, 0.0], [0.5, 1.0, "o"], [2.5, 1.0], [2.9, 0.0]], t)
+	var swipe: float = kf_f([[0.0, 0.0], [0.82, 0.0], [1.0, 1.0], [1.58, 1.0], [1.8, 0.0]], t)
+	var look: float = kf_f([[0.0, 0.0], [0.4, 1.0], [2.4, 1.0], [2.8, 0.0]], t)
+	var glance: float = kf_f([[0.0, 0.0], [2.8, 0.0], [3.1, 1.0, "o"], [3.5, 1.0], [3.8, 0.0]], t)
+	_os_body(p, OS_SWAY - 0.6 * up, 0.0, OS_YAW + 6.0 * up, OS_LEAN + 3.0 * look, -2.0 + 2.0 * up, 0.0, OS_LZ, 0.0, OS_RZ, 0.0)
+	_head(p, 5.0 + 17.0 * look - 2.0 * glance, -0.8 * OS_YAW + 12.0 * look + 26.0 * glance, -3.0 + 4.0 * look)
+	_hand_track(p, "L", [[0.0, G_RELAX], [0.55, G_OS_PALM], [2.4, G_OS_PALM], [2.6, G_OS_FIST], [3.2, G_RELAX]], t)
+	_hand_track(p, "R", [[0.0, G_RELAX], [0.6, G_RELAX], [0.82, G_OS_SWIPE0], [1.0, G_OS_SWIPE], [1.18, G_OS_SWIPE2, "o"], [1.28, G_OS_SWIPE],
+		[1.46, G_OS_SWIPE2, "o"], [1.58, G_OS_SWIPE], [1.8, G_OS_SWIPE0], [2.1, G_RELAX]], t)
+	set_lids(p, maxf(0.3 * look, blink_k(t, 2.62)))
+	_os_rings(p, Vector3(0.0, 0.6 * up, 0.0), _os_spin_a(-40.0 * swipe + 120.0 * kf_f([[0.0, 0.0], [3.8, 1.0]], t)),
+		30.0 * sin(TAU * t / 1.9) * up, -30.0 * sin(TAU * t / 1.9 + 1.0) * up)
+
+
+func victory_overseer(t: float, p) -> void:
+	p.reset()
+	_stow(p)
+	var th: float = TAU * t / 3.2
+	var br: float = 0.5 - 0.5 * cos(2.0 * th)
+	_os_body(p, 1.0 + 0.5 * sin(th), 0.6 * br, -8.0 + 2.0 * sin(th), -5.0, -3.0, 0.5, OS_LZ, 0.0, OS_RZ + 0.5, 0.0)
+	_head(p, -10.0 - 2.0 * br, 8.0 + 3.0 * sin(th), -6.0)
+	_hand_mix(p, "L", G_OS_HEART, G_OS_HEART, 0.0)
+	var pr: Array = G_OS_PRESENT.duplicate()
+	pr[0] = (G_OS_PRESENT[0] as Vector3) + Vector3(0.5 * sin(th), 1.0 * br, 0.0)
+	_hand_mix(p, "R", pr, pr, 0.0)
+	set_lids(p, maxf(0.4, blink_k(t, 1.8)))
+	_os_rings(p, Vector3(0.0, 3.0 + 1.0 * br, 0.0), _os_spin_a(360.0 * t / 3.2), 18.0 * sin(th), -22.0 * sin(th + 1.0), 0.75)
+# ---------------------------------------------------------------- [BLUE-D END]
 
 
 

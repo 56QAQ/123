@@ -881,6 +881,90 @@ func ember_glaive() -> void:
 				D(-1, f + k2, bz - (k2 >> 1), col, 100 - k2 * 15)
 	_end()
 
+## 光刃长枪(OS-00 箱庭管理者的武器，怪物自己的武器外观 W_polearm_beacon_lance)：白色复合材质的长柄(每 8 格一道面板缝)、
+## 两段深藏青的握把(右手 y -6..5、左手 7..17)、几道银灰的箍和发光的环；柄尾一个藏青的镦 + 一点发光的尖；
+## 刃根是信标那样的环形护手(套在柄上、垂直于柄的一圈发光的环，藏青的外缘 + 四根白色的辐条连到藏青的轮毂)，
+## 两根白色的叉形发射器夹着一片很长的青白光刃(中间白芯、往外深一点的青、刃口穹蓝，整片发光)。固定配色，不随武器颜色换色。
+## 长柄武器约定：+Y 沿柄，握点在原点；刃宽沿 Z、厚度沿 X
+func beacon_lance() -> void:
+	_begin(false)
+	var wh := VGrid.hexc("#e8edf4")
+	var wh2 := VGrid.hexc("#c2cbd8")
+	var wh3 := VGrid.hexc("#fbfdff")
+	var nv := VGrid.hexc("#243150")
+	var nv2 := VGrid.hexc("#33456b")
+	var sv := VGrid.hexc("#8f9bab")
+	var gl := VGrid.hexc("#7ff0ff")
+	var gw := VGrid.hexc("#e6fdff")
+	var ge := VGrid.hexc("#b5f7ff")
+	var gm := VGrid.hexc("#5fdcf6")
+	# 长柄：白，两段藏青握把
+	for y in range(-38, 54):
+		var c: int = wh if posmod(y, 8) != 0 else wh2
+		if (y >= -6 and y <= 5) or (y >= 7 and y <= 17):
+			c = nv if posmod(y, 2) == 0 else nv2
+		elif posmod(y, 8) == 3:
+			c = wh3
+		B(-1, y, -1, 0, y, 0, c)
+	for ry: int in [-8, 6, 18]:
+		B(-2, ry, -2, 1, ry, 1, sv)
+	for ry2: int in [-30, 30, 42]:
+		B(-2, ry2, -2, 1, ry2, 1, gl, 75)
+	# 柄尾：藏青的镦 + 银箍 + 发光的尖
+	B(-2, -41, -2, 1, -39, 1, nv)
+	B(-2, -38, -2, 1, -38, 1, sv)
+	B(-1, -43, -1, 0, -42, 0, gl, 90)
+	D(-1, -44, -1, gw, 110)
+	# 刃根的轮毂(藏青，中间一道光)
+	B(-2, 50, -2, 1, 57, 1, nv)
+	B(-2, 53, -2, 1, 53, 1, gl, 85)
+	B(-1, 58, -1, 0, 58, 0, wh)
+	# 环形护手：垂直于柄的一圈发光的环(白芯 + 穹蓝)，外缘一圈藏青，四根白色辐条连到轮毂
+	g.cur_glow = 90
+	g.ring(Vector3(0.0, 55.5, 0.0), Vector3.UP, 5.2, 1.9, gl)
+	g.cur_glow = 115
+	g.ring(Vector3(0.0, 55.5, 0.0), Vector3.UP, 4.6, 0.9, gw)
+	g.cur_glow = 0
+	g.ring(Vector3(0.0, 55.5, 0.0), Vector3.UP, 6.4, 1.1, nv)
+	B(2, 55, -1, 3, 55, 0, wh)
+	B(-4, 55, -1, -3, 55, 0, wh)
+	B(-1, 55, 2, 0, 55, 3, wh)
+	B(-1, 55, -4, 0, 55, -3, wh)
+	# 叉形发射器：两根白色的叉从轮毂往上夹住光刃的根(上端藏青，内侧一点光)
+	for s: int in [1, -1]:
+		for y2 in range(56, 66):
+			var zo: float = 3.2 + 0.25 * float(y2 - 56)
+			var za: int = int(floor(zo)) if s > 0 else -1 - int(floor(zo))
+			var zb: int = za + (1 if s > 0 else -1)
+			var cc: int = nv if y2 >= 63 else (wh if y2 > 57 else wh2)
+			B(-1, y2, mini(za, zb), 0, y2, maxi(za, zb), cc)
+		B(-1, 59, (2 if s > 0 else -3), 0, 61, (2 if s > 0 else -3), gl, 80)
+	# 光刃：从刃根到 y 95，最宽在下面五分之一处、往上收成长尖；中间白芯 → 穹蓝 → 刃口淡青(整片发光)
+	for y3 in range(58, 96):
+		var t: float = float(y3 - 58) / 37.0
+		var half: float
+		if t < 0.2:
+			half = lerpf(2.3, 3.7, sin(t / 0.2 * PI * 0.5))
+		else:
+			half = lerpf(3.7, 0.55, pow((t - 0.2) / 0.8, 1.25))
+		var za2: int = int(floor(-half))
+		var zb2: int = int(ceil(half)) - 1
+		for z2 in range(za2, zb2 + 1):
+			var dz: float = absf(float(z2) + 0.5)
+			var c3: int = gm
+			var gv: int = 85
+			if z2 == za2 or z2 == zb2:
+				c3 = gl
+				gv = 80
+			elif dz < 1.1 and t < 0.92:
+				c3 = gw
+				gv = 115
+			elif posmod(y3 + z2 * 3, 7) == 0:
+				c3 = gl
+			B(-1, y3, z2, 0, y3, z2, c3, gv)
+	_end()
+
+
 ## 黑剑(守誓节点的专属武器)：他角色卡上那把血色大剑——黑红色的宽刃 + 发光的鲜红刃口与血色纹路，蝠翼形状往上翘、带尖刺的护手，
 ## 缠黑红绳的长柄，柄头是一颗红色的尖刺星形饰件
 func blood_greatsword() -> void:
